@@ -25,7 +25,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="imsi"><fmt:message key="invItemGroup.name" />:</label>
+			<label class="control-label" for="name"><fmt:message key="invItemGroup.name" />:</label>
 			<div class="controls">
 				<input type="text" class="input-xlarge" name="name" id="name" value="${param.name}" placeholder="" />
 			</div>

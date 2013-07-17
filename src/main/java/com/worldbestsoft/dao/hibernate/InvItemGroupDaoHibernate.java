@@ -89,11 +89,11 @@ public class InvItemGroupDaoHibernate extends GenericDaoHibernate<InvItemGroup, 
 	 * @see com.worldbestsoft.dao.hibernate.ItemGroupDao#findByInvItemGroupCode(java.lang.String)
 	 */
 	@Override
-    public InvItemGroup findByInvItemGroupCode(String InvItemGroupCode) {
+    public InvItemGroup findByInvItemGroupCode(String invItemGroupCode) {
 		String hsql = "select o from InvItemGroup o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		hsql += " and o.code = :code";
-		params.put("code", InvItemGroupCode);
+		params.put("code", invItemGroupCode);
 		hsql += " order by o.code";
 		Query queryObj = getSession().createQuery(hsql);
 		queryObj.setProperties(params);
