@@ -2,7 +2,7 @@
 
 <head>
 <title><fmt:message key="invItemGroup.title" /></title>
-<meta name="menu" content="AdminMenu" />
+<meta name="menu" content="InvMenu" />
 </head>
 <div class="span2">
 	<h2>
