@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @Table(name = "inv_good_receipt_item", catalog = "onion")
 public class InvGoodReceiptItem implements java.io.Serializable {
 
-	private Integer id;
+	private Long id;
 	private InvGoodReceipt invGoodReceipt;
 	private InvItem invItem;
 	private Integer qty;
@@ -48,11 +48,11 @@ public class InvGoodReceiptItem implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
