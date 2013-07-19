@@ -13,8 +13,9 @@
             <Item name="FileUpload" title="menu.selectFile" page="/fileupload"/>
         </Menu>
         <Menu name="InvMenu" title="menu.inventory" description="Inventory Menu" roles="ROLE_ADMIN,ROLE_USER">
-            <Item name="ViewUsers" title="menu.inventory.itemGroup" page="/invItemGroupList"/>
-            <Item name="ViewUsers" title="menu.inventory.item" page="/invItemList"/>
+            <Item name="ItemGroups" title="menu.inventory.itemGroup" page="/invItemGroupList"/>
+            <Item name="Items" title="menu.inventory.item" page="/invItemList"/>
+            <Item name="Supplier" title="menu.inventory.supplier" page="/supplierList"/>
         </Menu>
         <Menu name="Logout" title="user.logout" page="/logout" roles="ROLE_ADMIN,ROLE_USER,ROLE_READONLY" onclick="return logout()"/>
     </Menus>

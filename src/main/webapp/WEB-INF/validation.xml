@@ -77,5 +77,13 @@
                 <arg key="invItem.name"/>
             </field>
         </form>
+         <form name="supplier">
+            <field property="code" depends="required">
+                <arg key="supplier.code"/>
+            </field>
+            <field property="name" depends="required">
+                <arg key="supplier.name"/>
+            </field>
+        </form>
     </formset>
 </form-validation>
