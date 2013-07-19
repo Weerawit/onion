@@ -55,6 +55,8 @@ public class InvItemGroupFormController extends BaseFormController {
 		Locale locale = request.getLocale();
 
 		if (request.getParameter("delete") != null) {
+			//since code input is readonly, no value pass to form then we need to query from db.
+//			InvItemGroup invItemGroup = getInvItemGroupManager().get(invItemGroupForm.getId());
 			getInvItemGroupManager().remove(invItemGroupForm.getId());
 			saveMessage(request, getText("invItemGroup.deleted", invItemGroupForm.getCode(), locale));
 			return new ModelAndView("redirect:/invItemGroupList");

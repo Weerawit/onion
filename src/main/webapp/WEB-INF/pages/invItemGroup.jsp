@@ -45,6 +45,7 @@
 				<appfuse:label styleClass="control-label" key="invItemGroup.code" />
 				<div class="controls">
 					<span class="input-xlarge uneditable-input"><c:out value="${invItemGroup.code}" /></span>
+					<form:hidden path="code"/>
 				</div>
 			</div>
 		</c:if>

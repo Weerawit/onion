@@ -67,6 +67,8 @@ public class InvItemFormController extends BaseFormController {
 		Locale locale = request.getLocale();
 
 		if (request.getParameter("delete") != null) {
+			//since code input is readonly, no value pass to form then we need to query from db.
+//			InvItem invItem = getInvItemManager().get(invItemForm.getId());
 			getInvItemManager().remove(invItemForm.getId());
 			saveMessage(request, getText("invItem.deleted", invItemForm.getCode(), locale));
 			return new ModelAndView("redirect:/invItemList");
@@ -100,6 +102,7 @@ public class InvItemFormController extends BaseFormController {
 					InvItemGroup invItemGroup = getInvItemGroupManager().findByInvItemGroupCode(invItemForm.getInvItemGroup().getCode());
 					invItem.setInvItemGroup(invItemGroup);
 				}
+				invItem.setDescription(invItemForm.getDescription());
 				invItem.setUpdateDate(new Date());
 				invItem.setUpdateUser(request.getRemoteUser());
 				invItem = getInvItemManager().save(invItem);

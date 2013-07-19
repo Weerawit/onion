@@ -66,5 +66,16 @@
                 <arg key="invItemGroup.name"/>
             </field>
         </form>
+        <form name="invItem">
+            <field property="code" depends="required">
+                <arg key="invItem.code"/>
+            </field>
+            <field property="invItemGroup.code" depends="required">
+                <arg key="invItem.invItemGroup.code"/>
+            </field>
+            <field property="name" depends="required">
+                <arg key="invItem.name"/>
+            </field>
+        </form>
     </formset>
 </form-validation>

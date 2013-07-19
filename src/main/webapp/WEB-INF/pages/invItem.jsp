@@ -45,9 +45,22 @@
 				<appfuse:label styleClass="control-label" key="invItem.code" />
 				<div class="controls">
 					<span class="input-xlarge uneditable-input"><c:out value="${invItem.code}" /></span>
+					<form:hidden path="code"/>
 				</div>
 			</div>
 		</c:if>
+		
+		<spring:bind path="invItem.invItemGroup">
+			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+				<appfuse:label styleClass="control-label" key="invItem.invItemGroup.code" />
+				<div class="controls">
+					<form:select path="invItemGroup.code">
+						<form:option value=""></form:option>
+						<form:options items="${invItemGroupList}" itemLabel="name" itemValue="code"/>
+					</form:select>
+				</div>
+			</div>
+		</spring:bind>
 		
 		<spring:bind path="invItem.name">
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
@@ -58,15 +71,13 @@
 				</div>
 			</div>
 		</spring:bind>
-
-		<spring:bind path="invItem.invItemGroup.code">
+		
+		<spring:bind path="invItem.description">
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-				<appfuse:label styleClass="control-label" key="invItem.invItemGroupCode" />
+				<appfuse:label styleClass="control-label" key="invItem.description" />
 				<div class="controls">
-					<form:select path="invItemGroup.code">
-						<form:option value=""></form:option>
-						<form:options items="${invItemGroupList}" itemLabel="name" itemValue="code"/>
-					</form:select>
+					<form:textarea path="description" id="description" cssClass="input-xlarge"/>
+					<form:errors path="description" cssClass="help-inline" />
 				</div>
 			</div>
 		</spring:bind>

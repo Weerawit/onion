@@ -19,6 +19,17 @@
 
 	<form method="get" action="${ctx}/invItemList" id="searchForm" class="well form-horizontal">
 		<div class="control-group">
+			<label for="invItemGroup" class="control-label"><fmt:message key="invItem.invItemGroup.code" /></label>
+			<div class="controls">
+				<select id=invItemGroupCode name="invItemGroupCode">
+					<c:forEach items="${invItemGroupList}" var="invItemGroup">
+						<option value=""></option>
+						<option value="${invItemGroup.code}" ${(invItemGroup.code == param.invItemGroupCode) ? 'selected' : ''}>${invItemGroup.code} : ${invItemGroup.name}</option>
+					</c:forEach>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label" for="code"><fmt:message key="invItem.code" />:</label>
 			<div class="controls">
 				<input type="text" class="input-xlarge" name="code" id="code" value="${param.code}" placeholder="" />
@@ -30,17 +41,7 @@
 				<input type="text" class="input-xlarge" name="name" id="name" value="${param.name}" placeholder="" />
 			</div>
 		</div>
-		<fieldset class="control-group">
-			<label for="invItemGroup" class="control-label"><fmt:message key="invItem.invItemGroupCode" /></label>
-			<div class="controls">
-				<select id=invItemGroupCode name="invItemGroupCode">
-					<c:forEach items="${invItemGroupList}" var="invItemGroup">
-						<option value=""></option>
-						<option value="${invItemGroup.code}" ${(invItemGroup.code == param.invItemGroupCode) ? 'selected' : ''}>${invItemGroup.code} : ${invItemGroup.name}</option>
-					</c:forEach>
-				</select>
-			</div>
-		</fieldset>
+		
 		<div class="control-group">
 			<div class="controls">
 
