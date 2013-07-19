@@ -245,7 +245,7 @@
 <!-- 					<useLastCommittedRevision>true</useLastCommittedRevision> -->
 					<timestampFormat>{0,date,yyyy_MM_dd_HH_mm_ss}</timestampFormat>
 					<revisionOnScmFailure>NONE</revisionOnScmFailure>
-					<shortRevisionLength>5</shortRevisionLength>
+<!-- 					<shortRevisionLength>5</shortRevisionLength> -->
 				</configuration>
 			</plugin>
 		</plugins>
