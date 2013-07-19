@@ -19,12 +19,12 @@
 
 	<form method="get" action="${ctx}/invItemList" id="searchForm" class="well form-horizontal">
 		<div class="control-group">
-			<label for="invItemGroup" class="control-label"><fmt:message key="invItem.invItemGroup.code" /></label>
+			<label for="invItem.invItemGroup.code" class="control-label"><fmt:message key="invItem.invItemGroup.code" /></label>
 			<div class="controls">
-				<select id=invItemGroupCode name="invItemGroupCode">
+				<select id=invItem.invItemGroup.code name="invItem.invItemGroup.code">
 					<c:forEach items="${invItemGroupList}" var="invItemGroup">
 						<option value=""></option>
-						<option value="${invItemGroup.code}" ${(invItemGroup.code == param.invItemGroupCode) ? 'selected' : ''}>${invItemGroup.code} : ${invItemGroup.name}</option>
+						<option value="${invItemGroup.code}" ${(invItemGroup.code == param['invItem.invItemGroup.code']) ? 'selected' : ''}>${invItemGroup.code} : ${invItemGroup.name}</option>
 					</c:forEach>
 				</select>
 			</div>
