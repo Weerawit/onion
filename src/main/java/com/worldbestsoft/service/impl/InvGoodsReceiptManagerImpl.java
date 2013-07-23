@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.InvGoodsReceiptDao;
 import com.worldbestsoft.dao.InvGoodsReceiptItemDao;
-import com.worldbestsoft.model.InvGoodReceipt;
-import com.worldbestsoft.model.InvGoodReceiptItem;
+import com.worldbestsoft.model.InvGoodsReceipt;
+import com.worldbestsoft.model.InvGoodsReceiptItem;
 import com.worldbestsoft.model.criteria.InvGoodsReceiptCriteria;
 import com.worldbestsoft.service.InvGoodsReceiptManager;
 
@@ -42,7 +42,7 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptManager#query(com.worldbestsoft.model.criteria.InvGoodsReceiptCriteria, int, int, java.lang.String, java.lang.String)
 	 */
 	@Override
-    public List<InvGoodReceipt> query(InvGoodsReceiptCriteria criteria, int page, int pageSize, String sortColumn, String order) {
+    public List<InvGoodsReceipt> query(InvGoodsReceiptCriteria criteria, int page, int pageSize, String sortColumn, String order) {
 	    return invGoodsReceiptDao.query(criteria, page, pageSize, sortColumn, order);
     }
 
@@ -58,7 +58,7 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptManager#getAll()
 	 */
 	@Override
-    public List<InvGoodReceipt> getAll() {
+    public List<InvGoodsReceipt> getAll() {
 	    return invGoodsReceiptDao.getAll();
     }
 
@@ -66,7 +66,7 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptManager#get(java.lang.Long)
 	 */
 	@Override
-    public InvGoodReceipt get(Long id) {
+    public InvGoodsReceipt get(Long id) {
 	    return invGoodsReceiptDao.get(id);
     }
 
@@ -74,16 +74,16 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptManager#save(com.worldbestsoft.model.InvGoodReceipt)
 	 */
 	@Override
-    public InvGoodReceipt save(InvGoodReceipt invGoodsReceipt) {
+    public InvGoodsReceipt save(InvGoodsReceipt invGoodsReceipt) {
 		//save to get key
-		InvGoodReceipt invGoodsReceiptSave = invGoodsReceiptDao.save(invGoodsReceipt);
-		Set<InvGoodReceiptItem> newInvGoodReceiptItemList = invGoodsReceipt.getInvGoodReceiptItems();
+		InvGoodsReceipt invGoodsReceiptSave = invGoodsReceiptDao.save(invGoodsReceipt);
+		Set<InvGoodsReceiptItem> newInvGoodReceiptItemList = invGoodsReceipt.getInvGoodReceiptItems();
 		
 		if (null != invGoodsReceipt.getId()) {
-			List<InvGoodReceiptItem> oldinvGoodReceiptItemList = invGoodsReceiptItemDao.findByInvGoodReceipt(invGoodsReceipt.getId());
+			List<InvGoodsReceiptItem> oldinvGoodReceiptItemList = invGoodsReceiptItemDao.findByInvGoodReceipt(invGoodsReceipt.getId());
 			//delete if not in the new list.
-			for (InvGoodReceiptItem invGoodReceiptItem : oldinvGoodReceiptItemList) {
-				InvGoodReceiptItem foundInvGoodReceiptItem = (InvGoodReceiptItem) CollectionUtils.find(newInvGoodReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodReceiptItem.getInvItem().getCode()));
+			for (InvGoodsReceiptItem invGoodReceiptItem : oldinvGoodReceiptItemList) {
+				InvGoodsReceiptItem foundInvGoodReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(newInvGoodReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodReceiptItem.getInvItem().getCode()));
 				if (null == foundInvGoodReceiptItem) {
 					//delete 
 					invGoodsReceiptItemDao.remove(invGoodReceiptItem.getId());
@@ -92,8 +92,8 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 			
 			//add or update new list
 			
-			for (InvGoodReceiptItem invGoodReceiptItem : newInvGoodReceiptItemList) {
-				InvGoodReceiptItem foundInvGoodReceiptItem = (InvGoodReceiptItem) CollectionUtils.find(oldinvGoodReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodReceiptItem.getInvItem().getCode()));
+			for (InvGoodsReceiptItem invGoodReceiptItem : newInvGoodReceiptItemList) {
+				InvGoodsReceiptItem foundInvGoodReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(oldinvGoodReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodReceiptItem.getInvItem().getCode()));
 				if (null == foundInvGoodReceiptItem) {
 					invGoodReceiptItem.setInvGoodReceipt(invGoodsReceiptSave);
 					invGoodsReceiptItemDao.save(invGoodReceiptItem);
@@ -110,7 +110,7 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 			
 		} else {
 			//get running no
-			for (InvGoodReceiptItem invGoodReceiptItem : newInvGoodReceiptItemList) {
+			for (InvGoodsReceiptItem invGoodReceiptItem : newInvGoodReceiptItemList) {
 				invGoodReceiptItem.setInvGoodReceipt(invGoodsReceiptSave);
 				invGoodsReceiptItemDao.save(invGoodReceiptItem);
 			}

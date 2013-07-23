@@ -2,10 +2,10 @@ package com.worldbestsoft.dao;
 
 import java.util.List;
 
-import com.worldbestsoft.model.InvGoodReceiptItem;
+import com.worldbestsoft.model.InvGoodsReceiptItem;
 
-public interface InvGoodsReceiptItemDao extends GenericDao<InvGoodReceiptItem, Long> {
+public interface InvGoodsReceiptItemDao extends GenericDao<InvGoodsReceiptItem, Long> {
 
-	public abstract List<InvGoodReceiptItem> findByInvGoodReceipt(Long id);
+	public abstract List<InvGoodsReceiptItem> findByInvGoodReceipt(Long id);
 
 }

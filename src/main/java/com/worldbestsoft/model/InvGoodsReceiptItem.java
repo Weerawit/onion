@@ -18,25 +18,25 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "inv_good_receipt_item", catalog = "onion")
-public class InvGoodReceiptItem implements java.io.Serializable {
+public class InvGoodsReceiptItem implements java.io.Serializable {
 
 	private Long id;
-	private InvGoodReceipt invGoodReceipt;
+	private InvGoodsReceipt invGoodReceipt;
 	private InvItem invItem;
 	private Integer qty;
 	private BigDecimal unitPrice;
 	private BigDecimal unitType;
 	private String memo;
 
-	public InvGoodReceiptItem() {
+	public InvGoodsReceiptItem() {
 	}
 
-	public InvGoodReceiptItem(InvGoodReceipt invGoodReceipt, InvItem invItem) {
+	public InvGoodsReceiptItem(InvGoodsReceipt invGoodReceipt, InvItem invItem) {
 		this.invGoodReceipt = invGoodReceipt;
 		this.invItem = invItem;
 	}
 
-	public InvGoodReceiptItem(InvGoodReceipt invGoodReceipt, InvItem invItem, Integer qty, BigDecimal unitPrice, BigDecimal unitType, String memo) {
+	public InvGoodsReceiptItem(InvGoodsReceipt invGoodReceipt, InvItem invItem, Integer qty, BigDecimal unitPrice, BigDecimal unitType, String memo) {
 		this.invGoodReceipt = invGoodReceipt;
 		this.invItem = invItem;
 		this.qty = qty;
@@ -58,11 +58,11 @@ public class InvGoodReceiptItem implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "inv_good_receipt_id", nullable = false)
-	public InvGoodReceipt getInvGoodReceipt() {
+	public InvGoodsReceipt getInvGoodReceipt() {
 		return this.invGoodReceipt;
 	}
 
-	public void setInvGoodReceipt(InvGoodReceipt invGoodReceipt) {
+	public void setInvGoodReceipt(InvGoodsReceipt invGoodReceipt) {
 		this.invGoodReceipt = invGoodReceipt;
 	}
 

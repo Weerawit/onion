@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
 public class InvGoodMovementItem implements java.io.Serializable {
 
 	private Integer id;
-	private InvGoodMovement invGoodMovement;
+	private InvGoodsMovement invGoodMovement;
 	private InvItem invItem;
 	private Integer qty;
 	private String owner;
@@ -37,12 +37,12 @@ public class InvGoodMovementItem implements java.io.Serializable {
 	public InvGoodMovementItem() {
 	}
 
-	public InvGoodMovementItem(InvGoodMovement invGoodMovement, InvItem invItem) {
+	public InvGoodMovementItem(InvGoodsMovement invGoodMovement, InvItem invItem) {
 		this.invGoodMovement = invGoodMovement;
 		this.invItem = invItem;
 	}
 
-	public InvGoodMovementItem(InvGoodMovement invGoodMovement, InvItem invItem, Integer qty, String owner, String memo, String movementType, Date createDate, String createUser, Date updateDate, String updateUser) {
+	public InvGoodMovementItem(InvGoodsMovement invGoodMovement, InvItem invItem, Integer qty, String owner, String memo, String movementType, Date createDate, String createUser, Date updateDate, String updateUser) {
 		this.invGoodMovement = invGoodMovement;
 		this.invItem = invItem;
 		this.qty = qty;
@@ -68,11 +68,11 @@ public class InvGoodMovementItem implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "inv_good_movement_id", nullable = false)
-	public InvGoodMovement getInvGoodMovement() {
+	public InvGoodsMovement getInvGoodMovement() {
 		return this.invGoodMovement;
 	}
 
-	public void setInvGoodMovement(InvGoodMovement invGoodMovement) {
+	public void setInvGoodMovement(InvGoodsMovement invGoodMovement) {
 		this.invGoodMovement = invGoodMovement;
 	}
 

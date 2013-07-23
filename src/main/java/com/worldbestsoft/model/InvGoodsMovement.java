@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "inv_good_movement", catalog = "onion")
-public class InvGoodMovement implements java.io.Serializable {
+public class InvGoodsMovement implements java.io.Serializable {
 
 	private int id;
 	private String runningNo;
@@ -27,14 +27,14 @@ public class InvGoodMovement implements java.io.Serializable {
 	private String owner;
 	private Set<InvGoodMovementItem> invGoodMovementItems = new HashSet<InvGoodMovementItem>(0);
 
-	public InvGoodMovement() {
+	public InvGoodsMovement() {
 	}
 
-	public InvGoodMovement(int id) {
+	public InvGoodsMovement(int id) {
 		this.id = id;
 	}
 
-	public InvGoodMovement(int id, String runningNo, Date movementDate, String owner, Set<InvGoodMovementItem> invGoodMovementItems) {
+	public InvGoodsMovement(int id, String runningNo, Date movementDate, String owner, Set<InvGoodMovementItem> invGoodMovementItems) {
 		this.id = id;
 		this.runningNo = runningNo;
 		this.movementDate = movementDate;

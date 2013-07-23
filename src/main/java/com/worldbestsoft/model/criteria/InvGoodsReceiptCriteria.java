@@ -2,9 +2,9 @@ package com.worldbestsoft.model.criteria;
 
 import java.util.Date;
 
-import com.worldbestsoft.model.InvGoodReceipt;
+import com.worldbestsoft.model.InvGoodsReceipt;
 
-public class InvGoodsReceiptCriteria extends InvGoodReceipt implements java.io.Serializable {
+public class InvGoodsReceiptCriteria extends InvGoodsReceipt implements java.io.Serializable {
 	/**
 	 * 
 	 */

@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.worldbestsoft.model.InvGoodReceipt;
-import com.worldbestsoft.model.InvGoodReceiptItem;
+import com.worldbestsoft.model.InvGoodsReceipt;
+import com.worldbestsoft.model.InvGoodsReceiptItem;
 import com.worldbestsoft.model.InvItem;
 import com.worldbestsoft.model.Supplier;
 import com.worldbestsoft.service.InvGoodsReceiptManager;
@@ -51,7 +51,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 	}
 
 	@RequestMapping(value="/save" ,method = RequestMethod.POST)
-	public ModelAndView save(InvGoodReceipt invGoodReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView save(InvGoodsReceipt invGoodReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		if (request.getParameter("cancel") != null) {
 			return new ModelAndView("redirect:/invGoodsReceiptList");
 		}
@@ -79,7 +79,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		} else {
 			
 			HttpSession session = request.getSession();
-			InvGoodReceipt invGoodsReceiptSession = (InvGoodReceipt) session.getAttribute("invGoodsReceipt");
+			InvGoodsReceipt invGoodsReceiptSession = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
 			
 			if (null == invGoodReceiptForm.getId()) {
 				
@@ -99,7 +99,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 				return new ModelAndView("redirect:/invGoodsReceipt").addObject("id", invGoodsReceiptSession.getId());
 			} else {
 				// edit
-				InvGoodReceipt invGoodsReceipt = getInvGoodsReceiptManager().get(invGoodReceiptForm.getId());
+				InvGoodsReceipt invGoodsReceipt = getInvGoodsReceiptManager().get(invGoodReceiptForm.getId());
 				if (null != invGoodReceiptForm.getSupplier()) {
 					Supplier supplier = getSupplierManager().findBySupplierCode(invGoodReceiptForm.getSupplier().getCode());
 					invGoodsReceipt.setSupplier(supplier);
@@ -117,9 +117,9 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 	}
 	
 	@RequestMapping(value = "/addDetail", method = RequestMethod.POST)
-	public ModelAndView add(InvGoodReceipt invGoodReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView add(InvGoodsReceipt invGoodReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
-		InvGoodReceipt invGoodsReceipt = (InvGoodReceipt) session.getAttribute("invGoodsReceipt");
+		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
 		invGoodsReceipt.setReceiptDate(invGoodReceiptForm.getReceiptDate());
 		invGoodsReceipt.setSupplier(invGoodReceiptForm.getSupplier());
 		invGoodsReceipt.setRemark(invGoodReceiptForm.getRemark());
@@ -128,9 +128,9 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 	}
 	
 	@RequestMapping(value = "/editetail", method = RequestMethod.POST)
-	public ModelAndView edit(InvGoodReceipt invGoodReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView edit(InvGoodsReceipt invGoodReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
-		InvGoodReceipt invGoodsReceipt = (InvGoodReceipt) session.getAttribute("invGoodsReceipt");
+		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
 		invGoodsReceipt.setReceiptDate(invGoodReceiptForm.getReceiptDate());
 		invGoodsReceipt.setSupplier(invGoodReceiptForm.getSupplier());
 		invGoodsReceipt.setRemark(invGoodReceiptForm.getRemark());
@@ -139,21 +139,21 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 	}
 
 	@RequestMapping(value = "/deleteDetail", method = RequestMethod.POST)
-	public ModelAndView delete(InvGoodReceipt invGoodReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView delete(InvGoodsReceipt invGoodReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
-		InvGoodReceipt invGoodsReceipt = (InvGoodReceipt) session.getAttribute("invGoodsReceipt");
+		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
 		invGoodsReceipt.setReceiptDate(invGoodReceiptForm.getReceiptDate());
 		invGoodsReceipt.setSupplier(invGoodReceiptForm.getSupplier());
 		invGoodsReceipt.setRemark(invGoodReceiptForm.getRemark());
 		invGoodsReceipt.setRunningNo(invGoodReceiptForm.getRunningNo());
-		List<InvGoodReceiptItem> invGoodsReceiptItemList = new ArrayList<InvGoodReceiptItem>(invGoodsReceipt.getInvGoodReceiptItems());
+		List<InvGoodsReceiptItem> invGoodsReceiptItemList = new ArrayList<InvGoodsReceiptItem>(invGoodsReceipt.getInvGoodReceiptItems());
 
 		
 		Locale locale = request.getLocale();
 		String[] checkbox = request.getParameterValues("checkbox");
 		if (null != checkbox && checkbox.length > 0) {
 			for (int i = 0; i < checkbox.length; i++) {
-				InvGoodReceiptItem invGoodsReceiptItem = invGoodsReceiptItemList.get(Integer.parseInt(checkbox[i]));
+				InvGoodsReceiptItem invGoodsReceiptItem = invGoodsReceiptItemList.get(Integer.parseInt(checkbox[i]));
 				invGoodsReceipt.getInvGoodReceiptItems().remove(invGoodsReceiptItem);
 				saveMessage(request, getText("invGoodsReceiptItem.deleted", invGoodsReceiptItem.getInvItem().getCode(), locale));
 			}
@@ -171,9 +171,9 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		HttpSession session = request.getSession();
 		
 		//keep master value in session, always new object if method is add
-		InvGoodReceipt invGoodsReceipt = (InvGoodReceipt) session.getAttribute("invGoodsReceipt");
+		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
 		if (null == invGoodsReceipt || StringUtils.equalsIgnoreCase(method, "add")) {
-			invGoodsReceipt = new InvGoodReceipt();
+			invGoodsReceipt = new InvGoodsReceipt();
 		}
 		
 		if (!isFormSubmission(request)) {

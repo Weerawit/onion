@@ -24,7 +24,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "inv_good_receipt", catalog = "onion")
-public class InvGoodReceipt implements java.io.Serializable {
+public class InvGoodsReceipt implements java.io.Serializable {
 
 	private Long id;
 	private Supplier supplier;
@@ -32,16 +32,16 @@ public class InvGoodReceipt implements java.io.Serializable {
 	private Date receiptDate;
 	private BigDecimal totalCost;
 	private String remark;
-	private Set<InvGoodReceiptItem> invGoodReceiptItems = new HashSet<InvGoodReceiptItem>(0);
+	private Set<InvGoodsReceiptItem> invGoodReceiptItems = new HashSet<InvGoodsReceiptItem>(0);
 
-	public InvGoodReceipt() {
+	public InvGoodsReceipt() {
 	}
 
-	public InvGoodReceipt(Supplier supplier) {
+	public InvGoodsReceipt(Supplier supplier) {
 		this.supplier = supplier;
 	}
 
-	public InvGoodReceipt(Supplier supplier, String runningNo, Date receiptDate, BigDecimal totalCost, String remark, Set<InvGoodReceiptItem> invGoodReceiptItems) {
+	public InvGoodsReceipt(Supplier supplier, String runningNo, Date receiptDate, BigDecimal totalCost, String remark, Set<InvGoodsReceiptItem> invGoodReceiptItems) {
 		this.supplier = supplier;
 		this.runningNo = runningNo;
 		this.receiptDate = receiptDate;
@@ -109,11 +109,11 @@ public class InvGoodReceipt implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invGoodReceipt")
-	public Set<InvGoodReceiptItem> getInvGoodReceiptItems() {
+	public Set<InvGoodsReceiptItem> getInvGoodReceiptItems() {
 		return this.invGoodReceiptItems;
 	}
 
-	public void setInvGoodReceiptItems(Set<InvGoodReceiptItem> invGoodReceiptItems) {
+	public void setInvGoodReceiptItems(Set<InvGoodsReceiptItem> invGoodReceiptItems) {
 		this.invGoodReceiptItems = invGoodReceiptItems;
 	}
 

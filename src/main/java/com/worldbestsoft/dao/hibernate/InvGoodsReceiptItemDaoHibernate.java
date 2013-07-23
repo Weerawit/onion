@@ -8,17 +8,17 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.worldbestsoft.dao.InvGoodsReceiptItemDao;
-import com.worldbestsoft.model.InvGoodReceiptItem;
+import com.worldbestsoft.model.InvGoodsReceiptItem;
 
 @Repository("invGoodsReceiptItemDao")
-public class InvGoodsReceiptItemDaoHibernate extends GenericDaoHibernate<InvGoodReceiptItem, Long> implements InvGoodsReceiptItemDao {
+public class InvGoodsReceiptItemDaoHibernate extends GenericDaoHibernate<InvGoodsReceiptItem, Long> implements InvGoodsReceiptItemDao {
 
 	public InvGoodsReceiptItemDaoHibernate() {
-	    super(InvGoodReceiptItem.class);
+	    super(InvGoodsReceiptItem.class);
     }
 	
 	@Override
-    public List<InvGoodReceiptItem> findByInvGoodReceipt(Long id) {
+    public List<InvGoodsReceiptItem> findByInvGoodReceipt(Long id) {
 		String hsql = "select o from InvGoodReceiptItem o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		hsql += " and o.invGoodReceipt.id = :id";

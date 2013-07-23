@@ -33,12 +33,12 @@ public class Supplier implements java.io.Serializable {
 	private String createUser;
 	private Date updateDate;
 	private String updateUser;
-	private Set<InvGoodReceipt> invGoodReceipts = new HashSet<InvGoodReceipt>(0);
+	private Set<InvGoodsReceipt> invGoodReceipts = new HashSet<InvGoodsReceipt>(0);
 
 	public Supplier() {
 	}
 
-	public Supplier(String code, String name, String address, String contactName, String contactTel, Date createDate, String createUser, Date updateDate, String updateUser, Set<InvGoodReceipt> invGoodReceipts) {
+	public Supplier(String code, String name, String address, String contactName, String contactTel, Date createDate, String createUser, Date updateDate, String updateUser, Set<InvGoodsReceipt> invGoodReceipts) {
 		this.code = code;
 		this.name = name;
 		this.address = address;
@@ -146,11 +146,11 @@ public class Supplier implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier")
-	public Set<InvGoodReceipt> getInvGoodReceipts() {
+	public Set<InvGoodsReceipt> getInvGoodReceipts() {
 		return this.invGoodReceipts;
 	}
 
-	public void setInvGoodReceipts(Set<InvGoodReceipt> invGoodReceipts) {
+	public void setInvGoodReceipts(Set<InvGoodsReceipt> invGoodReceipts) {
 		this.invGoodReceipts = invGoodReceipts;
 	}
 

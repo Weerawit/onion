@@ -36,7 +36,7 @@ public class InvItem implements java.io.Serializable {
 	private String updateUser;
 	private Set<Catalog> catalogs = new HashSet<Catalog>(0);
 	private Set<InvGoodMovementItem> invGoodMovementItems = new HashSet<InvGoodMovementItem>(0);
-	private Set<InvGoodReceiptItem> invGoodReceiptItems = new HashSet<InvGoodReceiptItem>(0);
+	private Set<InvGoodsReceiptItem> invGoodReceiptItems = new HashSet<InvGoodsReceiptItem>(0);
 	private Set<CatalogItem> catalogItems = new HashSet<CatalogItem>(0);
 
 	public InvItem() {
@@ -48,7 +48,7 @@ public class InvItem implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public InvItem(InvItemGroup invItemGroup, String code, String name, String description, Date createDate, String createUser, Date updateDate, String updateUser, Set<Catalog> catalogs, Set<InvGoodMovementItem> invGoodMovementItems, Set<InvGoodReceiptItem> invGoodReceiptItems, Set<CatalogItem> catalogItems) {
+	public InvItem(InvItemGroup invItemGroup, String code, String name, String description, Date createDate, String createUser, Date updateDate, String updateUser, Set<Catalog> catalogs, Set<InvGoodMovementItem> invGoodMovementItems, Set<InvGoodsReceiptItem> invGoodReceiptItems, Set<CatalogItem> catalogItems) {
 		this.invItemGroup = invItemGroup;
 		this.code = code;
 		this.name = name;
@@ -168,11 +168,11 @@ public class InvItem implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invItem")
-	public Set<InvGoodReceiptItem> getInvGoodReceiptItems() {
+	public Set<InvGoodsReceiptItem> getInvGoodReceiptItems() {
 		return this.invGoodReceiptItems;
 	}
 
-	public void setInvGoodReceiptItems(Set<InvGoodReceiptItem> invGoodReceiptItems) {
+	public void setInvGoodReceiptItems(Set<InvGoodsReceiptItem> invGoodReceiptItems) {
 		this.invGoodReceiptItems = invGoodReceiptItems;
 	}
 

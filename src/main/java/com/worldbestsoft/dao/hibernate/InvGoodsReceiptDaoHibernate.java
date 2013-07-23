@@ -9,21 +9,21 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.worldbestsoft.dao.InvGoodsReceiptDao;
-import com.worldbestsoft.model.InvGoodReceipt;
+import com.worldbestsoft.model.InvGoodsReceipt;
 import com.worldbestsoft.model.criteria.InvGoodsReceiptCriteria;
 
 @Repository("invGoodsReceiptDao")
-public class InvGoodsReceiptDaoHibernate extends GenericDaoHibernate<InvGoodReceipt, Long> implements InvGoodsReceiptDao {
+public class InvGoodsReceiptDaoHibernate extends GenericDaoHibernate<InvGoodsReceipt, Long> implements InvGoodsReceiptDao {
 
 	public InvGoodsReceiptDaoHibernate() {
-	    super(InvGoodReceipt.class);
+	    super(InvGoodsReceipt.class);
     }
 	
     /* (non-Javadoc)
 	 * @see com.worldbestsoft.dao.hibernate.InvGoodsReceiptDao#query(com.worldbestsoft.model.InvGoodReceipt, int, int, java.lang.String, java.lang.String)
 	 */
     @Override
-    public List<InvGoodReceipt> query(InvGoodsReceiptCriteria criteria, final int page, final int pageSize, final String sortColumn, final String order) {
+    public List<InvGoodsReceipt> query(InvGoodsReceiptCriteria criteria, final int page, final int pageSize, final String sortColumn, final String order) {
 		String hsql = "select o from InvGoodReceipt o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		if (null != criteria) {

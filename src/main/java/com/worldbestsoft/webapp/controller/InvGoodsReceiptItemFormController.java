@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.worldbestsoft.model.InvGoodReceipt;
-import com.worldbestsoft.model.InvGoodReceiptItem;
+import com.worldbestsoft.model.InvGoodsReceipt;
+import com.worldbestsoft.model.InvGoodsReceiptItem;
 import com.worldbestsoft.model.InvItem;
 import com.worldbestsoft.service.InvGoodsReceiptItemManager;
 import com.worldbestsoft.service.InvItemManager;
@@ -54,7 +54,7 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 	}
 
     @RequestMapping(method = RequestMethod.POST)
-	public ModelAndView save(InvGoodReceiptItem invGoodsReceiptItemForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView save(InvGoodsReceiptItem invGoodsReceiptItemForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		if (request.getParameter("cancel") != null) {
 			return new ModelAndView("redirect:/invGoodsReceipt");
 		}
@@ -74,15 +74,15 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 		Locale locale = request.getLocale();
 		HttpSession session = request.getSession();
 		
-		InvGoodReceipt invGoodsReceipt = (InvGoodReceipt) session.getAttribute("invGoodsReceipt");
+		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
 //        List<InvGoodReceiptItem> invGoodsReceiptItemList = (List<InvGoodReceiptItem>) session.getAttribute("invGoodsReceiptItemList");
-		Set<InvGoodReceiptItem> invGoodsReceiptItemList = invGoodsReceipt.getInvGoodReceiptItems();
+		Set<InvGoodsReceiptItem> invGoodsReceiptItemList = invGoodsReceipt.getInvGoodReceiptItems();
 		
 		String rowNum = request.getParameter("rowNum");
 
 		if (request.getParameter("delete") != null) {
 			//remove from session list.
-			InvGoodReceiptItem invGoodsReceiptItem = (InvGoodReceiptItem) CollectionUtils.find(invGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodsReceiptItemForm.getInvItem().getCode()));
+			InvGoodsReceiptItem invGoodsReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(invGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodsReceiptItemForm.getInvItem().getCode()));
 			invGoodsReceiptItemList.remove(invGoodsReceiptItem);
 //			try {
 //				invGoodsReceiptItemList.remove(Integer.parseInt(rowNum));
@@ -99,7 +99,7 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 			if (StringUtils.isBlank(rowNum)) {
 				//add to list
 				//check dup from session
-				InvGoodReceiptItem invGoodsReceiptItem = (InvGoodReceiptItem) CollectionUtils.find(invGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodsReceiptItemForm.getInvItem().getCode()));
+				InvGoodsReceiptItem invGoodsReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(invGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodsReceiptItemForm.getInvItem().getCode()));
 				if (null != invGoodsReceiptItem) {
 					saveError(request, getText("invGoodsReceiptItem.duplicate", rowNum, locale));
 					return new ModelAndView("invGoodsReceiptItem", "invGoodsReceiptItem", invGoodsReceiptItemForm).addObject("invItemList", invItemManager.getAll());
@@ -116,9 +116,9 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 				return new ModelAndView("redirect:/invGoodsReceipt");
 			} else {
 				//update old object
-				List<InvGoodReceiptItem> invGoodsReceiptItemList2 = new ArrayList<InvGoodReceiptItem>(invGoodsReceipt.getInvGoodReceiptItems());
+				List<InvGoodsReceiptItem> invGoodsReceiptItemList2 = new ArrayList<InvGoodsReceiptItem>(invGoodsReceipt.getInvGoodReceiptItems());
 				try {
-					InvGoodReceiptItem invGoodsReceiptItem = invGoodsReceiptItemList2.get(Integer.parseInt(rowNum));
+					InvGoodsReceiptItem invGoodsReceiptItem = invGoodsReceiptItemList2.get(Integer.parseInt(rowNum));
 					
 					if (null != invGoodsReceiptItemForm.getInvItem()) {
 						InvItem invItem = getInvItemManager().findByInvItemCode(invGoodsReceiptItemForm.getInvItem().getCode());
@@ -148,9 +148,9 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 		
 		//parameter 'id' is index of array list from session object
 		HttpSession session = request.getSession();
-		InvGoodReceipt invGoodsReceipt = (InvGoodReceipt) session.getAttribute("invGoodsReceipt");
-		List<InvGoodReceiptItem> invGoodsReceiptItemList = new ArrayList<InvGoodReceiptItem>(invGoodsReceipt.getInvGoodReceiptItems());
-		InvGoodReceiptItem invGoodsReceiptItem = new InvGoodReceiptItem();
+		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
+		List<InvGoodsReceiptItem> invGoodsReceiptItemList = new ArrayList<InvGoodsReceiptItem>(invGoodsReceipt.getInvGoodReceiptItems());
+		InvGoodsReceiptItem invGoodsReceiptItem = new InvGoodsReceiptItem();
 		try {
 			Integer index = Integer.parseInt(id);
 			if (index < invGoodsReceiptItemList.size()) {

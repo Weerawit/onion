@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.InvGoodsReceiptItemDao;
-import com.worldbestsoft.model.InvGoodReceiptItem;
+import com.worldbestsoft.model.InvGoodsReceiptItem;
 import com.worldbestsoft.service.InvGoodsReceiptItemManager;
 
 @Service("invGoodsReceiptItemManager")
@@ -26,7 +26,7 @@ public class InvGoodsReceiptItemManagerImpl implements InvGoodsReceiptItemManage
 	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptItemManager#getAll()
 	 */
 	@Override
-    public List<InvGoodReceiptItem> getAll() {
+    public List<InvGoodsReceiptItem> getAll() {
 	    return invGoodsReceiptItemDao.getAll();
     }
 
@@ -34,7 +34,7 @@ public class InvGoodsReceiptItemManagerImpl implements InvGoodsReceiptItemManage
 	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptItemManager#get(java.lang.Long)
 	 */
 	@Override
-    public InvGoodReceiptItem get(Long id) {
+    public InvGoodsReceiptItem get(Long id) {
 	    return invGoodsReceiptItemDao.get(id);
     }
 
@@ -42,7 +42,7 @@ public class InvGoodsReceiptItemManagerImpl implements InvGoodsReceiptItemManage
 	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptItemManager#save(com.worldbestsoft.model.InvGoodReceiptItem)
 	 */
 	@Override
-    public InvGoodReceiptItem save(InvGoodReceiptItem object) {
+    public InvGoodsReceiptItem save(InvGoodsReceiptItem object) {
 	    return invGoodsReceiptItemDao.save(object);
     }
 
