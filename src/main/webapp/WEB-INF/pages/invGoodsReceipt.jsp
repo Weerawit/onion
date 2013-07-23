@@ -102,7 +102,7 @@
 				<fmt:message key="button.add" />
 			</button>
 			
-			<button id="button.delete" class="btn" type="submit" onclick="bCancel=true;$('#invGoodsReceipt').attr('action', 'invGoodsReceipt/deleteDetail');">>
+			<button id="button.delete" class="btn" type="submit" onclick="bCancel=true;$('#invGoodsReceipt').attr('action', 'invGoodsReceipt/deleteDetail');">
 				<i class="icon-trash"></i>
 				<fmt:message key="button.delete" />
 			</button>

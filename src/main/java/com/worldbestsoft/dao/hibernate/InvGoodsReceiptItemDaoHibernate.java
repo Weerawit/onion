@@ -19,9 +19,9 @@ public class InvGoodsReceiptItemDaoHibernate extends GenericDaoHibernate<InvGood
 	
 	@Override
     public List<InvGoodsReceiptItem> findByInvGoodReceipt(Long id) {
-		String hsql = "select o from InvGoodReceiptItem o where 1=1 ";
+		String hsql = "select o from InvGoodsReceiptItem o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
-		hsql += " and o.invGoodReceipt.id = :id";
+		hsql += " and o.invGoodsReceipt.id = :id";
 		params.put("id", id);
 		hsql += " order by o.id";
 		Query queryObj = getSession().createQuery(hsql);

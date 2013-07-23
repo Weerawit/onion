@@ -21,7 +21,7 @@
 		<div class="control-group">
 			<label class="control-label" for="code"><fmt:message key="supplier.code" />:</label>
 			<div class="controls">
-				<input type="text" class="input-xlarge" name="code" id="code" value="${param.code}" placeholder="" />
+				<input type="text" class="input-medium" name="code" id="code" value="${param.code}" placeholder="" />
 			</div>
 		</div>
 		<div class="control-group">
@@ -39,7 +39,7 @@
 		<div class="control-group">
 			<label class="control-label" for="name"><fmt:message key="supplier.contactTel" />:</label>
 			<div class="controls">
-				<input type="text" class="input-xlarge" name="contactTel" id="contactTel" value="${param.contactTel}" placeholder="" />
+				<input type="text" class="input-xlarge" name="contactTel" id="contactTel" value="${param.contactTel}" placeholder="66xxxxxxxxx" />
 			</div>
 		</div>
 		

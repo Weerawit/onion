@@ -25,8 +25,8 @@
 			<label for="invGoodsReceipt.supplier.code" class="control-label"><fmt:message key="invGoodsReceipt.supplier.code" /></label>
 			<div class="controls">
 				<select id=invGoodsReceipt.supplier.code name="invGoodsReceipt.supplier.code">
+					<option value=""></option>
 					<c:forEach items="${supplierList}" var="supplier">
-						<option value=""></option>
 						<option value="${supplier.code}" ${(supplier.code == param['invGoodsReceipt.supplier.code']) ? 'selected' : ''}>${supplier.code} : ${supplier.name}</option>
 					</c:forEach>
 				</select>

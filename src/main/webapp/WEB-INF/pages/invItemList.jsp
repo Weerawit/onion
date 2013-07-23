@@ -22,8 +22,8 @@
 			<label for="invItem.invItemGroup.code" class="control-label"><fmt:message key="invItem.invItemGroup.code" /></label>
 			<div class="controls">
 				<select id=invItem.invItemGroup.code name="invItem.invItemGroup.code">
+					<option value=""></option>
 					<c:forEach items="${invItemGroupList}" var="invItemGroup">
-						<option value=""></option>
 						<option value="${invItemGroup.code}" ${(invItemGroup.code == param['invItem.invItemGroup.code']) ? 'selected' : ''}>${invItemGroup.code} : ${invItemGroup.name}</option>
 					</c:forEach>
 				</select>
@@ -32,7 +32,7 @@
 		<div class="control-group">
 			<label class="control-label" for="code"><fmt:message key="invItem.code" />:</label>
 			<div class="controls">
-				<input type="text" class="input-xlarge" name="code" id="code" value="${param.code}" placeholder="" />
+				<input type="text" class="input-medium" name="code" id="code" value="${param.code}" placeholder="" />
 			</div>
 		</div>
 		<div class="control-group">

@@ -65,14 +65,14 @@ public class InvItemGroupFormController extends BaseFormController {
 
 			if (null == invItemGroupForm.getId()) {
 				// add
-				invItemGroupForm.setCreateDate(new Date());
-				invItemGroupForm.setCreateUser(request.getRemoteUser());
 				List<InvItemGroup> dupList = getInvItemGroupManager().checkDuplicate(invItemGroupForm.getCode(), null);
 				if (null != dupList && dupList.size() > 0) {
 					saveError(request, getText("invItemGroup.duplicate", invItemGroupForm.getCode(), locale));
 					return new ModelAndView("invItemGroup", "invItemGroup", invItemGroupForm);
 				}
-
+				invItemGroupForm.setCreateDate(new Date());
+				invItemGroupForm.setCreateUser(request.getRemoteUser());
+				
 				invItemGroupForm = getInvItemGroupManager().save(invItemGroupForm);
 
 				saveMessage(request, getText("invItemGroup.added", invItemGroupForm.getCode(), locale));

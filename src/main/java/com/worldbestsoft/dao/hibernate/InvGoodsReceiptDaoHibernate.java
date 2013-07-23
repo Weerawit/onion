@@ -24,7 +24,7 @@ public class InvGoodsReceiptDaoHibernate extends GenericDaoHibernate<InvGoodsRec
 	 */
     @Override
     public List<InvGoodsReceipt> query(InvGoodsReceiptCriteria criteria, final int page, final int pageSize, final String sortColumn, final String order) {
-		String hsql = "select o from InvGoodReceipt o where 1=1 ";
+		String hsql = "select o from InvGoodsReceipt o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		if (null != criteria) {
 			
@@ -62,7 +62,7 @@ public class InvGoodsReceiptDaoHibernate extends GenericDaoHibernate<InvGoodsRec
 	 */
 	@Override
     public Integer querySize(InvGoodsReceiptCriteria criteria) {
-		String hsql = "select count(*) from InvGoodReceipt o where 1=1 ";
+		String hsql = "select count(*) from InvGoodsReceipt o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		if (null != criteria) {
 			

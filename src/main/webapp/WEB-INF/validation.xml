@@ -106,11 +106,45 @@
 			</field>
 		</form>
 		<form name="supplier">
-			<field property="code" depends="required">
+			<field property="code" depends="required, maxlength">
 				<arg key="supplier.code" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>10</var-value>
+				</var>
 			</field>
-			<field property="name" depends="required">
+			<field property="name" depends="required, maxlength">
 				<arg key="supplier.name" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>50</var-value>
+				</var>
+			</field>
+			<field property="address" depends="maxlength">
+				<arg key="supplier.address" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>255</var-value>
+				</var>
+			</field>
+			<field property="contactName" depends="maxlength">
+				<arg key="supplier.contactName" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>50</var-value>
+				</var>
+			</field>
+			<field property="contactTel" depends="maxlength">
+				<arg key="supplier.contactTel" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>50</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="invGoodsReceipt">

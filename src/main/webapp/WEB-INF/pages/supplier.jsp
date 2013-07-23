@@ -34,7 +34,7 @@
 				<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 					<appfuse:label styleClass="control-label" key="supplier.code" />
 					<div class="controls">
-						<form:input path="code" id="code" cssClass="input-xlarge" maxlength="50" />
+						<form:input path="code" id="code" cssClass="input-medium" maxlength="10" />
 						<form:errors path="code" cssClass="help-inline" />
 					</div>
 				</div>
@@ -44,7 +44,7 @@
 			<div class="control-group">
 				<appfuse:label styleClass="control-label" key="supplier.code" />
 				<div class="controls">
-					<span class="input-xlarge uneditable-input"><c:out value="${supplier.code}" /></span>
+					<span class="input-medium uneditable-input"><c:out value="${supplier.code}" /></span>
 					<form:hidden path="code"/>
 				</div>
 			</div>
@@ -84,7 +84,7 @@
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 				<appfuse:label styleClass="control-label" key="supplier.contactTel" />
 				<div class="controls">
-					<form:input path="contactTel" id="contactTel" cssClass="input-xlarge" maxlength="50" />
+					<form:input path="contactTel" id="contactTel" cssClass="input-xlarge" maxlength="50" placeholder="66xxxxxxxxx"/>
 					<form:errors path="contactTel" cssClass="help-inline" />
 				</div>
 			</div>
