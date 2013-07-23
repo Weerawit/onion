@@ -101,5 +101,16 @@
                 <arg key="invGoodsReceiptItem.unitPrice"/>
             </field>
         </form>
+        <form name="employee">
+            <field property="firstName" depends="required">
+                <arg key="employee.firstName"/>
+            </field>
+            <field property="lastName" depends="required">
+                <arg key="employee.lastName"/>
+            </field>
+            <field property="nickName" depends="required">
+                <arg key="employee.nickName"/>
+            </field>
+        </form>
     </formset>
 </form-validation>

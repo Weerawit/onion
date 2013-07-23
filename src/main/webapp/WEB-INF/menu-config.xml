@@ -18,6 +18,8 @@
             <Item name="Supplier" title="menu.inventory.supplier" page="/supplierList"/>
             <Item name="GoodsReceipt" title="menu.inventory.goodsreceipt" page="/invGoodsReceiptList"/>
         </Menu>
+        <Menu name="EmployeeMenu" title="menu.employee" description="Employee Menu" roles="ROLE_ADMIN,ROLE_USER" page="/employeeList">
+        </Menu>
         <Menu name="Logout" title="user.logout" page="/logout" roles="ROLE_ADMIN,ROLE_USER,ROLE_READONLY" onclick="return logout()"/>
     </Menus>
 </MenuConfig>
