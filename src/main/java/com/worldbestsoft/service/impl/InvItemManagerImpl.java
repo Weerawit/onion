@@ -57,4 +57,15 @@ public class InvItemManagerImpl implements InvItemManager {
 	    return invItemDao.query(criteria, page, pageSize, sortColumn, order);
     }
 	
+	@Override
+    public InvItem findByInvItemCode(String InvItemCode) {
+	    return invItemDao.findByInvItemCode(InvItemCode);
+    }
+
+	@Override
+    public List<InvItem> getAll() {
+	    return invItemDao.getAll();
+    }
+	
+	
 }

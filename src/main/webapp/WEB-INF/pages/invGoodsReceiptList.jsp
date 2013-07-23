@@ -42,7 +42,7 @@
 		
 		
 		<div class="control-group">
-			<label class="control-label" for="imsi"><fmt:message key="invGoodsReceipt.receiptDateFrom" />:</label>
+			<label class="control-label" for="receiptDateFrom"><fmt:message key="invGoodsReceipt.receiptDateFrom" />:</label>
 			<div class="controls">
 				<div class="input-append date" id="receiptDateFromDatepicker">
 					<input type="text" class="input-medium" name="receiptDateFrom" value="<c:out value='${param.receiptDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
@@ -50,7 +50,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="imsi"><fmt:message key="invGoodsReceipt.receiptDateTo" />:</label>
+			<label class="control-label" for="receiptDateTo"><fmt:message key="invGoodsReceipt.receiptDateTo" />:</label>
 			<div class="controls">
 				<div class="input-append date" id="receiptDateToDatepicker">
 					<input type="text" class="input-medium" name="receiptDateTo" value="<c:out value='${param.receiptDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>

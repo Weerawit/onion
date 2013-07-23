@@ -18,4 +18,8 @@ public interface InvItemManager {
 
 	public abstract List<InvItem> checkDuplicate(String invItemCode, Long id);
 
+	public abstract InvItem findByInvItemCode(String InvItemCode);
+
+	public abstract List<InvItem> getAll();
+
 }

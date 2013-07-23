@@ -15,7 +15,7 @@ public interface InvGoodsReceiptManager {
 
 	public abstract InvGoodReceipt get(Long id);
 
-	public abstract InvGoodReceipt save(InvGoodReceipt object);
+	public abstract InvGoodReceipt save(InvGoodReceipt invGoodsReceipt);
 
 	public abstract void remove(Long id);
 

@@ -90,7 +90,7 @@ public class InvGoodsReceiptListController extends BaseFormController {
 		log.info(request.getRemoteUser() + " is quering InvGoodsReceipt criteria := " + criteria);
 
 		model.addAttribute("resultSize", invGoodsReceiptManager.querySize(criteria));
-		model.addAttribute("invItemList", invGoodsReceiptManager.query(criteria, page, size, sortColumn, order));
+		model.addAttribute("invGoodsReceiptList", invGoodsReceiptManager.query(criteria, page, size, sortColumn, order));
 		return new ModelAndView("invGoodsReceiptList", model.asMap());
 	}
 

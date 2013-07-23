@@ -26,7 +26,7 @@ import javax.persistence.TemporalType;
 @Table(name = "inv_good_receipt", catalog = "onion")
 public class InvGoodReceipt implements java.io.Serializable {
 
-	private Integer id;
+	private Long id;
 	private Supplier supplier;
 	private String runningNo;
 	private Date receiptDate;
@@ -53,11 +53,11 @@ public class InvGoodReceipt implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

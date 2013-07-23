@@ -77,12 +77,28 @@
                 <arg key="invItem.name"/>
             </field>
         </form>
-         <form name="supplier">
+        <form name="supplier">
             <field property="code" depends="required">
                 <arg key="supplier.code"/>
             </field>
             <field property="name" depends="required">
                 <arg key="supplier.name"/>
+            </field>
+        </form>
+        <form name="invGoodsReceipt">
+            <field property="supplier.code" depends="required">
+                <arg key="invGoodsReceipt.supplier.code"/>
+            </field>
+        </form>
+        <form name="invGoodsReceiptItem">
+            <field property="invItem.code" depends="required">
+                <arg key="invGoodsReceiptItem.invItem.code"/>
+            </field>
+            <field property="qty" depends="required">
+                <arg key="invGoodsReceiptItem.qty"/>
+            </field>
+            <field property="unitPrice" depends="required">
+                <arg key="invGoodsReceiptItem.unitPrice"/>
             </field>
         </form>
     </formset>
