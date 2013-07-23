@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 16, 2013 3:46:49 PM by Hibernate Tools 4.0.0
+// Generated Jul 23, 2013 9:54:03 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
 @Table(name = "catalog_type", catalog = "onion")
 public class CatalogType implements java.io.Serializable {
 
-	private Integer id;
+	private Long id;
 	private String code;
 	private String name;
 	private String description;
@@ -34,6 +34,11 @@ public class CatalogType implements java.io.Serializable {
 	private Set<Catalog> catalogs = new HashSet<Catalog>(0);
 
 	public CatalogType() {
+	}
+
+	public CatalogType(String code, String name) {
+		this.code = code;
+		this.name = name;
 	}
 
 	public CatalogType(String code, String name, String description, Date createDate, String createUser, Date updateDate, String updateUser, Set<Catalog> catalogs) {
@@ -50,15 +55,15 @@ public class CatalogType implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	@Column(name = "code", length = 10)
+	@Column(name = "code", nullable = false, length = 10)
 	public String getCode() {
 		return this.code;
 	}
@@ -67,7 +72,7 @@ public class CatalogType implements java.io.Serializable {
 		this.code = code;
 	}
 
-	@Column(name = "name", length = 50)
+	@Column(name = "name", nullable = false, length = 50)
 	public String getName() {
 		return this.name;
 	}

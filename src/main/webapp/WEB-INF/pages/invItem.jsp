@@ -34,7 +34,7 @@
 				<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 					<appfuse:label styleClass="control-label" key="invItem.code" />
 					<div class="controls">
-						<form:input path="code" id="code" cssClass="input-xlarge" maxlength="50" />
+						<form:input path="code" id="code" cssClass="input-xlarge" maxlength="10" />
 						<form:errors path="code" cssClass="help-inline" />
 					</div>
 				</div>

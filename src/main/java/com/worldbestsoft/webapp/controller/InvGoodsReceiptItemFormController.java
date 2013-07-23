@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.SetUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -76,7 +75,7 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 		
 		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
 //        List<InvGoodReceiptItem> invGoodsReceiptItemList = (List<InvGoodReceiptItem>) session.getAttribute("invGoodsReceiptItemList");
-		Set<InvGoodsReceiptItem> invGoodsReceiptItemList = invGoodsReceipt.getInvGoodReceiptItems();
+		Set<InvGoodsReceiptItem> invGoodsReceiptItemList = invGoodsReceipt.getInvGoodsReceiptItems();
 		
 		String rowNum = request.getParameter("rowNum");
 
@@ -116,7 +115,7 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 				return new ModelAndView("redirect:/invGoodsReceipt");
 			} else {
 				//update old object
-				List<InvGoodsReceiptItem> invGoodsReceiptItemList2 = new ArrayList<InvGoodsReceiptItem>(invGoodsReceipt.getInvGoodReceiptItems());
+				List<InvGoodsReceiptItem> invGoodsReceiptItemList2 = new ArrayList<InvGoodsReceiptItem>(invGoodsReceipt.getInvGoodsReceiptItems());
 				try {
 					InvGoodsReceiptItem invGoodsReceiptItem = invGoodsReceiptItemList2.get(Integer.parseInt(rowNum));
 					
@@ -149,12 +148,12 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 		//parameter 'id' is index of array list from session object
 		HttpSession session = request.getSession();
 		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
-		List<InvGoodsReceiptItem> invGoodsReceiptItemList = new ArrayList<InvGoodsReceiptItem>(invGoodsReceipt.getInvGoodReceiptItems());
+		List<InvGoodsReceiptItem> invGoodsReceiptItemList = new ArrayList<InvGoodsReceiptItem>(invGoodsReceipt.getInvGoodsReceiptItems());
 		InvGoodsReceiptItem invGoodsReceiptItem = new InvGoodsReceiptItem();
 		try {
 			Integer index = Integer.parseInt(id);
 			if (index < invGoodsReceiptItemList.size()) {
-				invGoodsReceiptItem =invGoodsReceiptItemList.get(index);
+				invGoodsReceiptItem = invGoodsReceiptItemList.get(index);
 			}
 		} catch (Exception e) {
 			//no handle exception; any exception mean new object.

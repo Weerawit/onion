@@ -77,12 +77,12 @@
 			</div>
 		</spring:bind>
 		
-		<spring:bind path="invGoodsReceipt.remark">
+		<spring:bind path="invGoodsReceipt.memo">
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-				<appfuse:label styleClass="control-label" key="invGoodsReceipt.remark" />
+				<appfuse:label styleClass="control-label" key="invGoodsReceipt.memo" />
 				<div class="controls">
-					<form:textarea path="remark" id="remark" cssClass="input-xlarge"/>
-					<form:errors path="remark" cssClass="help-inline" />
+					<form:textarea path="memo" id="memo" cssClass="input-xlarge"/>
+					<form:errors path="memo" cssClass="help-inline" />
 				</div>
 			</div>
 		</spring:bind>

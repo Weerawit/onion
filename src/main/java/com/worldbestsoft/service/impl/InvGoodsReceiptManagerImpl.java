@@ -77,7 +77,7 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
     public InvGoodsReceipt save(InvGoodsReceipt invGoodsReceipt) {
 		//save to get key
 		InvGoodsReceipt invGoodsReceiptSave = invGoodsReceiptDao.save(invGoodsReceipt);
-		Set<InvGoodsReceiptItem> newInvGoodReceiptItemList = invGoodsReceipt.getInvGoodReceiptItems();
+		Set<InvGoodsReceiptItem> newInvGoodReceiptItemList = invGoodsReceipt.getInvGoodsReceiptItems();
 		
 		if (null != invGoodsReceipt.getId()) {
 			List<InvGoodsReceiptItem> oldinvGoodReceiptItemList = invGoodsReceiptItemDao.findByInvGoodReceipt(invGoodsReceipt.getId());
@@ -95,10 +95,10 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 			for (InvGoodsReceiptItem invGoodReceiptItem : newInvGoodReceiptItemList) {
 				InvGoodsReceiptItem foundInvGoodReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(oldinvGoodReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodReceiptItem.getInvItem().getCode()));
 				if (null == foundInvGoodReceiptItem) {
-					invGoodReceiptItem.setInvGoodReceipt(invGoodsReceiptSave);
+					invGoodReceiptItem.setInvGoodsReceipt(invGoodsReceiptSave);
 					invGoodsReceiptItemDao.save(invGoodReceiptItem);
 				} else {
-					//update old oboect
+					//update old object
 					foundInvGoodReceiptItem.setMemo(invGoodReceiptItem.getMemo());
 					foundInvGoodReceiptItem.setQty(invGoodReceiptItem.getQty());
 					foundInvGoodReceiptItem.setUnitPrice(invGoodReceiptItem.getUnitPrice());
@@ -110,9 +110,9 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 			
 		} else {
 			//get running no
-			for (InvGoodsReceiptItem invGoodReceiptItem : newInvGoodReceiptItemList) {
-				invGoodReceiptItem.setInvGoodReceipt(invGoodsReceiptSave);
-				invGoodsReceiptItemDao.save(invGoodReceiptItem);
+			for (InvGoodsReceiptItem invGoodsReceiptItem : newInvGoodReceiptItemList) {
+				invGoodsReceiptItem.setInvGoodsReceipt(invGoodsReceiptSave);
+				invGoodsReceiptItemDao.save(invGoodsReceiptItem);
 			}
 		}
 	    return invGoodsReceiptSave;

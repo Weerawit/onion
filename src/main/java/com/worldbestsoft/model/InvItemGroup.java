@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 16, 2013 3:46:49 PM by Hibernate Tools 4.0.0
+// Generated Jul 23, 2013 9:54:03 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;

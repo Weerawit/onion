@@ -1,11 +1,17 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 16, 2013 3:46:49 PM by Hibernate Tools 4.0.0
+// Generated Jul 23, 2013 9:54:03 PM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -19,21 +25,17 @@ public class Employee implements java.io.Serializable {
 	private String firstName;
 	private String lastName;
 	private String nickName;
-	private Integer age;
+	private Long age;
 	private String idCardNo;
 	private String address;
 	private BigDecimal wage;
 	private String memo;
+	private Set<JobOrder> jobOrders = new HashSet<JobOrder>(0);
 
 	public Employee() {
 	}
 
-	public Employee(Long id) {
-		this.id = id;
-	}
-
-	public Employee(Long id, String firstName, String lastName, String nickName, Integer age, String idCardNo, String address, BigDecimal wage, String memo) {
-		this.id = id;
+	public Employee(String firstName, String lastName, String nickName, Long age, String idCardNo, String address, BigDecimal wage, String memo, Set<JobOrder> jobOrders) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.nickName = nickName;
@@ -42,9 +44,11 @@ public class Employee implements java.io.Serializable {
 		this.address = address;
 		this.wage = wage;
 		this.memo = memo;
+		this.jobOrders = jobOrders;
 	}
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	public Long getId() {
 		return this.id;
@@ -82,11 +86,11 @@ public class Employee implements java.io.Serializable {
 	}
 
 	@Column(name = "age")
-	public Integer getAge() {
+	public Long getAge() {
 		return this.age;
 	}
 
-	public void setAge(Integer age) {
+	public void setAge(Long age) {
 		this.age = age;
 	}
 
@@ -124,6 +128,15 @@ public class Employee implements java.io.Serializable {
 
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+	public Set<JobOrder> getJobOrders() {
+		return this.jobOrders;
+	}
+
+	public void setJobOrders(Set<JobOrder> jobOrders) {
+		this.jobOrders = jobOrders;
 	}
 
 }

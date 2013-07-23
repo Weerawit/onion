@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 16, 2013 3:46:49 PM by Hibernate Tools 4.0.0
+// Generated Jul 23, 2013 9:54:03 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -34,21 +34,22 @@ public class InvItem implements java.io.Serializable {
 	private String createUser;
 	private Date updateDate;
 	private String updateUser;
+	private Set<InvStock> invStocks = new HashSet<InvStock>(0);
 	private Set<Catalog> catalogs = new HashSet<Catalog>(0);
-	private Set<InvGoodMovementItem> invGoodMovementItems = new HashSet<InvGoodMovementItem>(0);
-	private Set<InvGoodsReceiptItem> invGoodReceiptItems = new HashSet<InvGoodsReceiptItem>(0);
+	private Set<InvGoodsMovementItem> invGoodsMovementItems = new HashSet<InvGoodsMovementItem>(0);
+	private Set<InvGoodsReceiptItem> invGoodsReceiptItems = new HashSet<InvGoodsReceiptItem>(0);
+	private Set<InvItemLevel> invItemLevels = new HashSet<InvItemLevel>(0);
 	private Set<CatalogItem> catalogItems = new HashSet<CatalogItem>(0);
 
 	public InvItem() {
 	}
 
-	public InvItem(InvItemGroup invItemGroup, String code, String name) {
+	public InvItem(InvItemGroup invItemGroup, String code) {
 		this.invItemGroup = invItemGroup;
 		this.code = code;
-		this.name = name;
 	}
 
-	public InvItem(InvItemGroup invItemGroup, String code, String name, String description, Date createDate, String createUser, Date updateDate, String updateUser, Set<Catalog> catalogs, Set<InvGoodMovementItem> invGoodMovementItems, Set<InvGoodsReceiptItem> invGoodReceiptItems, Set<CatalogItem> catalogItems) {
+	public InvItem(InvItemGroup invItemGroup, String code, String name, String description, Date createDate, String createUser, Date updateDate, String updateUser, Set<InvStock> invStocks, Set<Catalog> catalogs, Set<InvGoodsMovementItem> invGoodsMovementItems, Set<InvGoodsReceiptItem> invGoodsReceiptItems, Set<InvItemLevel> invItemLevels, Set<CatalogItem> catalogItems) {
 		this.invItemGroup = invItemGroup;
 		this.code = code;
 		this.name = name;
@@ -57,9 +58,11 @@ public class InvItem implements java.io.Serializable {
 		this.createUser = createUser;
 		this.updateDate = updateDate;
 		this.updateUser = updateUser;
+		this.invStocks = invStocks;
 		this.catalogs = catalogs;
-		this.invGoodMovementItems = invGoodMovementItems;
-		this.invGoodReceiptItems = invGoodReceiptItems;
+		this.invGoodsMovementItems = invGoodsMovementItems;
+		this.invGoodsReceiptItems = invGoodsReceiptItems;
+		this.invItemLevels = invItemLevels;
 		this.catalogItems = catalogItems;
 	}
 
@@ -93,7 +96,7 @@ public class InvItem implements java.io.Serializable {
 		this.code = code;
 	}
 
-	@Column(name = "name", nullable = false, length = 50)
+	@Column(name = "name", length = 50)
 	public String getName() {
 		return this.name;
 	}
@@ -150,6 +153,15 @@ public class InvItem implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invItem")
+	public Set<InvStock> getInvStocks() {
+		return this.invStocks;
+	}
+
+	public void setInvStocks(Set<InvStock> invStocks) {
+		this.invStocks = invStocks;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invItem")
 	public Set<Catalog> getCatalogs() {
 		return this.catalogs;
 	}
@@ -159,21 +171,30 @@ public class InvItem implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invItem")
-	public Set<InvGoodMovementItem> getInvGoodMovementItems() {
-		return this.invGoodMovementItems;
+	public Set<InvGoodsMovementItem> getInvGoodsMovementItems() {
+		return this.invGoodsMovementItems;
 	}
 
-	public void setInvGoodMovementItems(Set<InvGoodMovementItem> invGoodMovementItems) {
-		this.invGoodMovementItems = invGoodMovementItems;
+	public void setInvGoodsMovementItems(Set<InvGoodsMovementItem> invGoodsMovementItems) {
+		this.invGoodsMovementItems = invGoodsMovementItems;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invItem")
-	public Set<InvGoodsReceiptItem> getInvGoodReceiptItems() {
-		return this.invGoodReceiptItems;
+	public Set<InvGoodsReceiptItem> getInvGoodsReceiptItems() {
+		return this.invGoodsReceiptItems;
 	}
 
-	public void setInvGoodReceiptItems(Set<InvGoodsReceiptItem> invGoodReceiptItems) {
-		this.invGoodReceiptItems = invGoodReceiptItems;
+	public void setInvGoodsReceiptItems(Set<InvGoodsReceiptItem> invGoodsReceiptItems) {
+		this.invGoodsReceiptItems = invGoodsReceiptItems;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invItem")
+	public Set<InvItemLevel> getInvItemLevels() {
+		return this.invItemLevels;
+	}
+
+	public void setInvItemLevels(Set<InvItemLevel> invItemLevels) {
+		this.invItemLevels = invItemLevels;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invItem")

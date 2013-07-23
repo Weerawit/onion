@@ -1,6 +1,7 @@
 package com.worldbestsoft.webapp.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -20,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.worldbestsoft.model.InvGoodsReceipt;
 import com.worldbestsoft.model.InvGoodsReceiptItem;
-import com.worldbestsoft.model.InvItem;
 import com.worldbestsoft.model.Supplier;
 import com.worldbestsoft.service.InvGoodsReceiptManager;
 import com.worldbestsoft.service.SupplierManager;
@@ -85,7 +85,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 				
 				invGoodsReceiptSession.setReceiptDate(invGoodReceiptForm.getReceiptDate());
 				invGoodsReceiptSession.setSupplier(invGoodReceiptForm.getSupplier());
-				invGoodsReceiptSession.setRemark(invGoodReceiptForm.getRemark());
+				invGoodsReceiptSession.setMemo(invGoodReceiptForm.getMemo());
 				
 				// add
 				if (null != invGoodReceiptForm.getSupplier()) {
@@ -93,6 +93,8 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 					invGoodsReceiptSession.setSupplier(supplier);
 				}
 
+				invGoodsReceiptSession.setCreateDate(new Date());
+				invGoodsReceiptSession.setCreateUser(request.getRemoteUser());
 				invGoodsReceiptSession = getInvGoodsReceiptManager().save(invGoodsReceiptSession);
 
 				saveMessage(request, getText("invGoodsReceipt.added", invGoodsReceiptSession.getRunningNo(), locale));
@@ -105,8 +107,10 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 					invGoodsReceipt.setSupplier(supplier);
 				}
 				invGoodsReceipt.setReceiptDate(invGoodReceiptForm.getReceiptDate());
-				invGoodsReceipt.setRemark(invGoodReceiptForm.getRemark());
-				invGoodsReceipt.setInvGoodReceiptItems(invGoodsReceiptSession.getInvGoodReceiptItems());
+				invGoodsReceipt.setMemo(invGoodReceiptForm.getMemo());
+				invGoodsReceipt.setInvGoodsReceiptItems(invGoodsReceiptSession.getInvGoodsReceiptItems());
+				invGoodsReceipt.setUpdateDate(new Date());
+				invGoodsReceipt.setUpdateUser(request.getRemoteUser());
 				invGoodsReceipt = getInvGoodsReceiptManager().save(invGoodsReceipt);
 
 				request.setAttribute("invGoodsReceipt", invGoodsReceipt);
@@ -122,7 +126,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
 		invGoodsReceipt.setReceiptDate(invGoodReceiptForm.getReceiptDate());
 		invGoodsReceipt.setSupplier(invGoodReceiptForm.getSupplier());
-		invGoodsReceipt.setRemark(invGoodReceiptForm.getRemark());
+		invGoodsReceipt.setMemo(invGoodReceiptForm.getMemo());
 		invGoodsReceipt.setRunningNo(invGoodReceiptForm.getRunningNo());
 		return new ModelAndView("redirect:/invGoodsReceiptItem?method=Add&from=list");
 	}
@@ -133,7 +137,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
 		invGoodsReceipt.setReceiptDate(invGoodReceiptForm.getReceiptDate());
 		invGoodsReceipt.setSupplier(invGoodReceiptForm.getSupplier());
-		invGoodsReceipt.setRemark(invGoodReceiptForm.getRemark());
+		invGoodsReceipt.setMemo(invGoodReceiptForm.getMemo());
 		invGoodsReceipt.setRunningNo(invGoodReceiptForm.getRunningNo());
 		return new ModelAndView("redirect:/invGoodsReceiptItem?from=list&id=" + request.getParameter("id"));
 	}
@@ -144,9 +148,9 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
 		invGoodsReceipt.setReceiptDate(invGoodReceiptForm.getReceiptDate());
 		invGoodsReceipt.setSupplier(invGoodReceiptForm.getSupplier());
-		invGoodsReceipt.setRemark(invGoodReceiptForm.getRemark());
+		invGoodsReceipt.setMemo(invGoodReceiptForm.getMemo());
 		invGoodsReceipt.setRunningNo(invGoodReceiptForm.getRunningNo());
-		List<InvGoodsReceiptItem> invGoodsReceiptItemList = new ArrayList<InvGoodsReceiptItem>(invGoodsReceipt.getInvGoodReceiptItems());
+		List<InvGoodsReceiptItem> invGoodsReceiptItemList = new ArrayList<InvGoodsReceiptItem>(invGoodsReceipt.getInvGoodsReceiptItems());
 
 		
 		Locale locale = request.getLocale();
@@ -154,7 +158,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		if (null != checkbox && checkbox.length > 0) {
 			for (int i = 0; i < checkbox.length; i++) {
 				InvGoodsReceiptItem invGoodsReceiptItem = invGoodsReceiptItemList.get(Integer.parseInt(checkbox[i]));
-				invGoodsReceipt.getInvGoodReceiptItems().remove(invGoodsReceiptItem);
+				invGoodsReceipt.getInvGoodsReceiptItems().remove(invGoodsReceiptItem);
 				saveMessage(request, getText("invGoodsReceiptItem.deleted", invGoodsReceiptItem.getInvItem().getCode(), locale));
 			}
 		} else {
@@ -186,7 +190,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		session.setAttribute("invGoodsReceipt", invGoodsReceipt);
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("invGoodsReceipt", invGoodsReceipt);
-		model.put("invGoodsReceiptItemList", invGoodsReceipt.getInvGoodReceiptItems());
+		model.put("invGoodsReceiptItemList", invGoodsReceipt.getInvGoodsReceiptItems());
 		model.put("supplierList", supplierManager.getAll());
 		
 		return new ModelAndView("invGoodsReceipt", model);
