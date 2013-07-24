@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 16, 2013 3:46:49 PM by Hibernate Tools 4.0.0
+// Generated Jul 24, 2013 12:06:40 PM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
 @Table(name = "sale_receipt", catalog = "onion")
 public class SaleReceipt implements java.io.Serializable {
 
-	private Integer id;
+	private Long id;
 	private SaleOrder saleOrder;
 	private String receiptNo;
 	private Date receiptDate;
@@ -62,11 +62,11 @@ public class SaleReceipt implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -80,7 +80,7 @@ public class SaleReceipt implements java.io.Serializable {
 		this.saleOrder = saleOrder;
 	}
 
-	@Column(name = "receipt_no", length = 45)
+	@Column(name = "receipt_no", length = 20)
 	public String getReceiptNo() {
 		return this.receiptNo;
 	}
@@ -99,7 +99,7 @@ public class SaleReceipt implements java.io.Serializable {
 		this.receiptDate = receiptDate;
 	}
 
-	@Column(name = "receipt_type", length = 1)
+	@Column(name = "receipt_type", length = 3)
 	public String getReceiptType() {
 		return this.receiptType;
 	}
@@ -135,8 +135,8 @@ public class SaleReceipt implements java.io.Serializable {
 		this.chequeBank = chequeBank;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "cheque_date", length = 10)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "cheque_date", length = 19)
 	public Date getChequeDate() {
 		return this.chequeDate;
 	}

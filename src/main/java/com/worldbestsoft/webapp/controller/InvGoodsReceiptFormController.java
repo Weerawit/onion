@@ -59,10 +59,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		if (validator != null) { // validator is null during testing
 			validator.validate(invGoodReceiptForm, errors);
 
-			if ((errors.hasErrors() && request.getParameter("delete") == null) && (errors.hasErrors() && request.getParameter("id") == null)) { // don't
-				// validate
-				// when
-				// deleting
+			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't validate when deleting
 				return new ModelAndView("invGoodsReceipt", "invGoodsReceipt", invGoodReceiptForm);
 			}
 		}

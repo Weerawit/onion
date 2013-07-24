@@ -1,6 +1,7 @@
 package com.worldbestsoft.webapp.controller;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -172,6 +173,7 @@ public class BaseFormController implements ServletContextAware {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(getText("date.format", request.getLocale()));
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, null, new CustomDateEditor(dateFormat, true));
+		binder.registerCustomEditor(BigDecimal.class, new CustomNumberEditor(BigDecimal.class, null, true));
 	}
 
 	/**

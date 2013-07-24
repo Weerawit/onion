@@ -1,5 +1,6 @@
 package com.worldbestsoft.service.impl;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Set;
 
@@ -13,12 +14,17 @@ import com.worldbestsoft.dao.InvGoodsReceiptItemDao;
 import com.worldbestsoft.model.InvGoodsReceipt;
 import com.worldbestsoft.model.InvGoodsReceiptItem;
 import com.worldbestsoft.model.criteria.InvGoodsReceiptCriteria;
+import com.worldbestsoft.service.DocumentNumberGenerator;
+import com.worldbestsoft.service.DocumentNumberGeneratorException;
 import com.worldbestsoft.service.InvGoodsReceiptManager;
 
 @Service("invGoodsReceiptManager")
 public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 	private InvGoodsReceiptDao invGoodsReceiptDao;
 	private InvGoodsReceiptItemDao invGoodsReceiptItemDao;
+	private DocumentNumberGenerator documentNumberGenerator;
+	
+	private String documentNumberFormat = "GR{0,number,00000}";
 
 	public InvGoodsReceiptDao getInvGoodsReceiptDao() {
 		return invGoodsReceiptDao;
@@ -36,6 +42,23 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 	@Autowired
 	public void setInvGoodsReceiptItemDao(InvGoodsReceiptItemDao invGoodsReceiptItemDao) {
 		this.invGoodsReceiptItemDao = invGoodsReceiptItemDao;
+	}
+	
+	public DocumentNumberGenerator getDocumentNumberGenerator() {
+		return documentNumberGenerator;
+	}
+
+	@Autowired
+	public void setDocumentNumberGenerator(DocumentNumberGenerator documentNumberGenerator) {
+		this.documentNumberGenerator = documentNumberGenerator;
+	}
+	
+	public String getDocumentNumberFormat() {
+		return documentNumberFormat;
+	}
+
+	public void setDocumentNumberFormat(String documentNumberFormat) {
+		this.documentNumberFormat = documentNumberFormat;
 	}
 
 	/* (non-Javadoc)
@@ -109,11 +132,21 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 			}
 			
 		} else {
-			//get running no
 			for (InvGoodsReceiptItem invGoodsReceiptItem : newInvGoodReceiptItemList) {
 				invGoodsReceiptItem.setInvGoodsReceipt(invGoodsReceiptSave);
 				invGoodsReceiptItemDao.save(invGoodsReceiptItem);
 			}
+			//get running no
+			try {
+	            Long documentNumber = documentNumberGenerator.nextDocumentNumber(InvGoodsReceipt.class);
+	            String runningNo = MessageFormat.format(documentNumberFormat, documentNumber);
+	            invGoodsReceiptSave.setRunningNo(runningNo);
+	            invGoodsReceiptSave = invGoodsReceiptDao.save(invGoodsReceiptSave);
+            } catch (DocumentNumberGeneratorException e) {
+            	//roll back transaction
+	            throw new RuntimeException(e);
+            }
+			
 		}
 	    return invGoodsReceiptSave;
     }

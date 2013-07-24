@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 16, 2013 3:46:49 PM by Hibernate Tools 4.0.0
+// Generated Jul 24, 2013 12:06:40 PM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -26,7 +26,7 @@ import javax.persistence.TemporalType;
 @Table(name = "sale_order", catalog = "onion")
 public class SaleOrder implements java.io.Serializable {
 
-	private Integer id;
+	private Long id;
 	private Customer customer;
 	private String saleOrderNo;
 	private String paymentType;
@@ -65,11 +65,11 @@ public class SaleOrder implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -92,7 +92,7 @@ public class SaleOrder implements java.io.Serializable {
 		this.saleOrderNo = saleOrderNo;
 	}
 
-	@Column(name = "payment_type", length = 1)
+	@Column(name = "payment_type", length = 3)
 	public String getPaymentType() {
 		return this.paymentType;
 	}
@@ -120,7 +120,7 @@ public class SaleOrder implements java.io.Serializable {
 		this.totalPrice = totalPrice;
 	}
 
-	@Column(name = "status", length = 1)
+	@Column(name = "status", length = 3)
 	public String getStatus() {
 		return this.status;
 	}

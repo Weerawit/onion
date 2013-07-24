@@ -1,9 +1,11 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 16, 2013 3:46:49 PM by Hibernate Tools 4.0.0
+// Generated Jul 24, 2013 12:06:40 PM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +14,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,16 +26,17 @@ import javax.persistence.TemporalType;
 @Table(name = "sale_order_item", catalog = "onion")
 public class SaleOrderItem implements java.io.Serializable {
 
-	private Integer id;
+	private Long id;
 	private SaleOrder saleOrder;
 	private Catalog catalog;
-	private Integer qty;
+	private BigDecimal qty;
 	private BigDecimal pricePerUnit;
 	private BigDecimal price;
 	private Date createDate;
 	private String createUser;
 	private Date updateDate;
 	private String updateUser;
+	private Set<JobOrder> jobOrders = new HashSet<JobOrder>(0);
 
 	public SaleOrderItem() {
 	}
@@ -42,7 +46,7 @@ public class SaleOrderItem implements java.io.Serializable {
 		this.catalog = catalog;
 	}
 
-	public SaleOrderItem(SaleOrder saleOrder, Catalog catalog, Integer qty, BigDecimal pricePerUnit, BigDecimal price, Date createDate, String createUser, Date updateDate, String updateUser) {
+	public SaleOrderItem(SaleOrder saleOrder, Catalog catalog, BigDecimal qty, BigDecimal pricePerUnit, BigDecimal price, Date createDate, String createUser, Date updateDate, String updateUser, Set<JobOrder> jobOrders) {
 		this.saleOrder = saleOrder;
 		this.catalog = catalog;
 		this.qty = qty;
@@ -52,16 +56,17 @@ public class SaleOrderItem implements java.io.Serializable {
 		this.createUser = createUser;
 		this.updateDate = updateDate;
 		this.updateUser = updateUser;
+		this.jobOrders = jobOrders;
 	}
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -85,12 +90,12 @@ public class SaleOrderItem implements java.io.Serializable {
 		this.catalog = catalog;
 	}
 
-	@Column(name = "qty")
-	public Integer getQty() {
+	@Column(name = "qty", precision = 10)
+	public BigDecimal getQty() {
 		return this.qty;
 	}
 
-	public void setQty(Integer qty) {
+	public void setQty(BigDecimal qty) {
 		this.qty = qty;
 	}
 
@@ -148,6 +153,15 @@ public class SaleOrderItem implements java.io.Serializable {
 
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "saleOrderItem")
+	public Set<JobOrder> getJobOrders() {
+		return this.jobOrders;
+	}
+
+	public void setJobOrders(Set<JobOrder> jobOrders) {
+		this.jobOrders = jobOrders;
 	}
 
 }

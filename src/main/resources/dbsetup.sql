@@ -6,18 +6,18 @@ CREATE SCHEMA IF NOT EXISTS `onion` DEFAULT CHARACTER SET utf8 ;
 USE `onion` ;
 
 -- -----------------------------------------------------
--- Table `onion`.`document_no`
+-- Table `onion`.`document_number`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `onion`.`document_no` ;
+DROP TABLE IF EXISTS `onion`.`document_number` ;
 
-CREATE  TABLE IF NOT EXISTS `onion`.`document_no` (
-  `id` BIGINT NOT NULL ,
+CREATE  TABLE IF NOT EXISTS `onion`.`document_number` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT ,
   `type` VARCHAR(50) NOT NULL ,
   `current_val` BIGINT NULL DEFAULT 1 ,
-  `update_date` DATETIME NULL ,
+  `update_date` DATETIME NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `type_UNIQUE` (`type` ASC) )
-ENGINE = InnoDB
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -156,7 +156,7 @@ DROP TABLE IF EXISTS `onion`.`inv_goods_receipt` ;
 
 CREATE  TABLE IF NOT EXISTS `onion`.`inv_goods_receipt` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ใบรับของสินค้า\n' ,
-  `running_no` VARCHAR(20) NOT NULL ,
+  `running_no` VARCHAR(20) NULL ,
   `receipt_date` DATETIME NULL DEFAULT NULL ,
   `total_cost` DECIMAL(10,2) NULL DEFAULT NULL COMMENT 'ราคารวม ทั้งหมด\n' ,
   `memo` VARCHAR(255) NULL DEFAULT NULL ,
@@ -165,7 +165,6 @@ CREATE  TABLE IF NOT EXISTS `onion`.`inv_goods_receipt` (
   `create_user` VARCHAR(50) NULL DEFAULT NULL ,
   `update_date` DATETIME NULL DEFAULT NULL ,
   `update_user` VARCHAR(50) NULL DEFAULT NULL ,
-  UNIQUE INDEX `running_no_UNIQUE` (`running_no` ASC) ,
   PRIMARY KEY (`id`) ,
   CONSTRAINT `fk_inv_good_receipt_supplier1`
     FOREIGN KEY (`supplier_id` )

@@ -164,14 +164,63 @@
 			</field>
 		</form>
 		<form name="employee">
-			<field property="firstName" depends="required">
+			<field property="firstName" depends="required, maxlength">
 				<arg key="employee.firstName" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>50</var-value>
+				</var>
 			</field>
-			<field property="lastName" depends="required">
+			<field property="lastName" depends="required, maxlength">
 				<arg key="employee.lastName" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>50</var-value>
+				</var>
 			</field>
-			<field property="nickName" depends="required">
+			<field property="nickName" depends="required, maxlength">
 				<arg key="employee.nickName" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>50</var-value>
+				</var>
+			</field>
+			<field property="age" depends="integer, intRange">
+				<arg key="employee.age" />
+				<arg1 name="intRange" key="${var:min}" resource="false"/>
+		        <arg2 name="intRange" key="${var:max}" resource="false"/>
+		        <var><var-name>min</var-name><var-value>0</var-value></var>
+		        <var><var-name>max</var-name><var-value>100</var-value></var>
+			</field>
+			<field property="idCardNo" depends="maxlength">
+				<arg key="employee.idCardNo" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>50</var-value>
+				</var>
+			</field>
+			<field property="address" depends="maxlength">
+				<arg key="employee.address" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>255</var-value>
+				</var>
+			</field>
+			<field property="wage" depends="double">
+				<arg0 key="employee.wage" />
+			</field>
+			<field property="memo" depends="maxlength">
+				<arg key="employee.memo" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>255</var-value>
+				</var>
 			</field>
 		</form>
 	</formset>

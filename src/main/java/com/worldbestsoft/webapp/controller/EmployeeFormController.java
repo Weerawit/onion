@@ -42,7 +42,7 @@ public class EmployeeFormController extends BaseFormController {
 		if (validator != null) { // validator is null during testing
 			validator.validate(employeeForm, errors);
 
-			if ((errors.hasErrors() && request.getParameter("delete") == null) && (errors.hasErrors() && request.getParameter("id") == null)) { // don't
+			if ((errors.hasErrors() && request.getParameter("delete") == null) && errors.hasErrors()) { // don't
 				// validate
 				// when
 				// deleting

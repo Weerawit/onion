@@ -83,7 +83,7 @@
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 				<appfuse:label styleClass="control-label" key="employee.age" />
 				<div class="controls">
-					<form:input path="age" id="age" cssClass="input-large" maxlength="50" />
+					<form:input path="age" id="age" cssClass="input-large" maxlength="10" />
 					<form:errors path="age" cssClass="help-inline" />
 				</div>
 			</div>
@@ -93,7 +93,7 @@
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 				<appfuse:label styleClass="control-label" key="employee.wage" />
 				<div class="controls">
-					<form:input path="wage" id="wage" cssClass="input-large" maxlength="50" />
+					<form:input path="wage" id="wage" cssClass="input-large" maxlength="10" />
 					<form:errors path="wage" cssClass="help-inline" />
 				</div>
 			</div>

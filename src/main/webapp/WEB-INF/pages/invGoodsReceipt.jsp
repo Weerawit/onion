@@ -28,26 +28,26 @@
 		</c:if>
 	</spring:bind>
 
-	<form:form commandName="invGoodsReceipt" method="post" action="invGoodsReceipt/save" onsubmit="return onFormSubmit(this)" id="invGoodsReceipt" cssClass="well form-horizontal">
+	<form:form commandName="invGoodsReceipt" method="post" action="${ctx}/invGoodsReceipt/save" onsubmit="return onFormSubmit(this)" id="invGoodsReceipt" cssClass="well form-horizontal">
 		<form:hidden path="id" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
 
-		<c:if test="${invGoodsReceipt.id == null }">
-			<spring:bind path="invGoodsReceipt.runningNo">
-				<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-					<appfuse:label styleClass="control-label" key="invGoodsReceipt.runningNo" />
-					<div class="controls">
-						<form:input path="runningNo" id="runningNo" cssClass="input-xlarge" maxlength="50" />
-						<form:errors path="runningNo" cssClass="help-inline" />
-					</div>
-				</div>
-			</spring:bind>
-		</c:if>
+<%-- 		<c:if test="${invGoodsReceipt.id == null }"> --%>
+<%-- 			<spring:bind path="invGoodsReceipt.runningNo"> --%>
+<%-- 				<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}"> --%>
+<%-- 					<appfuse:label styleClass="control-label" key="invGoodsReceipt.runningNo" /> --%>
+<!-- 					<div class="controls"> -->
+<%-- 						<form:input path="runningNo" id="runningNo" cssClass="input-medium" maxlength="50" /> --%>
+<%-- 						<form:errors path="runningNo" cssClass="help-inline" /> --%>
+<!-- 					</div> -->
+<!-- 				</div> -->
+<%-- 			</spring:bind> --%>
+<%-- 		</c:if> --%>
 		<c:if test="${invGoodsReceipt.id != null }">
 			<div class="control-group">
 				<appfuse:label styleClass="control-label" key="invGoodsReceipt.runningNo" />
 				<div class="controls">
-					<span class="input-xlarge uneditable-input"><c:out value="${invGoodsReceipt.runningNo}" /></span>
+					<span class="input-medium uneditable-input"><c:out value="${invGoodsReceipt.runningNo}" /></span>
 					<form:hidden path="runningNo"/>
 				</div>
 			</div>
