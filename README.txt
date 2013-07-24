@@ -4,6 +4,8 @@ Test Git + Test ty
 ภาษาไทย
 
 
+Test Merge
+
 Test test
 AppFuse Basic Spring MVC Archetype
 --------------------------------------------------------------------------------
