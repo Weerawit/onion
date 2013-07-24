@@ -2,6 +2,8 @@ Yohooo
 Hi, from pop Merge ? already pull
 Test Git + Test ty
 
+Test Merge
+
 Test test
 AppFuse Basic Spring MVC Archetype
 --------------------------------------------------------------------------------
