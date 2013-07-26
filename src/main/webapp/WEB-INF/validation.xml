@@ -61,7 +61,7 @@
 		<form name="invItemGroup">
 			<field property="code" depends="required,maxlength">
 				<arg key="invItemGroup.code" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>10</var-value>
@@ -69,7 +69,7 @@
 			</field>
 			<field property="name" depends="required,maxlength">
 				<arg key="invItemGroup.name" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>50</var-value>
@@ -79,7 +79,7 @@
 		<form name="invItem">
 			<field property="code" depends="required,maxlength">
 				<arg key="invItem.code" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>10</var-value>
@@ -90,7 +90,7 @@
 			</field>
 			<field property="name" depends="required,maxlength">
 				<arg key="invItem.name" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>50</var-value>
@@ -98,7 +98,7 @@
 			</field>
 			<field property="description" depends="maxlength">
 				<arg key="invItem.description" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>255</var-value>
@@ -108,7 +108,7 @@
 		<form name="supplier">
 			<field property="code" depends="required, maxlength">
 				<arg key="supplier.code" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>10</var-value>
@@ -116,7 +116,7 @@
 			</field>
 			<field property="name" depends="required, maxlength">
 				<arg key="supplier.name" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>50</var-value>
@@ -124,7 +124,7 @@
 			</field>
 			<field property="address" depends="maxlength">
 				<arg key="supplier.address" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>255</var-value>
@@ -132,7 +132,7 @@
 			</field>
 			<field property="contactName" depends="maxlength">
 				<arg key="supplier.contactName" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>50</var-value>
@@ -140,7 +140,7 @@
 			</field>
 			<field property="contactTel" depends="maxlength">
 				<arg key="supplier.contactTel" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>50</var-value>
@@ -155,7 +155,7 @@
 		<form name="invGoodsReceiptItem">
 			<field property="invItem.code" depends="required, maxlength">
 				<arg key="invGoodsReceiptItem.invItem.code" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>20</var-value>
@@ -163,8 +163,8 @@
 			</field>
 			<field property="qty" depends="required, integer, intRange">
 				<arg key="invGoodsReceiptItem.qty" />
-				<arg1 name="intRange" key="${var:min}" resource="false" />
-				<arg2 name="intRange" key="${var:max}" resource="false" />
+				<arg position="1" name="intRange" key="${var:min}" resource="false" />
+				<arg position="2" name="intRange" key="${var:max}" resource="false" />
 				<var>
 					<var-name>min</var-name>
 					<var-value>1</var-value>
@@ -176,8 +176,8 @@
 			</field>
 			<field property="unitPrice" depends="required, float, floatRange">
 				<arg key="invGoodsReceiptItem.unitPrice" />
-				<arg1 name="floatRange" key="${var:min}" resource="false" />
-				<arg2 name="floatRange" key="${var:max}" resource="false" />
+				<arg position="1" name="floatRange" key="${var:min}" resource="false" />
+				<arg position="2" name="floatRange" key="${var:max}" resource="false" />
 				<var>
 					<var-name>min</var-name>
 					<var-value>1</var-value>
@@ -191,7 +191,7 @@
 		<form name="employee">
 			<field property="firstName" depends="required, maxlength">
 				<arg key="employee.firstName" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>50</var-value>
@@ -199,7 +199,7 @@
 			</field>
 			<field property="lastName" depends="required, maxlength">
 				<arg key="employee.lastName" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>50</var-value>
@@ -207,7 +207,7 @@
 			</field>
 			<field property="nickName" depends="required, maxlength">
 				<arg key="employee.nickName" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>50</var-value>
@@ -215,8 +215,8 @@
 			</field>
 			<field property="age" depends="integer, intRange">
 				<arg key="employee.age" />
-				<arg1 name="intRange" key="${var:min}" resource="false" />
-				<arg2 name="intRange" key="${var:max}" resource="false" />
+				<arg position="1" name="intRange" key="${var:min}" resource="false" />
+				<arg position="2" name="intRange" key="${var:max}" resource="false" />
 				<var>
 					<var-name>min</var-name>
 					<var-value>0</var-value>
@@ -228,7 +228,7 @@
 			</field>
 			<field property="idCardNo" depends="maxlength">
 				<arg key="employee.idCardNo" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>50</var-value>
@@ -236,7 +236,7 @@
 			</field>
 			<field property="address" depends="maxlength">
 				<arg key="employee.address" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>255</var-value>
@@ -247,7 +247,7 @@
 			</field>
 			<field property="memo" depends="maxlength">
 				<arg key="employee.memo" />
-				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>
 					<var-value>255</var-value>

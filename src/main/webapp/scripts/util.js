@@ -87,3 +87,10 @@ function updateURLParameter(url, param, paramVal) {
 	var rows_txt = temp + "" + param + "=" + paramVal;
 	return baseURL + "?" + newAdditionalURL + rows_txt;
 }
+
+function confirmMessage(msg) {
+	if (confirm(msg)) {
+		return true;
+	}
+	return false;
+}

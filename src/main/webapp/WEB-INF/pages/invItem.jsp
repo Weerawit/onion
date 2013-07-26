@@ -50,7 +50,7 @@
 			</div>
 		</c:if>
 		
-		<spring:bind path="invItem.invItemGroup">
+		<spring:bind path="invItem.invItemGroup.code">
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 				<appfuse:label styleClass="control-label" key="invItem.invItemGroup.code" />
 				<div class="controls">
@@ -58,6 +58,7 @@
 						<form:option value=""></form:option>
 						<form:options items="${invItemGroupList}" itemLabel="name" itemValue="code"/>
 					</form:select>
+					<form:errors path="invItemGroup.code" cssClass="help-inline" />
 				</div>
 			</div>
 		</spring:bind>

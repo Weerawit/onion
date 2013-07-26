@@ -88,7 +88,8 @@
 		
 	</div>
 	<display:table name="invGoodsReceiptList" cellspacing="0" cellpadding="0" requestURI="" id="invGoodsReceipt"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
-		<display:column property="runningNo" url="/invGoodsReceipt?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="invGoodsReceipt.runningNo" sortName="runningNo" />
+		<display:column property="id" url="/invGoodsReceipt?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="invGoodsReceipt.id" sortName="id" />
+		<display:column property="runningNo" escapeXml="true" sortable="true" titleKey="invGoodsReceipt.runningNo" sortName="runningNo" />
 		<display:column escapeXml="true" sortable="true" titleKey="invGoodsReceipt.receiptDate" sortName="receiptDate" defaultorder="descending">
 			<fmt:formatDate value="${invGoodsReceipt.receiptDate}" pattern="dd/MM/yyyy HH:mm:ss" />
 		</display:column>

@@ -53,7 +53,7 @@
 <!-- 			</div> -->
 <%-- 		</c:if> --%>
 		
-		<spring:bind path="invGoodsReceiptItem.invItem">
+		<spring:bind path="invGoodsReceiptItem.invItem.code">
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 				<appfuse:label styleClass="control-label" key="invGoodsReceiptItem.invItem.code" />
 				<div class="controls">
@@ -61,6 +61,7 @@
 						<form:option value=""></form:option>
 						<form:options items="${invItemList}" itemLabel="name" itemValue="code"/>
 					</form:select>
+					<form:errors path="invItem.code" cssClass="help-inline" />
 				</div>
 			</div>
 		</spring:bind>

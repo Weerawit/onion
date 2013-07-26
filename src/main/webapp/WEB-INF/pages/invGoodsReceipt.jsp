@@ -43,7 +43,7 @@
 <!-- 				</div> -->
 <%-- 			</spring:bind> --%>
 <%-- 		</c:if> --%>
-		<c:if test="${invGoodsReceipt.id != null }">
+		<c:if test="${invGoodsReceipt.runningNo != null }">
 			<div class="control-group">
 				<appfuse:label styleClass="control-label" key="invGoodsReceipt.runningNo" />
 				<div class="controls">
@@ -53,7 +53,7 @@
 			</div>
 		</c:if>
 		
-		<spring:bind path="invGoodsReceipt.supplier">
+		<spring:bind path="invGoodsReceipt.supplier.code">
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 				<appfuse:label styleClass="control-label" key="invGoodsReceipt.supplier.code" />
 				<div class="controls">
@@ -61,6 +61,7 @@
 						<form:option value=""></form:option>
 						<form:options items="${supplierList}" itemLabel="name" itemValue="code"/>
 					</form:select>
+					<form:errors path="supplier.code" cssClass="help-inline" />
 				</div>
 			</div>
 		</spring:bind>
@@ -95,25 +96,31 @@
 <!-- 		</div> -->
 <%-- 		</c:if>	 --%>
 		
-		<div id="actions">
-		
-			<button id="button.add" class="btn btn-primary" type="submit" onclick="bCancel=true;$('#invGoodsReceipt').attr('action', 'invGoodsReceipt/addDetail');">
-				<i class="icon-plus icon-white"></i>
-				<fmt:message key="button.add" />
-			</button>
+		<c:if test="${invGoodsReceipt.runningNo == null}">
+			<div id="actions">
 			
-			<button id="button.delete" class="btn" type="submit" onclick="bCancel=true;$('#invGoodsReceipt').attr('action', 'invGoodsReceipt/deleteDetail');">
-				<i class="icon-trash"></i>
-				<fmt:message key="button.delete" />
-			</button>
-			
-		</div>
+				<button id="button.add" class="btn btn-primary" type="submit" onclick="bCancel=true;$('#invGoodsReceipt').attr('action', '${ctx}/invGoodsReceipt/addDetail');">
+					<i class="icon-plus icon-white"></i>
+					<fmt:message key="button.add" />
+				</button>
+				
+				<button id="button.delete" class="btn" type="submit" onclick="bCancel=true;$('#invGoodsReceipt').attr('action', '${ctx}/invGoodsReceipt/deleteDetail');">
+					<i class="icon-trash"></i>
+					<fmt:message key="button.delete" />
+				</button>
+				
+			</div>
+		</c:if>
 		<display:table name="invGoodsReceiptItemList" cellspacing="0" cellpadding="0" requestURI="" id="invGoodsReceiptItem" class="table table-condensed table-striped table-hover table-bordered">
-			<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" headerClass="span1" class="span1">
-				<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${invGoodsReceiptItem_rowNum - 1}'/>" />
-			</display:column>
+			<c:if test="${invGoodsReceipt.runningNo == null }">
+				<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" headerClass="span1" class="span1">
+					<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${invGoodsReceiptItem_rowNum - 1}'/>" />
+				</display:column>
+			</c:if>
 			<display:column titleKey="invGoodsReceiptItem.invItem.code" sortable="true">
-				<a onclick="bCancel=true;$('#invGoodsReceipt').attr('action', 'invGoodsReceipt/editDetail?&id=${ invGoodsReceiptItem_rowNum - 1}');"><c:out value="${invGoodsReceiptItem.invItem.code}"/></a>
+				<button class="btn btn-link" type="submit" onclick="bCancel=true;$('#invGoodsReceipt').attr('action', '${ctx}/invGoodsReceipt/editDetail?&id=${ invGoodsReceiptItem_rowNum - 1}');">
+					<c:out value="${invGoodsReceiptItem.invItem.code}"/>
+				</button>
 			</display:column>
 			<display:column property="invItem.name" escapeXml="true" sortable="true" titleKey="invGoodsReceiptItem.invItem.name" sortName="invItem.name" />
 			<display:column property="qty" escapeXml="true" sortable="true" titleKey="invGoodsReceiptItem.qty" sortName="qty" />
@@ -129,17 +136,35 @@
 		
 
 		<fieldset class="form-actions">
-			<button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
-				<i class="icon-ok icon-white"></i>
-				<fmt:message key="button.save" />
-			</button>
-<!-- not allow to delete -->
-<%-- 			<c:if test="${param.from == 'list' and param.method != 'Add'}"> --%>
-<!-- 				<button type="submit" class="btn" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)"> -->
-<!-- 					<i class="icon-trash"></i> -->
-<%-- 					<fmt:message key="button.delete" /> --%>
-<!-- 				</button> -->
-<%-- 			</c:if> --%>
+			<c:choose>
+				<c:when test="${invGoodsReceipt.runningNo == null}">
+					<button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
+						<i class="icon-ok icon-white"></i>
+						<fmt:message key="button.save" />
+					</button>
+					
+					<button type="submit" class="btn btn-warning" name="saveToStock" onclick="bCancel=false; return confirmMessage('<fmt:message key="invGoodsReceipt.confirm.saveToStock"/>')">
+						<i class="icon-ok icon-white"></i>
+						<fmt:message key="button.saveToStock" />
+					</button>
+					
+					
+					<button type="submit" class="btn" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
+						<i class="icon-trash"></i>
+						<fmt:message key="button.delete" />
+					</button>
+				</c:when>
+				<c:otherwise>
+				
+					<button type="submit" class="btn btn-primary" name="cancel" onclick="bCancel=true">
+						<i class="icon-ok icon-white"></i>
+						<fmt:message key="button.done" />
+					</button>
+				
+				</c:otherwise>
+			</c:choose>
+			
+			
 
 			<button type="submit" class="btn" name="cancel" onclick="bCancel=true">
 				<i class="icon-remove"></i>
@@ -151,7 +176,7 @@
 <script type="text/javascript">
 <!-- This is here so we can exclude the selectAll call when roles is hidden -->
 	function onFormSubmit(theForm) {	
-		return validateinvGoodsReceipt(theForm);
+		return validateInvGoodsReceipt(theForm);
 	}
 	$(function() {
 

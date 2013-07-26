@@ -71,7 +71,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 			//since code input is readonly, no value pass to form then we need to query from db.
 //			InvGoodReceipt InvGoodReceipt = getInvGoodReceiptManager().get(invGoodsReceiptForm.getId());
 			getInvGoodsReceiptManager().remove(invGoodsReceiptForm.getId());
-			saveMessage(request, getText("invGoodsReceipt.deleted", invGoodsReceiptForm.getRunningNo(), locale));
+			saveMessage(request, getText("invGoodsReceipt.deleted", invGoodsReceiptForm.getId().toString(), locale));
 			return new ModelAndView("redirect:/invGoodsReceiptList");
 		} else {
 			
@@ -93,8 +93,14 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 				invGoodsReceiptSession.setCreateDate(new Date());
 				invGoodsReceiptSession.setCreateUser(request.getRemoteUser());
 				invGoodsReceiptSession = getInvGoodsReceiptManager().save(invGoodsReceiptSession, invGoodsReceiptSession.getInvGoodsReceiptItems());
+				
+				if (request.getParameter("saveToStock") != null) {
+					invGoodsReceiptSession = getInvGoodsReceiptManager().saveToStock(invGoodsReceiptSession);
+					saveMessage(request, getText("invGoodsReceipt.added", invGoodsReceiptSession.getRunningNo(), locale));
+				} else {
+					saveMessage(request, getText("invGoodsReceipt.added", invGoodsReceiptSession.getId().toString(), locale));
+				}
 
-				saveMessage(request, getText("invGoodsReceipt.added", invGoodsReceiptSession.getRunningNo(), locale));
 				return new ModelAndView("redirect:/invGoodsReceipt").addObject("id", invGoodsReceiptSession.getId());
 			} else {
 				// edit
@@ -108,9 +114,15 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 				invGoodsReceipt.setUpdateDate(new Date());
 				invGoodsReceipt.setUpdateUser(request.getRemoteUser());
 				invGoodsReceipt = getInvGoodsReceiptManager().save(invGoodsReceipt, invGoodsReceiptSession.getInvGoodsReceiptItems());
+				
+				if (request.getParameter("saveToStock") != null) {
+					invGoodsReceipt = getInvGoodsReceiptManager().saveToStock(invGoodsReceipt);
+					saveMessage(request, getText("invGoodsReceipt.saved", invGoodsReceipt.getRunningNo(), locale));
+				} else {
+					saveMessage(request, getText("invGoodsReceipt.saved", invGoodsReceipt.getId().toString(), locale));
+				}
 
 				request.setAttribute("invGoodsReceipt", invGoodsReceipt);
-				saveMessage(request, getText("invGoodsReceipt.saved", invGoodsReceipt.getRunningNo(), locale));
 				return new ModelAndView("redirect:/invGoodsReceiptList");
 			}
 		}
@@ -127,7 +139,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		return new ModelAndView("redirect:/invGoodsReceiptItem?method=Add&from=list");
 	}
 	
-	@RequestMapping(value = "/editetail", method = RequestMethod.POST)
+	@RequestMapping(value = "/editDetail", method = RequestMethod.POST)
 	public ModelAndView edit(InvGoodsReceipt invGoodsReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
 		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");

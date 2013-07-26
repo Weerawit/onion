@@ -21,4 +21,6 @@ public interface InvGoodsReceiptManager {
 
 	public abstract void remove(Long id);
 
+	public abstract InvGoodsReceipt saveToStock(InvGoodsReceipt invGoodsReceipt);
+
 }

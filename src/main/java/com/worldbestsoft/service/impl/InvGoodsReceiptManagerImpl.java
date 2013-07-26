@@ -1,8 +1,11 @@
 package com.worldbestsoft.service.impl;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import org.apache.commons.collections.CollectionUtils;
@@ -11,8 +14,11 @@ import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.InvGoodsReceiptDao;
 import com.worldbestsoft.dao.InvGoodsReceiptItemDao;
+import com.worldbestsoft.dao.InvItemLevelDao;
 import com.worldbestsoft.model.InvGoodsReceipt;
 import com.worldbestsoft.model.InvGoodsReceiptItem;
+import com.worldbestsoft.model.InvItemLevel;
+import com.worldbestsoft.model.RefType;
 import com.worldbestsoft.model.criteria.InvGoodsReceiptCriteria;
 import com.worldbestsoft.service.DocumentNumberGenerator;
 import com.worldbestsoft.service.DocumentNumberGeneratorException;
@@ -22,6 +28,7 @@ import com.worldbestsoft.service.InvGoodsReceiptManager;
 public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 	private InvGoodsReceiptDao invGoodsReceiptDao;
 	private InvGoodsReceiptItemDao invGoodsReceiptItemDao;
+	private InvItemLevelDao invItemLevelDao;
 	private DocumentNumberGenerator documentNumberGenerator;
 	
 	private String documentNumberFormat = "GR{0,number,00000}";
@@ -44,6 +51,15 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 		this.invGoodsReceiptItemDao = invGoodsReceiptItemDao;
 	}
 	
+	public InvItemLevelDao getInvItemLevelDao() {
+		return invItemLevelDao;
+	}
+
+	@Autowired
+	public void setInvItemLevelDao(InvItemLevelDao invItemLevelDao) {
+		this.invItemLevelDao = invItemLevelDao;
+	}
+
 	public DocumentNumberGenerator getDocumentNumberGenerator() {
 		return documentNumberGenerator;
 	}
@@ -106,57 +122,94 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 		if (null != invGoodsReceipt.getId()) {
 			List<InvGoodsReceiptItem> oldInvGoodsReceiptItemList = invGoodsReceiptItemDao.findByInvGoodReceipt(invGoodsReceipt.getId());
 			//delete if not in the new list.
-			for (InvGoodsReceiptItem invGoodReceiptItem : oldInvGoodsReceiptItemList) {
-				InvGoodsReceiptItem foundInvGoodReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(newInvGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodReceiptItem.getInvItem().getCode()));
-				if (null == foundInvGoodReceiptItem) {
+			for (InvGoodsReceiptItem invGoodsReceiptItem : oldInvGoodsReceiptItemList) {
+				InvGoodsReceiptItem foundinvGoodsReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(newInvGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodsReceiptItem.getInvItem().getCode()));
+				if (null == foundinvGoodsReceiptItem) {
 					//delete 
-					invGoodsReceiptItemDao.remove(invGoodReceiptItem.getId());
+					invGoodsReceiptItemDao.remove(invGoodsReceiptItem.getId());
 				}
 			}
+			//calculate cost
+			BigDecimal totalCost = BigDecimal.ZERO;
 			
 			//add or update new list
-			
-			for (InvGoodsReceiptItem invGoodReceiptItem : newInvGoodsReceiptItemList) {
-				InvGoodsReceiptItem foundInvGoodReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(oldInvGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodReceiptItem.getInvItem().getCode()));
-				if (null == foundInvGoodReceiptItem) {
-					invGoodReceiptItem.setInvGoodsReceipt(invGoodsReceiptSave);
-					invGoodsReceiptItemDao.save(invGoodReceiptItem);
+			for (InvGoodsReceiptItem invGoodsReceiptItem : newInvGoodsReceiptItemList) {
+				InvGoodsReceiptItem foundInvGoodsReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(oldInvGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodsReceiptItem.getInvItem().getCode()));
+				if (null == foundInvGoodsReceiptItem) {
+					invGoodsReceiptItem.setInvGoodsReceipt(invGoodsReceiptSave);
+					invGoodsReceiptItemDao.save(invGoodsReceiptItem);
 				} else {
 					//update old object
-					foundInvGoodReceiptItem.setMemo(invGoodReceiptItem.getMemo());
-					foundInvGoodReceiptItem.setQty(invGoodReceiptItem.getQty());
-					foundInvGoodReceiptItem.setUnitPrice(invGoodReceiptItem.getUnitPrice());
-					foundInvGoodReceiptItem.setUnitType(invGoodReceiptItem.getUnitType());
-					
-					invGoodsReceiptItemDao.save(foundInvGoodReceiptItem);
+					foundInvGoodsReceiptItem.setMemo(invGoodsReceiptItem.getMemo());
+					foundInvGoodsReceiptItem.setQty(invGoodsReceiptItem.getQty());
+					foundInvGoodsReceiptItem.setUnitPrice(invGoodsReceiptItem.getUnitPrice());
+					foundInvGoodsReceiptItem.setUnitType(invGoodsReceiptItem.getUnitType());
+					invGoodsReceiptItemDao.save(foundInvGoodsReceiptItem);
 				}
+				totalCost = totalCost.add(invGoodsReceiptItem.getQty().multiply(invGoodsReceiptItem.getUnitPrice()));
 			}
+			invGoodsReceiptSave.setTotalCost(totalCost);
+			
+			//update cost
+			invGoodsReceiptSave = invGoodsReceiptDao.save(invGoodsReceiptSave);
 			
 		} else {
+			//calculate cost
+			BigDecimal totalCost = BigDecimal.ZERO;
+			
 			for (InvGoodsReceiptItem invGoodsReceiptItem : newInvGoodsReceiptItemList) {
 				invGoodsReceiptItem.setInvGoodsReceipt(invGoodsReceiptSave);
 				invGoodsReceiptItemDao.save(invGoodsReceiptItem);
+				totalCost = totalCost.add(invGoodsReceiptItem.getQty().multiply(invGoodsReceiptItem.getUnitPrice()));
 			}
-			//get running no
-			try {
-	            Long documentNumber = documentNumberGenerator.nextDocumentNumber(InvGoodsReceipt.class);
-	            String runningNo = MessageFormat.format(documentNumberFormat, documentNumber);
-	            invGoodsReceiptSave.setRunningNo(runningNo);
-	            invGoodsReceiptSave = invGoodsReceiptDao.save(invGoodsReceiptSave);
-            } catch (DocumentNumberGeneratorException e) {
-            	//roll back transaction
-	            throw new RuntimeException(e);
-            }
+			invGoodsReceiptSave.setTotalCost(totalCost);
+			
+			
+			//update cost
+			invGoodsReceiptSave = invGoodsReceiptDao.save(invGoodsReceiptSave);
 			
 		}
 	    return invGoodsReceiptSave;
     }
+	
+	@Override
+    public InvGoodsReceipt saveToStock(InvGoodsReceipt invGoodsReceipt) {
+		//get running no
+		try {
+            Long documentNumber = documentNumberGenerator.nextDocumentNumber(InvGoodsReceipt.class);
+            String runningNo = MessageFormat.format(documentNumberFormat, documentNumber);
+            invGoodsReceipt.setRunningNo(runningNo);
+            invGoodsReceipt = invGoodsReceiptDao.save(invGoodsReceipt);
+            
+            for (InvGoodsReceiptItem invGoodsReceiptItem : invGoodsReceipt.getInvGoodsReceiptItems()) {
+            	InvItemLevel invItemLevel = new InvItemLevel();
+            	invItemLevel.setInvItem(invGoodsReceiptItem.getInvItem());
+            	invItemLevel.setQtyInStock(invGoodsReceiptItem.getQty());
+            	invItemLevel.setTransactionDate(new Date());
+            	invItemLevel.setRefDocument(invGoodsReceipt.getRunningNo());
+            	invItemLevel.setRefType(RefType.GOOD_RECEIPT.getCode());
+            	
+            	invItemLevelDao.save(invItemLevel);
+            }
+        } catch (DocumentNumberGeneratorException e) {
+        	//roll back transaction
+            throw new RuntimeException(e);
+        }
+		return invGoodsReceipt;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptManager#remove(java.lang.Long)
 	 */
 	@Override
     public void remove(Long id) {
+		InvGoodsReceipt invGoodsReceipt = invGoodsReceiptDao.get(id);
+		if (null != invGoodsReceipt) {
+			//delete child if exist
+			for (InvGoodsReceiptItem invGoodsReceiptItem : invGoodsReceipt.getInvGoodsReceiptItems()) {
+				invGoodsReceiptItemDao.remove(invGoodsReceiptItem.getId());
+			}
+		}
 	    invGoodsReceiptDao.remove(id);
     }
 	
