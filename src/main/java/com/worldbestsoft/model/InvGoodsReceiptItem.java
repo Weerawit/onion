@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 23, 2013 9:54:03 PM by Hibernate Tools 4.0.0
+// Generated Jul 26, 2013 1:18:48 PM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import javax.persistence.Column;
@@ -25,7 +25,7 @@ public class InvGoodsReceiptItem implements java.io.Serializable {
 	private InvItem invItem;
 	private BigDecimal qty;
 	private BigDecimal unitPrice;
-	private BigDecimal unitType;
+	private String unitType;
 	private String memo;
 
 	public InvGoodsReceiptItem() {
@@ -36,7 +36,7 @@ public class InvGoodsReceiptItem implements java.io.Serializable {
 		this.invItem = invItem;
 	}
 
-	public InvGoodsReceiptItem(InvGoodsReceipt invGoodsReceipt, InvItem invItem, BigDecimal qty, BigDecimal unitPrice, BigDecimal unitType, String memo) {
+	public InvGoodsReceiptItem(InvGoodsReceipt invGoodsReceipt, InvItem invItem, BigDecimal qty, BigDecimal unitPrice, String unitType, String memo) {
 		this.invGoodsReceipt = invGoodsReceipt;
 		this.invItem = invItem;
 		this.qty = qty;
@@ -94,12 +94,12 @@ public class InvGoodsReceiptItem implements java.io.Serializable {
 		this.unitPrice = unitPrice;
 	}
 
-	@Column(name = "unit_type", precision = 10)
-	public BigDecimal getUnitType() {
+	@Column(name = "unit_type", length = 3)
+	public String getUnitType() {
 		return this.unitType;
 	}
 
-	public void setUnitType(BigDecimal unitType) {
+	public void setUnitType(String unitType) {
 		this.unitType = unitType;
 	}
 

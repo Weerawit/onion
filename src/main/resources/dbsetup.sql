@@ -183,7 +183,7 @@ CREATE  TABLE IF NOT EXISTS `onion`.`inv_goods_receipt_item` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'รายการสินค้า ในใบรับของ\n' ,
   `qty` DECIMAL(10,2) NULL DEFAULT NULL ,
   `unit_price` DECIMAL(10,2) NULL DEFAULT NULL ,
-  `unit_type` DECIMAL(10,2) NULL DEFAULT NULL ,
+  `unit_type` VARCHAR(3) NULL DEFAULT NULL ,
   `memo` VARCHAR(255) NULL DEFAULT NULL ,
   `inv_goods_receipt_id` BIGINT NOT NULL ,
   `inv_item_id` BIGINT NOT NULL ,
