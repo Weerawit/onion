@@ -1,5 +1,6 @@
 package com.worldbestsoft.webapp.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -195,6 +196,13 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		} else {
 			invGoodsReceipt = getInvGoodsReceiptManager().get(Long.valueOf(id));
 		}
+		//calculate totalCost
+		BigDecimal totalCost = BigDecimal.ZERO;
+		for (InvGoodsReceiptItem invGoodsReceiptItem : invGoodsReceipt.getInvGoodsReceiptItems()) {
+			totalCost = totalCost.add(invGoodsReceiptItem.getQty().multiply(invGoodsReceiptItem.getUnitPrice()));
+		}
+		invGoodsReceipt.setTotalCost(totalCost);
+		
 		session.setAttribute("invGoodsReceipt", invGoodsReceipt);
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("invGoodsReceipt", invGoodsReceipt);

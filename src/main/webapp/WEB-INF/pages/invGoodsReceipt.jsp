@@ -104,7 +104,7 @@
 					<fmt:message key="button.add" />
 				</button>
 				
-				<button id="button.delete" class="btn" type="submit" onclick="bCancel=true;$('#invGoodsReceipt').attr('action', '${ctx}/invGoodsReceipt/deleteDetail');">
+				<button id="button.delete" class="btn" type="submit" onclick="bCancel=true;return (validateDelete(document.forms['invGoodsReceipt'].checkbox) && $('#invGoodsReceipt').attr('action', '${ctx}/invGoodsReceipt/deleteDetail'));">
 					<i class="icon-trash"></i>
 					<fmt:message key="button.delete" />
 				</button>
@@ -132,6 +132,19 @@
 			<display:setProperty name="export.excel.filename" value="InvGoodsReceipt.xls" />
 			<display:setProperty name="export.csv.filename" value="InvGoodsReceipt.csv" />
 			<display:setProperty name="export.pdf.filename" value="InvGoodsReceipt.pdf" />
+			<display:footer>
+				<tr>
+				<c:choose>
+				<c:when test="${invGoodsReceipt.runningNo == null}">
+					<td colspan="4"><fmt:message key="invGoodsReceipt.totalCost"/></td>
+				</c:when>
+				<c:otherwise>
+					<td colspan="3"><fmt:message key="invGoodsReceipt.totalCost"/></td>
+				</c:otherwise>
+				</c:choose>
+					<td><fmt:formatNumber value="${invGoodsReceipt.totalCost}" pattern="#,###,##0.##"></fmt:formatNumber></td>
+				<tr>
+			</display:footer>
 		</display:table>
 		
 
@@ -148,11 +161,12 @@
 						<fmt:message key="button.saveToStock" />
 					</button>
 					
-					
-					<button type="submit" class="btn" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
-						<i class="icon-trash"></i>
-						<fmt:message key="button.delete" />
-					</button>
+					<c:if test="${invGoodsReceipt.id != null}">
+						<button type="submit" class="btn" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
+							<i class="icon-trash"></i>
+							<fmt:message key="button.delete" />
+						</button>
+					</c:if>
 				</c:when>
 				<c:otherwise>
 				
