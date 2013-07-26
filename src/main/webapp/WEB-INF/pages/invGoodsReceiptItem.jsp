@@ -69,7 +69,7 @@
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 				<appfuse:label styleClass="control-label" key="invGoodsReceiptItem.qty" />
 				<div class="controls">
-					<form:input path="qty" id="qty" cssClass="input-xlarge" maxlength="50" />
+					<form:input path="qty" id="qty" cssClass="input-medium" maxlength="10" />
 					<form:errors path="qty" cssClass="help-inline" />
 				</div>
 			</div>
@@ -79,21 +79,21 @@
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 				<appfuse:label styleClass="control-label" key="invGoodsReceiptItem.unitPrice" />
 				<div class="controls">
-					<form:input path="unitPrice" id="unitPrice" cssClass="input-xlarge" maxlength="50" />
+					<form:input path="unitPrice" id="unitPrice" cssClass="input-medium" maxlength="10" />
 					<form:errors path="unitPrice" cssClass="help-inline" />
 				</div>
 			</div>
 		</spring:bind>
 		
-		<spring:bind path="invGoodsReceiptItem.unitType">
-			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-				<appfuse:label styleClass="control-label" key="invGoodsReceiptItem.unitType" />
-				<div class="controls">
-					<form:input path="unitType" id="unitType" cssClass="input-xlarge" maxlength="50" />
-					<form:errors path="unitType" cssClass="help-inline" />
-				</div>
-			</div>
-		</spring:bind>
+<%-- 		<spring:bind path="invGoodsReceiptItem.unitType"> --%>
+<%-- 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}"> --%>
+<%-- 				<appfuse:label styleClass="control-label" key="invGoodsReceiptItem.unitType" /> --%>
+<%-- 				<div class="controls"> --%>
+<%-- 					<form:input path="unitType" id="unitType" cssClass="input-xlarge" maxlength="50" /> --%>
+<%-- 					<form:errors path="unitType" cssClass="help-inline" /> --%>
+<%-- 				</div> --%>
+<%-- 			</div> --%>
+<%-- 		</spring:bind> --%>
 		
 		<spring:bind path="invGoodsReceiptItem.memo">
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
@@ -129,7 +129,7 @@
 <script type="text/javascript">
 <!-- This is here so we can exclude the selectAll call when roles is hidden -->
 	function onFormSubmit(theForm) {	
-		return validateinvGoodsReceiptItem(theForm);
+		return validateInvGoodsReceiptItem(theForm);
 	}
 	$(function() {
 

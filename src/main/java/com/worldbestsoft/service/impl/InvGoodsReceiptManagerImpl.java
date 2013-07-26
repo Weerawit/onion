@@ -1,8 +1,8 @@
 package com.worldbestsoft.service.impl;
 
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import org.apache.commons.collections.CollectionUtils;
@@ -97,16 +97,17 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptManager#save(com.worldbestsoft.model.InvGoodReceipt)
 	 */
 	@Override
-    public InvGoodsReceipt save(InvGoodsReceipt invGoodsReceipt) {
+    public InvGoodsReceipt save(InvGoodsReceipt invGoodsReceipt, Collection<InvGoodsReceiptItem> newInvGoodsReceiptItemList) {
 		//save to get key
+//		newInvGoodsReceiptItemList to remove hibernate proxy, otherwise invGoodsReceipt.getInvGoodsReceiptItems(); will query the database again and remove the newly object
+//		Set<InvGoodsReceiptItem> newInvGoodsReceiptItemList = invGoodsReceipt.getInvGoodsReceiptItems();
 		InvGoodsReceipt invGoodsReceiptSave = invGoodsReceiptDao.save(invGoodsReceipt);
-		Set<InvGoodsReceiptItem> newInvGoodReceiptItemList = invGoodsReceipt.getInvGoodsReceiptItems();
 		
 		if (null != invGoodsReceipt.getId()) {
-			List<InvGoodsReceiptItem> oldinvGoodReceiptItemList = invGoodsReceiptItemDao.findByInvGoodReceipt(invGoodsReceipt.getId());
+			List<InvGoodsReceiptItem> oldInvGoodsReceiptItemList = invGoodsReceiptItemDao.findByInvGoodReceipt(invGoodsReceipt.getId());
 			//delete if not in the new list.
-			for (InvGoodsReceiptItem invGoodReceiptItem : oldinvGoodReceiptItemList) {
-				InvGoodsReceiptItem foundInvGoodReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(newInvGoodReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodReceiptItem.getInvItem().getCode()));
+			for (InvGoodsReceiptItem invGoodReceiptItem : oldInvGoodsReceiptItemList) {
+				InvGoodsReceiptItem foundInvGoodReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(newInvGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodReceiptItem.getInvItem().getCode()));
 				if (null == foundInvGoodReceiptItem) {
 					//delete 
 					invGoodsReceiptItemDao.remove(invGoodReceiptItem.getId());
@@ -115,8 +116,8 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 			
 			//add or update new list
 			
-			for (InvGoodsReceiptItem invGoodReceiptItem : newInvGoodReceiptItemList) {
-				InvGoodsReceiptItem foundInvGoodReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(oldinvGoodReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodReceiptItem.getInvItem().getCode()));
+			for (InvGoodsReceiptItem invGoodReceiptItem : newInvGoodsReceiptItemList) {
+				InvGoodsReceiptItem foundInvGoodReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(oldInvGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodReceiptItem.getInvItem().getCode()));
 				if (null == foundInvGoodReceiptItem) {
 					invGoodReceiptItem.setInvGoodsReceipt(invGoodsReceiptSave);
 					invGoodsReceiptItemDao.save(invGoodReceiptItem);
@@ -132,7 +133,7 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 			}
 			
 		} else {
-			for (InvGoodsReceiptItem invGoodsReceiptItem : newInvGoodReceiptItemList) {
+			for (InvGoodsReceiptItem invGoodsReceiptItem : newInvGoodsReceiptItemList) {
 				invGoodsReceiptItem.setInvGoodsReceipt(invGoodsReceiptSave);
 				invGoodsReceiptItemDao.save(invGoodsReceiptItem);
 			}

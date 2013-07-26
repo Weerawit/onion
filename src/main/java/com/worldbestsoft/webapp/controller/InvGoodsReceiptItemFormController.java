@@ -145,21 +145,26 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 		//parameter 'id' is index of array list from session object
 		HttpSession session = request.getSession();
 		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
-		List<InvGoodsReceiptItem> invGoodsReceiptItemList = new ArrayList<InvGoodsReceiptItem>(invGoodsReceipt.getInvGoodsReceiptItems());
-		InvGoodsReceiptItem invGoodsReceiptItem = new InvGoodsReceiptItem();
-		try {
-			Integer index = Integer.parseInt(id);
-			if (index < invGoodsReceiptItemList.size()) {
-				invGoodsReceiptItem = invGoodsReceiptItemList.get(index);
+		if (null != invGoodsReceipt) {
+			List<InvGoodsReceiptItem> invGoodsReceiptItemList = new ArrayList<InvGoodsReceiptItem>(invGoodsReceipt.getInvGoodsReceiptItems());
+			InvGoodsReceiptItem invGoodsReceiptItem = new InvGoodsReceiptItem();
+			try {
+				Integer index = Integer.parseInt(id);
+				if (index < invGoodsReceiptItemList.size()) {
+					invGoodsReceiptItem = invGoodsReceiptItemList.get(index);
+				}
+			} catch (Exception e) {
+				//no handle exception; any exception mean new object.
 			}
-		} catch (Exception e) {
-			//no handle exception; any exception mean new object.
+			
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("invGoodsReceiptItem", invGoodsReceiptItem);
+			model.put("invItemList", invItemManager.getAll());
+			return new ModelAndView("invGoodsReceiptItem", model);
+		} else {
+			//since no object in session, redirect to Inv Good Receipt page
+			return new ModelAndView("redirect:/invGoodsReceipt");
 		}
-		
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("invGoodsReceiptItem", invGoodsReceiptItem);
-		model.put("invItemList", invItemManager.getAll());
-		return new ModelAndView("invGoodsReceiptItem", model);
 	}
 
 }

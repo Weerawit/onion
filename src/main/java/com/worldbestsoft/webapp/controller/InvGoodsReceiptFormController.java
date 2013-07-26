@@ -51,64 +51,63 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 	}
 
 	@RequestMapping(value="/save" ,method = RequestMethod.POST)
-	public ModelAndView save(InvGoodsReceipt invGoodReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView save(InvGoodsReceipt invGoodsReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		if (request.getParameter("cancel") != null) {
 			return new ModelAndView("redirect:/invGoodsReceiptList");
 		}
 
 		if (validator != null) { // validator is null during testing
-			validator.validate(invGoodReceiptForm, errors);
+			validator.validate(invGoodsReceiptForm, errors);
 
 			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't validate when deleting
-				return new ModelAndView("invGoodsReceipt", "invGoodsReceipt", invGoodReceiptForm);
+				return new ModelAndView("invGoodsReceipt", "invGoodsReceipt", invGoodsReceiptForm);
 			}
 		}
-		log.info(request.getRemoteUser() + " is saving InvGoodsReceipt := " + invGoodReceiptForm);
+		log.info(request.getRemoteUser() + " is saving InvGoodsReceipt := " + invGoodsReceiptForm);
 
 		Locale locale = request.getLocale();
 
 		if (request.getParameter("delete") != null) {
 			//since code input is readonly, no value pass to form then we need to query from db.
-//			InvGoodReceipt InvGoodReceipt = getInvGoodReceiptManager().get(InvGoodReceiptForm.getId());
-			getInvGoodsReceiptManager().remove(invGoodReceiptForm.getId());
-			saveMessage(request, getText("invGoodsReceipt.deleted", invGoodReceiptForm.getRunningNo(), locale));
+//			InvGoodReceipt InvGoodReceipt = getInvGoodReceiptManager().get(invGoodsReceiptForm.getId());
+			getInvGoodsReceiptManager().remove(invGoodsReceiptForm.getId());
+			saveMessage(request, getText("invGoodsReceipt.deleted", invGoodsReceiptForm.getRunningNo(), locale));
 			return new ModelAndView("redirect:/invGoodsReceiptList");
 		} else {
 			
 			HttpSession session = request.getSession();
 			InvGoodsReceipt invGoodsReceiptSession = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
 			
-			if (null == invGoodReceiptForm.getId()) {
+			if (null == invGoodsReceiptForm.getId()) {
 				
-				invGoodsReceiptSession.setReceiptDate(invGoodReceiptForm.getReceiptDate());
-				invGoodsReceiptSession.setSupplier(invGoodReceiptForm.getSupplier());
-				invGoodsReceiptSession.setMemo(invGoodReceiptForm.getMemo());
+				invGoodsReceiptSession.setReceiptDate(invGoodsReceiptForm.getReceiptDate());
+				invGoodsReceiptSession.setSupplier(invGoodsReceiptForm.getSupplier());
+				invGoodsReceiptSession.setMemo(invGoodsReceiptForm.getMemo());
 				
 				// add
-				if (null != invGoodReceiptForm.getSupplier()) {
-					Supplier supplier = getSupplierManager().findBySupplierCode(invGoodReceiptForm.getSupplier().getCode());
+				if (null != invGoodsReceiptForm.getSupplier()) {
+					Supplier supplier = getSupplierManager().findBySupplierCode(invGoodsReceiptForm.getSupplier().getCode());
 					invGoodsReceiptSession.setSupplier(supplier);
 				}
 
 				invGoodsReceiptSession.setCreateDate(new Date());
 				invGoodsReceiptSession.setCreateUser(request.getRemoteUser());
-				invGoodsReceiptSession = getInvGoodsReceiptManager().save(invGoodsReceiptSession);
+				invGoodsReceiptSession = getInvGoodsReceiptManager().save(invGoodsReceiptSession, invGoodsReceiptSession.getInvGoodsReceiptItems());
 
 				saveMessage(request, getText("invGoodsReceipt.added", invGoodsReceiptSession.getRunningNo(), locale));
 				return new ModelAndView("redirect:/invGoodsReceipt").addObject("id", invGoodsReceiptSession.getId());
 			} else {
 				// edit
-				InvGoodsReceipt invGoodsReceipt = getInvGoodsReceiptManager().get(invGoodReceiptForm.getId());
-				if (null != invGoodReceiptForm.getSupplier()) {
-					Supplier supplier = getSupplierManager().findBySupplierCode(invGoodReceiptForm.getSupplier().getCode());
+				InvGoodsReceipt invGoodsReceipt = getInvGoodsReceiptManager().get(invGoodsReceiptForm.getId());
+				if (null != invGoodsReceiptForm.getSupplier()) {
+					Supplier supplier = getSupplierManager().findBySupplierCode(invGoodsReceiptForm.getSupplier().getCode());
 					invGoodsReceipt.setSupplier(supplier);
 				}
-				invGoodsReceipt.setReceiptDate(invGoodReceiptForm.getReceiptDate());
-				invGoodsReceipt.setMemo(invGoodReceiptForm.getMemo());
-				invGoodsReceipt.setInvGoodsReceiptItems(invGoodsReceiptSession.getInvGoodsReceiptItems());
+				invGoodsReceipt.setReceiptDate(invGoodsReceiptForm.getReceiptDate());
+				invGoodsReceipt.setMemo(invGoodsReceiptForm.getMemo());
 				invGoodsReceipt.setUpdateDate(new Date());
 				invGoodsReceipt.setUpdateUser(request.getRemoteUser());
-				invGoodsReceipt = getInvGoodsReceiptManager().save(invGoodsReceipt);
+				invGoodsReceipt = getInvGoodsReceiptManager().save(invGoodsReceipt, invGoodsReceiptSession.getInvGoodsReceiptItems());
 
 				request.setAttribute("invGoodsReceipt", invGoodsReceipt);
 				saveMessage(request, getText("invGoodsReceipt.saved", invGoodsReceipt.getRunningNo(), locale));
@@ -118,35 +117,35 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 	}
 	
 	@RequestMapping(value = "/addDetail", method = RequestMethod.POST)
-	public ModelAndView add(InvGoodsReceipt invGoodReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView add(InvGoodsReceipt invGoodsReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
 		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
-		invGoodsReceipt.setReceiptDate(invGoodReceiptForm.getReceiptDate());
-		invGoodsReceipt.setSupplier(invGoodReceiptForm.getSupplier());
-		invGoodsReceipt.setMemo(invGoodReceiptForm.getMemo());
-		invGoodsReceipt.setRunningNo(invGoodReceiptForm.getRunningNo());
+		invGoodsReceipt.setReceiptDate(invGoodsReceiptForm.getReceiptDate());
+		invGoodsReceipt.setSupplier(invGoodsReceiptForm.getSupplier());
+		invGoodsReceipt.setMemo(invGoodsReceiptForm.getMemo());
+		invGoodsReceipt.setRunningNo(invGoodsReceiptForm.getRunningNo());
 		return new ModelAndView("redirect:/invGoodsReceiptItem?method=Add&from=list");
 	}
 	
 	@RequestMapping(value = "/editetail", method = RequestMethod.POST)
-	public ModelAndView edit(InvGoodsReceipt invGoodReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView edit(InvGoodsReceipt invGoodsReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
 		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
-		invGoodsReceipt.setReceiptDate(invGoodReceiptForm.getReceiptDate());
-		invGoodsReceipt.setSupplier(invGoodReceiptForm.getSupplier());
-		invGoodsReceipt.setMemo(invGoodReceiptForm.getMemo());
-		invGoodsReceipt.setRunningNo(invGoodReceiptForm.getRunningNo());
+		invGoodsReceipt.setReceiptDate(invGoodsReceiptForm.getReceiptDate());
+		invGoodsReceipt.setSupplier(invGoodsReceiptForm.getSupplier());
+		invGoodsReceipt.setMemo(invGoodsReceiptForm.getMemo());
+		invGoodsReceipt.setRunningNo(invGoodsReceiptForm.getRunningNo());
 		return new ModelAndView("redirect:/invGoodsReceiptItem?from=list&id=" + request.getParameter("id"));
 	}
 
 	@RequestMapping(value = "/deleteDetail", method = RequestMethod.POST)
-	public ModelAndView delete(InvGoodsReceipt invGoodReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ModelAndView delete(InvGoodsReceipt invGoodsReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
 		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
-		invGoodsReceipt.setReceiptDate(invGoodReceiptForm.getReceiptDate());
-		invGoodsReceipt.setSupplier(invGoodReceiptForm.getSupplier());
-		invGoodsReceipt.setMemo(invGoodReceiptForm.getMemo());
-		invGoodsReceipt.setRunningNo(invGoodReceiptForm.getRunningNo());
+		invGoodsReceipt.setReceiptDate(invGoodsReceiptForm.getReceiptDate());
+		invGoodsReceipt.setSupplier(invGoodsReceiptForm.getSupplier());
+		invGoodsReceipt.setMemo(invGoodsReceiptForm.getMemo());
+		invGoodsReceipt.setRunningNo(invGoodsReceiptForm.getRunningNo());
 		List<InvGoodsReceiptItem> invGoodsReceiptItemList = new ArrayList<InvGoodsReceiptItem>(invGoodsReceipt.getInvGoodsReceiptItems());
 
 		
