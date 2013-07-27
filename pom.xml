@@ -248,6 +248,14 @@
 <!-- 					<shortRevisionLength>5</shortRevisionLength> -->
 				</configuration>
 			</plugin>
+			<plugin>
+	        	<groupId>org.apache.maven.plugins</groupId>
+	        	<artifactId>maven-eclipse-plugin</artifactId>
+		        <configuration>
+		          	<wtpapplicationxml>true</wtpapplicationxml>
+		          	<wtpversion>2.0</wtpversion>
+		        </configuration>
+     	 	</plugin>
 		</plugins>
 		<resources>
 			<resource>
