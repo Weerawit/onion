@@ -46,4 +46,17 @@ public class InvStockManagerImpl implements InvStockManager {
 		return invStockDao.save(invStock);
 	}
 	
+	/**
+	 * For get current Qty
+	 * @param invItemCode
+	 * @return
+	 */
+	@Override
+    public InvStock findByInvItemCode(String invItemCode) {
+		//used to get current qty for item.
+		//refactor if needed.
+	    return invStockDao.findByInvItemCode(invItemCode);
+    }
+
+	
 }

@@ -7,4 +7,6 @@ public interface InvStockManager {
 
 	public abstract InvStock updateStock(InvItemLevel invItemLevel);
 
+	public abstract InvStock findByInvItemCode(String invItemCode);
+
 }
