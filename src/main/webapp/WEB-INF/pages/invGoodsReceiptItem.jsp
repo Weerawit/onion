@@ -31,6 +31,8 @@
 	<form:form commandName="invGoodsReceiptItem" method="post" action="invGoodsReceiptItem" onsubmit="return onFormSubmit(this)" id="invGoodsReceiptItem" cssClass="well form-horizontal">
 		<input type="hidden" name="rowNum" value="<c:out value="${param.id}"/>" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
+		<%--store invGoodsReceipt id in request to go back to previous page --%>
+		<input type="hidden" name="invGoodsReceipt.id" value="<c:out value="${invGoodsReceiptItem.invGoodsReceipt.id}"/>" />
 
 <%-- 		<c:if test="${invGoodsReceiptItem.id == null }"> --%>
 <%-- 			<spring:bind path="invGoodsReceiptItem.runningNo"> --%>
@@ -52,7 +54,43 @@
 <!-- 				</div> -->
 <!-- 			</div> -->
 <%-- 		</c:if> --%>
+
+	<c:choose>
+		<c:when test="${invGoodsReceiptItem.invGoodsReceipt.runningNo != null }">
+		<%--readonly --%>
+			<div class="control-group">
+				<appfuse:label styleClass="control-label" key="invGoodsReceiptItem.invItem.code" />
+				<div class="controls">
+					<span class="input-medium uneditable-input"><c:out value="${invGoodsReceiptItem.invItem.name}" /></span>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<appfuse:label styleClass="control-label" key="invGoodsReceiptItem.qty" />
+				<div class="controls">
+					<span class="input-medium uneditable-input"><c:out value="${invGoodsReceiptItem.qty}" /></span>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<appfuse:label styleClass="control-label" key="invGoodsReceiptItem.unitPrice" />
+				<div class="controls">
+					<span class="input-medium uneditable-input"><c:out value="${invGoodsReceiptItem.unitPrice}" /></span>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<appfuse:label styleClass="control-label" key="invGoodsReceiptItem.memo" />
+				<div class="controls">
+					<textarea class="input-xlarge uneditable-input" readonly="readonly">
+					<c:out value="${invGoodsReceiptItem.memo}" />
+					</textarea>
+				</div>
+			</div>
 		
+		</c:when>
+		<c:otherwise>
+		<%--form input --%>
 		<spring:bind path="invGoodsReceiptItem.invItem.code">
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 				<appfuse:label styleClass="control-label" key="invGoodsReceiptItem.invItem.code" />
@@ -105,20 +143,36 @@
 				</div>
 			</div>
 		</spring:bind>
+		</c:otherwise>
+	</c:choose>
 		
 
 		<fieldset class="form-actions">
-			<button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
-				<i class="icon-ok icon-white"></i>
-				<fmt:message key="button.save" />
-			</button>
-
-			<c:if test="${param.from == 'list' and param.method != 'Add'}">
-				<button type="submit" class="btn" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
-					<i class="icon-trash"></i>
-					<fmt:message key="button.delete" />
-				</button>
-			</c:if>
+		
+			<c:choose>
+				<c:when test="${invGoodsReceiptItem.invGoodsReceipt.runningNo == null}">
+					<button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
+						<i class="icon-ok icon-white"></i>
+						<fmt:message key="button.save" />
+					</button>
+		
+					<c:if test="${invGoodsReceiptItem.id != null}">
+						<button type="submit" class="btn" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
+							<i class="icon-trash"></i>
+							<fmt:message key="button.delete" />
+						</button>
+					</c:if>
+				</c:when>
+				<c:otherwise>
+				
+					<button type="submit" class="btn btn-primary" name="cancel" onclick="bCancel=true">
+						<i class="icon-ok icon-white"></i>
+						<fmt:message key="button.done" />
+					</button>
+				
+				</c:otherwise>
+			</c:choose>
+			
 
 			<button type="submit" class="btn" name="cancel" onclick="bCancel=true">
 				<i class="icon-remove"></i>
@@ -132,12 +186,6 @@
 	function onFormSubmit(theForm) {	
 		return validateInvGoodsReceiptItem(theForm);
 	}
-	$(function() {
-
-		var st = $('#receiptDateDatepicker').datetimepicker({
-			format : "dd/MM/yyyy hh:mm:ss"
-		});
-	});
 </script>
 <v:javascript formName="invGoodsReceiptItem" staticJavascript="false" />
 <script type="text/javascript" src="<c:url value="/scripts/validator.jsp"/>"></script>
