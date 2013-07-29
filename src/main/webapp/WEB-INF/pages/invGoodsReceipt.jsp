@@ -123,8 +123,8 @@
 				</button>
 			</display:column>
 			<display:column property="invItem.name" escapeXml="true" sortable="true" titleKey="invGoodsReceiptItem.invItem.name" sortName="invItem.name" />
-			<display:column property="qty" escapeXml="true" sortable="true" titleKey="invGoodsReceiptItem.qty" sortName="qty" />
-			<display:column property="unitPrice" escapeXml="true" sortable="true" titleKey="invGoodsReceiptItem.unitPrice" sortName="unitPrice" />
+			<display:column property="qty" escapeXml="true" sortable="true" titleKey="invGoodsReceiptItem.qty" sortName="qty" format="{0,number,#,###,##0.00}"/>
+			<display:column property="unitPrice" escapeXml="true" sortable="true" titleKey="invGoodsReceiptItem.unitPrice" sortName="unitPrice" format="{0,number,#,###,##0.00}"/>
 			<display:setProperty name="export.csv" value="true"></display:setProperty>
 			<display:setProperty name="export.excel" value="true"></display:setProperty>
 			<display:setProperty name="export.xml" value="false"></display:setProperty>

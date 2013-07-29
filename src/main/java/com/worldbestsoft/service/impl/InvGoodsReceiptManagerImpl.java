@@ -9,7 +9,10 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.InvGoodsReceiptDao;
@@ -23,14 +26,16 @@ import com.worldbestsoft.model.criteria.InvGoodsReceiptCriteria;
 import com.worldbestsoft.service.DocumentNumberGenerator;
 import com.worldbestsoft.service.DocumentNumberGeneratorException;
 import com.worldbestsoft.service.InvGoodsReceiptManager;
+import com.worldbestsoft.service.InvItemLevelChangedEvent;
 
 @Service("invGoodsReceiptManager")
-public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
+public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager, ApplicationContextAware {
 	private InvGoodsReceiptDao invGoodsReceiptDao;
 	private InvGoodsReceiptItemDao invGoodsReceiptItemDao;
 	private InvItemLevelDao invItemLevelDao;
 	private DocumentNumberGenerator documentNumberGenerator;
-	
+	private ApplicationContext context;
+
 	private String documentNumberFormat = "GR{0,number,00000}";
 
 	public InvGoodsReceiptDao getInvGoodsReceiptDao() {
@@ -50,7 +55,7 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 	public void setInvGoodsReceiptItemDao(InvGoodsReceiptItemDao invGoodsReceiptItemDao) {
 		this.invGoodsReceiptItemDao = invGoodsReceiptItemDao;
 	}
-	
+
 	public InvItemLevelDao getInvItemLevelDao() {
 		return invItemLevelDao;
 	}
@@ -68,7 +73,7 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 	public void setDocumentNumberGenerator(DocumentNumberGenerator documentNumberGenerator) {
 		this.documentNumberGenerator = documentNumberGenerator;
 	}
-	
+
 	public String getDocumentNumberFormat() {
 		return documentNumberFormat;
 	}
@@ -77,69 +82,95 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 		this.documentNumberFormat = documentNumberFormat;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptManager#query(com.worldbestsoft.model.criteria.InvGoodsReceiptCriteria, int, int, java.lang.String, java.lang.String)
+	@Override
+	public void setApplicationContext(ApplicationContext arg0) throws BeansException {
+		this.context = arg0;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.worldbestsoft.service.impl.InvGoodsReceiptManager#query(com.worldbestsoft
+	 * .model.criteria.InvGoodsReceiptCriteria, int, int, java.lang.String,
+	 * java.lang.String)
 	 */
 	@Override
-    public List<InvGoodsReceipt> query(InvGoodsReceiptCriteria criteria, int page, int pageSize, String sortColumn, String order) {
-	    return invGoodsReceiptDao.query(criteria, page, pageSize, sortColumn, order);
-    }
+	public List<InvGoodsReceipt> query(InvGoodsReceiptCriteria criteria, int page, int pageSize, String sortColumn, String order) {
+		return invGoodsReceiptDao.query(criteria, page, pageSize, sortColumn, order);
+	}
 
-	/* (non-Javadoc)
-	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptManager#querySize(com.worldbestsoft.model.criteria.InvGoodsReceiptCriteria)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptManager#querySize(com.
+	 * worldbestsoft.model.criteria.InvGoodsReceiptCriteria)
 	 */
 	@Override
-    public Integer querySize(InvGoodsReceiptCriteria criteria) {
-	    return invGoodsReceiptDao.querySize(criteria);
-    }
+	public Integer querySize(InvGoodsReceiptCriteria criteria) {
+		return invGoodsReceiptDao.querySize(criteria);
+	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptManager#getAll()
 	 */
 	@Override
-    public List<InvGoodsReceipt> getAll() {
-	    return invGoodsReceiptDao.getAll();
-    }
+	public List<InvGoodsReceipt> getAll() {
+		return invGoodsReceiptDao.getAll();
+	}
 
-	/* (non-Javadoc)
-	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptManager#get(java.lang.Long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.worldbestsoft.service.impl.InvGoodsReceiptManager#get(java.lang.Long)
 	 */
 	@Override
-    public InvGoodsReceipt get(Long id) {
-	    return invGoodsReceiptDao.get(id);
-    }
+	public InvGoodsReceipt get(Long id) {
+		return invGoodsReceiptDao.get(id);
+	}
 
-	/* (non-Javadoc)
-	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptManager#save(com.worldbestsoft.model.InvGoodReceipt)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.worldbestsoft.service.impl.InvGoodsReceiptManager#save(com.worldbestsoft
+	 * .model.InvGoodReceipt)
 	 */
 	@Override
-    public InvGoodsReceipt save(InvGoodsReceipt invGoodsReceipt, Collection<InvGoodsReceiptItem> newInvGoodsReceiptItemList) {
-		//save to get key
-//		newInvGoodsReceiptItemList to remove hibernate proxy, otherwise invGoodsReceipt.getInvGoodsReceiptItems(); will query the database again and remove the newly object
-//		Set<InvGoodsReceiptItem> newInvGoodsReceiptItemList = invGoodsReceipt.getInvGoodsReceiptItems();
+	public InvGoodsReceipt save(InvGoodsReceipt invGoodsReceipt, Collection<InvGoodsReceiptItem> newInvGoodsReceiptItemList) {
+		// save to get key
+		// newInvGoodsReceiptItemList to remove hibernate proxy, otherwise
+		// invGoodsReceipt.getInvGoodsReceiptItems(); will query the database
+		// again and remove the newly object
+		// Set<InvGoodsReceiptItem> newInvGoodsReceiptItemList =
+		// invGoodsReceipt.getInvGoodsReceiptItems();
 		InvGoodsReceipt invGoodsReceiptSave = invGoodsReceiptDao.save(invGoodsReceipt);
-		
+
 		if (null != invGoodsReceipt.getId()) {
 			List<InvGoodsReceiptItem> oldInvGoodsReceiptItemList = invGoodsReceiptItemDao.findByInvGoodReceipt(invGoodsReceipt.getId());
-			//delete if not in the new list.
+			// delete if not in the new list.
 			for (InvGoodsReceiptItem invGoodsReceiptItem : oldInvGoodsReceiptItemList) {
 				InvGoodsReceiptItem foundinvGoodsReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(newInvGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodsReceiptItem.getInvItem().getCode()));
 				if (null == foundinvGoodsReceiptItem) {
-					//delete 
+					// delete
 					invGoodsReceiptItemDao.remove(invGoodsReceiptItem.getId());
 				}
 			}
-			//calculate cost
+			// calculate cost
 			BigDecimal totalCost = BigDecimal.ZERO;
-			
-			//add or update new list
+
+			// add or update new list
 			for (InvGoodsReceiptItem invGoodsReceiptItem : newInvGoodsReceiptItemList) {
 				InvGoodsReceiptItem foundInvGoodsReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(oldInvGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodsReceiptItem.getInvItem().getCode()));
 				if (null == foundInvGoodsReceiptItem) {
 					invGoodsReceiptItem.setInvGoodsReceipt(invGoodsReceiptSave);
 					invGoodsReceiptItemDao.save(invGoodsReceiptItem);
 				} else {
-					//update old object
+					// update old object
 					foundInvGoodsReceiptItem.setMemo(invGoodsReceiptItem.getMemo());
 					foundInvGoodsReceiptItem.setQty(invGoodsReceiptItem.getQty());
 					foundInvGoodsReceiptItem.setUnitPrice(invGoodsReceiptItem.getUnitPrice());
@@ -149,68 +180,81 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 				totalCost = totalCost.add(invGoodsReceiptItem.getQty().multiply(invGoodsReceiptItem.getUnitPrice()));
 			}
 			invGoodsReceiptSave.setTotalCost(totalCost);
-			
-			//update cost
+
+			// update cost
 			invGoodsReceiptSave = invGoodsReceiptDao.save(invGoodsReceiptSave);
-			
+
 		} else {
-			//calculate cost
+			// calculate cost
 			BigDecimal totalCost = BigDecimal.ZERO;
-			
+
 			for (InvGoodsReceiptItem invGoodsReceiptItem : newInvGoodsReceiptItemList) {
 				invGoodsReceiptItem.setInvGoodsReceipt(invGoodsReceiptSave);
 				invGoodsReceiptItemDao.save(invGoodsReceiptItem);
 				totalCost = totalCost.add(invGoodsReceiptItem.getQty().multiply(invGoodsReceiptItem.getUnitPrice()));
 			}
 			invGoodsReceiptSave.setTotalCost(totalCost);
-			
-			
-			//update cost
+
+			// update cost
 			invGoodsReceiptSave = invGoodsReceiptDao.save(invGoodsReceiptSave);
-			
+
 		}
-	    return invGoodsReceiptSave;
-    }
-	
+		return invGoodsReceiptSave;
+	}
+
 	@Override
-    public InvGoodsReceipt saveToStock(InvGoodsReceipt invGoodsReceipt) {
-		//get running no
+	public InvGoodsReceipt saveToStock(InvGoodsReceipt invGoodsReceipt) {
+		// get running no
 		try {
-            Long documentNumber = documentNumberGenerator.nextDocumentNumber(InvGoodsReceipt.class);
-            String runningNo = MessageFormat.format(documentNumberFormat, documentNumber);
-            invGoodsReceipt.setRunningNo(runningNo);
-            invGoodsReceipt = invGoodsReceiptDao.save(invGoodsReceipt);
-            
-            for (InvGoodsReceiptItem invGoodsReceiptItem : invGoodsReceipt.getInvGoodsReceiptItems()) {
-            	InvItemLevel invItemLevel = new InvItemLevel();
-            	invItemLevel.setInvItem(invGoodsReceiptItem.getInvItem());
-            	invItemLevel.setQtyInStock(invGoodsReceiptItem.getQty());
-            	invItemLevel.setTransactionDate(new Date());
-            	invItemLevel.setRefDocument(invGoodsReceipt.getRunningNo());
-            	invItemLevel.setRefType(RefType.GOOD_RECEIPT.getCode());
-            	
-            	invItemLevelDao.save(invItemLevel);
-            }
-        } catch (DocumentNumberGeneratorException e) {
-        	//roll back transaction
-            throw new RuntimeException(e);
-        }
+			Long documentNumber = documentNumberGenerator.nextDocumentNumber(InvGoodsReceipt.class);
+			String runningNo = MessageFormat.format(documentNumberFormat, documentNumber);
+			invGoodsReceipt.setRunningNo(runningNo);
+			invGoodsReceipt = invGoodsReceiptDao.save(invGoodsReceipt);
+
+			List<InvGoodsReceiptItem> invGoodsReceiptItemList = invGoodsReceiptItemDao.findByInvGoodReceipt(invGoodsReceipt.getId());
+
+			for (InvGoodsReceiptItem invGoodsReceiptItem : invGoodsReceiptItemList) {
+				InvItemLevel invItemLevel = new InvItemLevel();
+				invItemLevel.setInvItem(invGoodsReceiptItem.getInvItem());
+				invItemLevel.setQtyInStock(invGoodsReceiptItem.getQty());
+				invItemLevel.setTransactionDate(new Date());
+				invItemLevel.setRefDocument(invGoodsReceipt.getRunningNo());
+				invItemLevel.setRefType(RefType.GOOD_RECEIPT.getCode());
+
+				invItemLevelDao.save(invItemLevel);
+
+				// design to do one by one itemLevel, if not work will change to
+				// per invGoodReeipt
+				// by changing constructor and move out from loop
+				// this should not effect current transaction, mean will not
+				// rollback.
+				InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
+				context.publishEvent(invItemLevelChangedEvent);
+			}
+		} catch (DocumentNumberGeneratorException e) {
+			// roll back transaction
+			throw new RuntimeException(e);
+		}
 		return invGoodsReceipt;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.worldbestsoft.service.impl.InvGoodsReceiptManager#remove(java.lang.Long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.worldbestsoft.service.impl.InvGoodsReceiptManager#remove(java.lang
+	 * .Long)
 	 */
 	@Override
-    public void remove(Long id) {
+	public void remove(Long id) {
 		InvGoodsReceipt invGoodsReceipt = invGoodsReceiptDao.get(id);
 		if (null != invGoodsReceipt) {
-			//delete child if exist
+			// delete child if exist
 			for (InvGoodsReceiptItem invGoodsReceiptItem : invGoodsReceipt.getInvGoodsReceiptItems()) {
 				invGoodsReceiptItemDao.remove(invGoodsReceiptItem.getId());
 			}
 		}
-	    invGoodsReceiptDao.remove(id);
-    }
-	
+		invGoodsReceiptDao.remove(id);
+	}
+
 }
