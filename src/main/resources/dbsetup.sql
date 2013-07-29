@@ -485,6 +485,7 @@ CREATE  TABLE IF NOT EXISTS `onion`.`inv_stock` (
   `id` BIGINT NOT NULL AUTO_INCREMENT ,
   `inv_item_id` BIGINT NOT NULL ,
   `qty` DECIMAL(10,2) NULL DEFAULT NULL ,
+  `update_date` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
   CONSTRAINT `fk_inv_stock_inv_item1`
     FOREIGN KEY (`inv_item_id` )

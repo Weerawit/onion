@@ -1,6 +1,7 @@
 package com.worldbestsoft.service.impl;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class InvStockManagerImpl implements InvStockManager {
 			invStock.setQty(BigDecimal.ZERO);
 		}
 		
+		invStock.setUpdateDate(new Date());
 		BigDecimal newQty = invStock.getQty().add(invItemLevel.getQtyInStock());
 		invStock.setQty(newQty);
 		return invStockDao.save(invStock);
