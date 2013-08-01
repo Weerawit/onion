@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -26,7 +25,6 @@ import com.worldbestsoft.model.InvGoodsReceiptItem;
 import com.worldbestsoft.model.Supplier;
 import com.worldbestsoft.service.InvGoodsReceiptManager;
 import com.worldbestsoft.service.SupplierManager;
-import com.worldbestsoft.util.HibernateUtil;
 
 @Controller
 @RequestMapping("/invGoodsReceipt*")
