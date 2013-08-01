@@ -153,7 +153,7 @@
 			</field>
 		</form>
 		<form name="invGoodsReceiptItem">
-			<field property="invItem.code" depends="required, maxlength">
+			<field property="invItem.name" depends="required, maxlength">
 				<arg key="invGoodsReceiptItem.invItem.code" />
 				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
