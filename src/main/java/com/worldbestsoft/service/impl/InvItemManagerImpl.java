@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.InvItemDao;
+import com.worldbestsoft.dao.SearchException;
 import com.worldbestsoft.model.InvItem;
 import com.worldbestsoft.service.InvItemManager;
 
@@ -65,6 +66,11 @@ public class InvItemManagerImpl implements InvItemManager {
 	@Override
     public List<InvItem> getAll() {
 	    return invItemDao.getAll();
+    }
+
+	@Override
+    public List<InvItem> search(String searchTerm) throws SearchException {
+	    return invItemDao.search(searchTerm);
     }
 	
 	
