@@ -252,7 +252,7 @@ public class BaseFormController implements ServletContextAware {
 
 	protected int getPageSize(HttpServletRequest request) {
 		String pageSize = request.getParameter("ps");
-		Integer ps = Integer.valueOf(30);
+		Integer ps = Integer.valueOf(10);
 		try {
 			if (StringUtils.isNotBlank(pageSize) && StringUtils.isNumeric(pageSize)) {
 				ps = Integer.valueOf(pageSize);
@@ -265,6 +265,11 @@ public class BaseFormController implements ServletContextAware {
 		// generate html for select box as well
 		StringBuilder builder = new StringBuilder();
 		builder.append("<select name='ps' id='ps' onchange='changePageSize(this)' class='input-mini'>");
+		builder.append("<option value='10'");
+		if (ps == 10) {
+			builder.append(" selected");
+		}
+		builder.append(" >10</option>");
 		builder.append("<option value='30'");
 		if (ps == 30) {
 			builder.append(" selected");

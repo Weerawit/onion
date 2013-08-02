@@ -139,17 +139,32 @@
 				$(element).after(btnSearch);
 				$(element).after(modalEl);
 				
-				//handle form submit
+				//handle form submit, and remove link to ajax
 				var handleSubmit = function(event) {
 					event.preventDefault();
 					modalEl.find('.modal-body').load($(this).prop('action'), $(this).serialize(), function complete() {
 						//rebind event after page re-load.
 						modalEl.find('.modal-body form').on('submit', handleSubmit);
+						modalEl.find('.modal-body th.sortable a').on('click', handleLink);
+						modalEl.find('.modal-body div.pagination li a').on('click', handleLink);
+					});
+				}
+				
+				var handleLink = function(event) {
+					event.preventDefault();
+					modalEl.find('.modal-body').load('popup/' + type + $(this).attr('href'), function complete() {
+						//rebind event after page re-load.
+						modalEl.find('.modal-body form').on('submit', handleSubmit);
+						modalEl.find('.modal-body th.sortable a').on('click', handleLink);
+						modalEl.find('.modal-body div.pagination li a').on('click', handleLink);
 					});
 				}
 				//when modal is shown update event form submit.
 				modalEl.on('shown', function() {
 					modalEl.find('.modal-body form').on('submit', handleSubmit);
+					modalEl.find('.modal-body th.sortable a').on('click', handleLink);
+					modalEl.find('.modal-body div.pagination li a').on('click', handleLink);
+					
 				});
 			}
 		},
