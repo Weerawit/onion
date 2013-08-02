@@ -19,6 +19,8 @@
 <script type="text/javascript" src="<c:url value='/scripts/lib/plugins/jquery.cookie.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/scripts/script.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/scripts/util.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/scripts/lib/bootstrap-modal.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/scripts/lib/bootstrap-modalmanager.js'/>"></script>
 <decorator:head />
 
 
@@ -49,19 +51,6 @@
 	<div class="container-fluid">
 		<%@ include file="/common/messages.jsp"%>
 		<div class="row-fluid">
-			<div id="popupModal" class="modal hide fade">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true" onclick="$('#popupModal').modal('hide');">&times;</button>
-					<h3>Modal header</h3>
-				</div>
-				<div class="modal-body">
-				</div>
-				<div class="modal-footer">
-					<a href="#" class="btn btn-primary"><fmt:message key="button.selectPopup"/></a>
-					<a href="#" class="btn"  onclick="$('#popupModal').modal('hide');"><fmt:message key="button.close"/></a> 
-				</div>
-			</div>
 			<decorator:body />
 		</div>
 	</div>

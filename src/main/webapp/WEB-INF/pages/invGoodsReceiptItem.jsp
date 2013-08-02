@@ -184,20 +184,22 @@
 		return validateInvGoodsReceiptItem(theForm);
 	}
 
-	function openItemPopup() {
-		openPopup('invItemList', {
-			code : $('input[name="invItem.code"]').val()
-		});
-	}
 	$(document).ready(function () {
 		$('input[name="invItem.name"]').lookup({
 			type: 'item',
-			displayProperty: 'name',
+			displayProperty: function (json) {
+				return json.code + ' : ' + json.name;
+			},
+			selectProperty: 'name',
+			btnSearchCondition: function () {
+				return {code: $('input[name="invItem.code"]').val()};	
+			},
 			handler: function (json) {
 				if (json) {
 					$('input[name="invItem.code"]').val(json.code);
 				} else {
 					$('input[name="invItem.code"]').val('');
+					$('input[name="invItem.name"]').val('');
 				}
 			}
 		});

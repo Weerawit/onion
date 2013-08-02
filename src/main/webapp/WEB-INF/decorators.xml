@@ -6,6 +6,9 @@
         <pattern>/resources/*</pattern>
         <pattern>/json/*</pattern>
     </excludes> 
+    <decorator name="popup" page="popup.jsp">
+    		<pattern>/popup*</pattern>
+    </decorator>
     <decorator name="default" page="default.jsp">
         <pattern>/*</pattern>
     </decorator>
