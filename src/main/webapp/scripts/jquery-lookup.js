@@ -24,8 +24,18 @@
 		selectProperty : undefined, //incase , select value to display is diff from custom display list.
 		btnSearch : '<a class="btn"> <i class="icon-search"></i></a>', //valid html for  button, 
 		showBtnSearch : true,
-		btnSearchCondition : undefined, //fucntion that return json condition to be pass as param.
+		btnSearchCondition : undefined, //function that return json condition to be pass as param.
 		handler : function(json) {
+		},
+		autocompleteUrl : function () {
+			return 'json/' + this.type;
+		},
+		popupUrl : function (withCondition) {
+			url = 'popup/' + this.type;
+			if (withCondition && typeof this.btnSearchCondition == 'function') {
+				url += '?' + jQuery.param(this.btnSearchCondition.call(this));
+			}
+			return url;
 		}
 	};
 
@@ -59,8 +69,8 @@
 			if (!this.options.selectProperty) {
 				this.options.selectProperty = this.options.displayProperty;
 			}
-
-			var type = this.options.type, displayProperty = this.options.displayProperty, handler = this.options.handler, element = this.element, self = this._self, btnSearchCondition = this.options.btnSearchCondition;
+			var self = this._self, element = this.element;
+			//var type = this.options.type, displayProperty = this.options.displayProperty, handler = this.options.handler, element = this.element, , btnSearchCondition = this.options.btnSearchCondition;
 
 			// Place initialization logic here
 			// You already have access to the DOM element and
@@ -73,7 +83,7 @@
 			typeaheadOption = {
 				source : function(query, process) {
 					jsonStringList = [];
-					url = 'json/' + type + '/';
+					url = self.options.autocompleteUrl.call(self.options);
 					$.ajax({
 						dataType : "json",
 						url : url,
@@ -129,7 +139,7 @@
 				//bind btnSearch event
 				var modalEl = this.initModal(this.element, this.options);
 				var btnSearch = $(this.options.btnSearch).on('click', function() {
-					var url = 'popup/' + type + '?' + jQuery.param(btnSearchCondition.call(this.element));
+					var url = self.options.popupUrl.call(self.options, true);
 					var options = {remote : url, 
 							modalOverflow: true,
 							width : '80%'};
@@ -142,21 +152,34 @@
 				//handle form submit, and remove link to ajax
 				var handleSubmit = function(event) {
 					event.preventDefault();
-					modalEl.find('.modal-body').load($(this).prop('action'), $(this).serialize(), function complete() {
+					modalEl.find('.modal-body').load($(this).prop('action'), $(event.target).serialize(), function complete() {
 						//rebind event after page re-load.
 						modalEl.find('.modal-body form').on('submit', handleSubmit);
 						modalEl.find('.modal-body th.sortable a').on('click', handleLink);
 						modalEl.find('.modal-body div.pagination li a').on('click', handleLink);
+						modalEl.find('.modal-body select[name=ps]').on('change', handlePageSelect);
 					});
 				}
 				
 				var handleLink = function(event) {
 					event.preventDefault();
-					modalEl.find('.modal-body').load('popup/' + type + $(this).attr('href'), function complete() {
+					modalEl.find('.modal-body').load(self.options.popupUrl.call(self.options) + $(event.target).attr('href'), function complete() {
 						//rebind event after page re-load.
 						modalEl.find('.modal-body form').on('submit', handleSubmit);
 						modalEl.find('.modal-body th.sortable a').on('click', handleLink);
 						modalEl.find('.modal-body div.pagination li a').on('click', handleLink);
+						modalEl.find('.modal-body select[name=ps]').on('change', handlePageSelect);
+					});
+				}
+				
+				var handlePageSelect = function(event) {
+					event.preventDefault();
+					modalEl.find('.modal-body').load(self.options.popupUrl.call(self.options) + '?ps=' + $(event.target).val(), function complete() {
+						//rebind event after page re-load.
+						modalEl.find('.modal-body form').on('submit', handleSubmit);
+						modalEl.find('.modal-body th.sortable a').on('click', handleLink);
+						modalEl.find('.modal-body div.pagination li a').on('click', handleLink);
+						modalEl.find('.modal-body select[name=ps]').on('change', handlePageSelect);
 					});
 				}
 				//when modal is shown update event form submit.
@@ -164,7 +187,7 @@
 					modalEl.find('.modal-body form').on('submit', handleSubmit);
 					modalEl.find('.modal-body th.sortable a').on('click', handleLink);
 					modalEl.find('.modal-body div.pagination li a').on('click', handleLink);
-					
+					modalEl.find('.modal-body select[name=ps]').on('change', handlePageSelect);
 				});
 			}
 		},
