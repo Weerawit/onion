@@ -94,7 +94,7 @@
 			<fmt:formatDate value="${invGoodsReceipt.receiptDate}" pattern="dd/MM/yyyy HH:mm:ss" />
 		</display:column>
 		<display:column property="supplier.name" escapeXml="true" sortable="true" titleKey="invGoodsReceipt.supplier.name" sortName="supplier.name" />
-		<display:column property="totalCost" escapeXml="true" sortable="true" titleKey="invGoodsReceipt.totalCost" sortName="totalCost" />
+		<display:column property="totalCost" sortable="true" titleKey="invGoodsReceipt.totalCost" sortName="totalCost" format="{0,number,#,##0.##}"/>
 		<display:setProperty name="export.csv" value="true"></display:setProperty>
 		<display:setProperty name="export.excel" value="true"></display:setProperty>
 		<display:setProperty name="export.xml" value="false"></display:setProperty>

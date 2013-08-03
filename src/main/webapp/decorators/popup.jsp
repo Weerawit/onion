@@ -21,12 +21,8 @@
 <script type="text/javascript" src="<c:url value='/scripts/util.js'/>"></script>
 <decorator:head />
 
-
 </head>
 <body <decorator:getProperty property="body.id" writeEntireProperty="true"/> <decorator:getProperty property="body.class" writeEntireProperty="true"/>>
-	<c:set var="currentMenu" scope="request">
-		<decorator:getProperty property="meta.menu" />
-	</c:set>
 
 	<div class="container-fluid">
 		<%@ include file="/common/messages.jsp"%>
@@ -35,11 +31,6 @@
 		</div>
 	</div>
 
-	<div id="footer">
-		<span class="left"><img src="<c:url value='/images/logo2.png'/>" /> </span> <span class="right"><fmt:message key="webapp.version" /> <c:if test="${pageContext.request.remoteUser != null}">
-            | <fmt:message key="user.status" /> ${pageContext.request.remoteUser}
-            </c:if> &copy; <fmt:message key="copyright.year" /> <a href="<fmt:message key="company.url"/>"><fmt:message key="company.name" /></a> </span>
-	</div>
 	<%=(request.getAttribute("scripts") != null) ? request.getAttribute("scripts") : ""%>
 </body>
 </html>

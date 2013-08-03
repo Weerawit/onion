@@ -2,6 +2,7 @@ package com.worldbestsoft.service;
 
 import java.util.List;
 
+import com.worldbestsoft.dao.SearchException;
 import com.worldbestsoft.model.InvItem;
 
 public interface InvItemManager {
@@ -21,5 +22,7 @@ public interface InvItemManager {
 	public abstract InvItem findByInvItemCode(String InvItemCode);
 
 	public abstract List<InvItem> getAll();
+
+	public abstract List<InvItem> search(String searchTerm) throws SearchException;
 
 }

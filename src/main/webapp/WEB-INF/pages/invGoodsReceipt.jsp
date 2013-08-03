@@ -43,50 +43,84 @@
 <!-- 				</div> -->
 <%-- 			</spring:bind> --%>
 <%-- 		</c:if> --%>
-		<c:if test="${invGoodsReceipt.runningNo != null }">
-			<div class="control-group">
-				<appfuse:label styleClass="control-label" key="invGoodsReceipt.runningNo" />
-				<div class="controls">
-					<span class="input-medium uneditable-input"><c:out value="${invGoodsReceipt.runningNo}" /></span>
-					<form:hidden path="runningNo"/>
-				</div>
-			</div>
-		</c:if>
-		
-		<spring:bind path="invGoodsReceipt.supplier.code">
-			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-				<appfuse:label styleClass="control-label" key="invGoodsReceipt.supplier.code" />
-				<div class="controls">
-					<form:select path="supplier.code">
-						<form:option value=""></form:option>
-						<form:options items="${supplierList}" itemLabel="name" itemValue="code"/>
-					</form:select>
-					<form:errors path="supplier.code" cssClass="help-inline" />
-				</div>
-			</div>
-		</spring:bind>
-		
-		<spring:bind path="invGoodsReceipt.receiptDate">
-			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-				<appfuse:label styleClass="control-label" key="invGoodsReceipt.receiptDate" />
-				<div class="controls">
-					<div class="input-append date" id="receiptDateDatepicker">
-						<form:input path="receiptDate" id="receiptDate" cssClass="input-medium" maxlength="50" /><span class="add-on"><i class="icon-th"></i></span>
+		<c:choose>
+			<c:when test="${invGoodsReceipt.runningNo != null }">
+				<%-- since we have runningNo, readonly --%>
+				<div class="control-group">
+					<appfuse:label styleClass="control-label" key="invGoodsReceipt.runningNo" />
+					<div class="controls">
+						<span class="input-medium uneditable-input"><c:out value="${invGoodsReceipt.runningNo}" /></span>
+						<form:hidden path="runningNo"/>
 					</div>
-					<form:errors path="receiptDate" cssClass="help-inline" />
 				</div>
-			</div>
-		</spring:bind>
+				
+				<div class="control-group">
+					<appfuse:label styleClass="control-label" key="invGoodsReceipt.supplier.code" />
+					<div class="controls">
+						<span class="input-medium uneditable-input"><c:out value="${invGoodsReceipt.supplier.name}" /></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<appfuse:label styleClass="control-label" key="invGoodsReceipt.receiptDate" />
+					<div class="controls">
+						<span class="input-medium uneditable-input">
+						<fmt:formatDate value="${invGoodsReceipt.receiptDate}" pattern="dd/MM/yyyy HH:mm:ss"/>
+						</span>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<appfuse:label styleClass="control-label" key="invGoodsReceipt.memo" />
+					<div class="controls">
+						<textarea class="input-xlarge uneditable-input" readonly="readonly">
+						<c:out value="${invGoodsReceipt.memo}" />
+						</textarea>
+					</div>
+				</div>
+			
+			</c:when>
+			<c:otherwise>
+				<%-- form input --%>
+			
+				<spring:bind path="invGoodsReceipt.supplier.code">
+					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+						<appfuse:label styleClass="control-label" key="invGoodsReceipt.supplier.code" />
+						<div class="controls">
+							<form:select path="supplier.code">
+								<form:option value=""></form:option>
+								<form:options items="${supplierList}" itemLabel="name" itemValue="code"/>
+							</form:select>
+							<form:errors path="supplier.code" cssClass="help-inline" />
+						</div>
+					</div>
+				</spring:bind>
+				
+				<spring:bind path="invGoodsReceipt.receiptDate">
+					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+						<appfuse:label styleClass="control-label" key="invGoodsReceipt.receiptDate" />
+						<div class="controls">
+							<div class="input-append date" id="receiptDateDatepicker">
+								<form:input path="receiptDate" id="receiptDate" cssClass="input-medium" maxlength="50" /><span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<form:errors path="receiptDate" cssClass="help-inline" />
+						</div>
+					</div>
+				</spring:bind>
+				
+				<spring:bind path="invGoodsReceipt.memo">
+					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+						<appfuse:label styleClass="control-label" key="invGoodsReceipt.memo" />
+						<div class="controls">
+							<form:textarea path="memo" id="memo" cssClass="input-xlarge"/>
+							<form:errors path="memo" cssClass="help-inline" />
+						</div>
+					</div>
+				</spring:bind>
+			
+			</c:otherwise>
+		</c:choose>
 		
-		<spring:bind path="invGoodsReceipt.memo">
-			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-				<appfuse:label styleClass="control-label" key="invGoodsReceipt.memo" />
-				<div class="controls">
-					<form:textarea path="memo" id="memo" cssClass="input-xlarge"/>
-					<form:errors path="memo" cssClass="help-inline" />
-				</div>
-			</div>
-		</spring:bind>
+		
 		
 <%-- 		<c:if test="${not empty invGoodsReceiptItemList }"> --%>
 <!-- 		<div class="control-group pull-right"> -->
@@ -116,15 +150,20 @@
 				<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" headerClass="span1" class="span1">
 					<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${invGoodsReceiptItem_rowNum - 1}'/>" />
 				</display:column>
+				<display:column titleKey="invGoodsReceiptItem.invItem.code" sortable="true">
+					<button class="btn btn-link" type="submit" onclick="bCancel=true;$('#invGoodsReceipt').attr('action', '${ctx}/invGoodsReceipt/editDetail?&id=${ invGoodsReceiptItem_rowNum - 1}');">
+						<c:out value="${invGoodsReceiptItem.invItem.code}"/>
+					</button>
+				</display:column>
 			</c:if>
-			<display:column titleKey="invGoodsReceiptItem.invItem.code" sortable="true">
-				<button class="btn btn-link" type="submit" onclick="bCancel=true;$('#invGoodsReceipt').attr('action', '${ctx}/invGoodsReceipt/editDetail?&id=${ invGoodsReceiptItem_rowNum - 1}');">
-					<c:out value="${invGoodsReceiptItem.invItem.code}"/>
-				</button>
-			</display:column>
+			<c:if test="${invGoodsReceipt.runningNo != null }">
+				<display:column titleKey="invGoodsReceiptItem.invItem.code" sortable="true">
+					<a class="btn btn-link" href="${ctx}/invGoodsReceiptItem?from=list&id=${invGoodsReceiptItem_rowNum - 1}"><c:out value="${invGoodsReceiptItem.invItem.code}"/></a>
+				</display:column>
+			</c:if>
 			<display:column property="invItem.name" escapeXml="true" sortable="true" titleKey="invGoodsReceiptItem.invItem.name" sortName="invItem.name" />
-			<display:column property="qty" escapeXml="true" sortable="true" titleKey="invGoodsReceiptItem.qty" sortName="qty" />
-			<display:column property="unitPrice" escapeXml="true" sortable="true" titleKey="invGoodsReceiptItem.unitPrice" sortName="unitPrice" />
+			<display:column property="qty" sortable="true" titleKey="invGoodsReceiptItem.qty" sortName="qty" format="{0,number,#,##0.##}"/>
+			<display:column property="unitPrice" sortable="true" titleKey="invGoodsReceiptItem.unitPrice" sortName="unitPrice" format="{0,number,#,##0.##}"/>
 			<display:setProperty name="export.csv" value="true"></display:setProperty>
 			<display:setProperty name="export.excel" value="true"></display:setProperty>
 			<display:setProperty name="export.xml" value="false"></display:setProperty>
@@ -142,7 +181,7 @@
 					<td colspan="3"><fmt:message key="invGoodsReceipt.totalCost"/></td>
 				</c:otherwise>
 				</c:choose>
-					<td><fmt:formatNumber value="${invGoodsReceipt.totalCost}" pattern="#,###,##0.##"></fmt:formatNumber></td>
+					<td><fmt:formatNumber value="${invGoodsReceipt.totalCost}" pattern="#,##0.##"></fmt:formatNumber></td>
 				<tr>
 			</display:footer>
 		</display:table>
@@ -192,12 +231,14 @@
 	function onFormSubmit(theForm) {	
 		return validateInvGoodsReceipt(theForm);
 	}
+	<c:if  test="${invGoodsReceipt.runningNo == null }">
 	$(function() {
 
 		var st = $('#receiptDateDatepicker').datetimepicker({
 			format : "dd/MM/yyyy hh:mm:ss"
 		});
 	});
+	</c:if>
 
 	function validateDelete(checkbox) {
 

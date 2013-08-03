@@ -37,15 +37,28 @@ function createFormElement(element, type, name, id, value, parent) {
     parent.appendChild(e);
 }
 
-function confirmDelete(obj) {
-    var msg = "Are you sure you want to delete this " + obj + "?";
-    ans = confirm(msg);
-    return ans;
-}
+/** popup */
+var popupHandler = [];
 
-// 18n version of confirmDelete. Message must be already built.
-function confirmMessage(obj) {
-    var msg = "" + obj;
-    ans = confirm(msg);
-    return ans;
-}
+function openPopup(url, param, handler) {
+	var options = {remote : url + '?' + jQuery.param(param)};
+	$('#popupModal').modal(options);
+	$('#popupModal').modal('show');
+	popupHandler.push(handler);
+};
+
+function closePopup() {
+	var handler = popupHandler.pop();
+	if (typeof handler == "function") {
+	}
+	$('#popupModal').modal('hide');
+};
+
+function selectAndClosePopup(jsonObject) {
+	var handler = popupHandler.pop();
+	if (typeof handler == "function") {
+		popupHandler.call(this, jsonObject);
+	}
+	$('#popupModal').modal('hide');
+};
+
