@@ -12,6 +12,10 @@
             <Item name="ReloadContext" title="menu.admin.reload" page="/admin/reload"/>
             <Item name="FileUpload" title="menu.selectFile" page="/fileupload"/>
         </Menu>
+        <Menu name="CatalogMenu" title="menu.catalog" description="Catalog Menu" roles="ROLE_ADMIN,ROLE_USER">
+            <Item name="CatalogTypes" title="menu.catalog.catalogType" page="/catalogTypeList"/>
+            <Item name="Catalog" title="menu.catalog.catalog" page="/catalogList"/>
+        </Menu>
         <Menu name="InvMenu" title="menu.inventory" description="Inventory Menu" roles="ROLE_ADMIN,ROLE_USER">
             <Item name="ItemGroups" title="menu.inventory.itemGroup" page="/invItemGroupList"/>
             <Item name="Items" title="menu.inventory.item" page="/invItemList"/>
