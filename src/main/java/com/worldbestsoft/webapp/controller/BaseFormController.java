@@ -264,7 +264,7 @@ public class BaseFormController implements ServletContextAware {
 
 		// generate html for select box as well
 		StringBuilder builder = new StringBuilder();
-		builder.append("<select name='ps' id='ps' onchange='changePageSize(this)' class='input-mini'>");
+		builder.append("<select name='ps' id='ps' class='input-mini'>");
 		builder.append("<option value='10'");
 		if (ps == 10) {
 			builder.append(" selected");
