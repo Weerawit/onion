@@ -68,6 +68,12 @@
 			}
 			return false;
 		}
+
+		$(document).ready(function() {
+			$('select[name=ps]').on('change', function() {
+				changePageSize($('select[name=ps]')); 
+			})
+		});
 	</script>
 </body>
 </html>
