@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.DocumentNumberDao;
 import com.worldbestsoft.model.DocumentNumber;
+import com.worldbestsoft.model.InvGoodsMovement;
 import com.worldbestsoft.model.InvGoodsReceipt;
 import com.worldbestsoft.service.DocumentNumberGenerator;
 import com.worldbestsoft.service.DocumentNumberGeneratorException;
@@ -25,6 +26,7 @@ public class DocumentNumberGeneratorImpl implements DocumentNumberGenerator {
 
 	public DocumentNumberGeneratorImpl() {
 		lockObject.put(InvGoodsReceipt.class.getName(), new ReentrantLock());
+		lockObject.put(InvGoodsMovement.class.getName(), new ReentrantLock());
 	}
 
 //	public String nextDocumentNumber(Class klass) throws InterruptedException {

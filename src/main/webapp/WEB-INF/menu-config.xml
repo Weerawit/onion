@@ -22,8 +22,13 @@
             <Item name="Supplier" title="menu.inventory.supplier" page="/supplierList"/>
             <Item name="GoodsReceipt" title="menu.inventory.goodsreceipt" page="/invGoodsReceiptList"/>
             <Item name="NewGoodsReceipt" title="menu.inventory.newgoodsreceipt" page="/invGoodsReceipt?method=Add"/>
+            
+            <Item name="GoodsMovement" title="menu.inventory.goodsmovement" page="/invGoodsMovementList"/>
+            <Item name="NewGoodsMovement" title="menu.inventory.newgoodsmovement" page="/invGoodsMovement?method=Add"/>
         </Menu>
         <Menu name="EmployeeMenu" title="menu.employee" description="Employee Menu" roles="ROLE_ADMIN,ROLE_USER" page="/employeeList">
+        </Menu>
+        <Menu name="CustomerMenu" title="menu.customer" description="Customer Menu" roles="ROLE_ADMIN,ROLE_USER" page="/customerList">
         </Menu>
         <Menu name="Logout" title="user.logout" page="/logout" roles="ROLE_ADMIN,ROLE_USER,ROLE_READONLY" onclick="return logout()"/>
     </Menus>

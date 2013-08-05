@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 23, 2013 9:54:03 PM by Hibernate Tools 4.0.0
+// Generated Aug 5, 2013 1:17:13 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -28,6 +28,7 @@ public class InvGoodsMovement implements java.io.Serializable {
 	private Date movementDate;
 	private String movementType;
 	private String owner;
+	private String memo;
 	private Date createDate;
 	private String createUser;
 	private Date updateDate;
@@ -37,11 +38,12 @@ public class InvGoodsMovement implements java.io.Serializable {
 	public InvGoodsMovement() {
 	}
 
-	public InvGoodsMovement(String runningNo, Date movementDate, String movementType, String owner, Date createDate, String createUser, Date updateDate, String updateUser, Set<InvGoodsMovementItem> invGoodsMovementItems) {
+	public InvGoodsMovement(String runningNo, Date movementDate, String movementType, String owner, String memo, Date createDate, String createUser, Date updateDate, String updateUser, Set<InvGoodsMovementItem> invGoodsMovementItems) {
 		this.runningNo = runningNo;
 		this.movementDate = movementDate;
 		this.movementType = movementType;
 		this.owner = owner;
+		this.memo = memo;
 		this.createDate = createDate;
 		this.createUser = createUser;
 		this.updateDate = updateDate;
@@ -95,6 +97,15 @@ public class InvGoodsMovement implements java.io.Serializable {
 
 	public void setOwner(String owner) {
 		this.owner = owner;
+	}
+
+	@Column(name = "memo")
+	public String getMemo() {
+		return this.memo;
+	}
+
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
