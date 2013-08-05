@@ -104,16 +104,6 @@
 					</div>
 				</spring:bind>
 
-				<%-- 		<spring:bind path="invGoodsMovementItem.unitType"> --%>
-				<%-- 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}"> --%>
-				<%-- 				<appfuse:label styleClass="control-label" key="invGoodsMovementItem.unitType" /> --%>
-				<%-- 				<div class="controls"> --%>
-				<%-- 					<form:input path="unitType" id="unitType" cssClass="input-xlarge" maxlength="50" /> --%>
-				<%-- 					<form:errors path="unitType" cssClass="help-inline" /> --%>
-				<%-- 				</div> --%>
-				<%-- 			</div> --%>
-				<%-- 		</spring:bind> --%>
-
 				<spring:bind path="invGoodsMovementItem.memo">
 					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 						<appfuse:label styleClass="control-label" key="invGoodsMovementItem.memo" />

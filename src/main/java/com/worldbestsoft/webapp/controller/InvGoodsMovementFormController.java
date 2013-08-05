@@ -22,12 +22,15 @@ import org.springframework.web.servlet.ModelAndView;
 import com.worldbestsoft.model.InvGoodsMovement;
 import com.worldbestsoft.model.InvGoodsMovementItem;
 import com.worldbestsoft.service.InvGoodsMovementManager;
+import com.worldbestsoft.service.LookupManager;
 
 @Controller
 @RequestMapping("/invGoodsMovement*")
 public class InvGoodsMovementFormController extends BaseFormController {
 	
 	private InvGoodsMovementManager invGoodsMovementManager;
+	
+	private LookupManager lookupManager;
 	
 	public InvGoodsMovementManager getInvGoodsMovementManager() {
 		return invGoodsMovementManager;
@@ -36,6 +39,15 @@ public class InvGoodsMovementFormController extends BaseFormController {
 	@Autowired
 	public void setInvGoodsMovementManager(InvGoodsMovementManager invGoodsMovementManager) {
 		this.invGoodsMovementManager = invGoodsMovementManager;
+	}
+	
+	public LookupManager getLookupManager() {
+		return lookupManager;
+	}
+
+	@Autowired
+	public void setLookupManager(LookupManager lookupManager) {
+		this.lookupManager = lookupManager;
 	}
 
 	@RequestMapping(value="/save" ,method = RequestMethod.POST)
@@ -70,6 +82,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 				
 				invGoodsMovementSession.setMovementDate(invGoodsMovementForm.getMovementDate());
 				invGoodsMovementSession.setOwner(invGoodsMovementForm.getOwner());
+				invGoodsMovementSession.setMovementType(invGoodsMovementForm.getMovementType());
 				invGoodsMovementSession.setMemo(invGoodsMovementForm.getMemo());
 				
 
@@ -90,6 +103,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 				InvGoodsMovement invGoodsMovement = getInvGoodsMovementManager().get(invGoodsMovementForm.getId());
 				invGoodsMovement.setMovementDate(invGoodsMovementForm.getMovementDate());
 				invGoodsMovement.setOwner(invGoodsMovementForm.getOwner());
+				invGoodsMovement.setMovementType(invGoodsMovementForm.getMovementType());
 				invGoodsMovement.setMemo(invGoodsMovementForm.getMemo());
 				invGoodsMovement.setUpdateDate(new Date());
 				invGoodsMovement.setUpdateUser(request.getRemoteUser());
@@ -114,6 +128,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 		InvGoodsMovement invGoodsMovement = (InvGoodsMovement) session.getAttribute("invGoodsMovement");
 		invGoodsMovement.setMovementDate(invGoodsMovementForm.getMovementDate());
 		invGoodsMovement.setOwner(invGoodsMovementForm.getOwner());
+		invGoodsMovement.setMovementType(invGoodsMovementForm.getMovementType());
 		invGoodsMovement.setMemo(invGoodsMovementForm.getMemo());
 		invGoodsMovement.setRunningNo(invGoodsMovementForm.getRunningNo());
 		return new ModelAndView("redirect:/invGoodsMovementItem?method=Add&from=list");
@@ -125,6 +140,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 		InvGoodsMovement invGoodsMovement = (InvGoodsMovement) session.getAttribute("invGoodsMovement");
 		invGoodsMovement.setMovementDate(invGoodsMovementForm.getMovementDate());
 		invGoodsMovement.setOwner(invGoodsMovementForm.getOwner());
+		invGoodsMovement.setMovementType(invGoodsMovementForm.getMovementType());
 		invGoodsMovement.setMemo(invGoodsMovementForm.getMemo());
 		invGoodsMovement.setRunningNo(invGoodsMovementForm.getRunningNo());
 		return new ModelAndView("redirect:/invGoodsMovementItem?from=list&id=" + request.getParameter("id"));
@@ -136,6 +152,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 		InvGoodsMovement invGoodsMovement = (InvGoodsMovement) session.getAttribute("invGoodsMovement");
 		invGoodsMovement.setMovementDate(invGoodsMovementForm.getMovementDate());
 		invGoodsMovement.setOwner(invGoodsMovementForm.getOwner());
+		invGoodsMovement.setMovementType(invGoodsMovementForm.getMovementType());
 		invGoodsMovement.setMemo(invGoodsMovementForm.getMemo());
 		invGoodsMovement.setRunningNo(invGoodsMovementForm.getRunningNo());
 		List<InvGoodsMovementItem> invGoodsMovementItemList = new ArrayList<InvGoodsMovementItem>(invGoodsMovement.getInvGoodsMovementItems());
@@ -180,7 +197,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("invGoodsMovement", invGoodsMovement);
 		model.put("invGoodsMovementItemList", invGoodsMovement.getInvGoodsMovementItems());
-		
+		model.put("movementTypeList", lookupManager.getAllInvGoodsMovementType(request.getLocale()));
 		return new ModelAndView("invGoodsMovement", model);
 	}
 

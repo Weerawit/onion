@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.worldbestsoft.model.criteria.InvGoodsMovementCriteria;
 import com.worldbestsoft.service.InvGoodsMovementManager;
+import com.worldbestsoft.service.LookupManager;
 
 @Controller
 @RequestMapping("/invGoodsMovementList*")
@@ -26,6 +27,7 @@ public class InvGoodsMovementListController extends BaseFormController {
 	private static final String[] DATE_PATTERN = new String[] {"dd/MM/yyyy HH:mm:ss", "dd/MM/yyyy"};
 
 	private InvGoodsMovementManager invGoodsMovementManager;
+	private LookupManager lookupManager;
 	
 	public InvGoodsMovementManager getInvGoodsMovementManager() {
 		return invGoodsMovementManager;
@@ -34,6 +36,15 @@ public class InvGoodsMovementListController extends BaseFormController {
 	@Autowired
 	public void setInvGoodsMovementManager(InvGoodsMovementManager invGoodsMovementManager) {
 		this.invGoodsMovementManager = invGoodsMovementManager;
+	}
+	
+	public LookupManager getLookupManager() {
+		return lookupManager;
+	}
+
+	@Autowired
+	public void setLookupManager(LookupManager lookupManager) {
+		this.lookupManager = lookupManager;
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -75,6 +86,7 @@ public class InvGoodsMovementListController extends BaseFormController {
 
 		model.addAttribute("resultSize", invGoodsMovementManager.querySize(criteria));
 		model.addAttribute("invGoodsMovementList", invGoodsMovementManager.query(criteria, page, size, sortColumn, order));
+		model.addAttribute("movementTypeList", lookupManager.getAllInvGoodsMovementType(request.getLocale()));
 		return new ModelAndView("invGoodsMovementList", model.asMap());
 	}
 

@@ -27,7 +27,7 @@
 				<select id=invGoodsMovement.movementType name="invGoodsMovement.movementType">
 					<option value=""></option>
 					<c:forEach items="${movementTypeList}" var="movementType">
-						<option value="${movementType.code}" ${(movementType.code == param['invGoodsMovement.movementType']) ? 'selected' : ''}>${movementType.code} : ${movementType.name}</option>
+						<option value="${movementType.value}" ${(movementType.value == param['invGoodsMovement.movementType']) ? 'selected' : ''}>${movementType.label}</option>
 					</c:forEach>
 				</select>
 			</div>

@@ -60,6 +60,14 @@
 						<span class="input-medium uneditable-input"><c:out value="${invGoodsMovement.owner}" /></span>
 					</div>
 				</div>
+				
+				<div class="control-group">
+					<appfuse:label styleClass="control-label" key="invGoodsMovement.movementType" />
+					<div class="controls">
+						<span class="input-medium uneditable-input"><tags:labelValue value="${invGoodsMovement.movementType}" list="${movementTypeList}"/> </span>
+					</div>
+				</div>
+				
 				<div class="control-group">
 					<appfuse:label styleClass="control-label" key="invGoodsMovement.movementDate" />
 					<div class="controls">
@@ -88,6 +96,19 @@
 						<div class="controls">
 							<form:input path="owner" id="owner" cssClass="input-medium" maxlength="50" />
 							<form:errors path="owner" cssClass="help-inline" />
+						</div>
+					</div>
+				</spring:bind>
+				
+				<spring:bind path="invGoodsMovement.movementType">
+					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+						<appfuse:label styleClass="control-label" key="invGoodsMovement.movementType" />
+						<div class="controls">
+							<form:select path="movementType">
+								<form:option value=""></form:option>
+								<form:options items="${movementTypeList}" itemLabel="label" itemValue="value"/>
+							</form:select>
+							<form:errors path="movementType" cssClass="help-inline" />
 						</div>
 					</div>
 				</spring:bind>

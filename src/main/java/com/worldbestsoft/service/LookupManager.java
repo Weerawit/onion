@@ -19,4 +19,6 @@ public interface LookupManager {
     List<LabelValue> getAllRoles();
 
 	public abstract List<LabelValue> getAllCustomerType(Locale locale);
+
+	public abstract List<LabelValue> getAllInvGoodsMovementType(Locale locale);
 }
