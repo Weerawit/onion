@@ -113,10 +113,10 @@
 				},
 				updater : function(item) {
 					var json = jQuery.parseJSON(item);
-					if (typeof handler == 'function') {
-						handler.call(element, json);
+					if (typeof self.options.handler == 'function') {
+						self.options.handler.call(element, json);
 					}
-					$(element).data('lookup.displayProperty', self.getSelectProperty(json));
+					$(element).data('lookupKeyValue', self.getSelectProperty(json));
 					return self.getSelectProperty(json);
 				}
 			};
@@ -125,9 +125,11 @@
 			$(element).on('focusout', function() {
 				// reset code field, if text is not equal to original name store
 				// in element.
-				if ($(element).val() == '' || ($(element).data('lookup.displayProperty') && $(element).data('lookup.displayProperty') != $(element).val())) {
-					if (typeof handler == 'function') {
-						handler.call(element, undefined);
+				if ($(element).val() == '' || ($(element).data('lookupKeyValue') && $(element).data('lookupKeyValue') != $(element).val())) {
+					//remove data
+					$(element).removeData('lookupKeyValue');
+					if (typeof self.options.handler == 'function') {
+						self.options.handler.call(element, undefined);
 					}
 				}
 			});
