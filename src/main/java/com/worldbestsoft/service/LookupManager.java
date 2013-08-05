@@ -1,8 +1,9 @@
 package com.worldbestsoft.service;
 
-import com.worldbestsoft.model.LabelValue;
-
 import java.util.List;
+import java.util.Locale;
+
+import com.worldbestsoft.model.LabelValue;
 
 /**
  * Business Service Interface to talk to persistence layer and
@@ -16,4 +17,6 @@ public interface LookupManager {
      * @return List of LabelValue objects
      */
     List<LabelValue> getAllRoles();
+
+	public abstract List<LabelValue> getAllCustomerType(Locale locale);
 }

@@ -1,14 +1,18 @@
 package com.worldbestsoft.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.worldbestsoft.Constants;
 import com.worldbestsoft.dao.LookupDao;
 import com.worldbestsoft.model.LabelValue;
 import com.worldbestsoft.model.Role;
 import com.worldbestsoft.service.LookupManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -20,7 +24,7 @@ import java.util.List;
 public class LookupManagerImpl implements LookupManager {
     @Autowired
     LookupDao dao;
-
+    
     /**
      * {@inheritDoc}
      */
@@ -34,4 +38,16 @@ public class LookupManagerImpl implements LookupManager {
 
         return list;
     }
+    
+    @Override
+    public List<LabelValue> getAllCustomerType(Locale locale) {
+    		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
+    		List<LabelValue> customerTypeList = new ArrayList<LabelValue>();
+    		//personal
+    		customerTypeList.add(new LabelValue(resourceBundle.getString("customerType.100"), "100"));
+    		//company
+    		customerTypeList.add(new LabelValue(resourceBundle.getString("customerType.200"), "200"));
+    		return customerTypeList;
+    } 
+    
 }

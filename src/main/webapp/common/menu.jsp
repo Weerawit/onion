@@ -13,6 +13,7 @@
     <menu:displayMenu name="CatalogMenu"/>
     <menu:displayMenu name="InvMenu"/>
     <menu:displayMenu name="EmployeeMenu"/>
+    <menu:displayMenu name="CustomerMenu"/>
     <menu:displayMenu name="AdminMenu"/>
     <menu:displayMenu name="Logout"/>
 </ul>
