@@ -60,6 +60,13 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 
 		if (validator != null) { // validator is null during testing
 			validator.validate(invGoodsReceiptItemForm, errors);
+			if (null != invGoodsReceiptItemForm.getInvItem()) {
+				InvItem invItem = getInvItemManager().findByInvItemCode(invGoodsReceiptItemForm.getInvItem().getCode());
+				invGoodsReceiptItemForm.setInvItem(invItem);
+				if (null == invItem) {
+					errors.rejectValue("invItem.code", "errors.invalid",new Object[] { getText("invGoodsReceiptItem.invItem.code", request.getLocale())}, "errors.invalid");	
+				}
+			}
 
 			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't validate when deleting
 				return new ModelAndView("invGoodsReceiptItem", "invGoodsReceiptItem", invGoodsReceiptItemForm);
@@ -80,12 +87,6 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 			//remove from session list.
 			InvGoodsReceiptItem invGoodsReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(invGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodsReceiptItemForm.getInvItem().getCode()));
 			invGoodsReceiptItemList.remove(invGoodsReceiptItem);
-//			try {
-//				invGoodsReceiptItemList.remove(Integer.parseInt(rowNum));
-//			} catch (Exception e) {
-//				saveError(request, getText("errors.invalid", rowNum, locale));
-//				return new ModelAndView("redirect:/invGoodsReceiptItem?from=list");
-//			} 
 			
 			saveMessage(request, getText("invGoodsReceiptItem.deleted", invGoodsReceiptItemForm.getInvItem().getCode(), locale));
 			return new ModelAndView("redirect:/invGoodsReceipt");
