@@ -2,6 +2,7 @@ package com.worldbestsoft.service.impl;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,21 @@ public class InvStockManagerImpl implements InvStockManager {
 		return invStockDao.save(invStock);
 	}
 	
+	@Override
+    public Integer querySize(InvStock criteria) {
+	    return invStockDao.querySize(criteria);
+    }
+
+	@Override
+    public List<InvStock> query(InvStock criteria, int page, int pageSize, String sortColumn, String order) {
+	    return invStockDao.query(criteria, page, pageSize, sortColumn, order);
+    }
+
+	@Override
+    public InvStock save(InvStock object) {
+	    return invStockDao.save(object);
+    }
+
 	/**
 	 * For get current Qty
 	 * @param invItemCode
@@ -56,6 +72,11 @@ public class InvStockManagerImpl implements InvStockManager {
 		//used to get current qty for item.
 		//refactor if needed.
 	    return invStockDao.findByInvItemCode(invItemCode);
+    }
+
+	@Override
+    public InvStock get(Long id) {
+	    return invStockDao.get(id);
     }
 
 	

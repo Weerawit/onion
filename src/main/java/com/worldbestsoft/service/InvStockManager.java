@@ -1,5 +1,7 @@
 package com.worldbestsoft.service;
 
+import java.util.List;
+
 import com.worldbestsoft.model.InvItemLevel;
 import com.worldbestsoft.model.InvStock;
 /**
@@ -12,5 +14,13 @@ public interface InvStockManager {
 	public abstract InvStock updateStock(InvItemLevel invItemLevel);
 
 	public abstract InvStock findByInvItemCode(String invItemCode);
+
+	public abstract InvStock save(InvStock object);
+
+	public abstract List<InvStock> query(InvStock criteria, int page, int pageSize, String sortColumn, String order);
+
+	public abstract Integer querySize(InvStock criteria);
+
+	public abstract InvStock get(Long id);
 
 }
