@@ -95,7 +95,7 @@
 						<appfuse:label styleClass="control-label" key="invGoodsReceiptItem.invItem.code" />
 						<div class="controls">
 							<form:hidden path="invItem.code" id="invItem.code" maxlength="20"/>
-							<form:input path="invItem.name" id="invItem.name" cssClass="input-medium" maxlength="20" autocomplete="off" />
+							<form:input path="invItem.name" id="invItem.name" cssClass="input-medium" maxlength="20" autocomplete="off"  data-lookup-key-value="${invGoodsReceiptItem.invItem.code}"/>
 							<form:errors path="invItem.code" cssClass="help-inline" />
 						</div>
 					</div>
