@@ -42,6 +42,13 @@ public class CatalogTypeFormController extends BaseFormController {
 
 		if (validator != null) { // validator is null during testing
 			validator.validate(catalogTypeForm, errors);
+			
+			if (null == catalogTypeForm.getId()) {
+				List<CatalogType> dupList = getCatalogTypeManager().checkDuplicate(catalogTypeForm.getCode(), null);
+				if (null != dupList && dupList.size() > 0) {
+					errors.rejectValue("code", "catalogType.duplicate",new Object[] { getText("catalogType.code", request.getLocale())}, "catalogType.duplicate");
+				}
+			}
 
 			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't validate when deleting
 				return new ModelAndView("catalogType", "catalogType", catalogTypeForm);
@@ -62,11 +69,6 @@ public class CatalogTypeFormController extends BaseFormController {
 
 			if (null == catalogTypeForm.getId()) {
 				// add
-				List<CatalogType> dupList = getCatalogTypeManager().checkDuplicate(catalogTypeForm.getCode(), null);
-				if (null != dupList && dupList.size() > 0) {
-					saveError(request, getText("catalogType.duplicate", catalogTypeForm.getCode(), locale));
-					return new ModelAndView("catalogType", "catalogType", catalogTypeForm);
-				}
 				catalogTypeForm.setCreateDate(new Date());
 				catalogTypeForm.setCreateUser(request.getRemoteUser());
 				

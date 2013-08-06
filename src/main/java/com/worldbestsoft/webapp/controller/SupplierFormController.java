@@ -42,6 +42,13 @@ public class SupplierFormController extends BaseFormController {
 
 		if (validator != null) { // validator is null during testing
 			validator.validate(supplierForm, errors);
+			
+			if (null == supplierForm.getId()) {
+				List<Supplier> dupList = getSupplierManager().checkDuplicate(supplierForm.getCode(), null);
+				if (null != dupList && dupList.size() > 0) {
+					errors.rejectValue("code", "supplier.duplicate",new Object[] { getText("supplier.code", request.getLocale())}, "supplier.duplicate");
+				}
+			}
 
 			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't validate when deleting
 				return new ModelAndView("supplier", "supplier", supplierForm);
@@ -63,11 +70,6 @@ public class SupplierFormController extends BaseFormController {
 				// add
 				supplierForm.setCreateDate(new Date());
 				supplierForm.setCreateUser(request.getRemoteUser());
-				List<Supplier> dupList = getSupplierManager().checkDuplicate(supplierForm.getCode(), null);
-				if (null != dupList && dupList.size() > 0) {
-					saveError(request, getText("supplier.duplicate", supplierForm.getCode(), locale));
-					return new ModelAndView("supplier", "supplier", supplierForm);
-				}
 				
 				supplierForm = getSupplierManager().save(supplierForm);
 

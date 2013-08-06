@@ -58,6 +58,14 @@ public class InvGoodsMovementItemFormController extends BaseFormController {
 		if (request.getParameter("cancel") != null) {
 			return new ModelAndView("redirect:/invGoodsMovement");
 		}
+		
+		Locale locale = request.getLocale();
+		HttpSession session = request.getSession();
+		
+		InvGoodsMovement invGoodsMovement = (InvGoodsMovement) session.getAttribute("invGoodsMovement");
+		Set<InvGoodsMovementItem> invGoodsMovementItemList = invGoodsMovement.getInvGoodsMovementItems();
+
+		String rowNum = request.getParameter("rowNum");
 
 		if (validator != null) { // validator is null during testing
 			validator.validate(invGoodsMovementItemForm, errors);
@@ -68,21 +76,21 @@ public class InvGoodsMovementItemFormController extends BaseFormController {
 					errors.rejectValue("invItem.code", "errors.invalid",new Object[] { getText("invGoodsMovementItem.invItem.code", request.getLocale())}, "errors.invalid");	
 				}
 			}
+			
+			//validate only for add mode (rowNum is empty)
+			if (StringUtils.isBlank(rowNum)) {
+				//check dup from session
+				InvGoodsMovementItem invGoodsMovementItem = (InvGoodsMovementItem) CollectionUtils.find(invGoodsMovementItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodsMovementItemForm.getInvItem().getCode()));
+				if (null != invGoodsMovementItem) {
+					errors.rejectValue("invItem.code", "invGoodsMovementItem.duplicate",new Object[] { getText("invGoodsMovementItem.invItem.code", request.getLocale())}, "invGoodsMovementItem.duplicate");
+				}
+			}
 
 			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't validate when deleting
 				return new ModelAndView("invGoodsMovementItem", "invGoodsMovementItem", invGoodsMovementItemForm);
 			}
 		}
 		log.info(request.getRemoteUser() + " is saving InvGoodsMovementItem := " + invGoodsMovementItemForm);
-
-		Locale locale = request.getLocale();
-		HttpSession session = request.getSession();
-		
-		InvGoodsMovement invGoodsMovement = (InvGoodsMovement) session.getAttribute("invGoodsMovement");
-//        List<InvGoodReceiptItem> invGoodsMovementItemList = (List<InvGoodReceiptItem>) session.getAttribute("invGoodsMovementItemList");
-		Set<InvGoodsMovementItem> invGoodsMovementItemList = invGoodsMovement.getInvGoodsMovementItems();
-		
-		String rowNum = request.getParameter("rowNum");
 
 		if (request.getParameter("delete") != null) {
 			//remove from session list.
@@ -96,17 +104,6 @@ public class InvGoodsMovementItemFormController extends BaseFormController {
 			
 			if (StringUtils.isBlank(rowNum)) {
 				//add to list
-				//check dup from session
-				InvGoodsMovementItem invGoodsMovementItem = (InvGoodsMovementItem) CollectionUtils.find(invGoodsMovementItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodsMovementItemForm.getInvItem().getCode()));
-				if (null != invGoodsMovementItem) {
-					saveError(request, getText("invGoodsMovementItem.duplicate", rowNum, locale));
-					return new ModelAndView("invGoodsMovementItem", "invGoodsMovementItem", invGoodsMovementItemForm).addObject("invItemList", invItemManager.getAll());
-				}
-				
-				if (null != invGoodsMovementItemForm.getInvItem()) {
-					InvItem invItem = getInvItemManager().findByInvItemCode(invGoodsMovementItemForm.getInvItem().getCode());
-					invGoodsMovementItemForm.setInvItem(invItem);
-				}
 				
 				invGoodsMovementItemList.add(invGoodsMovementItemForm);
 				
@@ -117,11 +114,6 @@ public class InvGoodsMovementItemFormController extends BaseFormController {
 				List<InvGoodsMovementItem> invGoodsMovementItemList2 = new ArrayList<InvGoodsMovementItem>(invGoodsMovement.getInvGoodsMovementItems());
 				try {
 					InvGoodsMovementItem invGoodsMovementItem = invGoodsMovementItemList2.get(Integer.parseInt(rowNum));
-					
-					if (null != invGoodsMovementItemForm.getInvItem()) {
-						InvItem invItem = getInvItemManager().findByInvItemCode(invGoodsMovementItemForm.getInvItem().getCode());
-						invGoodsMovementItemForm.setInvItem(invItem);
-					}
 					
 					invGoodsMovementItem.setQty(invGoodsMovementItemForm.getQty());
 					invGoodsMovementItem.setMemo(invGoodsMovementItemForm.getMemo());

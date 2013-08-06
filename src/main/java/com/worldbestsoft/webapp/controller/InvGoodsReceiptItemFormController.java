@@ -57,7 +57,15 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 		if (request.getParameter("cancel") != null) {
 			return new ModelAndView("redirect:/invGoodsReceipt");
 		}
+		
+		Locale locale = request.getLocale();
+		HttpSession session = request.getSession();
+		
+		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
+		Set<InvGoodsReceiptItem> invGoodsReceiptItemList = invGoodsReceipt.getInvGoodsReceiptItems();
 
+		String rowNum = request.getParameter("rowNum");
+		
 		if (validator != null) { // validator is null during testing
 			validator.validate(invGoodsReceiptItemForm, errors);
 			if (null != invGoodsReceiptItemForm.getInvItem()) {
@@ -67,21 +75,20 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 					errors.rejectValue("invItem.code", "errors.invalid",new Object[] { getText("invGoodsReceiptItem.invItem.code", request.getLocale())}, "errors.invalid");	
 				}
 			}
-
+			//validate only for add mode (rowNum is empty)
+			if (StringUtils.isBlank(rowNum)) {
+				//check dup from session
+				InvGoodsReceiptItem invGoodsReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(invGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodsReceiptItemForm.getInvItem().getCode()));
+				if (null != invGoodsReceiptItem) {
+					errors.rejectValue("invItem.code", "invGoodsReceiptItem.duplicate",new Object[] { getText("invGoodsReceiptItem.invItem.code", request.getLocale())}, "invGoodsReceiptItem.duplicate");
+				}
+			}
+			
 			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't validate when deleting
 				return new ModelAndView("invGoodsReceiptItem", "invGoodsReceiptItem", invGoodsReceiptItemForm);
 			}
 		}
 		log.info(request.getRemoteUser() + " is saving InvGoodsReceiptItem := " + invGoodsReceiptItemForm);
-
-		Locale locale = request.getLocale();
-		HttpSession session = request.getSession();
-		
-		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
-//        List<InvGoodReceiptItem> invGoodsReceiptItemList = (List<InvGoodReceiptItem>) session.getAttribute("invGoodsReceiptItemList");
-		Set<InvGoodsReceiptItem> invGoodsReceiptItemList = invGoodsReceipt.getInvGoodsReceiptItems();
-		
-		String rowNum = request.getParameter("rowNum");
 
 		if (request.getParameter("delete") != null) {
 			//remove from session list.
@@ -95,17 +102,6 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 			
 			if (StringUtils.isBlank(rowNum)) {
 				//add to list
-				//check dup from session
-				InvGoodsReceiptItem invGoodsReceiptItem = (InvGoodsReceiptItem) CollectionUtils.find(invGoodsReceiptItemList, new BeanPropertyValueEqualsPredicate("invItem.code", invGoodsReceiptItemForm.getInvItem().getCode()));
-				if (null != invGoodsReceiptItem) {
-					saveError(request, getText("invGoodsReceiptItem.duplicate", rowNum, locale));
-					return new ModelAndView("invGoodsReceiptItem", "invGoodsReceiptItem", invGoodsReceiptItemForm).addObject("invItemList", invItemManager.getAll());
-				}
-				
-				if (null != invGoodsReceiptItemForm.getInvItem()) {
-					InvItem invItem = getInvItemManager().findByInvItemCode(invGoodsReceiptItemForm.getInvItem().getCode());
-					invGoodsReceiptItemForm.setInvItem(invItem);
-				}
 				
 				invGoodsReceiptItemList.add(invGoodsReceiptItemForm);
 				
@@ -116,11 +112,6 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 				List<InvGoodsReceiptItem> invGoodsReceiptItemList2 = new ArrayList<InvGoodsReceiptItem>(invGoodsReceipt.getInvGoodsReceiptItems());
 				try {
 					InvGoodsReceiptItem invGoodsReceiptItem = invGoodsReceiptItemList2.get(Integer.parseInt(rowNum));
-					
-					if (null != invGoodsReceiptItemForm.getInvItem()) {
-						InvItem invItem = getInvItemManager().findByInvItemCode(invGoodsReceiptItemForm.getInvItem().getCode());
-						invGoodsReceiptItemForm.setInvItem(invItem);
-					}
 					
 					invGoodsReceiptItem.setQty(invGoodsReceiptItemForm.getQty());
 					invGoodsReceiptItem.setUnitPrice(invGoodsReceiptItemForm.getUnitPrice());
@@ -160,7 +151,6 @@ public class InvGoodsReceiptItemFormController extends BaseFormController {
 			
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("invGoodsReceiptItem", invGoodsReceiptItem);
-			model.put("invItemList", invItemManager.getAll());
 			return new ModelAndView("invGoodsReceiptItem", model);
 		} else {
 			//since no object in session, redirect to Inv Good Receipt page

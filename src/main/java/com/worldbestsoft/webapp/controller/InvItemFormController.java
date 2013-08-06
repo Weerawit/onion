@@ -54,9 +54,16 @@ public class InvItemFormController extends BaseFormController {
 
 		if (validator != null) { // validator is null during testing
 			validator.validate(invItemForm, errors);
+			
+			if (null == invItemForm.getId()) {
+				List<InvItem> dupList = getInvItemManager().checkDuplicate(invItemForm.getCode(), null);
+				if (null != dupList && dupList.size() > 0) {
+					errors.rejectValue("code", "invItem.duplicate",new Object[] { getText("invItem.code", request.getLocale())}, "invItem.duplicate");
+				}
+			}
 
 			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't validate when deleting
-				return new ModelAndView("invItem", "invItem", invItemForm);
+				return new ModelAndView("invItem", "invItem", invItemForm).addObject("invItemGroupList", invItemGroupManager.getAllInvItemGroup());
 			}
 		}
 		log.info(request.getRemoteUser() + " is saving InvItem := " + invItemForm);
@@ -75,11 +82,6 @@ public class InvItemFormController extends BaseFormController {
 				// add
 				invItemForm.setCreateDate(new Date());
 				invItemForm.setCreateUser(request.getRemoteUser());
-				List<InvItem> dupList = getInvItemManager().checkDuplicate(invItemForm.getCode(), null);
-				if (null != dupList && dupList.size() > 0) {
-					saveError(request, getText("invItem.duplicate", invItemForm.getCode(), locale));
-					return new ModelAndView("invItem", "invItem", invItemForm);
-				}
 				
 				if (null != invItemForm.getInvItemGroup()) {
 					InvItemGroup invItemGroup = getInvItemGroupManager().findByInvItemGroupCode(invItemForm.getInvItemGroup().getCode());

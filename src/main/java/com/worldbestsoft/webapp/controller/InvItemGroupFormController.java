@@ -42,6 +42,13 @@ public class InvItemGroupFormController extends BaseFormController {
 
 		if (validator != null) { // validator is null during testing
 			validator.validate(invItemGroupForm, errors);
+			
+			if (null == invItemGroupForm.getId()) {
+				List<InvItemGroup> dupList = getInvItemGroupManager().checkDuplicate(invItemGroupForm.getCode(), null);
+				if (null != dupList && dupList.size() > 0) {
+					errors.rejectValue("code", "invItemGroup.duplicate",new Object[] { getText("invItemGroup.code", request.getLocale())}, "invItemGroup.duplicate");
+				}
+			}
 
 			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't validate when deleting
 				return new ModelAndView("invItemGroup", "invItemGroup", invItemGroupForm);
@@ -62,11 +69,6 @@ public class InvItemGroupFormController extends BaseFormController {
 
 			if (null == invItemGroupForm.getId()) {
 				// add
-				List<InvItemGroup> dupList = getInvItemGroupManager().checkDuplicate(invItemGroupForm.getCode(), null);
-				if (null != dupList && dupList.size() > 0) {
-					saveError(request, getText("invItemGroup.duplicate", invItemGroupForm.getCode(), locale));
-					return new ModelAndView("invItemGroup", "invItemGroup", invItemGroupForm);
-				}
 				invItemGroupForm.setCreateDate(new Date());
 				invItemGroupForm.setCreateUser(request.getRemoteUser());
 				
