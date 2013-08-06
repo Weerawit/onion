@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.JsonObject;
+import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.InvItem;
+import com.worldbestsoft.service.EmployeeManager;
 import com.worldbestsoft.service.InvItemManager;
 
 @Controller
@@ -21,6 +23,7 @@ import com.worldbestsoft.service.InvItemManager;
 public class JsonController {
 	
 	private InvItemManager invItemManager;
+	private EmployeeManager employeeManager;
 	
 	public InvItemManager getInvItemManager() {
 		return invItemManager;
@@ -29,6 +32,15 @@ public class JsonController {
 	@Autowired
 	public void setInvItemManager(InvItemManager invItemManager) {
 		this.invItemManager = invItemManager;
+	}
+	
+	public EmployeeManager getEmployeeManager() {
+		return employeeManager;
+	}
+
+	@Autowired
+	public void setEmployeeManager(EmployeeManager employeeManager) {
+		this.employeeManager = employeeManager;
 	}
 
 	@RequestMapping(value="/item*", method = RequestMethod.GET)
@@ -45,5 +57,25 @@ public class JsonController {
 		}
 		return resultList;
 	}
+	
+	@RequestMapping(value="/employee*", method = RequestMethod.GET)
+	public @ResponseBody List<Map<String, String>> getEmployeeList(@RequestParam("q") String name) {
+		Employee criteria = new Employee();
+		criteria.setFirstName(name);
+		List<Map<String, String>> resultList = new ArrayList<Map<String,String>>();
+		List<Employee> employeeList = employeeManager.query(criteria, 0, 10, null, null);
+		for (Employee employee : employeeList) {
+			Map<String, String> model = new HashMap<String, String>();
+			model.put("id", employee.getId().toString());
+			model.put("firstName", employee.getFirstName());
+			model.put("lastName", employee.getLastName());
+			model.put("nickName", employee.getNickName());
+			model.put("address", employee.getAddress());
+			model.put("wage", employee.getWage().toString());
+			resultList.add(model);
+		}
+		return resultList;
+	}
+
 
 }

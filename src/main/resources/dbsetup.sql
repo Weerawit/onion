@@ -211,7 +211,7 @@ CREATE  TABLE IF NOT EXISTS `onion`.`inv_goods_movement` (
   `running_no` VARCHAR(20) NULL DEFAULT NULL ,
   `movement_date` DATETIME NULL DEFAULT NULL ,
   `movement_type` VARCHAR(3) NULL DEFAULT NULL COMMENT '100 เบิกของ' ,
-  `owner` VARCHAR(50) NULL DEFAULT NULL COMMENT 'ผู้เบิก' ,
+  `owner` VARCHAR(255) NULL DEFAULT NULL COMMENT 'ผู้เบิก' ,
   `memo` VARCHAR(255) NULL ,
   `create_date` DATETIME NULL DEFAULT NULL ,
   `create_user` VARCHAR(50) NULL DEFAULT NULL ,

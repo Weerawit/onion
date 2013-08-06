@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.InvItem;
 import com.worldbestsoft.model.InvItemGroup;
+import com.worldbestsoft.service.EmployeeManager;
 import com.worldbestsoft.service.InvItemGroupManager;
 import com.worldbestsoft.service.InvItemManager;
 
@@ -22,6 +24,7 @@ public class PopupController extends BaseFormController {
 
 	private InvItemManager invItemManager;
 	private InvItemGroupManager invItemGroupManager;
+	private EmployeeManager employeeManager;
 
 	public InvItemManager getInvItemManager() {
 		return invItemManager;
@@ -39,6 +42,15 @@ public class PopupController extends BaseFormController {
 	@Autowired
 	public void setInvItemGroupManager(InvItemGroupManager invItemGroupManager) {
 		this.invItemGroupManager = invItemGroupManager;
+	}
+	
+	public EmployeeManager getEmployeeManager() {
+		return employeeManager;
+	}
+
+	@Autowired
+	public void setEmployeeManager(EmployeeManager employeeManager) {
+		this.employeeManager = employeeManager;
 	}
 
 	@RequestMapping(value="/item*", method = RequestMethod.GET)
@@ -61,5 +73,24 @@ public class PopupController extends BaseFormController {
 		model.addAttribute("invItemList", invItemManager.query(criteria, page, size, sortColumn, order));
 		model.addAttribute("invItemGroupList", invItemGroupManager.getAllInvItemGroup());
 		return new ModelAndView("popup/itemList", model.asMap());
+	}
+	
+	@RequestMapping(value="/employee*", method = RequestMethod.GET)
+	public ModelAndView listEmployee(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Employee criteria = new Employee();
+		criteria.setFirstName(request.getParameter("firstName"));
+		criteria.setLastName(request.getParameter("lastName"));
+		criteria.setNickName(request.getParameter("nickName"));
+		int page = getPage(request);
+		String sortColumn = getSortColumn(request);
+		String order = getSortOrder(request);
+		int size = getPageSize(request);
+
+		log.info(request.getRemoteUser() + " is quering Employee criteria := " + criteria);
+
+		Model model = new ExtendedModelMap();
+		model.addAttribute("resultSize", employeeManager.querySize(criteria));
+		model.addAttribute("employeeList", employeeManager.query(criteria, page, size, sortColumn, order));
+		return new ModelAndView("popup/employeeList", model.asMap());
 	}
 }

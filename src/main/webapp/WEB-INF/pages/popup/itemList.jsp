@@ -77,7 +77,6 @@
 				jsonObject.addProperty("code", invItemObj.getCode());
 				jsonObject.addProperty("name", invItemObj.getName());
 				String json = gson.toJson(jsonObject);
-				System.out.print(json);
 			%>
 			<input type="radio" id="radio" name="radio" value='<%=json%>' />
 		</display:column>

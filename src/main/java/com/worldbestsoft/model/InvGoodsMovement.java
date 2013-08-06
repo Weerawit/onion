@@ -90,7 +90,7 @@ public class InvGoodsMovement implements java.io.Serializable {
 		this.movementType = movementType;
 	}
 
-	@Column(name = "owner", length = 50)
+	@Column(name = "owner", length = 255)
 	public String getOwner() {
 		return this.owner;
 	}

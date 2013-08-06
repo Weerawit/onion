@@ -5,7 +5,7 @@
 <meta name="menu" content="InvMenu" />
 <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/scripts/datepicker/css/bootstrap-datetimepicker.min.css'/>" />
 <script type="text/javascript" src="<c:url value='/scripts/datepicker/js/bootstrap-datetimepicker.min.js'/>"></script>
-
+<script type="text/javascript" src="<c:url value='/scripts/jquery-lookup.js'/>"></script>
 </head>
 <div class="span2">
 	<h2>
@@ -57,7 +57,7 @@
 				<div class="control-group">
 					<appfuse:label styleClass="control-label" key="invGoodsMovement.owner" />
 					<div class="controls">
-						<span class="input-medium uneditable-input"><c:out value="${invGoodsMovement.owner}" /></span>
+						<span class="input-xlarge uneditable-input"><c:out value="${invGoodsMovement.owner}" /></span>
 					</div>
 				</div>
 				
@@ -94,7 +94,7 @@
 					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 						<appfuse:label styleClass="control-label" key="invGoodsMovement.owner" />
 						<div class="controls">
-							<form:input path="owner" id="owner" cssClass="input-medium" maxlength="50" />
+							<form:input path="owner" id="owner" cssClass="input-xlarge" maxlength="255" />
 							<form:errors path="owner" cssClass="help-inline" />
 						</div>
 					</div>
@@ -242,6 +242,27 @@
 			format : "dd/MM/yyyy hh:mm:ss"
 		});
 	});
+	
+	$(document).ready(function () {
+		$('input[name="owner"]').lookup({
+			type: 'employee',
+			displayProperty: function (json) {
+				return json.firstName + ' ' + json.lastName;
+			},
+			selectProperty: function (json) {
+				return json.firstName + ' ' + json.lastName;
+			},
+			btnSearchCondition: function () {
+				return {firstName: $('input[name="owner"]').val()};	
+			},
+			handler: function (json) {
+				if (json) {
+				} else {
+					$('input[name="owner"]').val('');
+				}
+			}
+		});
+	});
 	</c:if>
 
 	function validateDelete(checkbox) {
@@ -264,6 +285,7 @@
 		});
 	});
 	</c:if>
+	
 </script>
 <v:javascript formName="invGoodsMovement" staticJavascript="false" />
 <script type="text/javascript" src="<c:url value="/scripts/validator.jsp"/>"></script>
