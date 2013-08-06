@@ -2,7 +2,7 @@
 
 <head>
 <title><fmt:message key="catalogTypeList.title" /></title>
-<meta name="menu" content="InvMenu" />
+<meta name="menu" content="CatalogMenu" />
 </head>
 
 <c:if test="${not empty searchError}">

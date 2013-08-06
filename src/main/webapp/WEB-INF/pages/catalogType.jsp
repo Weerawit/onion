@@ -2,7 +2,7 @@
 
 <head>
 <title><fmt:message key="catalogType.title" /></title>
-<meta name="menu" content="InvMenu" />
+<meta name="menu" content="CatalogMenu" />
 </head>
 <div class="span2">
 	<h2>
