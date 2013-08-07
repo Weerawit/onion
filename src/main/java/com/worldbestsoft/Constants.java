@@ -82,4 +82,15 @@ public final class Constants {
      * @deprecated No longer used to set themes.
      */
     public static final String CSS_THEME = "csstheme";
+    
+    /**
+     * For ImageController (t parameter) to get image by size
+     */
+	public static final String THUMBNAIL_TYPE_SMALL = "200"; //200px x 200px
+	public static final String THUMBNAIL_TYPE_LARGE = "400";
+	public static final String THUMBNAIL_TYPE_ORIGIAL = "800";
+	
+	
+	//default INV_ITEM_GROUP for catalog
+	public static final String CATALOG_INV_ITEM_GROUP_CODE = "CAT";
 }

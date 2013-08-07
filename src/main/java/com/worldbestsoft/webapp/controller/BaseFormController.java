@@ -174,6 +174,8 @@ public class BaseFormController implements ServletContextAware {
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, null, new CustomDateEditor(dateFormat, true));
 		binder.registerCustomEditor(BigDecimal.class, new CustomNumberEditor(BigDecimal.class, null, true));
+		
+		binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
 	}
 
 	/**

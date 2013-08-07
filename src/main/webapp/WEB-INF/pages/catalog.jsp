@@ -1,0 +1,195 @@
+<%@ include file="/common/taglibs.jsp"%>
+
+<head>
+<title><fmt:message key="catalog.title" /></title>
+<meta name="menu" content="CatalogMenu" />
+<script type="text/javascript" src="<c:url value='/scripts/lib/plugins/jquery.ui.widget.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/scripts/upload/jquery.iframe-transport.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/scripts/upload/jquery.fileupload.js'/>"></script>
+<link rel="stylesheet" type="text/css" media="all" href="<c:url value='/scripts/upload/css/jquery.fileupload-ui.css'/>" />
+<noscript><link rel="stylesheet" href="<c:url value='/scripts/upload/css/jquery.fileupload-ui-noscript.css'/>"</noscript>
+
+</head>
+<div class="span2">
+	<h2>
+		<fmt:message key="catalog.heading" />
+	</h2>
+	<p>
+		<fmt:message key="catalog.message" />
+	</p>
+</div>
+<div class="span7">
+	<spring:bind path="catalog.*">
+		<c:if test="${not empty status.errorMessages}">
+			<div class="alert alert-error fade in">
+				<a href="#" data-dismiss="alert" class="close">&times;</a>
+				<c:forEach var="error" items="${status.errorMessages}">
+					<c:out value="${error}" escapeXml="false" />
+					<br />
+				</c:forEach>
+			</div>
+		</c:if>
+	</spring:bind>
+
+	<form:form commandName="catalog" method="post" action="catalog" onsubmit="return onFormSubmit(this)" id="catalog" cssClass="well form-horizontal">
+		<form:hidden path="id" />
+		<form:hidden path="invItem.id" />
+		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
+		<input type="hidden" name="filename" id="filename" />
+
+		<c:if test="${catalog.id == null }">
+			<spring:bind path="catalog.code">
+				<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+					<appfuse:label styleClass="control-label" key="catalog.code" />
+					<div class="controls">
+						<form:input path="code" id="code" cssClass="input-medium" maxlength="10" />
+						<form:errors path="code" cssClass="help-inline" />
+					</div>
+				</div>
+			</spring:bind>
+		</c:if>
+		<c:if test="${catalog.id != null }">
+			<div class="control-group">
+				<appfuse:label styleClass="control-label" key="catalog.code" />
+				<div class="controls">
+					<span class="input-medium uneditable-input"><c:out value="${catalog.code}" /></span>
+					<form:hidden path="code" />
+				</div>
+			</div>
+		</c:if>
+
+		<spring:bind path="catalog.catalogType.code">
+			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+				<appfuse:label styleClass="control-label" key="catalog.catalogType.code" />
+				<div class="controls">
+					<form:select path="catalogType.code">
+						<form:option value=""></form:option>
+						<form:options items="${catalogTypeList}" itemLabel="name" itemValue="code" />
+					</form:select>
+					<form:errors path="catalogType.code" cssClass="help-inline" />
+				</div>
+			</div>
+		</spring:bind>
+
+		<spring:bind path="catalog.name">
+			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+				<appfuse:label styleClass="control-label" key="catalog.name" />
+				<div class="controls">
+					<form:input path="name" id="name" cssClass="input-xlarge" maxlength="50" />
+					<form:errors path="name" cssClass="help-inline" />
+				</div>
+			</div>
+		</spring:bind>
+
+		<spring:bind path="catalog.finalPrice">
+			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+				<appfuse:label styleClass="control-label" key="catalog.finalPrice" />
+				<div class="controls">
+					<form:input path="finalPrice" id="finalPrice" cssClass="input-medium" maxlength="10" />
+					<form:errors path="finalPrice" cssClass="help-inline" />
+				</div>
+			</div>
+		</spring:bind>
+
+		<spring:bind path="catalog.estPrice">
+			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+				<appfuse:label styleClass="control-label" key="catalog.estPrice" />
+				<div class="controls">
+					<form:input path="estPrice" id="estPrice" cssClass="input-medium" maxlength="10" />
+					<form:errors path="estPrice" cssClass="help-inline" />
+				</div>
+			</div>
+		</spring:bind>
+		<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+			<appfuse:label styleClass="control-label" key="catalog.img" />
+			<div class="controls">
+				<div class="controls-row">
+					<img id="image" src="<c:url value='/img/thumbnail/catalog/${catalog.id}?t=200'/>" class="img-polaroid"/>
+				</div>
+				<div class="controls-row">
+					<span class="btn btn-success fileinput-button" id="btnUpload">
+						<input id="fileupload" type="file" name="file">
+						<i class="icon-upload icon-white"></i> <span><fmt:message key="button.selectUpload"/></span>
+					</span>
+				</div>
+				<div id="progress" class="controls-row">
+					<div class="bar" style="width: 0%;"></div>
+				</div>	
+			</div>
+		</div>
+
+
+
+		<%-- 		<spring:bind path="catalog.img"> --%>
+		<%-- 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}"> --%>
+		<%-- 				<appfuse:label styleClass="control-label" key="catalog.img" /> --%>
+		<!-- 				<div class="controls"> -->
+		<%-- 					<form:input path="img" id="img" cssClass="input-medium" maxlength="10" /> --%>
+		<%-- 					<form:errors path="img" cssClass="help-inline" /> --%>
+		<!-- 				</div> -->
+		<!-- 			</div> -->
+		<%-- 		</spring:bind> --%>
+
+
+		<fieldset class="form-actions">
+			<button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
+				<i class="icon-ok icon-white"></i>
+				<fmt:message key="button.save" />
+			</button>
+
+			<c:if test="${param.from == 'list' and param.method != 'Add'}">
+				<button type="submit" class="btn" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
+					<i class="icon-trash"></i>
+					<fmt:message key="button.delete" />
+				</button>
+			</c:if>
+
+			<button type="submit" class="btn" name="cancel" onclick="bCancel=true">
+				<i class="icon-remove"></i>
+				<fmt:message key="button.cancel" />
+			</button>
+		</fieldset>
+	</form:form>
+
+</div>
+<script type="text/javascript">
+<!-- This is here so we can exclude the selectAll call when roles is hidden -->
+	function onFormSubmit(theForm) {
+		return validateCatalog(theForm);
+	}
+
+	$('#fileupload').fileupload({
+		dataType : 'json',
+		maxFileSize : 5000000,
+		acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i,
+		/* add: function (e, data) {
+			$('#btnUpload').removeClass('hidden');
+			$('#btnUpload').on('click', function() {
+				data.submit();
+			});
+		}, */
+		done : function(e, data) {
+			//$('#btnUpload').addClass('hidden');
+			if (data.result) {
+				$('#image').prop('src', data.result.files[0].thumbnailUrl);
+				$('#filename').val(data.result.files[0].name);
+			}
+		},
+		progressall : function(e, data) {
+			var progress = parseInt(data.loaded / data.total * 100, 10);
+			$('#progress .bar').css('width', progress + '%');
+		}
+	});
+
+	$('#fileupload').fileupload('option', {
+		url : 'catalog/upload',
+		// Enable image resizing, except for Android and Opera,
+		// which actually support image resizing, but fail to
+		// send Blob objects via XHR requests:
+		disableImageResize : /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+		maxFileSize : 5000000,
+		acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i
+	});
+</script>
+<v:javascript formName="catalog" staticJavascript="false" />
+<script type="text/javascript" src="<c:url value="/scripts/validator.jsp"/>"></script>
