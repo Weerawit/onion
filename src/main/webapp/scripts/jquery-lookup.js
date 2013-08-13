@@ -111,6 +111,7 @@
 				sorter : function(items) {
 					return items.sort();
 				},
+				minLength : 2,
 				updater : function(item) {
 					var json = jQuery.parseJSON(item);
 					if (typeof self.options.handler == 'function') {
