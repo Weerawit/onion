@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import org.apache.commons.collections.CollectionUtils;
-import org.aspectj.apache.bcel.classfile.ConstantClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -171,7 +170,14 @@ public class CatalogManagerImpl implements CatalogManager {
 	 */
 	@Override
     public void remove(Long id) {
+		Catalog catalog = catalogDao.get(id);
+		if (null != catalog.getCatalogItems()) {
+			for (CatalogItem catalogItem : catalog.getCatalogItems()) {
+				catalogItemDao.remove(catalogItem.getId());
+			}
+		}
 	    catalogDao.remove(id);
+	    invItemDao.remove(catalog.getInvItem().getId());
     }
 
 	

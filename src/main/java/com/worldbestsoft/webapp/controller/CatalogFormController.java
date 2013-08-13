@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,17 +15,17 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
-import org.hibernate.Hibernate;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,17 +36,20 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.worldbestsoft.model.Catalog;
+import com.worldbestsoft.model.CatalogItem;
 import com.worldbestsoft.model.CatalogType;
 import com.worldbestsoft.model.criteria.CatalogForm;
+import com.worldbestsoft.service.CatalogImageChangedEvent;
 import com.worldbestsoft.service.CatalogManager;
 import com.worldbestsoft.service.CatalogTypeManager;
 
 @Controller
 @RequestMapping("/catalog*")
-public class CatalogFormController extends BaseFormController {
+public class CatalogFormController extends BaseFormController implements ApplicationContextAware {
 
 	private CatalogManager catalogManager;
 	private CatalogTypeManager catalogTypeManager;
+	private ApplicationContext context;
 
 	public CatalogManager getCatalogManager() {
 		return catalogManager;
@@ -66,6 +68,12 @@ public class CatalogFormController extends BaseFormController {
 	public void setCatalogTypeManager(CatalogTypeManager catalogTypeManager) {
 		this.catalogTypeManager = catalogTypeManager;
 	}
+	
+
+	@Override
+    public void setApplicationContext(ApplicationContext arg0) throws BeansException {
+	    this.context = arg0;
+    }
 
 	@RequestMapping(value = "/upload")
 	public @ResponseBody Map upload(FileUpload fileUpload, BindingResult errors, HttpServletRequest request, HttpServletResponse response) {
@@ -136,18 +144,21 @@ public class CatalogFormController extends BaseFormController {
 			return new ModelAndView("redirect:/catalogList");
 		} else {
 
+			HttpSession session = request.getSession();
+			CatalogForm catalogFormSession = (CatalogForm) session.getAttribute("catalogForm");
+			
 			if (null == catalogForm.getId()) {
+				Catalog catalog = new Catalog();
+				PropertyUtils.copyProperties(catalog, catalogFormSession);
 				// add
-				catalogForm.setCreateDate(new Date());
-				catalogForm.setCreateUser(request.getRemoteUser());
+				catalog.setCreateDate(new Date());
+				catalog.setCreateUser(request.getRemoteUser());
 
 				if (null != catalogForm.getCatalogType()) {
 					CatalogType catalogType = getCatalogTypeManager().findByCatalogTypeCode(catalogForm.getCatalogType().getCode());
-					catalogForm.setCatalogType(catalogType);
+					catalog.setCatalogType(catalogType);
 				}
 				
-				Catalog catalog = new Catalog();
-				PropertyUtils.copyProperties(catalog, catalogForm);
 
 				// update img & thunbnail if exist
 				if (StringUtils.isNotBlank(catalogForm.getFilename())) {
@@ -156,12 +167,11 @@ public class CatalogFormController extends BaseFormController {
 					File tmpFile = new File(FileUtils.getTempDirectory(), catalogForm.getFilename());
 					
 					if (tmpFile.exists()) {
-						InputStream in = new FileInputStream(tmpFile);
 						catalog.setImg(FileUtils.readFileToByteArray(tmpFile));
 					}
 				}
 
-				catalog = getCatalogManager().save(catalog, null);
+				catalog = getCatalogManager().save(catalog, catalogFormSession.getCatalogItems());
 
 				saveMessage(request, getText("catalog.added", catalog.getCode(), locale));
 				return new ModelAndView("redirect:/catalog").addObject("id", catalog.getId());
@@ -185,6 +195,11 @@ public class CatalogFormController extends BaseFormController {
 					if (tmpFile.exists()) {
 						InputStream in = new FileInputStream(tmpFile);
 						catalog.setImg(FileUtils.readFileToByteArray(tmpFile));
+						
+						
+						//delete old image.
+						CatalogImageChangedEvent event = new CatalogImageChangedEvent(catalog);
+						context.publishEvent(event);
 					}
 				}
 
@@ -192,7 +207,7 @@ public class CatalogFormController extends BaseFormController {
 				catalog.setUpdateUser(request.getRemoteUser());
 				
 				
-				catalog = getCatalogManager().save(catalog, null);
+				catalog = getCatalogManager().save(catalog, catalogFormSession.getCatalogItems());
 
 				request.setAttribute("catalog", catalog);
 				saveMessage(request, getText("catalog.saved", catalog.getCode(), locale));
@@ -204,22 +219,88 @@ public class CatalogFormController extends BaseFormController {
 	@RequestMapping(method = { RequestMethod.GET })
 	protected ModelAndView display(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String id = request.getParameter("id");
+		String method = request.getParameter("method");
+		HttpSession session = request.getSession();
+		
+		CatalogForm catalogForm = (CatalogForm) session.getAttribute("catalogForm");
+		if (null == catalogForm || StringUtils.equalsIgnoreCase(method, "add")) {
+			catalogForm = new CatalogForm();
+		}
+		
 		Catalog catalog = new Catalog();
 		if (!isFormSubmission(request)) {
 			if (id != null) {
 				catalog = getCatalogManager().get(Long.valueOf(id));
+				PropertyUtils.copyProperties(catalogForm, catalog);
 			}
 		} else {
 			catalog = getCatalogManager().get(Long.valueOf(id));
+			PropertyUtils.copyProperties(catalogForm, catalog);
 		}
+		session.setAttribute("catalogForm", catalogForm);
 		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("catalog", catalog);
+		model.put("catalog", catalogForm);
 		model.put("catalogTypeList", catalogTypeManager.getAllCatalogType());
+		model.put("catalogItemList", catalogForm.getCatalogItems());
 		return new ModelAndView("catalog", model);
 	}
 
 	private boolean isFormSubmission(HttpServletRequest request) {
 		return request.getMethod().equalsIgnoreCase("post");
 	}
+	
+	@RequestMapping(value = "/addDetail", method = RequestMethod.POST)
+	public ModelAndView add(CatalogForm catalogForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession();
+		CatalogForm catalogSession = (CatalogForm) session.getAttribute("catalogForm");
+		catalogSession.setCatalogType(catalogForm.getCatalogType());
+		catalogSession.setCode(catalogForm.getCode());
+		catalogSession.setName(catalogForm.getName());
+		catalogSession.setFilename(catalogForm.getFilename());
+		catalogSession.setEstPrice(catalogForm.getEstPrice());
+		catalogSession.setFinalPrice(catalogForm.getFinalPrice());
+		return new ModelAndView("redirect:/catalogItem?method=Add&from=list");
+	}
+	
+	@RequestMapping(value = "/editDetail", method = RequestMethod.POST)
+	public ModelAndView edit(CatalogForm catalogForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession();
+		CatalogForm catalogSession = (CatalogForm) session.getAttribute("catalogForm");
+		catalogSession.setCatalogType(catalogForm.getCatalogType());
+		catalogSession.setCode(catalogForm.getCode());
+		catalogSession.setName(catalogForm.getName());
+		catalogSession.setFilename(catalogForm.getFilename());
+		catalogSession.setEstPrice(catalogForm.getEstPrice());
+		catalogSession.setFinalPrice(catalogForm.getFinalPrice());
+		return new ModelAndView("redirect:/catalogItem?from=list&id=" + request.getParameter("id"));
+	}
+
+	@RequestMapping(value = "/deleteDetail", method = RequestMethod.POST)
+	public ModelAndView delete(CatalogForm catalogForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession();
+		CatalogForm catalogSession = (CatalogForm) session.getAttribute("catalogForm");
+		catalogSession.setCatalogType(catalogForm.getCatalogType());
+		catalogSession.setCode(catalogForm.getCode());
+		catalogSession.setName(catalogForm.getName());
+		catalogSession.setFilename(catalogForm.getFilename());
+		catalogSession.setEstPrice(catalogForm.getEstPrice());
+		catalogSession.setFinalPrice(catalogForm.getFinalPrice());
+		List<CatalogItem> catalogItemList = new ArrayList<CatalogItem>(catalogSession.getCatalogItems());
+
+		
+		Locale locale = request.getLocale();
+		String[] checkbox = request.getParameterValues("checkbox");
+		if (null != checkbox && checkbox.length > 0) {
+			for (int i = 0; i < checkbox.length; i++) {
+				CatalogItem catalogItem = catalogItemList.get(Integer.parseInt(checkbox[i]));
+				catalogSession.getCatalogItems().remove(catalogItem);
+				saveMessage(request, getText("catalogItem.deleted", catalogItem.getInvItem().getCode(), locale));
+			}
+		} else {
+			saveError(request, "global.errorNoCheckboxSelectForDelete");
+		}
+		return new ModelAndView("redirect:/catalog");
+	}
+
 
 }

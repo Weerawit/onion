@@ -6,8 +6,9 @@
 <script type="text/javascript" src="<c:url value='/scripts/lib/plugins/jquery.ui.widget.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/scripts/upload/jquery.iframe-transport.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/scripts/upload/jquery.fileupload.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/scripts/upload/jquery.fileupload-process.js'/>"></script>
 <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/scripts/upload/css/jquery.fileupload-ui.css'/>" />
-<noscript><link rel="stylesheet" href="<c:url value='/scripts/upload/css/jquery.fileupload-ui-noscript.css'/>"</noscript>
+<noscript><link rel="stylesheet" href="<c:url value='/scripts/upload/css/jquery.fileupload-ui-noscript.css'/>"/></noscript>
 
 </head>
 <div class="span2">
@@ -107,28 +108,45 @@
 					<img id="image" src="<c:url value='/img/thumbnail/catalog/${catalog.id}?t=200'/>" class="img-polaroid"/>
 				</div>
 				<div class="controls-row">
-					<span class="btn btn-success fileinput-button" id="btnUpload">
+					<span class="btn btn-success fileinput-button" id="btnUpload" data-loading-text="<fmt:message key='catalog.uploading'/>">
 						<input id="fileupload" type="file" name="file">
 						<i class="icon-upload icon-white"></i> <span><fmt:message key="button.selectUpload"/></span>
 					</span>
-				</div>
-				<div id="progress" class="controls-row">
-					<div class="bar" style="width: 0%;"></div>
-				</div>	
+					
+					<div id="progress" class="progress hide">
+  						<div id="progress-bar" class="bar" style="width: 0%; height : 15px"></div>
+					</div>
+					
 			</div>
 		</div>
 
+		<div id="actions">
+		
+			<button id="button.add" class="btn btn-primary" type="submit" onclick="bCancel=true;$('#catalog').attr('action', '${ctx}/catalog/addDetail');">
+				<i class="icon-plus icon-white"></i>
+				<fmt:message key="button.add" />
+			</button>
+			
+			<button id="button.delete" class="btn" type="submit" onclick="bCancel=true;return (validateDelete(document.forms['catalog'].checkbox) && $('#catalog').attr('action', '${ctx}/catalog/deleteDetail'));">
+				<i class="icon-trash"></i>
+				<fmt:message key="button.delete" />
+			</button>
+			
+		</div>
+		<display:table name="catalogItemList" cellspacing="0" cellpadding="0" requestURI="" id="catalogItem" class="table table-condensed table-striped table-hover table-bordered">
+			<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" headerClass="span1" class="span1">
+				<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${catalogItem_rowNum - 1}'/>" />
+			</display:column>
+			<display:column titleKey="catalogItem.invItem.code" sortable="true">
+				<button class="btn btn-link" type="submit" onclick="bCancel=true;$('#catalog').attr('action', '${ctx}/catalog/editDetail?&id=${ catalogItem_rowNum - 1}');">
+					<c:out value="${catalogItem.invItem.code}"/>
+				</button>
+			</display:column>
 
 
-		<%-- 		<spring:bind path="catalog.img"> --%>
-		<%-- 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}"> --%>
-		<%-- 				<appfuse:label styleClass="control-label" key="catalog.img" /> --%>
-		<!-- 				<div class="controls"> -->
-		<%-- 					<form:input path="img" id="img" cssClass="input-medium" maxlength="10" /> --%>
-		<%-- 					<form:errors path="img" cssClass="help-inline" /> --%>
-		<!-- 				</div> -->
-		<!-- 			</div> -->
-		<%-- 		</spring:bind> --%>
+			<display:column property="invItem.name" escapeXml="true" sortable="true" titleKey="catalogItem.invItem.name" sortName="invItem.name" />
+			<display:column property="qty" sortable="true" titleKey="catalogItem.qty" sortName="qty" format="{0,number,#,##0.##}"/>
+		</display:table>
 
 
 		<fieldset class="form-actions">
@@ -157,39 +175,91 @@
 	function onFormSubmit(theForm) {
 		return validateCatalog(theForm);
 	}
+	
+	function validateDelete(checkbox) {
 
-	$('#fileupload').fileupload({
-		dataType : 'json',
-		maxFileSize : 5000000,
-		acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i,
-		/* add: function (e, data) {
-			$('#btnUpload').removeClass('hidden');
-			$('#btnUpload').on('click', function() {
-				data.submit();
-			});
-		}, */
-		done : function(e, data) {
-			//$('#btnUpload').addClass('hidden');
-			if (data.result) {
-				$('#image').prop('src', data.result.files[0].thumbnailUrl);
-				$('#filename').val(data.result.files[0].name);
+		if (!hasChecked(checkbox)) {
+			alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
+			return false;
+		}
+		if (confirm('<fmt:message key="global.confirm.delete"/>')) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	<c:if test="${not empty catalogItemList}">
+	$(document).ready(function() {
+		$("#chkSelectAll").click(function() {
+			toggleCheckAll(this, document.forms['catalog'].checkbox);
+		});
+	});
+	</c:if>
+
+	
+	$(document).ready(function() {
+		$('#fileupload').fileupload({
+			dataType : 'json',
+			maxFileSize : 5000000,
+			acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i,
+			/* add: function (e, data) {
+				$('#btnUpload').removeClass('hidden');
+				$('#btnUpload').on('click', function() {
+					data.submit();
+				});
+			}, */
+			send : function(e, data) {
+				$('#progress').show();
+//				$('#btnUpload').button('loading');
+			},
+			fail : function(e, data) {
+				alert('fail to upload : ' + data.textStatus);
+//				$('#btnUpload').button('reset')
+				$( "#progress").hide( 'slow', function() {
+					$('#progress-bar').css('width', '0%');						
+				} );
+			},
+			done : function(e, data) {
+				//$('#btnUpload').addClass('hidden');
+				if (data.result) {
+					$('#image').prop('src', data.result.files[0].thumbnailUrl);
+					$('#filename').val(data.result.files[0].name);
+//					$('#btnUpload').button('reset')
+					$( "#progress").hide( 'slow', function() {
+						$('#progress-bar').css('width', '0%');						
+					} );
+
+				}
+			},
+			progress :  function(e, data) {
+				var progress = parseInt(data.loaded / data.total * 100, 10);
+				$('#progress-bar').css('width', progress + '%');
 			}
-		},
-		progressall : function(e, data) {
+		});
+		/* 
+		$('#fileupload').bind('fileuploadprogress', function(e, data) {
 			var progress = parseInt(data.loaded / data.total * 100, 10);
 			$('#progress .bar').css('width', progress + '%');
+		}); */
+
+		$('#fileupload').fileupload('option', {
+			url : 'catalog/upload',
+			// Enable image resizing, except for Android and Opera,
+			// which actually support image resizing, but fail to
+			// send Blob objects via XHR requests:
+			disableImageResize : /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+			maxFileSize : 5000000,
+			acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i
+		});
+		
+		
+		if ($('#filename').val() != '') {
+			$('#image').prop('src', "<c:url value='/img/thumbnail/'/>" + $('filename').val() + "?t=200");
 		}
 	});
 
-	$('#fileupload').fileupload('option', {
-		url : 'catalog/upload',
-		// Enable image resizing, except for Android and Opera,
-		// which actually support image resizing, but fail to
-		// send Blob objects via XHR requests:
-		disableImageResize : /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
-		maxFileSize : 5000000,
-		acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i
-	});
+	
 </script>
 <v:javascript formName="catalog" staticJavascript="false" />
 <script type="text/javascript" src="<c:url value="/scripts/validator.jsp"/>"></script>

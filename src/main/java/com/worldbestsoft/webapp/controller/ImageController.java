@@ -16,6 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +24,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.worldbestsoft.Constants;
 import com.worldbestsoft.model.Catalog;
+import com.worldbestsoft.service.CatalogImageChangedEvent;
 import com.worldbestsoft.service.CatalogManager;
 
 @Controller
 @RequestMapping("/img*")
-public class ImageController {
+public class ImageController implements ApplicationListener<CatalogImageChangedEvent>{
 	private final Log log = LogFactory.getLog(getClass());
 	
 	private CatalogManager catalogManager;
@@ -66,7 +68,7 @@ public class ImageController {
 		String type = request.getParameter("t");
 		
 		File originalFile = new File(tempDir, id);
-		if (!originalFile.exists()) {
+		if (!originalFile.exists() || !originalFile.isFile()) {
 			//copy image not found to temp dir,
 			//change id to image_not_found
 			id = "image_not_found";
@@ -164,4 +166,19 @@ public class ImageController {
 		ImageIO.write(bi, "jpg", out);
 		out.close();
 	}
+
+	@Override
+    public void onApplicationEvent(CatalogImageChangedEvent arg0) {
+		if (arg0.getSource() instanceof Catalog) {
+			Catalog catalog = (Catalog) arg0.getSource();
+			String id = catalog.getId().toString();
+			File catalogDir = new File(tempDir, "catalog");
+			File imgFile = new File(catalogDir, id + "_large");
+			FileUtils.deleteQuietly(imgFile);
+			imgFile = new File(catalogDir, id + "_small");
+			FileUtils.deleteQuietly(imgFile);
+			imgFile = new File(catalogDir, id);
+			FileUtils.deleteQuietly(imgFile);
+		}
+    }
 }
