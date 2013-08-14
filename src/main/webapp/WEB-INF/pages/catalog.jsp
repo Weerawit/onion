@@ -36,7 +36,7 @@
 		<form:hidden path="id" />
 		<form:hidden path="invItem.id" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
-		<input type="hidden" name="filename" id="filename" />
+		<form:hidden path="filename"/>
 
 		<c:if test="${catalog.id == null }">
 			<spring:bind path="catalog.code">
@@ -237,11 +237,6 @@
 				$('#progress-bar').css('width', progress + '%');
 			}
 		});
-		/* 
-		$('#fileupload').bind('fileuploadprogress', function(e, data) {
-			var progress = parseInt(data.loaded / data.total * 100, 10);
-			$('#progress .bar').css('width', progress + '%');
-		}); */
 
 		$('#fileupload').fileupload('option', {
 			url : 'catalog/upload',
@@ -255,7 +250,7 @@
 		
 		
 		if ($('#filename').val() != '') {
-			$('#image').prop('src', "<c:url value='/img/thumbnail/'/>" + $('filename').val() + "?t=200");
+			$('#image').prop('src', "<c:url value='/img/thumbnail/'/>" + $('#filename').val() + "?t=200");
 		}
 	});
 
