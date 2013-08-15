@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.JsonObject;
+import com.worldbestsoft.model.Customer;
 import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.InvItem;
+import com.worldbestsoft.service.CustomerManager;
 import com.worldbestsoft.service.EmployeeManager;
 import com.worldbestsoft.service.InvItemManager;
 
@@ -24,6 +26,7 @@ public class JsonController {
 	
 	private InvItemManager invItemManager;
 	private EmployeeManager employeeManager;
+	private CustomerManager customerManager;
 	
 	public InvItemManager getInvItemManager() {
 		return invItemManager;
@@ -41,6 +44,15 @@ public class JsonController {
 	@Autowired
 	public void setEmployeeManager(EmployeeManager employeeManager) {
 		this.employeeManager = employeeManager;
+	}
+
+	public CustomerManager getCustomerManager() {
+		return customerManager;
+	}
+
+	@Autowired
+	public void setCustomerManager(CustomerManager customerManager) {
+		this.customerManager = customerManager;
 	}
 
 	@RequestMapping(value="/item*", method = RequestMethod.GET)
@@ -72,6 +84,27 @@ public class JsonController {
 			model.put("nickName", employee.getNickName());
 			model.put("address", employee.getAddress());
 			model.put("wage", employee.getWage().toString());
+			resultList.add(model);
+		}
+		return resultList;
+	}
+	
+	@RequestMapping(value="/customer*", method = RequestMethod.GET)
+	public @ResponseBody List<Map<String, String>> getCustomerList(@RequestParam("q") String name) {
+		Customer criteria = new Customer();
+		criteria.setName(name);
+		List<Map<String, String>> resultList = new ArrayList<Map<String,String>>();
+		List<Customer> customerList = customerManager.query(criteria, 0, 10, null, null);
+		for (Customer customer : customerList) {
+			Map<String, String> model = new HashMap<String, String>();
+			model.put("id", customer.getId().toString());
+			model.put("name", customer.getName());
+			model.put("customerType", customer.getCustomerType());
+			model.put("shipingAddress", customer.getShipingAddress());
+			model.put("billingAddress", customer.getBillingAddress());
+			model.put("contactName", customer.getContactName());
+			model.put("contactTel", customer.getContactTel());
+			model.put("memo", customer.getMemo());
 			resultList.add(model);
 		}
 		return resultList;
