@@ -28,6 +28,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -110,10 +111,14 @@ public class CatalogFormController extends BaseFormController implements Applica
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView save(CatalogForm catalogForm, BindingResult errors, HttpServletRequest request) throws Exception {
+	public ModelAndView save(@ModelAttribute("catalog") CatalogForm catalogForm, BindingResult errors, HttpServletRequest request) throws Exception {
 		if (request.getParameter("cancel") != null) {
 			return new ModelAndView("redirect:/catalogList");
 		}
+		
+		HttpSession session = request.getSession();
+		CatalogForm catalogFormSession = (CatalogForm) session.getAttribute("catalogForm");
+		
 
 		if (validator != null) { // validator is null during testing
 			validator.validate(catalogForm, errors);
@@ -128,7 +133,7 @@ public class CatalogFormController extends BaseFormController implements Applica
 																				// validate
 																				// when
 																				// deleting
-				return new ModelAndView("catalog", "catalog", catalogForm).addObject("catalogTypeList", catalogTypeManager.getAllCatalogType());
+				return new ModelAndView("catalog", "catalog", catalogForm).addObject("catalogTypeList", catalogTypeManager.getAllCatalogType()).addObject("catalogItemList", catalogFormSession.getCatalogItems());
 			}
 		}
 		log.info(request.getRemoteUser() + " is saving Catalog := " + catalogForm);
@@ -144,12 +149,10 @@ public class CatalogFormController extends BaseFormController implements Applica
 			return new ModelAndView("redirect:/catalogList");
 		} else {
 
-			HttpSession session = request.getSession();
-			CatalogForm catalogFormSession = (CatalogForm) session.getAttribute("catalogForm");
-			
 			if (null == catalogForm.getId()) {
+				
 				Catalog catalog = new Catalog();
-				PropertyUtils.copyProperties(catalog, catalogFormSession);
+				PropertyUtils.copyProperties(catalog, catalogForm);
 				// add
 				catalog.setCreateDate(new Date());
 				catalog.setCreateUser(request.getRemoteUser());
