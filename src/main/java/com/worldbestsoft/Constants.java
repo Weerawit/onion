@@ -86,6 +86,7 @@ public final class Constants {
     /**
      * For ImageController (t parameter) to get image by size
      */
+    public static final String THUMBNAIL_TYPE_VERY_SMALL = "100";
 	public static final String THUMBNAIL_TYPE_SMALL = "200"; //200px x 200px
 	public static final String THUMBNAIL_TYPE_LARGE = "400";
 	public static final String THUMBNAIL_TYPE_ORIGIAL = "800";

@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.worldbestsoft.model.Catalog;
+import com.worldbestsoft.model.CatalogType;
 import com.worldbestsoft.model.Customer;
 import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.InvItem;
 import com.worldbestsoft.model.InvItemGroup;
+import com.worldbestsoft.service.CatalogManager;
+import com.worldbestsoft.service.CatalogTypeManager;
 import com.worldbestsoft.service.CustomerManager;
 import com.worldbestsoft.service.EmployeeManager;
 import com.worldbestsoft.service.InvItemGroupManager;
@@ -30,6 +34,8 @@ public class PopupController extends BaseFormController {
 	private EmployeeManager employeeManager;
 	private CustomerManager customerManager;
 	private LookupManager lookupManager;
+	private CatalogManager catalogManager;
+	private CatalogTypeManager catalogTypeManager;
 
 	public InvItemManager getInvItemManager() {
 		return invItemManager;
@@ -74,6 +80,24 @@ public class PopupController extends BaseFormController {
 	@Autowired
 	public void setLookupManager(LookupManager lookupManager) {
 		this.lookupManager = lookupManager;
+	}
+	
+	public CatalogManager getCatalogManager() {
+		return catalogManager;
+	}
+
+	@Autowired
+	public void setCatalogManager(CatalogManager catalogManager) {
+		this.catalogManager = catalogManager;
+	}
+	
+	public CatalogTypeManager getCatalogTypeManager() {
+		return catalogTypeManager;
+	}
+
+	@Autowired
+	public void setCatalogTypeManager(CatalogTypeManager catalogTypeManager) {
+		this.catalogTypeManager = catalogTypeManager;
 	}
 
 	@RequestMapping(value="/item*", method = RequestMethod.GET)
@@ -136,5 +160,27 @@ public class PopupController extends BaseFormController {
 		model.addAttribute("customerList", customerManager.query(criteria, page, size, sortColumn, order));
 		model.addAttribute("customerTypeList", lookupManager.getAllCustomerType(request.getLocale()));
 		return new ModelAndView("popup/customerList", model.asMap());
+	}
+	
+	@RequestMapping(value="/catalog*", method = RequestMethod.GET)
+	public ModelAndView listCatalog(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Catalog criteria = new Catalog();
+		criteria.setCode(request.getParameter("code"));
+		criteria.setName(request.getParameter("name"));
+		CatalogType catalogType = new CatalogType();
+		catalogType.setCode(request.getParameter("catalogType.code"));
+		criteria.setCatalogType(catalogType);
+		int page = getPage(request);
+		String sortColumn = getSortColumn(request);
+		String order = getSortOrder(request);
+		int size = getPageSize(request);
+
+		log.info(request.getRemoteUser() + " is quering Catalog criteria := " + criteria);
+
+		Model model = new ExtendedModelMap();
+		model.addAttribute("resultSize", catalogManager.querySize(criteria));
+		model.addAttribute("catalogList", catalogManager.query(criteria, page, size, sortColumn, order));
+		model.addAttribute("catalogTypeList", catalogTypeManager.getAllCatalogType());
+		return new ModelAndView("popup/catalogList", model.asMap());
 	}
 }

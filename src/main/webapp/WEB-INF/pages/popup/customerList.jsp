@@ -1,5 +1,4 @@
 <%@page import="com.worldbestsoft.model.Customer"%>
-<%@page import="com.worldbestsoft.model.Employee"%>
 <%@page import="com.google.gson.GsonBuilder"%>
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="com.google.gson.Gson"%>
@@ -74,18 +73,7 @@
 		<%=request.getAttribute("psSelect")%>
 	</div>
 	</c:if>	
-	<div id="actions">
-		<a class="btn btn-primary" href="<c:url value='/customer?method=Add&from=list'/>"> <i class="icon-plus icon-white"></i> <fmt:message key="button.add" />
-		</a>
-
-		<button id="button.delete" class="btn" type="submit">
-			<i class="icon-trash"></i>
-			<fmt:message key="button.delete" />
-		</button>
-
-		<a class="btn" href="<c:url value='/mainMenu'/>"> <i class="icon-ok"></i> <fmt:message key="button.done" /></a>
-		
-	</div>
+	
 	<display:table name="customerList" cellspacing="0" cellpadding="0" requestURI="" id="customer"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
 		<display:column title="" headerClass="span1" class="span1">
 			<%

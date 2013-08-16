@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,17 +63,16 @@ public class ImageController implements ApplicationListener<CatalogImageChangedE
 	public void setCatalogManager(CatalogManager catalogManager) {
 		this.catalogManager = catalogManager;
 	}
-
-	@RequestMapping(value = "/thumbnail/{id}", method = RequestMethod.GET)
-	public void getThumbnail(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String type = request.getParameter("t");
+	
+	private File genImage(File originalFile, File tmpDir, String type) throws IOException {
+		if (!tmpDir.exists()) {
+			tmpDir.mkdirs();
+		}
 		
-		File originalFile = new File(tempDir, id);
 		if (!originalFile.exists() || !originalFile.isFile()) {
 			//copy image not found to temp dir,
 			//change id to image_not_found
-			id = "image_not_found";
-			originalFile = new File(tempDir, id);
+			originalFile = new File(tmpDir, "image_not_found");
 			if (!originalFile.exists()) {
 				//copy from resource
 				OutputStream out = new FileOutputStream(originalFile);
@@ -80,23 +80,68 @@ public class ImageController implements ApplicationListener<CatalogImageChangedE
 				IOUtils.closeQuietly(out);
 			}
 		}
-		File imgFile = null;
 		
+		File imgFile = new File(tmpDir, FilenameUtils.getName(originalFile.getName()));
 		if (Constants.THUMBNAIL_TYPE_LARGE.equals(type)) {
-			imgFile = new File(tempDir, id + "_large");
-			if (!imgFile.exists()) {
+			imgFile = new File(tmpDir, FilenameUtils.getName(originalFile.getName()) + "_large");
+		} else if (Constants.THUMBNAIL_TYPE_SMALL.equals(type)) {
+			imgFile = new File(tmpDir, FilenameUtils.getName(originalFile.getName()) + "_small");
+		} else if (Constants.THUMBNAIL_TYPE_VERY_SMALL.equals(type)) {
+			imgFile = new File(tmpDir, FilenameUtils.getName(originalFile.getName()) + "_verysmall");
+		}
+		if (!imgFile.exists()) {
+			if (Constants.THUMBNAIL_TYPE_LARGE.equals(type)) {
 				BufferedImage thumbnail = Scalr.resize(ImageIO.read(originalFile), Scalr.Method.QUALITY, 400);
 				ImageIO.write(thumbnail, "jpg", imgFile);
-			}
-		} else if (Constants.THUMBNAIL_TYPE_ORIGIAL.equals(type)) {
-			imgFile = new File(tempDir, id);
-		} else {
-			imgFile = new File(tempDir, id + "_small");
-			if (!imgFile.exists()) {
+			} else if (Constants.THUMBNAIL_TYPE_ORIGIAL.equals(type)) {
+				
+			} else if (Constants.THUMBNAIL_TYPE_SMALL.equals(type)) {
 				BufferedImage thumbnail = Scalr.resize(ImageIO.read(originalFile), Scalr.Method.QUALITY, 300);
+				ImageIO.write(thumbnail, "jpg", imgFile);
+			} else if (Constants.THUMBNAIL_TYPE_VERY_SMALL.equals(type)) {
+				BufferedImage thumbnail = Scalr.resize(ImageIO.read(originalFile), Scalr.Method.QUALITY, 100);
 				ImageIO.write(thumbnail, "jpg", imgFile);
 			}
 		}
+		return imgFile;
+	}
+
+	@RequestMapping(value = "/thumbnail/{id}", method = RequestMethod.GET)
+	public void getThumbnail(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String type = request.getParameter("t");
+		
+		File originalFile = new File(tempDir, id);
+		File imgFile = genImage(originalFile, tempDir, type);
+		
+//		if (!originalFile.exists() || !originalFile.isFile()) {
+//			//copy image not found to temp dir,
+//			//change id to image_not_found
+//			id = "image_not_found";
+//			originalFile = new File(tempDir, id);
+//			if (!originalFile.exists()) {
+//				//copy from resource
+//				OutputStream out = new FileOutputStream(originalFile);
+//				IOUtils.copyLarge(getClass().getResourceAsStream(getNoImageFile()), out);
+//				IOUtils.closeQuietly(out);
+//			}
+//		}
+//		File imgFile = null;
+//		
+//		if (Constants.THUMBNAIL_TYPE_LARGE.equals(type)) {
+//			imgFile = new File(tempDir, id + "_large");
+//			if (!imgFile.exists()) {
+//				BufferedImage thumbnail = Scalr.resize(ImageIO.read(originalFile), Scalr.Method.QUALITY, 400);
+//				ImageIO.write(thumbnail, "jpg", imgFile);
+//			}
+//		} else if (Constants.THUMBNAIL_TYPE_ORIGIAL.equals(type)) {
+//			imgFile = new File(tempDir, id);
+//		} else {
+//			imgFile = new File(tempDir, id + "_small");
+//			if (!imgFile.exists()) {
+//				BufferedImage thumbnail = Scalr.resize(ImageIO.read(originalFile), Scalr.Method.QUALITY, 300);
+//				ImageIO.write(thumbnail, "jpg", imgFile);
+//			}
+//		}
 		
 		response.setContentType("image/jpeg");
 
@@ -111,53 +156,54 @@ public class ImageController implements ApplicationListener<CatalogImageChangedE
 		String type = request.getParameter("t");
 		
 		File catalogDir = new File(tempDir, "catalog");
+		File originalFile = new File(catalogDir, id);
+		
 		if (!catalogDir.exists()) {
 			catalogDir.mkdirs();
 		}
-		File originalFile = new File(catalogDir, id);
 		if (!originalFile.exists()) {
-			boolean found = false;
 			try {
 				Catalog catalog = catalogManager.get(Long.valueOf(id));
-				if (null != catalog) {
+				if (null != catalog && null != catalog.getImg()) {
 					OutputStream out = new FileOutputStream(originalFile);
 					IOUtils.write(catalog.getImg(), out);
 					IOUtils.closeQuietly(out);
-					found = true;
 				} 
 			} catch (Exception e) {
 				//do nothing
 			}
 			
-			if (!found) {
-				id = "image_not_found";
-				originalFile = new File(tempDir, id);
-				if (!originalFile.exists()) {
-					//copy from resource
-					OutputStream out = new FileOutputStream(originalFile);
-					IOUtils.copyLarge(getClass().getResourceAsStream(getNoImageFile()), out);
-					IOUtils.closeQuietly(out);
-				}
-			}
+//			if (!found) {
+//				id = "image_not_found";
+//				originalFile = new File(tempDir, id);
+//				if (!originalFile.exists()) {
+//					//copy from resource
+//					OutputStream out = new FileOutputStream(originalFile);
+//					IOUtils.copyLarge(getClass().getResourceAsStream(getNoImageFile()), out);
+//					IOUtils.closeQuietly(out);
+//				}
+//			}
 		}
 		
-		File imgFile = null;
+		File imgFile = genImage(originalFile, catalogDir, type);
 		
-		if (Constants.THUMBNAIL_TYPE_LARGE.equals(type)) {
-			imgFile = new File(catalogDir, id + "_large");
-			if (!imgFile.exists()) {
-				BufferedImage thumbnail = Scalr.resize(ImageIO.read(originalFile), Scalr.Method.QUALITY, 400);
-				ImageIO.write(thumbnail, "jpg", imgFile);
-			}
-		} else if (Constants.THUMBNAIL_TYPE_ORIGIAL.equals(type)) {
-			imgFile = new File(catalogDir, id);
-		} else {
-			imgFile = new File(catalogDir, id + "_small");
-			if (!imgFile.exists()) {
-				BufferedImage thumbnail = Scalr.resize(ImageIO.read(originalFile), Scalr.Method.QUALITY, 300);
-				ImageIO.write(thumbnail, "jpg", imgFile);
-			}
-		}
+//		File imgFile = null;
+//		
+//		if (Constants.THUMBNAIL_TYPE_LARGE.equals(type)) {
+//			imgFile = new File(catalogDir, id + "_large");
+//			if (!imgFile.exists()) {
+//				BufferedImage thumbnail = Scalr.resize(ImageIO.read(originalFile), Scalr.Method.QUALITY, 400);
+//				ImageIO.write(thumbnail, "jpg", imgFile);
+//			}
+//		} else if (Constants.THUMBNAIL_TYPE_ORIGIAL.equals(type)) {
+//			imgFile = new File(catalogDir, id);
+//		} else {
+//			imgFile = new File(catalogDir, id + "_small");
+//			if (!imgFile.exists()) {
+//				BufferedImage thumbnail = Scalr.resize(ImageIO.read(originalFile), Scalr.Method.QUALITY, 300);
+//				ImageIO.write(thumbnail, "jpg", imgFile);
+//			}
+//		}
 		
 		response.setContentType("image/jpeg");
 

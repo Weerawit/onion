@@ -56,5 +56,25 @@ public class LookupManagerImpl implements LookupManager {
 		list.add(new LabelValue(resourceBundle.getString("invGoodsMovementType.100"), "100"));
 		return list;
 	}
+	
+	@Override
+    public List<LabelValue> getAllPaymentType(Locale locale) {
+		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
+		List<LabelValue> paymentTypeList = new ArrayList<LabelValue>();
+		// credit
+		paymentTypeList.add(new LabelValue(resourceBundle.getString("paymentType.1"), "1"));
+		// cash
+		paymentTypeList.add(new LabelValue(resourceBundle.getString("paymentType.2"), "2"));
+		return paymentTypeList;
+	}
+	
+    @Override
+    public List<LabelValue> getAllSaleOrderStatusList(Locale locale) {
+		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
+		List<LabelValue> paymentTypeList = new ArrayList<LabelValue>();
+		paymentTypeList.add(new LabelValue(resourceBundle.getString("saleOrderStatus.1"), "1"));
+		paymentTypeList.add(new LabelValue(resourceBundle.getString("saleOrderStatus.2"), "2"));
+		return paymentTypeList;
+	}
 
 }
