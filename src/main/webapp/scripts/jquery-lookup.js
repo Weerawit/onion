@@ -24,6 +24,7 @@
 		selectProperty : undefined, //incase , select value to display is diff from custom display list.
 		btnSearch : '<a class="btn"> <i class="icon-search"></i></a>', //valid html for  button, 
 		showBtnSearch : true,
+		appendBtnAndText : true,
 		btnSearchCondition : undefined, //function that return json condition to be pass as param.
 		handler : function(json) {
 		},
@@ -138,7 +139,9 @@
 			//add search button
 			if (this.options.showBtnSearch) {
 				// register popup
-				$(element).wrap('<div class="input-append"/>');
+				if (this.options.appendBtnAndText) {
+					$(element).wrap('<div class="input-append"/>');
+				}
 				//bind btnSearch event
 				var modalEl = this.initModal(this.element, this.options);
 				var btnSearch = $(this.options.btnSearch).on('click', function() {
