@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.JsonObject;
+import com.worldbestsoft.model.Catalog;
 import com.worldbestsoft.model.Customer;
 import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.InvItem;
+import com.worldbestsoft.service.CatalogManager;
 import com.worldbestsoft.service.CustomerManager;
 import com.worldbestsoft.service.EmployeeManager;
 import com.worldbestsoft.service.InvItemManager;
@@ -27,6 +29,7 @@ public class JsonController {
 	private InvItemManager invItemManager;
 	private EmployeeManager employeeManager;
 	private CustomerManager customerManager;
+	private CatalogManager catalogManager;
 	
 	public InvItemManager getInvItemManager() {
 		return invItemManager;
@@ -53,6 +56,15 @@ public class JsonController {
 	@Autowired
 	public void setCustomerManager(CustomerManager customerManager) {
 		this.customerManager = customerManager;
+	}
+	
+	public CatalogManager getCatalogManager() {
+		return catalogManager;
+	}
+
+	@Autowired
+	public void setCatalogManager(CatalogManager catalogManager) {
+		this.catalogManager = catalogManager;
 	}
 
 	@RequestMapping(value="/item*", method = RequestMethod.GET)
@@ -83,7 +95,11 @@ public class JsonController {
 			model.put("lastName", employee.getLastName());
 			model.put("nickName", employee.getNickName());
 			model.put("address", employee.getAddress());
-			model.put("wage", employee.getWage().toString());
+			if (null != employee.getWage()) {
+				model.put("wage", employee.getWage().toString());
+			} else {
+				model.put("wage", "0");
+			}
 			resultList.add(model);
 		}
 		return resultList;
@@ -105,6 +121,28 @@ public class JsonController {
 			model.put("contactName", customer.getContactName());
 			model.put("contactTel", customer.getContactTel());
 			model.put("memo", customer.getMemo());
+			resultList.add(model);
+		}
+		return resultList;
+	}
+
+	
+	@RequestMapping(value="/catalog*", method = RequestMethod.GET)
+	public @ResponseBody List<Map<String, String>> getCatalogList(@RequestParam("q") String name) {
+		Catalog criteria = new Catalog();
+		criteria.setName(name);
+		List<Map<String, String>> resultList = new ArrayList<Map<String,String>>();
+		List<Catalog> catalogList = catalogManager.query(criteria, 0, 10, null, null);
+		for (Catalog catalog : catalogList) {
+			Map<String, String> model = new HashMap<String, String>();
+			model.put("id", catalog.getId().toString());
+			model.put("code", catalog.getCode());
+			model.put("name", catalog.getName());
+			if (null != catalog.getFinalPrice()) {
+				model.put("finalPrice", catalog.getFinalPrice().toString());
+			} else {
+				model.put("finalPrice", "0");
+			}
 			resultList.add(model);
 		}
 		return resultList;
