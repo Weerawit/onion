@@ -1,7 +1,11 @@
 package com.worldbestsoft.webapp.controller;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -9,8 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,9 +27,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.worldbestsoft.model.Catalog;
 import com.worldbestsoft.model.Customer;
-import com.worldbestsoft.model.InvItem;
 import com.worldbestsoft.model.SaleOrder;
+import com.worldbestsoft.model.SaleOrderItem;
+import com.worldbestsoft.service.CatalogManager;
 import com.worldbestsoft.service.CustomerManager;
 import com.worldbestsoft.service.LookupManager;
 import com.worldbestsoft.service.SaleOrderManager;
@@ -33,6 +43,7 @@ public class SaleOrderFormController extends BaseFormController {
 	private SaleOrderManager saleOrderManager;
 	private LookupManager lookupManager;
 	private CustomerManager customerManager;
+	private CatalogManager catalogManager;
 
 	public SaleOrderManager getSaleOrderManager() {
 		return saleOrderManager;
@@ -59,6 +70,15 @@ public class SaleOrderFormController extends BaseFormController {
 	@Autowired
 	public void setCustomerManager(CustomerManager customerManager) {
 		this.customerManager = customerManager;
+	}
+	
+	public CatalogManager getCatalogManager() {
+		return catalogManager;
+	}
+
+	@Autowired
+	public void setCatalogManager(CatalogManager catalogManager) {
+		this.catalogManager = catalogManager;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -150,6 +170,13 @@ public class SaleOrderFormController extends BaseFormController {
 		SaleOrder saleOrder = (SaleOrder) session.getAttribute("saleOrder");
 		if (null == saleOrder || StringUtils.equalsIgnoreCase(method, "add")) {
 			saleOrder = new SaleOrder();
+			SaleOrderItem item = new SaleOrderItem();
+			Catalog catalog = new Catalog();
+			catalog.setId(Long.valueOf(0));
+			item.setCatalog(catalog);
+			item.setQty(BigDecimal.ZERO);
+			item.setPricePerUnit(BigDecimal.ZERO);
+			saleOrder.getSaleOrderItems().add(item);
 		}
 		
 		if (!isFormSubmission(request)) {
@@ -173,6 +200,135 @@ public class SaleOrderFormController extends BaseFormController {
 	}
 	
 	
-
+	
+	
+	@RequestMapping(value = "/displayTable")
+	protected ModelAndView displayTable(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession();
+		SaleOrder saleOrder = (SaleOrder) session.getAttribute("saleOrder");
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		BigDecimal totalPrice = BigDecimal.ZERO;
+		for (SaleOrderItem saleOrderItem : saleOrder.getSaleOrderItems()) {
+			if (null != saleOrderItem.getPrice()) {
+				totalPrice = totalPrice.add(saleOrderItem.getPrice());
+			}
+		}
+		saleOrder.setTotalPrice(totalPrice);
+		model.put("saleOrderItemList", saleOrder.getSaleOrderItems());
+		model.put("saleOrder", saleOrder);
+		return new ModelAndView("saleOrderTable", model);
+	}
+	
+	@RequestMapping(value = "/addRow")
+	protected ModelAndView addRow(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession();
+		SaleOrder saleOrder = (SaleOrder) session.getAttribute("saleOrder");
+		SaleOrderItem item = new SaleOrderItem();
+		Catalog catalog = new Catalog();
+		catalog.setId(Long.valueOf(0));
+		item.setCatalog(catalog);
+		item.setQty(BigDecimal.ZERO);
+		item.setPricePerUnit(BigDecimal.ZERO);
+		saleOrder.getSaleOrderItems().add(item);
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("saleOrderItemList", saleOrder.getSaleOrderItems());
+		model.put("saleOrder", saleOrder);
+		return displayTable(request, response);
+	}
+	
+	@RequestMapping(value = "/deleteRow")
+	public ModelAndView deleteRow(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String[] checkbox = request.getParameterValues("checkbox");
+		HttpSession session = request.getSession();
+		SaleOrder saleOrder = (SaleOrder) session.getAttribute("saleOrder");
+		List<SaleOrderItem> saleOrderItemList = new ArrayList<SaleOrderItem>(saleOrder.getSaleOrderItems());
+		
+		if (null != checkbox && checkbox.length > 0) {
+			for (int i = checkbox.length - 1; i >= 0; i--) {
+				saleOrderItemList.remove(Integer.parseInt(checkbox[i]));
+			}
+		}
+		saleOrder.setSaleOrderItems(new HashSet<SaleOrderItem>(saleOrderItemList));
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("saleOrderItemList", saleOrder.getSaleOrderItems());
+		model.put("saleOrder", saleOrder);
+		return displayTable(request, response);
+	}
+	
+	@RequestMapping(value = "/updateRow")
+	public ModelAndView updateRow(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession();
+		SaleOrder saleOrder = (SaleOrder) session.getAttribute("saleOrder");
+		List<SaleOrderItem> saleOrderItemList = new ArrayList<SaleOrderItem>(saleOrder.getSaleOrderItems());
+		
+		String index = request.getParameter("index");// specific element
+		
+		if (StringUtils.isNotBlank(index)) {
+			String code = request.getParameter("catalog.code");
+			String qtysString = request.getParameter("qty");
+			String pricePerUnitsString = request.getParameter("pricePerUnit");
+			
+			if (StringUtils.isNotBlank(code)) {
+				SaleOrderItem foundSaleOrderItem = (SaleOrderItem) CollectionUtils.find(saleOrderItemList, new BeanPropertyValueEqualsPredicate("catalog.code", code, true));
+				if (null == foundSaleOrderItem) {
+					//if not in the list get from index, otherwise update old one.
+					foundSaleOrderItem = saleOrderItemList.get(Integer.parseInt(index));
+				}
+				Catalog catalog = catalogManager.findByCatalogCode(code);
+				foundSaleOrderItem.setCatalog(catalog);
+				BigDecimal qty = null;
+				BigDecimal pricePerUnit = null;
+				if (StringUtils.isNotBlank(qtysString)) {
+					qty = NumberUtils.createBigDecimal(qtysString);
+					foundSaleOrderItem.setQty(qty);
+				} 
+				if (StringUtils.isNotBlank(pricePerUnitsString)) {
+					pricePerUnit = NumberUtils.createBigDecimal(pricePerUnitsString);
+					foundSaleOrderItem.setPricePerUnit(pricePerUnit);
+				}
+				if (null != qty && null != pricePerUnit) {
+					foundSaleOrderItem.setPrice(qty.multiply(pricePerUnit));
+				}
+			} else {
+				SaleOrderItem foundSaleOrderItem = saleOrderItemList.get(Integer.parseInt(index));
+				foundSaleOrderItem.setCatalog(null);
+				foundSaleOrderItem.setQty(null);
+				foundSaleOrderItem.setPrice(null);
+				foundSaleOrderItem.setPricePerUnit(null);
+			}
+		} else {
+			String[] codes = request.getParameterValues("catalog.code");
+			String[] qtys = request.getParameterValues("qty");
+			String[] pricePerUnits = request.getParameterValues("pricePerUnit");
+			
+			for (int i = 0; i < codes.length; i++) {
+				if (StringUtils.isNotBlank(codes[i])) {
+					SaleOrderItem foundSaleOrderItem = (SaleOrderItem) CollectionUtils.find(saleOrderItemList, new BeanPropertyValueEqualsPredicate("catalog.code", codes[i], true));
+					if (null == foundSaleOrderItem) {
+						foundSaleOrderItem = new SaleOrderItem();
+						Catalog catalog = catalogManager.findByCatalogCode(codes[i]);
+						foundSaleOrderItem.setCatalog(catalog);
+						saleOrderItemList.add(foundSaleOrderItem);
+					} 
+					BigDecimal qty = NumberUtils.createBigDecimal(qtys[i]);
+					BigDecimal pricePerUnit = NumberUtils.createBigDecimal(pricePerUnits[i]);
+					foundSaleOrderItem.setQty(qty);
+					foundSaleOrderItem.setPricePerUnit(pricePerUnit);
+					
+					if (null != qty && null != pricePerUnit) {
+						foundSaleOrderItem.setPrice(qty.multiply(pricePerUnit));
+					}
+				}
+			}
+		}
+		
+		saleOrder.setSaleOrderItems(new HashSet<SaleOrderItem>(saleOrderItemList));
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("saleOrderItemList", saleOrder.getSaleOrderItems());
+		model.put("saleOrder", saleOrder);
+		return displayTable(request, response);
+	}
 
 }

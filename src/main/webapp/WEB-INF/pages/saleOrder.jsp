@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/scripts/datepicker/css/bootstrap-datetimepicker.min.css'/>" />
 <script type="text/javascript" src="<c:url value='/scripts/datepicker/js/bootstrap-datetimepicker.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/scripts/jquery-lookup.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/scripts/jquery-ajaxDisplaytag.js'/>"></script>
 
 </head>
 <div class="span2">
@@ -43,7 +44,7 @@
 			</div>
 		<%--</c:if>--%>
 		
-		<div class="well row-fluid">
+		<div class="well">
 			<fieldset>
 				<legend>
 				<fmt:message key="saleOrder.customer.name"/>
@@ -100,94 +101,86 @@
 			</fieldset>
 		</div>
 		
-		<div class="row-fluid">
-			<span class="span6">
-				<spring:bind path="saleOrder.paymentType">
-				<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-					<appfuse:label styleClass="control-label" key="saleOrder.paymentType" />
-					<div class="controls">
-						<form:select path="paymentType">
-							<form:option value=""></form:option>
-							<form:options items="${paymentTypeList}" itemLabel="label" itemValue="value" />
-						</form:select>
-						<form:errors path="paymentType" cssClass="help-inline" />
-					</div>
-				</div>
-			</spring:bind>
-			</span>
-			<span class="span6">
-				<spring:bind path="saleOrder.deliveryDate">
-				<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-					<appfuse:label styleClass="control-label" key="saleOrder.deliveryDate" />
-					<div class="controls">
-						<div class="input-append date" id="deliveryDateDatepicker">
-							<form:input path="deliveryDate" id="deliveryDate" cssClass="input-medium" maxlength="50" /><span class="add-on"><i class="icon-th"></i></span>
-						</div>
-						<form:errors path="deliveryDate" cssClass="help-inline" />
-					</div>
-				</div>
-			</spring:bind>
-			</span>
-		</div>
-		<div class="row-fluid">
-			<span class="span6">
-				<spring:bind path="saleOrder.totalPrice">
-					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-						<appfuse:label styleClass="control-label" key="saleOrder.totalPrice" />
-						<div class="controls">
-							<form:input path="totalPrice" id="totalPrice" cssClass="input-medium" maxlength="10" />
-							<form:errors path="totalPrice" cssClass="help-inline" />
-						</div>
-					</div>
-				</spring:bind>
-			</span>
-			<span class="span6">
-				<spring:bind path="saleOrder.status">
-					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-						<appfuse:label styleClass="control-label" key="saleOrder.status" />
-						<div class="controls">
-							<form:select path="status">
-								<form:option value=""></form:option>
-								<form:options items="${saleOrderStatusList}" itemLabel="label" itemValue="value" />
-							</form:select>
-							<form:errors path="status" cssClass="help-inline" />
-						</div>
-					</div>
-				</spring:bind>
-			</span>
-		</div>
 
 		
 		<div id="actions">
 		
 			<input type="hidden" name="addcatalog">
 		
-			<button id="button.add" class="btn btn-primary" type="submit" onclick="bCancel=true;$('#saleOrder').attr('action', '${ctx}/saleOrder/addDetail');">
+			<button id="addDetailBtn" class="btn btn-primary" type="button" >
 				<i class="icon-plus icon-white"></i>
 				<fmt:message key="button.add" />
 			</button>
 			
-			<button id="button.delete" class="btn" type="submit" onclick="bCancel=true;return (validateDelete(document.forms['saleOrder'].checkbox) && $('#saleOrder').attr('action', '${ctx}/saleOrder/deleteDetail'));">
+			<button id="deleteDetailBtn" class="btn" type="button">
 				<i class="icon-trash"></i>
 				<fmt:message key="button.delete" />
 			</button>
 			
 		</div>
-		<display:table name="saleOrderItemList" cellspacing="0" cellpadding="0" requestURI="" id="saleOrderItem" class="table table-condensed table-striped table-hover table-bordered">
-			<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" headerClass="span1" class="span1">
-				<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleOrderItem_rowNum - 1}'/>" />
-			</display:column>
-			<display:column titleKey="saleOrderItem.invItem.code" sortable="true">
-				<button class="btn btn-link" type="submit" onclick="bCancel=true;$('#saleOrder').attr('action', '${ctx}/saleOrder/editDetail?&id=${ saleOrderItem_rowNum - 1}');">
-					<c:out value="${saleOrderItem.invItem.code}"/>
-				</button>
-			</display:column>
+		
+		<div id="tableDiv">
+			
+		</div>
 
-
-			<display:column property="invItem.name" escapeXml="true" sortable="true" titleKey="saleOrderItem.invItem.name" sortName="invItem.name" />
-			<display:column property="qty" sortable="true" titleKey="saleOrderItem.qty" sortName="qty" format="{0,number,#,##0.##}"/>
-		</display:table>
-
+		<div class="well">
+			<div class="row-fluid">
+				<span class="span6">
+					<spring:bind path="saleOrder.paymentType">
+					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+						<appfuse:label styleClass="control-label" key="saleOrder.paymentType" />
+						<div class="controls">
+							<form:select path="paymentType">
+								<form:option value=""></form:option>
+								<form:options items="${paymentTypeList}" itemLabel="label" itemValue="value" />
+							</form:select>
+							<form:errors path="paymentType" cssClass="help-inline" />
+						</div>
+					</div>
+				</spring:bind>
+				</span>
+				<span class="span6">
+					<spring:bind path="saleOrder.deliveryDate">
+					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+						<appfuse:label styleClass="control-label" key="saleOrder.deliveryDate" />
+						<div class="controls">
+							<div class="input-append date" id="deliveryDateDatepicker">
+								<form:input path="deliveryDate" id="deliveryDate" cssClass="input-medium" maxlength="50" /><span class="add-on"><i class="icon-th"></i></span>
+							</div>
+							<form:errors path="deliveryDate" cssClass="help-inline" />
+						</div>
+					</div>
+				</spring:bind>
+				</span>
+			</div>
+			<div class="row-fluid">
+				<span class="span6">
+					<spring:bind path="saleOrder.totalPrice">
+						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+							<appfuse:label styleClass="control-label" key="saleOrder.totalPrice" />
+							<div class="controls">
+								<form:input path="totalPrice" id="totalPrice" cssClass="input-medium" maxlength="10" />
+								<form:errors path="totalPrice" cssClass="help-inline" />
+							</div>
+						</div>
+					</spring:bind>
+				</span>
+				<span class="span6">
+					<spring:bind path="saleOrder.status">
+						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+							<appfuse:label styleClass="control-label" key="saleOrder.status" />
+							<div class="controls">
+								<form:select path="status">
+									<form:option value=""></form:option>
+									<form:options items="${saleOrderStatusList}" itemLabel="label" itemValue="value" />
+								</form:select>
+								<form:errors path="status" cssClass="help-inline" />
+							</div>
+						</div>
+					</spring:bind>
+				</span>
+			</div>
+		</div>
 
 		<fieldset class="form-actions">
 			<button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
@@ -235,15 +228,6 @@
 		});
 	});
 
-	<c:if test="${not empty saleOrderItemList}">
-	$(document).ready(function() {
-		$("#chkSelectAll").click(function() {
-			toggleCheckAll(this, document.forms['saleOrder'].checkbox);
-		});
-	});
-	</c:if>
-	
-	
 	$(document).ready(function () {
 		$('input[name="customer.name"]').lookup({
 			type: 'customer',
@@ -282,29 +266,77 @@
 	
 	
 	$(document).ready(function () {
-		$('input[name="addcatalog"]').lookup({
-			type: 'catalog',
-			displayProperty: function (json) {
-				return json.name;
-			},
-			selectProperty: function (json) {
-				alert(json.id);
-				return json.name;
-			},
-			btnSearch: '<a class="btn btn-primary"> <i class="icon-plus icon-white"></i><fmt:message key="button.add" /></a>',
-			appendBtnAndText: false,
-			btnSearchCondition: function () {
-				return {};	
-			},
-			handler: function (json) {
-				if (json) {
-					//$('input[name="invItem.code"]').val(json.code);
-				} else {
-					//$('input[name="invItem.code"]').val('');
-					//$('input[name="customer.name"]').val('');
-				}
+		$('#tableDiv').ajaxDisplaytag({
+			url : '${ctx}/saleOrder/displayTable',
+			loadedHandler : function () {
+				var self = this;
+				
+				var fnLoad = function() {
+					self.pageLoadedHandler.call(self);
+				};
+				
+				//register popup
+				$('input[name="catalog.name"]').each(function(i) {
+					$(this).lookup({
+						type: 'catalog',
+						displayProperty: function (json) {
+							return json.name;
+						},
+						selectProperty: function (json) {
+							return json.name;
+						},
+						btnSearchCondition: function () {
+							return {code: $('input[name="catalog.code"]:eq(' + i + ')').val()};	
+						},
+						handler: function (json) {
+							if (json) {
+								$('#image' + i).prop('src', "<c:url value='/img/thumbnail/catalog/'/>" + json.id + "?t=100");
+								$('input[name="pricePerUnit"]:eq(' + i + ')').val(json.finalPrice);
+								$('input[name="catalog.code"]:eq(' + i + ')').val(json.code);
+								//index of whole list
+								var index = $('input[name="checkbox"]:eq(' + i + ')').val();
+								var url = '${ctx}/saleOrder/updateRow' + $(self).data('link');
+								$('#tableDiv').load(url, {'index' : index, 'qty' : 1, 'pricePerUnit' : json.finalPrice, 'catalog.code' : json.code}, fnLoad);
+							} else {
+								$('#image' + i).prop('src', "<c:url value='/img/thumbnail/catalog/'/>" + 0 + "?t=100");
+								$('input[name="pricePerUnit"]:eq(' + i + ')').val('');
+								$('input[name="catalog.code"]:eq(' + i + ')').val('');
+								//index of whole list
+								var index = $('input[name="checkbox"]:eq(' + i + ')').val();
+								var url = '${ctx}/saleOrder/updateRow' + $(self).data('link');
+								$('#tableDiv').load(url, {'index' : index, 'qty' : 1, 'pricePerUnit' : '', 'catalog.code' : ''}, fnLoad);
+							}
+						}
+					});
+				});
+				
+				$('#saleOrderItemForm input[name="chkSelectAll"]').click(function() {
+					toggleCheckAll(this, $('#saleOrderItemForm input[name="checkbox"]'));
+				});
+				
+				//register button add & delete
+				$('#addDetailBtn').off();
+				$('#addDetailBtn').on('click', function () {
+					$('#tableDiv').load('${ctx}/saleOrder/addRow?ajax=true', $.extend({}, $(self).data('link')), fnLoad);
+				});
+				$('#deleteDetailBtn').off();
+				$('#deleteDetailBtn').on('click', function () {
+					if (validateDelete($('#saleOrderItemForm input[name="checkbox"]'))) {
+						var url = '${ctx}/saleOrder/deleteRow' + $(self).data('link');
+						$('#tableDiv').load(url, $('#saleOrderItemForm').serialize(), fnLoad);							
+					}
+				});
+				
+				//calculate qty
+				$('#saleOrderItemForm input[name="qty"], #saleOrderItemForm input[name="pricePerUnit"]').each(function(i) {
+					$(this).on('focusout', function() {
+						var url = '${ctx}/saleOrder/updateRow' + $(self).data('link');
+						$('#tableDiv').load(url, $('#saleOrderItemForm').serialize(), fnLoad);
+					});
+				});
 			}
 		});
+		
 	});
 </script>
 <v:javascript formName="saleOrder" staticJavascript="false" />
