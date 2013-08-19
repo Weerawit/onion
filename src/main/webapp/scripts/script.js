@@ -36,29 +36,3 @@ function createFormElement(element, type, name, id, value, parent) {
     e.setAttribute("value", value);
     parent.appendChild(e);
 }
-
-/** popup */
-var popupHandler = [];
-
-function openPopup(url, param, handler) {
-	var options = {remote : url + '?' + jQuery.param(param)};
-	$('#popupModal').modal(options);
-	$('#popupModal').modal('show');
-	popupHandler.push(handler);
-};
-
-function closePopup() {
-	var handler = popupHandler.pop();
-	if (typeof handler == "function") {
-	}
-	$('#popupModal').modal('hide');
-};
-
-function selectAndClosePopup(jsonObject) {
-	var handler = popupHandler.pop();
-	if (typeof handler == "function") {
-		popupHandler.call(this, jsonObject);
-	}
-	$('#popupModal').modal('hide');
-};
-
