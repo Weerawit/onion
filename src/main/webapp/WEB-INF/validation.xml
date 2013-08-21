@@ -442,5 +442,16 @@
 				</var>
 			</field>
 		</form>
+		<form name="saleOrder">
+			<field property="customer.name" depends="required">
+				<arg key="saleOrder.customer.name" />
+			</field>
+			<field property="paymentType" depends="required">
+				<arg key="saleOrder.paymentType" />
+			</field>
+			<field property="deliveryDate" depends="required">
+				<arg key="saleOrder.deliveryDate" />
+			</field>
+		</form>
 	</formset>
 </form-validation>

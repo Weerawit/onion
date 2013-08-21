@@ -14,7 +14,10 @@
 		<fmt:message key="saleOrder.heading" />
 	</h2>
 	<p>
-		<fmt:message key="saleOrder.message" />
+		<fmt:message key="saleOrder.saleOrderNo" />
+	</p>
+	<p>
+	<c:out value="${saleOrder.saleOrderNo}" />
 	</p>
 </div>
 <div class="span10">
@@ -33,17 +36,8 @@
 	<form:form commandName="saleOrder" method="post" action="saleOrder" onsubmit="return onFormSubmit(this)" id="saleOrder">
 		<form:hidden path="id" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
+		<form:hidden path="saleOrderNo" />
 
-		<%--<c:if test="${saleOrder.id != null }"> --%>
-			<div class="control-group">
-				<appfuse:label styleClass="control-label" key="saleOrder.saleOrderNo" />
-				<div class="controls">
-					<span class="input-medium uneditable-input"><c:out value="${saleOrder.saleOrderNo}" /></span>
-					<form:hidden path="saleOrderNo" />
-				</div>
-			</div>
-		<%--</c:if>--%>
-		
 		<div class="well">
 			<fieldset>
 				<legend>
@@ -119,10 +113,12 @@
 			
 		</div>
 		
-		<div id="tableDiv">
-			
-		</div>
-
+		<spring:bind path="saleOrder.saleOrderItems">
+			<div id="tableDiv" class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+				
+			</div>
+		</spring:bind>
+		
 		<div class="well">
 			<div class="row-fluid">
 				<span class="span6">
@@ -155,17 +151,6 @@
 			</div>
 			<div class="row-fluid">
 				<span class="span6">
-					<spring:bind path="saleOrder.totalPrice">
-						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="saleOrder.totalPrice" />
-							<div class="controls">
-								<form:input path="totalPrice" id="totalPrice" cssClass="input-medium" maxlength="10" />
-								<form:errors path="totalPrice" cssClass="help-inline" />
-							</div>
-						</div>
-					</spring:bind>
-				</span>
-				<span class="span6">
 					<spring:bind path="saleOrder.status">
 						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 							<appfuse:label styleClass="control-label" key="saleOrder.status" />
@@ -182,7 +167,7 @@
 			</div>
 		</div>
 
-		<fieldset class="form-actions">
+		<fieldset class="form-actions text-center">
 			<button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
 				<i class="icon-ok icon-white"></i>
 				<fmt:message key="button.save" />

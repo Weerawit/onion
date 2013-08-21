@@ -80,7 +80,7 @@ public class SaleOrderItem implements java.io.Serializable {
 		this.saleOrder = saleOrder;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "catalog_id", nullable = false)
 	public Catalog getCatalog() {
 		return this.catalog;

@@ -16,9 +16,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -98,8 +98,31 @@ public class SaleOrderFormController extends BaseFormController {
 				Customer customer = getCustomerManager().get(saleOrderForm.getCustomer().getId());
 				saleOrderForm.setCustomer(customer);
 				if (null == customer) {
-					errors.rejectValue("customer.name", "errors.invalid",new Object[] { getText("saleOrder.customer.name", request.getLocale())}, "errors.invalid");	
+					errors.rejectValue("customer.name", "errors.invalid", new Object[] { getText("saleOrder.customer.name", request.getLocale())}, "errors.invalid");	
 				}
+			}
+			
+			BigDecimal totalPrice = BigDecimal.ZERO;
+			boolean foundSaleOrderItem = false;
+			if (null != saleOrderSession.getSaleOrderItems()) {
+				for (SaleOrderItem saleOrderItem : saleOrderSession.getSaleOrderItems()) {
+					if (null != saleOrderItem.getCatalog() && StringUtils.isNotBlank(saleOrderItem.getCatalog().getCode())) {
+						Catalog catalog = catalogManager.findByCatalogCode(saleOrderItem.getCatalog().getCode());
+						if (null == catalog) {
+							errors.rejectValue("saleOrderItems", "errors.invalid",new Object[] { getText("saleOrderItem.catalog.code", request.getLocale())}, "errors.invalid");
+						} else {
+							saleOrderItem.setPrice(saleOrderItem.getPricePerUnit().multiply(saleOrderItem.getQty()));
+							totalPrice = totalPrice.add(saleOrderItem.getPrice());
+							foundSaleOrderItem = true;
+						}
+					}
+				}
+			}
+			
+			saleOrderForm.setTotalPrice(totalPrice);
+			
+			if (!foundSaleOrderItem) {
+				errors.rejectValue("saleOrderItems", "errors.required",new Object[] { getText("saleOrder.saleOrerItem", request.getLocale())}, "errors.required");
 			}
 
 			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't
@@ -186,6 +209,14 @@ public class SaleOrderFormController extends BaseFormController {
 		} else {
 			saleOrder = getSaleOrderManager().get(Long.valueOf(id));
 		}
+		
+		BigDecimal totalPrice = BigDecimal.ZERO;
+		for (SaleOrderItem saleOrderItem : saleOrder.getSaleOrderItems()) {
+			if (null != saleOrderItem.getPrice()) {
+				totalPrice = totalPrice.add(saleOrderItem.getPrice());
+			}
+		}
+		saleOrder.setTotalPrice(totalPrice);
 		session.setAttribute("saleOrder", saleOrder);
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("saleOrder", saleOrder);
