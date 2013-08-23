@@ -1,7 +1,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-<title><fmt:message key="saleOrderList.title" /></title>
+<title><fmt:message key="saleReceiptList.title" /></title>
 <meta name="menu" content="SaleOrderMenu" />
 <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/scripts/datepicker/css/bootstrap-datetimepicker.min.css'/>" />
 <script type="text/javascript" src="<c:url value='/scripts/datepicker/js/bootstrap-datetimepicker.min.js'/>"></script>
@@ -17,36 +17,36 @@
 
 <div class="span12">
 	<h2>
-		<fmt:message key="saleOrderList.heading" />
+		<fmt:message key="saleReceiptList.heading" />
 	</h2>
 
-	<form method="get" action="${ctx}/saleOrderList" id="searchForm" class="well form-horizontal">
+	<form method="get" action="${ctx}/saleReceiptList" id="searchForm" class="well form-horizontal">
 		<div class="control-group">
-			<label class="control-label" for="saleOrderNo"><fmt:message key="saleOrder.saleOrderNo" />:</label>
+			<label class="control-label" for="saleOrder.saleOrderNo"><fmt:message key="saleOrder.saleOrderNo" />:</label>
 			<div class="controls">
-				<input type="text" class="input-medium" name="saleOrderNo" id="saleOrderNo" value="${param.saleOrderNo}" placeholder="" />
+				<input type="text" class="input-medium" name="saleOrder.saleOrderNo" id="saleOrder.saleOrderNo" value="${param['saleOrder.saleOrderNo']}" placeholder="" />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="customer.name"><fmt:message key="saleOrder.customer.name" />:</label>
+			<label class="control-label" for="saleOrder.customer.name"><fmt:message key="saleReceipt.saleOrder.customer.name" />:</label>
 			<div class="controls">
-				<input type="text" class="input-xlarge" name="customer.name" id="customer.name" value="${param['customer.name']}" placeholder="" />
+				<input type="text" class="input-xlarge" name="saleOrder.customer.name" id="saleOrder.customer.name" value="${param['saleOrder.customer.name']}" placeholder="" />
 			</div>
 		</div>
 		
 		<div class="control-group">
-			<label class="control-label" for="deliveryDateFrom"><fmt:message key="saleOrder.deliveryDateFrom" />:</label>
+			<label class="control-label" for="receiptDateFrom"><fmt:message key="saleReceipt.receiptDateFrom" />:</label>
 			<div class="controls">
-				<div class="input-append date" id="deliveryDateFromDatepicker">
-					<input type="text" class="input-medium" name="deliveryDateFrom" value="<c:out value='${param.deliveryDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
+				<div class="input-append date" id="receiptDateFromDatepicker">
+					<input type="text" class="input-medium" name="receiptDateFrom" value="<c:out value='${param.receiptDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
 				</div>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="deliveryDateTo"><fmt:message key="saleOrder.deliveryDateTo" />:</label>
+			<label class="control-label" for="receiptDateTo"><fmt:message key="saleReceipt.receiptDateTo" />:</label>
 			<div class="controls">
-				<div class="input-append date" id="deliveryDateToDatepicker">
-					<input type="text" class="input-medium" name="deliveryDateTo" value="<c:out value='${param.deliveryDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
+				<div class="input-append date" id="receiptDateToDatepicker">
+					<input type="text" class="input-medium" name="receiptDateTo" value="<c:out value='${param.receiptDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
 				</div>
 			</div>
 		</div>
@@ -66,8 +66,8 @@
 			</div>
 		</div>
 	</form>
-	<form method="post" action="${ctx}/saleOrderList" id="deleteForm" onSubmit="return validateDelete(this.checkbox)">
-	<c:if test="${not empty saleOrderList }">
+	<form method="post" action="${ctx}/saleReceiptList" id="deleteForm" onSubmit="return validateDelete(this.checkbox)">
+	<c:if test="${not empty saleReceiptList }">
 	<div class="control-group pull-right">
 		<fmt:message key="label.showPagination" />
 		&nbsp;
@@ -75,7 +75,7 @@
 	</div>
 	</c:if>	
 	<div id="actions">
-		<a class="btn btn-primary" href="<c:url value='/saleOrder?method=Add&from=list'/>"> <i class="icon-plus icon-white"></i> <fmt:message key="button.add" />
+		<a class="btn btn-primary" href="<c:url value='/saleReceipt?method=Add&from=list'/>"> <i class="icon-plus icon-white"></i> <fmt:message key="button.add" />
 		</a>
 
 		<button id="button.delete" class="btn" type="submit">
@@ -86,32 +86,22 @@
 		<a class="btn" href="<c:url value='/mainMenu'/>"> <i class="icon-ok"></i> <fmt:message key="button.done" /></a>
 		
 	</div>
-	<display:table name="saleOrderList" cellspacing="0" cellpadding="0" requestURI="" id="saleOrder"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
+	<display:table name="saleReceiptList" cellspacing="0" cellpadding="0" requestURI="" id="saleReceipt"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
 		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" headerClass="span1" class="span1">
-			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleOrder.id}'/>" />
+			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleReceipt.id}'/>" />
 		</display:column>
-		<display:column property="id" url="/saleOrder?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleOrder.id" sortName="id" />
-		<display:column property="saleOrderNo" escapeXml="true" sortable="true" titleKey="saleOrder.saleOrderNo" sortName="saleOrderNo" />
-		<display:column property="customer.name" escapeXml="true" sortable="true" titleKey="saleOrder.customer.name" sortName="customer.name" />
-		<display:column property="totalPrice" escapeXml="false" sortable="true" titleKey="saleOrder.totalPrice" sortName="totalPrice" format="{0,number,#,##0.00}"/>
-		
-		<display:column escapeXml="false" sortable="true" titleKey="saleOrder.paymentPaid" sortName="paymentPaid">
-			<c:choose>
-				<c:when test="${saleOrder.paymentStatus != '3' }">
-					<a class="btn btn-small btn-primary" href="<c:url value='/saleReceipt?method=Add&from=list&saleOrderNo=${saleOrder.saleOrderNo}'/>"><fmt:formatNumber value="${saleOrder.totalPrice - saleOrder.paymentPaid }" pattern="#,##0.00"/></a>
-				</c:when>
-				<c:otherwise>
-					<fmt:formatNumber value="${saleOrder.paymentPaid }" pattern="#,##0.00"/>
-				</c:otherwise>
-			</c:choose>
-		</display:column>
+		<display:column property="receiptNo" url="/saleReceipt?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleReceipt.receiptNo" sortName="receiptNo" />
+		<display:column property="saleOrder.saleOrderNo" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.saleOrderNo" sortName="saleOrder.saleOrderNo" />
+		<display:column property="saleOrder.customer.name" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.customer.name" sortName="saleOrder.customer.name" />
+		<display:column property="receiptDate" escapeXml="false" sortable="true" titleKey="saleReceipt.receiptDate" sortName="receiptDate"  format="{0, date, dd/MM/yyyy HH:mm}"/>
+		<display:column property="receiptAmount" escapeXml="false" sortable="true" titleKey="saleReceipt.receiptAmount" sortName="receiptAmount"  format="{0, number, #,##0.##}"/>
 		<display:setProperty name="export.csv" value="true"></display:setProperty>
 		<display:setProperty name="export.excel" value="true"></display:setProperty>
 		<display:setProperty name="export.xml" value="false"></display:setProperty>
 		<display:setProperty name="export.pdf" value="true"></display:setProperty>
-		<display:setProperty name="export.excel.filename" value="SaleOrder.xls" />
-		<display:setProperty name="export.csv.filename" value="SaleOrder.csv" />
-		<display:setProperty name="export.pdf.filename" value="SaleOrder.pdf" />
+		<display:setProperty name="export.excel.filename" value="SaleReceipt.xls" />
+		<display:setProperty name="export.csv.filename" value="SaleReceipt.csv" />
+		<display:setProperty name="export.pdf.filename" value="SaleReceipt.pdf" />
 	</display:table>
 	
 	</form>
@@ -132,7 +122,7 @@
 		}
 	}
 
-	<c:if test="${not empty saleOrderList}">
+	<c:if test="${not empty saleReceiptList}">
 	$(document).ready(function() {
 		$("#chkSelectAll").click(function() {
 			toggleCheckAll(this, document.forms['deleteForm'].checkbox);
@@ -141,21 +131,19 @@
 	</c:if>
 	
 	$(document).ready(function () {
-		$('input[name="customer.name"]').lookup({
+		$('input[name="saleOrder.customer.name"]').lookup({
 			type: 'customer',
 			displayProperty: function (json) {
 				return json.name;
 			},
 			selectProperty: 'name',
 			btnSearchCondition: function () {
-				return {name: $('input[name="customer.name"]').val()};	
+				return {name: $('input[name="saleOrder.customer.name"]').val()};	
 			},
 			handler: function (json) {
 				if (json) {
-					//$('input[name="invItem.code"]').val(json.code);
 				} else {
-					//$('input[name="invItem.code"]').val('');
-					$('input[name="customer.name"]').val('');
+					$('input[name="saleOrder.customer.name"]').val('');
 				}
 			}
 		});
@@ -163,16 +151,16 @@
 	
 	$(function() {
 
-		var st = $('#deliveryDateFromDatepicker').datetimepicker({
+		var st = $('#receiptDateFromDatepicker').datetimepicker({
 			format : "dd/MM/yyyy hh:mm:ss"
 		});
-		var ed = $('#deliveryDateToDatepicker').datetimepicker({
+		var ed = $('#receiptDateToDatepicker').datetimepicker({
 			format : "dd/MM/yyyy hh:mm:ss"
 		});
 		st.on('show', function(e) {
 			var stObj = st.data('datetimepicker');
 			var edObj = ed.data('datetimepicker');
-			if ($('input[name="deliveryDateTo"]').val() != '') {
+			if ($('input[name="receiptDateTo"]').val() != '') {
 				stObj.setEndDate(edObj.getDate());
 			} else {
 				stObj.setEndDate(null);
@@ -190,7 +178,7 @@
 		ed.on('show', function(e) {
 			var stObj = st.data('datetimepicker');
 			var edObj = ed.data('datetimepicker');
-			if ($('input[name="deliveryDateFrom"]').val() != '') {
+			if ($('input[name="receiptDateFrom"]').val() != '') {
 				edObj.setStartDate(stObj.getDate());
 			} else {
 				edObj.setStartDate(null);

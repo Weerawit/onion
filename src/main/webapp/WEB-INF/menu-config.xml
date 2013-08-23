@@ -13,7 +13,8 @@
             <Item name="FileUpload" title="menu.selectFile" page="/fileupload"/>
         </Menu>
         <Menu name="SaleOrderMenu" title="menu.saleOrder" description="Sale Order Menu" roles="ROLE_ADMIN,ROLE_USER">
-        		<Item name="SaleOrder" title="menu.saleOrder" page="/saleOrderList"/>
+        		<Item name="SaleOrder" title="menu.saleOrder.saleOrder" page="/saleOrderList"/>
+        		<Item name="SaleReceipt" title="menu.saleOrder.saleReceipt" page="/saleReceiptList"/>
         </Menu>
         <Menu name="CatalogMenu" title="menu.catalog" description="Catalog Menu" roles="ROLE_ADMIN,ROLE_USER">
             <Item name="CatalogTypes" title="menu.catalog.catalogType" page="/catalogTypeList"/>

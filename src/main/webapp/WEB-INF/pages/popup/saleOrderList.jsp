@@ -1,8 +1,13 @@
+<%@page import="com.google.gson.JsonElement"%>
+<%@page import="com.worldbestsoft.model.SaleOrder"%>
+<%@page import="com.google.gson.GsonBuilder"%>
+<%@page import="com.google.gson.JsonObject"%>
+<%@page import="com.google.gson.Gson"%>
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
 <title><fmt:message key="saleOrderList.title" /></title>
-<meta name="menu" content="SaleOrderMenu" />
+<meta name="decorator" content="popup"/>
 <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/scripts/datepicker/css/bootstrap-datetimepicker.min.css'/>" />
 <script type="text/javascript" src="<c:url value='/scripts/datepicker/js/bootstrap-datetimepicker.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/scripts/jquery-lookup.js'/>"></script>
@@ -20,7 +25,7 @@
 		<fmt:message key="saleOrderList.heading" />
 	</h2>
 
-	<form method="get" action="${ctx}/saleOrderList" id="searchForm" class="well form-horizontal">
+	<form method="get" action="${ctx}/popup/saleOrder" id="searchForm" class="well form-horizontal">
 		<div class="control-group">
 			<label class="control-label" for="saleOrderNo"><fmt:message key="saleOrder.saleOrderNo" />:</label>
 			<div class="controls">
@@ -66,7 +71,6 @@
 			</div>
 		</div>
 	</form>
-	<form method="post" action="${ctx}/saleOrderList" id="deleteForm" onSubmit="return validateDelete(this.checkbox)">
 	<c:if test="${not empty saleOrderList }">
 	<div class="control-group pull-right">
 		<fmt:message key="label.showPagination" />
@@ -74,72 +78,43 @@
 		<%=request.getAttribute("psSelect")%>
 	</div>
 	</c:if>	
-	<div id="actions">
-		<a class="btn btn-primary" href="<c:url value='/saleOrder?method=Add&from=list'/>"> <i class="icon-plus icon-white"></i> <fmt:message key="button.add" />
-		</a>
-
-		<button id="button.delete" class="btn" type="submit">
-			<i class="icon-trash"></i>
-			<fmt:message key="button.delete" />
-		</button>
-
-		<a class="btn" href="<c:url value='/mainMenu'/>"> <i class="icon-ok"></i> <fmt:message key="button.done" /></a>
-		
-	</div>
-	<display:table name="saleOrderList" cellspacing="0" cellpadding="0" requestURI="" id="saleOrder"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
-		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" headerClass="span1" class="span1">
-			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleOrder.id}'/>" />
+	<display:table name="saleOrderList" cellspacing="0" cellpadding="0" requestURI="" id="saleOrder"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="false" size="resultSize" partialList="true" sort="external">
+		<display:column title="" headerClass="span1" class="span1">
+			<%
+				SaleOrder saleOrderObj = (SaleOrder) saleOrder;
+				Gson gson = new GsonBuilder().create();
+				JsonObject jsonObject = new JsonObject();
+				jsonObject.addProperty("id", saleOrderObj.getId().toString());
+				jsonObject.addProperty("saleOrderNo", saleOrderObj.getSaleOrderNo());
+				jsonObject.addProperty("totalPrice", saleOrderObj.getTotalPrice().toString());
+				jsonObject.addProperty("paymentPaid", saleOrderObj.getPaymentPaid().toString());
+				jsonObject.addProperty("deliveryStatus", saleOrderObj.getDeliveryStatus());
+				jsonObject.addProperty("paymentStatus", saleOrderObj.getPaymentStatus());
+				jsonObject.addProperty("deliveryDate", saleOrderObj.getDeliveryDate().toString());
+				
+				JsonObject customerElement = new JsonObject();
+				customerElement.getAsJsonObject().addProperty("id", saleOrderObj.getCustomer().getId().toString());
+				customerElement.getAsJsonObject().addProperty("name", saleOrderObj.getCustomer().getName());
+				customerElement.getAsJsonObject().addProperty("customerType", saleOrderObj.getCustomer().getCustomerType());
+				customerElement.getAsJsonObject().addProperty("shipingAddress", saleOrderObj.getCustomer().getShipingAddress());
+				customerElement.getAsJsonObject().addProperty("billingAddress", saleOrderObj.getCustomer().getBillingAddress());
+				customerElement.getAsJsonObject().addProperty("contactName", saleOrderObj.getCustomer().getContactName());
+				customerElement.getAsJsonObject().addProperty("contactTel", saleOrderObj.getCustomer().getContactTel());
+				customerElement.getAsJsonObject().addProperty("memo", saleOrderObj.getCustomer().getMemo());
+				jsonObject.add("customer", customerElement);
+				String json = gson.toJson(jsonObject);
+			%>
+			<input type="radio" id="radio" name="radio" value='<%=json%>' />
 		</display:column>
-		<display:column property="id" url="/saleOrder?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleOrder.id" sortName="id" />
-		<display:column property="saleOrderNo" escapeXml="true" sortable="true" titleKey="saleOrder.saleOrderNo" sortName="saleOrderNo" />
+		<display:column property="id" escapeXml="true" sortable="true" titleKey="saleOrder.id" sortName="id" />
+		<display:column property="saleOrderNo" url="/saleOrder?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleOrder.saleOrderNo" sortName="saleOrderNo" />
 		<display:column property="customer.name" escapeXml="true" sortable="true" titleKey="saleOrder.customer.name" sortName="customer.name" />
-		<display:column property="totalPrice" escapeXml="false" sortable="true" titleKey="saleOrder.totalPrice" sortName="totalPrice" format="{0,number,#,##0.00}"/>
-		
-		<display:column escapeXml="false" sortable="true" titleKey="saleOrder.paymentPaid" sortName="paymentPaid">
-			<c:choose>
-				<c:when test="${saleOrder.paymentStatus != '3' }">
-					<a class="btn btn-small btn-primary" href="<c:url value='/saleReceipt?method=Add&from=list&saleOrderNo=${saleOrder.saleOrderNo}'/>"><fmt:formatNumber value="${saleOrder.totalPrice - saleOrder.paymentPaid }" pattern="#,##0.00"/></a>
-				</c:when>
-				<c:otherwise>
-					<fmt:formatNumber value="${saleOrder.paymentPaid }" pattern="#,##0.00"/>
-				</c:otherwise>
-			</c:choose>
-		</display:column>
-		<display:setProperty name="export.csv" value="true"></display:setProperty>
-		<display:setProperty name="export.excel" value="true"></display:setProperty>
-		<display:setProperty name="export.xml" value="false"></display:setProperty>
-		<display:setProperty name="export.pdf" value="true"></display:setProperty>
-		<display:setProperty name="export.excel.filename" value="SaleOrder.xls" />
-		<display:setProperty name="export.csv.filename" value="SaleOrder.csv" />
-		<display:setProperty name="export.pdf.filename" value="SaleOrder.pdf" />
+		<display:column property="totalPrice" escapeXml="true" sortable="true" titleKey="saleOrder.totalPrice" sortName="totalPrice" />
 	</display:table>
-	
-	</form>
 </div>
 
 
 <script type="text/javascript">
-	function validateDelete(checkbox) {
-
-		if (!hasChecked(checkbox)) {
-			alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
-			return false;
-		}
-		if (confirm('<fmt:message key="global.confirm.delete"/>')) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	<c:if test="${not empty saleOrderList}">
-	$(document).ready(function() {
-		$("#chkSelectAll").click(function() {
-			toggleCheckAll(this, document.forms['deleteForm'].checkbox);
-		});
-	});
-	</c:if>
-	
 	$(document).ready(function () {
 		$('input[name="customer.name"]').lookup({
 			type: 'customer',

@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 24, 2013 12:06:40 PM by Hibernate Tools 4.0.0
+// Generated Aug 23, 2013 11:56:36 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -36,6 +36,7 @@ public class SaleReceipt implements java.io.Serializable {
 	private String createUser;
 	private Date updateDate;
 	private String updateUser;
+	private String status;
 
 	public SaleReceipt() {
 	}
@@ -44,7 +45,7 @@ public class SaleReceipt implements java.io.Serializable {
 		this.saleOrder = saleOrder;
 	}
 
-	public SaleReceipt(SaleOrder saleOrder, String receiptNo, Date receiptDate, String receiptType, BigDecimal receiptAmount, String chequeNo, String chequeBank, Date chequeDate, Date createDate, String createUser, Date updateDate, String updateUser) {
+	public SaleReceipt(SaleOrder saleOrder, String receiptNo, Date receiptDate, String receiptType, BigDecimal receiptAmount, String chequeNo, String chequeBank, Date chequeDate, Date createDate, String createUser, Date updateDate, String updateUser, String status) {
 		this.saleOrder = saleOrder;
 		this.receiptNo = receiptNo;
 		this.receiptDate = receiptDate;
@@ -57,6 +58,7 @@ public class SaleReceipt implements java.io.Serializable {
 		this.createUser = createUser;
 		this.updateDate = updateDate;
 		this.updateUser = updateUser;
+		this.status = status;
 	}
 
 	@Id
@@ -181,6 +183,15 @@ public class SaleReceipt implements java.io.Serializable {
 
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
+	}
+
+	@Column(name = "status", length = 3)
+	public String getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

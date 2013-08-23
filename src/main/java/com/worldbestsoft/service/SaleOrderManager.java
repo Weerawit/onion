@@ -23,4 +23,6 @@ public interface SaleOrderManager {
 
 	public abstract SaleOrder get(Long id);
 
+	public abstract void updateSaleOrderPayment(SaleOrder saleOrder);
+
 }

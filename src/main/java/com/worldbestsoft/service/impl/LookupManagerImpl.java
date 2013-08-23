@@ -69,12 +69,22 @@ public class LookupManagerImpl implements LookupManager {
 	}
 	
     @Override
-    public List<LabelValue> getAllSaleOrderStatusList(Locale locale) {
+    public List<LabelValue> getAllSaleOrderDeliveryStatusList(Locale locale) {
 		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
-		List<LabelValue> paymentTypeList = new ArrayList<LabelValue>();
-		paymentTypeList.add(new LabelValue(resourceBundle.getString("saleOrderStatus.1"), "1"));
-		paymentTypeList.add(new LabelValue(resourceBundle.getString("saleOrderStatus.2"), "2"));
-		return paymentTypeList;
+		List<LabelValue> list = new ArrayList<LabelValue>();
+		list.add(new LabelValue(resourceBundle.getString("saleOrderDeliveryStatus.1"), "1"));
+		list.add(new LabelValue(resourceBundle.getString("saleOrderDeliveryStatus.2"), "2"));
+		return list;
+	}
+    
+
+    @Override
+    public List<LabelValue> getAllReceiptType(Locale locale) {
+		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
+		List<LabelValue> receiptTypeList = new ArrayList<LabelValue>();
+		receiptTypeList.add(new LabelValue(resourceBundle.getString("receiptType.1"), "1"));
+		receiptTypeList.add(new LabelValue(resourceBundle.getString("receiptType.2"), "2"));
+		return receiptTypeList;
 	}
 
 }

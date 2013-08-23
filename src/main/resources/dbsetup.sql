@@ -211,7 +211,7 @@ CREATE  TABLE IF NOT EXISTS `onion`.`inv_goods_movement` (
   `running_no` VARCHAR(20) NULL DEFAULT NULL ,
   `movement_date` DATETIME NULL DEFAULT NULL ,
   `movement_type` VARCHAR(3) NULL DEFAULT NULL COMMENT '100 เบิกของ' ,
-  `owner` VARCHAR(255) NULL DEFAULT NULL COMMENT 'ผู้เบิก' ,
+  `owner` VARCHAR(50) NULL DEFAULT NULL COMMENT 'ผู้เบิก' ,
   `memo` VARCHAR(255) NULL ,
   `create_date` DATETIME NULL DEFAULT NULL ,
   `create_user` VARCHAR(50) NULL DEFAULT NULL ,
@@ -377,8 +377,10 @@ CREATE  TABLE IF NOT EXISTS `onion`.`sale_order` (
   `payment_type` VARCHAR(3) NULL DEFAULT NULL COMMENT '1-credit\n2-cash' ,
   `delivery_date` DATETIME NULL DEFAULT NULL ,
   `total_price` DECIMAL(10,2) NULL DEFAULT NULL ,
+  `payment_paid` DECIMAL(10,2) NULL ,
+  `payment_status` VARCHAR(3) NULL COMMENT '1 = NONE\n2 = Partial paid\n3 = Fully paid\n' ,
   `customer_id` BIGINT NOT NULL ,
-  `status` VARCHAR(3) NULL DEFAULT NULL ,
+  `delivery_status` VARCHAR(3) NULL DEFAULT NULL COMMENT 'delivery_status\n' ,
   `create_date` DATETIME NULL DEFAULT NULL ,
   `create_user` VARCHAR(50) NULL DEFAULT NULL ,
   `update_date` DATETIME NULL DEFAULT NULL ,
@@ -441,6 +443,7 @@ CREATE  TABLE IF NOT EXISTS `onion`.`sale_receipt` (
   `create_user` VARCHAR(50) NULL DEFAULT NULL ,
   `update_date` DATETIME NULL DEFAULT NULL ,
   `update_user` VARCHAR(50) NULL DEFAULT NULL ,
+  `status` VARCHAR(3) NULL ,
   PRIMARY KEY (`id`) ,
   CONSTRAINT `fk_sale_receipt_sale_order1`
     FOREIGN KEY (`sale_order_id` )

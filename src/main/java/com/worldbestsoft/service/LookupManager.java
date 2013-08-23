@@ -24,5 +24,7 @@ public interface LookupManager {
 
 	public abstract List<LabelValue> getAllPaymentType(Locale locale);
 
-	public abstract List<LabelValue> getAllSaleOrderStatusList(Locale locale);
+	public abstract List<LabelValue> getAllSaleOrderDeliveryStatusList(Locale locale);
+
+	public abstract List<LabelValue> getAllReceiptType(Locale locale);
 }

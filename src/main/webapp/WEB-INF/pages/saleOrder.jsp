@@ -137,18 +137,21 @@
 				</span>
 				<span class="span6">
 					<spring:bind path="saleOrder.deliveryDate">
-					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-						<appfuse:label styleClass="control-label" key="saleOrder.deliveryDate" />
-						<div class="controls">
-							<div class="input-append date" id="deliveryDateDatepicker">
-								<form:input path="deliveryDate" id="deliveryDate" cssClass="input-medium" maxlength="50" /><span class="add-on"><i class="icon-th"></i></span>
+						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+							<appfuse:label styleClass="control-label" key="saleOrder.deliveryDate" />
+							<div class="controls">
+								<div class="input-append date" id="deliveryDateDatepicker">
+									<form:input path="deliveryDate" id="deliveryDate" cssClass="input-medium" maxlength="50" /><span class="add-on"><i class="icon-th"></i></span>
+								</div>
+								<form:errors path="deliveryDate" cssClass="help-inline" />
 							</div>
-							<form:errors path="deliveryDate" cssClass="help-inline" />
 						</div>
-					</div>
-				</spring:bind>
+					</spring:bind>
 				</span>
 			</div>
+			<%--
+			
+			change saleOrderStatus to DeliveryStatus
 			<div class="row-fluid">
 				<span class="span6">
 					<spring:bind path="saleOrder.status">
@@ -165,6 +168,7 @@
 					</spring:bind>
 				</span>
 			</div>
+			 --%>
 		</div>
 
 		<fieldset class="form-actions text-center">
@@ -179,6 +183,16 @@
 					<fmt:message key="button.delete" />
 				</button>
 			</c:if>
+			
+			<c:if test="${saleOrder.id != null}">
+				<c:choose>
+				<c:when test="${saleOrder.paymentStatus != '3' }">
+					<a class="btn btn-info" href="<c:url value='/saleReceipt?method=Add&from=list&saleOrderNo=${saleOrder.saleOrderNo}'/>"><fmt:formatNumber value="${saleOrder.totalPrice - saleOrder.paymentPaid }" pattern="#,##0.00"/></a>
+				</c:when>
+			</c:choose>
+				
+			</c:if>
+			
 
 			<button type="submit" class="btn" name="cancel" onclick="bCancel=true">
 				<i class="icon-remove"></i>

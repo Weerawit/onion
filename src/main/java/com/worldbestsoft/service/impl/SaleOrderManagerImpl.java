@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -18,6 +19,7 @@ import com.worldbestsoft.dao.SaleOrderItemDao;
 import com.worldbestsoft.model.InvGoodsReceipt;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleOrderItem;
+import com.worldbestsoft.model.SaleReceipt;
 import com.worldbestsoft.model.criteria.SaleOrderCriteria;
 import com.worldbestsoft.service.DocumentNumberGenerator;
 import com.worldbestsoft.service.DocumentNumberGeneratorException;
@@ -196,6 +198,35 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 	    return saleOrderDao.get(id);
     }
 
+	
+	@Override
+    public void updateSaleOrderPayment(SaleOrder saleOrder) {
+		saleOrder = saleOrderDao.get(saleOrder.getId());
+		BigDecimal paymentPaid =BigDecimal.ZERO;
+		if (null != saleOrder.getSaleReceipts()) {
+			for (SaleReceipt saleReceipt : saleOrder.getSaleReceipts()) {
+				//all active
+				if (StringUtils.equalsIgnoreCase("A", saleReceipt.getStatus())) {
+					paymentPaid = paymentPaid.add(saleReceipt.getReceiptAmount());
+				}
+			}
+		} 
+		
+		saleOrder.setPaymentPaid(paymentPaid);
+		/**
+		 * 1 = NONE
+			2 = Partial paid
+			3 = Fully paid
+		 */
+		if (BigDecimal.ZERO.equals(paymentPaid)) {
+			saleOrder.setPaymentStatus("1");
+		} else if (saleOrder.getTotalPrice().compareTo(saleOrder.getPaymentPaid()) <= 0) {
+			saleOrder.setPaymentStatus("3");
+		} else {
+			saleOrder.setPaymentStatus("2");
+		}
+		saleOrderDao.save(saleOrder);
+	}
 	
 	
 }

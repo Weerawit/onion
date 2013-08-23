@@ -133,7 +133,7 @@ public class SaleOrderFormController extends BaseFormController {
 				model.put("saleOrder", saleOrderForm);
 				model.put("paymentTypeList", lookupManager.getAllPaymentType(request.getLocale()));
 				model.put("saleOrderItemList", saleOrderSession.getSaleOrderItems());
-				model.put("saleOrderStatusList", lookupManager.getAllSaleOrderStatusList(request.getLocale()));
+				model.put("saleOrderStatusList", lookupManager.getAllSaleOrderDeliveryStatusList(request.getLocale()));
 				return new ModelAndView("saleOrder", model);
 			}
 		}
@@ -154,6 +154,7 @@ public class SaleOrderFormController extends BaseFormController {
 				SaleOrder saleOrder = new SaleOrder();
 				PropertyUtils.copyProperties(saleOrder, saleOrderForm);
 				// add
+				saleOrder.setPaymentPaid(BigDecimal.ZERO);
 				saleOrder.setCreateDate(new Date());
 				saleOrder.setCreateUser(request.getRemoteUser());
 				
@@ -167,7 +168,6 @@ public class SaleOrderFormController extends BaseFormController {
 				SaleOrder saleOrder = getSaleOrderManager().get(saleOrderForm.getId());
 				saleOrder.setDeliveryDate(saleOrderForm.getDeliveryDate());
 				saleOrder.setPaymentType(saleOrderForm.getPaymentType());
-				saleOrder.setStatus(saleOrderForm.getStatus());
 				saleOrder.setTotalPrice(saleOrderForm.getTotalPrice());
 				saleOrder.setCustomer(saleOrderForm.getCustomer());
 				
@@ -222,7 +222,7 @@ public class SaleOrderFormController extends BaseFormController {
 		model.put("saleOrder", saleOrder);
 		model.put("paymentTypeList", lookupManager.getAllPaymentType(request.getLocale()));
 		model.put("saleOrderItemList", saleOrder.getSaleOrderItems());
-		model.put("saleOrderStatusList", lookupManager.getAllSaleOrderStatusList(request.getLocale()));
+		model.put("saleOrderStatusList", lookupManager.getAllSaleOrderDeliveryStatusList(request.getLocale()));
 		return new ModelAndView("saleOrder", model);
 	}
 

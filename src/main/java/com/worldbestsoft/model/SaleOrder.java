@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 24, 2013 12:06:40 PM by Hibernate Tools 4.0.0
+// Generated Aug 23, 2013 9:22:00 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -32,7 +32,9 @@ public class SaleOrder implements java.io.Serializable {
 	private String paymentType;
 	private Date deliveryDate;
 	private BigDecimal totalPrice;
-	private String status;
+	private BigDecimal paymentPaid;
+	private String paymentStatus;
+	private String deliveryStatus;
 	private Date createDate;
 	private String createUser;
 	private Date updateDate;
@@ -47,13 +49,15 @@ public class SaleOrder implements java.io.Serializable {
 		this.customer = customer;
 	}
 
-	public SaleOrder(Customer customer, String saleOrderNo, String paymentType, Date deliveryDate, BigDecimal totalPrice, String status, Date createDate, String createUser, Date updateDate, String updateUser, Set<SaleReceipt> saleReceipts, Set<SaleOrderItem> saleOrderItems) {
+	public SaleOrder(Customer customer, String saleOrderNo, String paymentType, Date deliveryDate, BigDecimal totalPrice, BigDecimal paymentPaid, String paymentStatus, String deliveryStatus, Date createDate, String createUser, Date updateDate, String updateUser, Set<SaleReceipt> saleReceipts, Set<SaleOrderItem> saleOrderItems) {
 		this.customer = customer;
 		this.saleOrderNo = saleOrderNo;
 		this.paymentType = paymentType;
 		this.deliveryDate = deliveryDate;
 		this.totalPrice = totalPrice;
-		this.status = status;
+		this.paymentPaid = paymentPaid;
+		this.paymentStatus = paymentStatus;
+		this.deliveryStatus = deliveryStatus;
 		this.createDate = createDate;
 		this.createUser = createUser;
 		this.updateDate = updateDate;
@@ -120,13 +124,31 @@ public class SaleOrder implements java.io.Serializable {
 		this.totalPrice = totalPrice;
 	}
 
-	@Column(name = "status", length = 3)
-	public String getStatus() {
-		return this.status;
+	@Column(name = "payment_paid", precision = 10)
+	public BigDecimal getPaymentPaid() {
+		return this.paymentPaid;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setPaymentPaid(BigDecimal paymentPaid) {
+		this.paymentPaid = paymentPaid;
+	}
+
+	@Column(name = "payment_status", length = 3)
+	public String getPaymentStatus() {
+		return this.paymentStatus;
+	}
+
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+
+	@Column(name = "delivery_status", length = 3)
+	public String getDeliveryStatus() {
+		return this.deliveryStatus;
+	}
+
+	public void setDeliveryStatus(String deliveryStatus) {
+		this.deliveryStatus = deliveryStatus;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

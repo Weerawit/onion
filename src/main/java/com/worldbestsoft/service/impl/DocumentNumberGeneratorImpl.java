@@ -14,6 +14,7 @@ import com.worldbestsoft.model.DocumentNumber;
 import com.worldbestsoft.model.InvGoodsMovement;
 import com.worldbestsoft.model.InvGoodsReceipt;
 import com.worldbestsoft.model.SaleOrder;
+import com.worldbestsoft.model.SaleReceipt;
 import com.worldbestsoft.service.DocumentNumberGenerator;
 import com.worldbestsoft.service.DocumentNumberGeneratorException;
 
@@ -30,6 +31,7 @@ public class DocumentNumberGeneratorImpl implements DocumentNumberGenerator {
 		lockObject.put(InvGoodsReceipt.class.getName(), new ReentrantLock());
 		lockObject.put(InvGoodsMovement.class.getName(), new ReentrantLock());
 		lockObject.put(SaleOrder.class.getName(), new ReentrantLock());
+		lockObject.put(SaleReceipt.class.getName(), new ReentrantLock());
 	}
 
 //	public String nextDocumentNumber(Class klass) throws InterruptedException {

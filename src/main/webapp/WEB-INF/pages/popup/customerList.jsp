@@ -74,7 +74,7 @@
 	</div>
 	</c:if>	
 	
-	<display:table name="customerList" cellspacing="0" cellpadding="0" requestURI="" id="customer"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
+	<display:table name="customerList" cellspacing="0" cellpadding="0" requestURI="" id="customer"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="false" size="resultSize" partialList="true" sort="external">
 		<display:column title="" headerClass="span1" class="span1">
 			<%
 				Customer customerObj = (Customer) customer;

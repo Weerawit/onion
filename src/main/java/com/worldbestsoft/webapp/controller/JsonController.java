@@ -17,10 +17,13 @@ import com.worldbestsoft.model.Catalog;
 import com.worldbestsoft.model.Customer;
 import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.InvItem;
+import com.worldbestsoft.model.SaleOrder;
+import com.worldbestsoft.model.criteria.SaleOrderCriteria;
 import com.worldbestsoft.service.CatalogManager;
 import com.worldbestsoft.service.CustomerManager;
 import com.worldbestsoft.service.EmployeeManager;
 import com.worldbestsoft.service.InvItemManager;
+import com.worldbestsoft.service.SaleOrderManager;
 
 @Controller
 @RequestMapping("/json*")
@@ -30,6 +33,7 @@ public class JsonController {
 	private EmployeeManager employeeManager;
 	private CustomerManager customerManager;
 	private CatalogManager catalogManager;
+	private SaleOrderManager saleOrderManager;
 	
 	public InvItemManager getInvItemManager() {
 		return invItemManager;
@@ -65,6 +69,15 @@ public class JsonController {
 	@Autowired
 	public void setCatalogManager(CatalogManager catalogManager) {
 		this.catalogManager = catalogManager;
+	}
+	
+	public SaleOrderManager getSaleOrderManager() {
+		return saleOrderManager;
+	}
+
+	@Autowired
+	public void setSaleOrderManager(SaleOrderManager saleOrderManager) {
+		this.saleOrderManager = saleOrderManager;
 	}
 
 	@RequestMapping(value="/item*", method = RequestMethod.GET)
@@ -143,6 +156,37 @@ public class JsonController {
 			} else {
 				model.put("finalPrice", "0");
 			}
+			resultList.add(model);
+		}
+		return resultList;
+	}
+	
+	@RequestMapping(value="/saleOrder*", method = RequestMethod.GET)
+	public @ResponseBody List<Map<String, Object>> getSaleOrderList(@RequestParam("q") String name) {
+		SaleOrderCriteria criteria = new SaleOrderCriteria();
+		criteria.setSaleOrderNo(name);
+		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
+		List<SaleOrder> saleOrderList = saleOrderManager.query(criteria, 0, 10, null, null);
+		for (SaleOrder saleOrder : saleOrderList) {
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("id", saleOrder.getId().toString());
+			model.put("saleOrderNo", saleOrder.getSaleOrderNo());
+			model.put("totalPrice", saleOrder.getTotalPrice());
+			model.put("paymentPaid", saleOrder.getPaymentPaid());
+			model.put("deliveryStatus", saleOrder.getDeliveryStatus());
+			model.put("paymentStatus", saleOrder.getPaymentStatus());
+			model.put("deliveryDate", saleOrder.getDeliveryDate());
+			
+			Map<String, String> customerMap = new HashMap<String, String>();
+			customerMap.put("id", saleOrder.getCustomer().getId().toString());
+			customerMap.put("name", saleOrder.getCustomer().getName());
+			customerMap.put("customerType", saleOrder.getCustomer().getCustomerType());
+			customerMap.put("shipingAddress", saleOrder.getCustomer().getShipingAddress());
+			customerMap.put("billingAddress", saleOrder.getCustomer().getBillingAddress());
+			customerMap.put("contactName", saleOrder.getCustomer().getContactName());
+			customerMap.put("contactTel", saleOrder.getCustomer().getContactTel());
+			customerMap.put("memo", saleOrder.getCustomer().getMemo());
+			model.put("customer", customerMap);
 			resultList.add(model);
 		}
 		return resultList;
