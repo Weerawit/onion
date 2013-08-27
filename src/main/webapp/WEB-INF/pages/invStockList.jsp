@@ -40,7 +40,7 @@
 			</div>
 		</div>
 	</form>
-	<form method="post" action="${ctx}/invStockList" id="deleteForm" onSubmit="return validateDelete(this.checkbox)">
+	<form method="post" action="${ctx}/invStockList" id="deleteForm">
 	<c:if test="${not empty invStockList }">
 	<div class="control-group pull-right">
 		<fmt:message key="label.showPagination" />

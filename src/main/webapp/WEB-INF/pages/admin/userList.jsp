@@ -39,12 +39,12 @@
 		</div>
 	</form>
 
-	<form method="post" action="${ctx}/admin/users" id="deleteForm" onSubmit="return validateDelete(this.checkbox)">
-		<div id="actions" class="pull-left">
+	<form method="post" action="${ctx}/admin/users" id="deleteForm">
+		<div id="actions">
 			<a class="btn btn-primary" href="<c:url value='/userform?method=Add&from=list'/>"> <i class="icon-plus icon-white"></i> <fmt:message key="button.add" />
 			</a>
 
-			<button id="button.delete" class="btn" type="submit">
+			<button id="button.delete" class="btn" type="submit" onclick="return validateDelete()">
 				<i class="icon-trash"></i>
 				<fmt:message key="button.delete" />
 			</button>
@@ -77,19 +77,19 @@
 
 
 <script type="text/javascript">
-	function validateDelete(checkbox) {
-
-		if (!hasChecked(checkbox)) {
+	function validateDelete() {
+		var form = document.forms['deleteForm'];
+		if (!hasChecked(form.checkbox)) {
 			alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
 			return false;
 		}
-		if (confirm('<fmt:message key="global.confirm.delete"/>')) {
-			return true;
-		} else {
-			return false;
-		}
+		confirmMessage('<fmt:message key="global.confirm.delete"/>', function(result) {
+			if (result) {
+				form.submit();
+			}
+		});
+		return false;
 	}
-
 	<c:if test="${not empty userList}">
 	$(document).ready(function() {
 		$("#chkSelectAll").click(function() {

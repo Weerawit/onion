@@ -125,7 +125,7 @@
 			alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
 			return false;
 		}
-		if (confirm('<fmt:message key="global.confirm.delete"/>')) {
+		if (confirmMessage('<fmt:message key="global.confirm.delete"/>')) {
 			return true;
 		} else {
 			return false;

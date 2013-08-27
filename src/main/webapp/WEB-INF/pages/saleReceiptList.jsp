@@ -33,7 +33,7 @@
 				<input type="text" class="input-xlarge" name="saleOrder.customer.name" id="saleOrder.customer.name" value="${param['saleOrder.customer.name']}" placeholder="" />
 			</div>
 		</div>
-		
+
 		<div class="control-group">
 			<label class="control-label" for="receiptDateFrom"><fmt:message key="saleReceipt.receiptDateFrom" />:</label>
 			<div class="controls">
@@ -50,7 +50,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="control-group">
 			<div class="controls">
 
@@ -67,43 +67,43 @@
 		</div>
 	</form>
 	<form method="post" action="${ctx}/saleReceiptList" id="deleteForm" onSubmit="return validateDelete(this.checkbox)">
-	<c:if test="${not empty saleReceiptList }">
-	<div class="control-group pull-right">
-		<fmt:message key="label.showPagination" />
-		&nbsp;
-		<%=request.getAttribute("psSelect")%>
-	</div>
-	</c:if>	
-	<div id="actions">
-		<a class="btn btn-primary" href="<c:url value='/saleReceipt?method=Add&from=list'/>"> <i class="icon-plus icon-white"></i> <fmt:message key="button.add" />
-		</a>
+		<c:if test="${not empty saleReceiptList }">
+			<div class="control-group pull-right">
+				<fmt:message key="label.showPagination" />
+				&nbsp;
+				<%=request.getAttribute("psSelect")%>
+			</div>
+		</c:if>
+		<div id="actions">
+			<a class="btn btn-primary" href="<c:url value='/saleReceipt?method=Add&from=list'/>"> <i class="icon-plus icon-white"></i> <fmt:message key="button.add" />
+			</a>
 
-		<button id="button.delete" class="btn" type="submit">
-			<i class="icon-trash"></i>
-			<fmt:message key="button.delete" />
-		</button>
+			<button id="button.delete" class="btn" type="submit">
+				<i class="icon-trash"></i>
+				<fmt:message key="button.delete" />
+			</button>
 
-		<a class="btn" href="<c:url value='/mainMenu'/>"> <i class="icon-ok"></i> <fmt:message key="button.done" /></a>
-		
-	</div>
-	<display:table name="saleReceiptList" cellspacing="0" cellpadding="0" requestURI="" id="saleReceipt"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
-		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" headerClass="span1" class="span1">
-			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleReceipt.id}'/>" />
-		</display:column>
-		<display:column property="receiptNo" url="/saleReceipt?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleReceipt.receiptNo" sortName="receiptNo" />
-		<display:column property="saleOrder.saleOrderNo" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.saleOrderNo" sortName="saleOrder.saleOrderNo" />
-		<display:column property="saleOrder.customer.name" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.customer.name" sortName="saleOrder.customer.name" />
-		<display:column property="receiptDate" escapeXml="false" sortable="true" titleKey="saleReceipt.receiptDate" sortName="receiptDate"  format="{0, date, dd/MM/yyyy HH:mm}"/>
-		<display:column property="receiptAmount" escapeXml="false" sortable="true" titleKey="saleReceipt.receiptAmount" sortName="receiptAmount"  format="{0, number, #,##0.##}"/>
-		<display:setProperty name="export.csv" value="true"></display:setProperty>
-		<display:setProperty name="export.excel" value="true"></display:setProperty>
-		<display:setProperty name="export.xml" value="false"></display:setProperty>
-		<display:setProperty name="export.pdf" value="true"></display:setProperty>
-		<display:setProperty name="export.excel.filename" value="SaleReceipt.xls" />
-		<display:setProperty name="export.csv.filename" value="SaleReceipt.csv" />
-		<display:setProperty name="export.pdf.filename" value="SaleReceipt.pdf" />
-	</display:table>
-	
+			<a class="btn" href="<c:url value='/mainMenu'/>"> <i class="icon-ok"></i> <fmt:message key="button.done" /></a>
+
+		</div>
+		<display:table name="saleReceiptList" cellspacing="0" cellpadding="0" requestURI="" id="saleReceipt" pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
+			<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" headerClass="span1" class="span1">
+				<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleReceipt.id}'/>" />
+			</display:column>
+			<display:column property="receiptNo" url="/saleReceipt?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleReceipt.receiptNo" sortName="receiptNo" />
+			<display:column property="saleOrder.saleOrderNo" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.saleOrderNo" sortName="saleOrder.saleOrderNo" />
+			<display:column property="saleOrder.customer.name" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.customer.name" sortName="saleOrder.customer.name" />
+			<display:column property="receiptDate" escapeXml="false" sortable="true" titleKey="saleReceipt.receiptDate" sortName="receiptDate" format="{0, date, dd/MM/yyyy HH:mm}" />
+			<display:column property="receiptAmount" escapeXml="false" sortable="true" titleKey="saleReceipt.receiptAmount" sortName="receiptAmount" format="{0, number, #,##0.##}" />
+			<display:setProperty name="export.csv" value="true"></display:setProperty>
+			<display:setProperty name="export.excel" value="true"></display:setProperty>
+			<display:setProperty name="export.xml" value="false"></display:setProperty>
+			<display:setProperty name="export.pdf" value="true"></display:setProperty>
+			<display:setProperty name="export.excel.filename" value="SaleReceipt.xls" />
+			<display:setProperty name="export.csv.filename" value="SaleReceipt.csv" />
+			<display:setProperty name="export.pdf.filename" value="SaleReceipt.pdf" />
+		</display:table>
+
 	</form>
 </div>
 
@@ -115,7 +115,7 @@
 			alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
 			return false;
 		}
-		if (confirm('<fmt:message key="global.confirm.delete"/>')) {
+		if (confirmMessage('<fmt:message key="global.confirm.delete"/>')) {
 			return true;
 		} else {
 			return false;
@@ -129,18 +129,20 @@
 		});
 	});
 	</c:if>
-	
-	$(document).ready(function () {
+
+	$(document).ready(function() {
 		$('input[name="saleOrder.customer.name"]').lookup({
-			type: 'customer',
-			displayProperty: function (json) {
+			type : 'customer',
+			displayProperty : function(json) {
 				return json.name;
 			},
-			selectProperty: 'name',
-			btnSearchCondition: function () {
-				return {name: $('input[name="saleOrder.customer.name"]').val()};	
+			selectProperty : 'name',
+			btnSearchCondition : function() {
+				return {
+					name : $('input[name="saleOrder.customer.name"]').val()
+				};
 			},
-			handler: function (json) {
+			handler : function(json) {
 				if (json) {
 				} else {
 					$('input[name="saleOrder.customer.name"]').val('');
@@ -148,7 +150,7 @@
 			}
 		});
 	});
-	
+
 	$(function() {
 
 		var st = $('#receiptDateFromDatepicker').datetimepicker({
@@ -169,8 +171,7 @@
 		st.on('changeDate', function(e) {
 			var edObj = ed.data('datetimepicker');
 			if (null != edObj.getDate()) {
-				if (null != e.date
-						&& e.date.valueOf() > edObj.getDate().valueOf()) {
+				if (null != e.date && e.date.valueOf() > edObj.getDate().valueOf()) {
 					edObj.setDate(null);
 				}
 			}
@@ -187,8 +188,7 @@
 		ed.on('changeDate', function(e) {
 			var stObj = st.data('datetimepicker');
 			if (null != stObj.getDate()) {
-				if (null != e.date
-						&& e.date.valueOf() < stObj.getDate().valueOf()) {
+				if (null != e.date && e.date.valueOf() < stObj.getDate().valueOf()) {
 					stObj.setDate(null);
 				}
 			}

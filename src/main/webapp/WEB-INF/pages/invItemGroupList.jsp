@@ -45,7 +45,7 @@
 			</div>
 		</div>
 	</form>
-	<form method="post" action="${ctx}/invItemGroupList" id="deleteForm" onSubmit="return validateDelete(this.checkbox)">
+	<form method="post" action="${ctx}/invItemGroupList" id="deleteForm">
 	<c:if test="${not empty invItemGroupList }">
 	<div class="control-group pull-right">
 		<fmt:message key="label.showPagination" />
@@ -57,7 +57,7 @@
 		<a class="btn btn-primary" href="<c:url value='/invItemGroup?method=Add&from=list'/>"> <i class="icon-plus icon-white"></i> <fmt:message key="button.add" />
 		</a>
 
-		<button id="button.delete" class="btn" type="submit">
+		<button id="button.delete" class="btn" type="submit" onclick="return validateDelete()">
 			<i class="icon-trash"></i>
 			<fmt:message key="button.delete" />
 		</button>
@@ -85,17 +85,18 @@
 
 
 <script type="text/javascript">
-	function validateDelete(checkbox) {
-
-		if (!hasChecked(checkbox)) {
+	function validateDelete() {
+		var form = document.forms['deleteForm'];
+		if (!hasChecked(form.checkbox)) {
 			alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
 			return false;
 		}
-		if (confirm('<fmt:message key="global.confirm.delete"/>')) {
-			return true;
-		} else {
-			return false;
-		}
+		confirmMessage('<fmt:message key="global.confirm.delete"/>', function(result) {
+			if (result) {
+				form.submit();
+			}
+		});
+		return false;
 	}
 
 	<c:if test="${not empty invItemGroupList}">
