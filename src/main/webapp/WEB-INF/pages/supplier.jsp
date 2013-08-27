@@ -28,6 +28,7 @@
 	<form:form commandName="supplier" method="post" action="supplier" onsubmit="return onFormSubmit(this)" id="supplier" cssClass="well form-horizontal">
 		<form:hidden path="id" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
+		<input type="hidden" name="action"/>
 
 		<c:if test="${supplier.id == null }">
 			<spring:bind path="supplier.code">
@@ -98,7 +99,7 @@
 			</button>
 
 			<c:if test="${param.from == 'list' and param.method != 'Add'}">
-				<button type="submit" class="btn" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
+				<button type="submit" class="btn" name="delete" onclick="bCancel=true;return deleteThis()">
 					<i class="icon-trash"></i>
 					<fmt:message key="button.delete" />
 				</button>
@@ -115,6 +116,17 @@
 <!-- This is here so we can exclude the selectAll call when roles is hidden -->
 	function onFormSubmit(theForm) {	
 		return validateSupplier(theForm);
+	}
+	
+	function deleteThis() {
+		var form = document.forms[0];
+		 confirmMessage(msgDelConfirm, function(result) {
+			 if (result) {
+				 form['action'].value="delete";
+				 form.submit();
+			 }
+		 });
+		 return false;
 	}
 </script>
 <v:javascript formName="supplier" staticJavascript="false" />

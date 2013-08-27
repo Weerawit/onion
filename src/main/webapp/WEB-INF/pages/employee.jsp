@@ -27,7 +27,8 @@
 
 	<form:form commandName="employee" method="post" action="employee" onsubmit="return onFormSubmit(this)" id="employee" cssClass="well form-horizontal">
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
-
+		<input type="hidden" name="action"/>
+		
 		<c:if test="${employee.id != null }">
 			<div class="control-group">
 				<appfuse:label styleClass="control-label" key="employee.id" />
@@ -127,7 +128,7 @@
 			</button>
 
 			<c:if test="${param.from == 'list' and param.method != 'Add'}">
-				<button type="submit" class="btn" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
+				<button type="submit" class="btn" name="delete" onclick="bCancel=true;return deleteThis()">
 					<i class="icon-trash"></i>
 					<fmt:message key="button.delete" />
 				</button>
@@ -144,6 +145,17 @@
 <!-- This is here so we can exclude the selectAll call when roles is hidden -->
 	function onFormSubmit(theForm) {
 		return validateEmployee(theForm);
+	}
+	
+	function deleteThis() {
+		var form = document.forms[0];
+		 confirmMessage(msgDelConfirm, function(result) {
+			 if (result) {
+				 form['action'].value="delete";
+				 form.submit();
+			 }
+		 });
+		 return false;
 	}
 </script>
 <v:javascript formName="employee" staticJavascript="false" />

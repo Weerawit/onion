@@ -31,6 +31,7 @@
 	<form:form commandName="invGoodsMovement" method="post" action="${ctx}/invGoodsMovement/save" onsubmit="return onFormSubmit(this)" id="invGoodsMovement" cssClass="well form-horizontal">
 		<form:hidden path="id" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
+		<input type="hidden" name="action"/>
 
 <%-- 		<c:if test="${invGoodsMovement.id == null }"> --%>
 <%-- 			<spring:bind path="invGoodsMovement.runningNo"> --%>
@@ -94,7 +95,7 @@
 					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 						<appfuse:label styleClass="control-label" key="invGoodsMovement.owner" />
 						<div class="controls">
-							<form:input path="owner" id="owner" cssClass="input-xlarge" maxlength="255" />
+							<form:input path="owner" id="owner" cssClass="input-xlarge" maxlength="255" autocomplete="off"/>
 							<form:errors path="owner" cssClass="help-inline" />
 						</div>
 					</div>
@@ -156,7 +157,7 @@
 					<fmt:message key="button.add" />
 				</button>
 				
-				<button id="button.delete" class="btn" type="submit" onclick="bCancel=true;return (validateDelete(document.forms['invGoodsMovement'].checkbox) && $('#invGoodsMovement').attr('action', '${ctx}/invGoodsMovement/deleteDetail'));">
+				<button id="button.delete" class="btn" type="submit" onclick="bCancel=true;return validateDelete();">
 					<i class="icon-trash"></i>
 					<fmt:message key="button.delete" />
 				</button>
@@ -199,13 +200,13 @@
 						<fmt:message key="button.save" />
 					</button>
 					
-					<button type="submit" class="btn btn-warning" name="saveToStock" onclick="bCancel=false; return confirmMessage('<fmt:message key="invGoodsMovement.confirm.saveToStock"/>')">
+					<button type="submit" class="btn btn-warning" name="stockSave" onclick="bCancel=false; return saveToStock()">
 						<i class="icon-ok icon-white"></i>
 						<fmt:message key="button.saveToStock" />
 					</button>
 					
 					<c:if test="${invGoodsMovement.id != null}">
-						<button type="submit" class="btn" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
+						<button type="submit" class="btn" name="delete" onclick="bCancel=true;return deleteThis()">
 							<i class="icon-trash"></i>
 							<fmt:message key="button.delete" />
 						</button>
@@ -264,20 +265,43 @@
 		});
 	});
 	</c:if>
+	
+	function saveToStock() {
+		var form = document.forms[0];
+		 confirmMessage('<fmt:message key="invGoodsMovement.confirm.saveToStock"/>', function(result) {
+			 if (result) {
+				 form['action'].value="saveToStock";
+				 form.submit();
+			 }
+		 });
+		 return false;
+	}
 
-	function validateDelete(checkbox) {
-
-		if (!hasChecked(checkbox)) {
+	function deleteThis() {
+		var form = document.forms[0];
+		 confirmMessage(msgDelConfirm, function(result) {
+			 if (result) {
+				 form['action'].value="delete";
+				 form.submit();
+			 }
+		 });
+		 return false;
+	}
+	
+	function validateDelete() {
+		var form = document.forms['invGoodsMovement'];
+		if (!hasChecked(form.checkbox)) {
 			alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
 			return false;
 		}
-		if (confirm('<fmt:message key="global.confirm.delete"/>')) {
-			return true;
-		} else {
-			return false;
-		}
+		confirmMessage('<fmt:message key="global.confirm.delete"/>', function(result) {
+			if (result) {
+				$('#invGoodsMovement').attr('action', '${ctx}/invGoodsMovement/deleteDetail');
+				form.submit();
+			}
+		});
+		return false;
 	}
-
 	<c:if test="${not empty invGoodsMovementItemList}">
 	$(document).ready(function() {
 		$("#chkSelectAll").click(function() {

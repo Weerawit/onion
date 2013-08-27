@@ -38,6 +38,7 @@
         <form:hidden path="id"/>
         <form:hidden path="version"/>
         <input type="hidden" name="from" value="<c:out value="${param.from}"/>"/>
+        <input type="hidden" name="action"/>
 
         <c:if test="${cookieLogin == 'true'}">
             <form:hidden path="password"/>
@@ -221,7 +222,7 @@
             </button>
 
             <c:if test="${param.from == 'list' and param.method != 'Add'}">
-              <button type="submit" class="btn" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
+              <button type="submit" class="btn" name="delete" onclick="bCancel=true;return deleteThis(this)">
                   <i class="icon-trash"></i> <fmt:message key="button.delete"/>
               </button>
             </c:if>
@@ -247,6 +248,17 @@
                               "true", passwordField.form);
         }
     }
+    
+    function deleteThis(btn) {
+		var form = document.forms[0];
+		 confirmMessage(msgDelConfirm, function(result) {
+			 if (result) {
+				 form['action'].value="delete";
+				 form.submit();
+			 }
+		 });
+		 return false;
+	}
 
 <!-- This is here so we can exclude the selectAll call when roles is hidden -->
 function onFormSubmit(theForm) {

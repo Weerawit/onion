@@ -37,6 +37,7 @@
 		<form:hidden path="invItem.id" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
 		<form:hidden path="filename"/>
+		<input type="hidden" name="action"/>
 
 		<c:if test="${catalog.id == null }">
 			<spring:bind path="catalog.code">
@@ -127,7 +128,7 @@
 				<fmt:message key="button.add" />
 			</button>
 			
-			<button id="button.delete" class="btn" type="submit" onclick="bCancel=true;return (validateDelete(document.forms['catalog'].checkbox) && $('#catalog').attr('action', '${ctx}/catalog/deleteDetail'));">
+			<button id="button.delete" class="btn" type="submit" onclick="bCancel=true;return validateDelete()">
 				<i class="icon-trash"></i>
 				<fmt:message key="button.delete" />
 			</button>
@@ -156,7 +157,7 @@
 			</button>
 
 			<c:if test="${param.from == 'list' and param.method != 'Add'}">
-				<button type="submit" class="btn" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
+				<button type="submit" class="btn" name="delete" onclick="bCancel=true;return deleteThis()">
 					<i class="icon-trash"></i>
 					<fmt:message key="button.delete" />
 				</button>
@@ -176,19 +177,32 @@
 		return validateCatalog(theForm);
 	}
 	
-	function validateDelete(checkbox) {
-
-		if (!hasChecked(checkbox)) {
+	function deleteThis() {
+		var form = document.forms[0];
+		 confirmMessage(msgDelConfirm, function(result) {
+			 if (result) {
+				 form['action'].value="delete";
+				 form.submit();
+			 }
+		 });
+		 return false;
+	}
+	
+	function validateDelete() {
+		var form = document.forms['catalog'];
+		if (!hasChecked(form.checkbox)) {
 			alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
 			return false;
 		}
-		if (confirm('<fmt:message key="global.confirm.delete"/>')) {
-			return true;
-		} else {
-			return false;
-		}
+		confirmMessage('<fmt:message key="global.confirm.delete"/>', function(result) {
+			if (result) {
+				$('#catalog').attr('action', '${ctx}/catalog/deleteDetail');
+				form.submit();
+			}
+		});
+		return false;
 	}
-
+	
 	<c:if test="${not empty catalogItemList}">
 	$(document).ready(function() {
 		$("#chkSelectAll").click(function() {
