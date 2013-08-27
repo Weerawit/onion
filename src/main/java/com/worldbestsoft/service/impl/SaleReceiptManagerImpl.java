@@ -110,15 +110,13 @@ public class SaleReceiptManagerImpl implements SaleReceiptManager, ApplicationCo
 		return saleReceipt;
     }
 
-	/* (non-Javadoc)
-	 * @see com.worldbestsoft.service.impl.SaleReceiptManager#remove(java.lang.Long, String)
-	 */
-	@Override
-    public void remove(Long id, String user) {
+    @Override
+    public void remove(Long id, String user, String cancelReason) {
 		SaleReceipt saleReceipt = saleReceiptDao.get(id);
 		saleReceipt.setUpdateDate(new Date());
 		saleReceipt.setUpdateUser(user);
 		saleReceipt.setStatus("X"); //cancel
+		saleReceipt.setCancelReason(cancelReason);
 		saleReceipt = saleReceiptDao.save(saleReceipt);
 		SaleReceiptChangedEvent event = new SaleReceiptChangedEvent(saleReceipt);
 		context.publishEvent(event);

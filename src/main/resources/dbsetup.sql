@@ -439,11 +439,12 @@ CREATE  TABLE IF NOT EXISTS `onion`.`sale_receipt` (
   `cheque_no` VARCHAR(50) NULL DEFAULT NULL COMMENT 'for receipt_type = 2 (cheque)' ,
   `cheque_bank` VARCHAR(50) NULL DEFAULT NULL COMMENT 'for receipt_type = 2 (cheque)' ,
   `cheque_date` DATETIME NULL DEFAULT NULL COMMENT 'for receipt_type = 2 (cheque)' ,
+  `status` VARCHAR(3) NULL COMMENT 'A = Active\nX = cancel' ,
+  `cancelReason` VARCHAR(255) NULL ,
   `create_date` DATETIME NULL DEFAULT NULL ,
   `create_user` VARCHAR(50) NULL DEFAULT NULL ,
   `update_date` DATETIME NULL DEFAULT NULL ,
   `update_user` VARCHAR(50) NULL DEFAULT NULL ,
-  `status` VARCHAR(3) NULL ,
   PRIMARY KEY (`id`) ,
   CONSTRAINT `fk_sale_receipt_sale_order1`
     FOREIGN KEY (`sale_order_id` )

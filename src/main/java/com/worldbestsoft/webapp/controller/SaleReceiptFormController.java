@@ -82,7 +82,7 @@ public class SaleReceiptFormController extends BaseFormController {
 				}
 			}
 			
-			if (StringUtils.equalsIgnoreCase(saleReceiptForm.getReceiptType(), "2")) {//chequ
+			if (StringUtils.equalsIgnoreCase(saleReceiptForm.getReceiptType(), "2")) {//cheque
 				if (StringUtils.isBlank(saleReceiptForm.getChequeNo())) {
 					errors.rejectValue("chequeNo", "errors.required", new Object[] { getText("saleReceipt.chequeNo", request.getLocale())}, "errors.required");
 				}
@@ -106,7 +106,7 @@ public class SaleReceiptFormController extends BaseFormController {
 		Locale locale = request.getLocale();
 		
 		if (request.getParameter("delete") != null) {
-			getSaleReceiptManager().remove(saleReceiptForm.getId(), request.getRemoteUser());
+			getSaleReceiptManager().remove(saleReceiptForm.getId(), request.getRemoteUser(), saleReceiptForm.getCancelReason());
 			saveMessage(request, getText("saleReceipt.deleted", saleReceiptForm.getReceiptNo(), locale));
 			return new ModelAndView("redirect:/saleReceiptList");
 		} else {

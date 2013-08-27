@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Aug 23, 2013 11:56:36 AM by Hibernate Tools 4.0.0
+// Generated Aug 24, 2013 9:07:19 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -32,11 +32,12 @@ public class SaleReceipt implements java.io.Serializable {
 	private String chequeNo;
 	private String chequeBank;
 	private Date chequeDate;
+	private String status;
+	private String cancelReason;
 	private Date createDate;
 	private String createUser;
 	private Date updateDate;
 	private String updateUser;
-	private String status;
 
 	public SaleReceipt() {
 	}
@@ -45,7 +46,7 @@ public class SaleReceipt implements java.io.Serializable {
 		this.saleOrder = saleOrder;
 	}
 
-	public SaleReceipt(SaleOrder saleOrder, String receiptNo, Date receiptDate, String receiptType, BigDecimal receiptAmount, String chequeNo, String chequeBank, Date chequeDate, Date createDate, String createUser, Date updateDate, String updateUser, String status) {
+	public SaleReceipt(SaleOrder saleOrder, String receiptNo, Date receiptDate, String receiptType, BigDecimal receiptAmount, String chequeNo, String chequeBank, Date chequeDate, String status, String cancelReason, Date createDate, String createUser, Date updateDate, String updateUser) {
 		this.saleOrder = saleOrder;
 		this.receiptNo = receiptNo;
 		this.receiptDate = receiptDate;
@@ -54,11 +55,12 @@ public class SaleReceipt implements java.io.Serializable {
 		this.chequeNo = chequeNo;
 		this.chequeBank = chequeBank;
 		this.chequeDate = chequeDate;
+		this.status = status;
+		this.cancelReason = cancelReason;
 		this.createDate = createDate;
 		this.createUser = createUser;
 		this.updateDate = updateDate;
 		this.updateUser = updateUser;
-		this.status = status;
 	}
 
 	@Id
@@ -147,6 +149,24 @@ public class SaleReceipt implements java.io.Serializable {
 		this.chequeDate = chequeDate;
 	}
 
+	@Column(name = "status", length = 3)
+	public String getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	@Column(name = "cancelReason")
+	public String getCancelReason() {
+		return this.cancelReason;
+	}
+
+	public void setCancelReason(String cancelReason) {
+		this.cancelReason = cancelReason;
+	}
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "create_date", length = 19)
 	public Date getCreateDate() {
@@ -183,15 +203,6 @@ public class SaleReceipt implements java.io.Serializable {
 
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
-	}
-
-	@Column(name = "status", length = 3)
-	public String getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 }

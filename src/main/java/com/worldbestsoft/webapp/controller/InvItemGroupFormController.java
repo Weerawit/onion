@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -50,7 +51,7 @@ public class InvItemGroupFormController extends BaseFormController {
 				}
 			}
 
-			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't validate when deleting
+			if (errors.hasErrors() && StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
 				return new ModelAndView("invItemGroup", "invItemGroup", invItemGroupForm);
 			}
 		}
@@ -58,7 +59,7 @@ public class InvItemGroupFormController extends BaseFormController {
 
 		Locale locale = request.getLocale();
 
-		if (request.getParameter("delete") != null) {
+		if (StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) {
 			//since code input is readonly, no value pass to form then we need to query from db.
 //			InvItemGroup invItemGroup = getInvItemGroupManager().get(invItemGroupForm.getId());
 			getInvItemGroupManager().remove(invItemGroupForm.getId());

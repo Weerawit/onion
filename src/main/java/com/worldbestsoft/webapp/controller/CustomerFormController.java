@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -52,7 +53,7 @@ public class CustomerFormController extends BaseFormController {
 		if (validator != null) { // validator is null during testing
 			validator.validate(customerForm, errors);
 
-			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't validate when deleting
+			if (errors.hasErrors() && StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
 				return new ModelAndView("customer", "customer", customerForm);
 			}
 		}
@@ -60,7 +61,7 @@ public class CustomerFormController extends BaseFormController {
 
 		Locale locale = request.getLocale();
 
-		if (request.getParameter("delete") != null) {
+		if (StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) {
 			//since code input is readonly, no value pass to form then we need to query from db.
 //			Customer customer = getCustomerManager().get(customerForm.getId());
 			getCustomerManager().remove(customerForm.getId());

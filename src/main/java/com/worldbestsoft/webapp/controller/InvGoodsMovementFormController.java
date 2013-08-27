@@ -59,7 +59,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 		if (validator != null) { // validator is null during testing
 			validator.validate(invGoodsMovementForm, errors);
 
-			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't validate when deleting
+			if (errors.hasErrors() && StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
 				return new ModelAndView("invGoodsMovement", "invGoodsMovement", invGoodsMovementForm);
 			}
 		}
@@ -67,7 +67,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 
 		Locale locale = request.getLocale();
 
-		if (request.getParameter("delete") != null) {
+		if (StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) {
 			//since code input is readonly, no value pass to form then we need to query from db.
 //			InvGoodReceipt InvGoodReceipt = getInvGoodReceiptManager().get(invGoodsMovementForm.getId());
 			getInvGoodsMovementManager().remove(invGoodsMovementForm.getId());
@@ -90,7 +90,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 				invGoodsMovementSession.setCreateUser(request.getRemoteUser());
 				invGoodsMovementSession = getInvGoodsMovementManager().save(invGoodsMovementSession, invGoodsMovementSession.getInvGoodsMovementItems());
 				
-				if (request.getParameter("saveToStock") != null) {
+				if (StringUtils.equalsIgnoreCase("saveToStock", request.getParameter("action"))) {
 					invGoodsMovementSession = getInvGoodsMovementManager().saveToStock(invGoodsMovementSession);
 					saveMessage(request, getText("invGoodsMovement.added", invGoodsMovementSession.getRunningNo(), locale));
 				} else {
@@ -109,7 +109,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 				invGoodsMovement.setUpdateUser(request.getRemoteUser());
 				invGoodsMovement = getInvGoodsMovementManager().save(invGoodsMovement, invGoodsMovementSession.getInvGoodsMovementItems());
 				
-				if (request.getParameter("saveToStock") != null) {
+				if (StringUtils.equalsIgnoreCase("saveToStock", request.getParameter("action"))) {
 					invGoodsMovement = getInvGoodsMovementManager().saveToStock(invGoodsMovement);
 					saveMessage(request, getText("invGoodsMovement.saved", invGoodsMovement.getRunningNo(), locale));
 				} else {

@@ -129,10 +129,7 @@ public class CatalogFormController extends BaseFormController implements Applica
 				}
 			}
 
-			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't
-																				// validate
-																				// when
-																				// deleting
+			if (errors.hasErrors() && StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
 				return new ModelAndView("catalog", "catalog", catalogForm).addObject("catalogTypeList", catalogTypeManager.getAllCatalogType()).addObject("catalogItemList", catalogFormSession.getCatalogItems());
 			}
 		}
@@ -140,7 +137,7 @@ public class CatalogFormController extends BaseFormController implements Applica
 
 		Locale locale = request.getLocale();
 
-		if (request.getParameter("delete") != null) {
+		if (StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) {
 			// since code input is readonly, no value pass to form then we need
 			// to query from db.
 			// Catalog catalog = getCatalogManager().get(catalogForm.getId());

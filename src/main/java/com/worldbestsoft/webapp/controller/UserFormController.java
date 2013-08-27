@@ -73,7 +73,7 @@ public class UserFormController extends BaseFormController {
 
         Locale locale = request.getLocale();
 
-		if (request.getParameter("delete") != null) {
+        if (StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) {
 			getUserManager().removeUser(user.getId().toString());
 			saveMessage(request, getText("user.deleted", user.getUsername(), locale));
 

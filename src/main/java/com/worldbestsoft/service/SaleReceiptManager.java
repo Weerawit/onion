@@ -15,8 +15,8 @@ public interface SaleReceiptManager {
 
 	public abstract SaleReceipt save(SaleReceipt object);
 
-	public abstract void remove(Long id, String user);
-
 	public abstract List<SaleReceipt> findBySaleOrderNo(String saleOrderNo);
+
+	public abstract void remove(Long id, String user, String cancelReason);
 
 }

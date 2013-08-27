@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -42,7 +43,7 @@ public class EmployeeFormController extends BaseFormController {
 		if (validator != null) { // validator is null during testing
 			validator.validate(employeeForm, errors);
 
-			if ((errors.hasErrors() && request.getParameter("delete") == null) && errors.hasErrors()) { // don't
+			if (errors.hasErrors() && StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
 				// validate
 				// when
 				// deleting
@@ -53,7 +54,7 @@ public class EmployeeFormController extends BaseFormController {
 
 		Locale locale = request.getLocale();
 
-		if (request.getParameter("delete") != null) {
+		if (StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) {
 			//since code input is readonly, no value pass to form then we need to query from db.
 //			Employee employee = getEmployeeManager().get(employeeForm.getId());
 			getEmployeeManager().remove(employeeForm.getId());

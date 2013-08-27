@@ -93,10 +93,11 @@ public class SaleReceiptListController extends BaseFormController {
 		Locale locale = request.getLocale();
 		String[] checkbox = request.getParameterValues("checkbox");
 		String user = request.getRemoteUser();
+		String cancelReason = request.getParameter("cancelReason");
 		if (null != checkbox && checkbox.length > 0) {
 			for (int i = 0; i < checkbox.length; i++) {
 				SaleReceipt saleReceipt = saleReceiptManager.get(Long.valueOf(checkbox[i]));
-				saleReceiptManager.remove(Long.valueOf(checkbox[i]), user);
+				saleReceiptManager.remove(Long.valueOf(checkbox[i]), user, cancelReason);
 				saveMessage(request, getText("catalog.deleted", saleReceipt.getReceiptNo(), locale));
 			}
 		} else {
