@@ -36,6 +36,6 @@
         </Menu>
         <Menu name="CustomerMenu" title="menu.customer" description="Customer Menu" roles="ROLE_ADMIN,ROLE_USER" page="/customerList">
         </Menu>
-        <Menu name="Logout" title="user.logout" page="/logout" roles="ROLE_ADMIN,ROLE_USER,ROLE_READONLY" onclick="return logout()"/>
+        <Menu name="Logout" title="user.logout" page="/logout" roles="ROLE_ADMIN,ROLE_USER,ROLE_READONLY" onclick="return logout(this)"/>
     </Menus>
 </MenuConfig>

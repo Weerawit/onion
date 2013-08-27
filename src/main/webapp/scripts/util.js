@@ -88,9 +88,27 @@ function updateURLParameter(url, param, paramVal) {
 	return baseURL + "?" + newAdditionalURL + rows_txt;
 }
 
-function confirmMessage(msg) {
-	if (confirm(msg)) {
-		return true;
-	}
+function confirmMessage(msg, cb) {
+	
+	bootbox.confirm(msg, cb);
 	return false;
+	
+	/*
+	
+	
+	$('#confirmModal .modal-body').text(msg);
+	$('#confirmModal #confirmTrue').on('click', function () {
+		if (cb) {
+			cb(true);
+		}
+	});
+	$('#confirmModal #confirmFalse').on('click', function () {
+		if (cb) {
+			cb(false);
+		}
+	});
+	
+	$('#confirmModal').modal('show');
+	return false;
+	*/
 }

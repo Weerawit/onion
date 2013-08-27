@@ -11,6 +11,7 @@
 
 <%--     <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/lib/bootstrap-2.2.1.min.css'/>" /> --%>
 <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/lib/bootstrap.css'/>" />
+<link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/lib/bootstrap-modal.css'/>" />
 <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/lib/bootstrap-responsive-2.3.2.min.css'/>" />
 <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/style.css'/>" />
 
@@ -21,6 +22,7 @@
 <script type="text/javascript" src="<c:url value='/scripts/util.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/scripts/lib/bootstrap-modal.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/scripts/lib/bootstrap-modalmanager.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/scripts/lib/bootbox.js'/>"></script>
 <decorator:head />
 
 
@@ -60,12 +62,15 @@
             | <fmt:message key="user.status" /> ${pageContext.request.remoteUser}
             </c:if> &copy; <fmt:message key="copyright.year" /> <a href="<fmt:message key="company.url"/>"><fmt:message key="company.name" /></a> </span>
 	</div>
+	
 	<%=(request.getAttribute("scripts") != null) ? request.getAttribute("scripts") : ""%>
 	<script type="text/javascript">
-		function logout() {
-			if (confirm('<fmt:message key="user.confirmLogout"/>')) {
-				return true;
-			}
+		function logout(ele) {
+			confirmMessage('<fmt:message key="user.confirmLogout"/>', function(result) {
+				if (result) {
+					window.location = $(ele).prop('href');
+				}
+			});
 			return false;
 		}
 
