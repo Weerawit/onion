@@ -63,7 +63,7 @@ public class InvItemFormController extends BaseFormController {
 				}
 			}
 
-			if (errors.hasErrors() && StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
+			if (errors.hasErrors() && !StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
 				return new ModelAndView("invItem", "invItem", invItemForm).addObject("invItemGroupList", invItemGroupManager.getAllInvItemGroup());
 			}
 		}

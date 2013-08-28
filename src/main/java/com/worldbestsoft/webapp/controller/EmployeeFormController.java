@@ -43,10 +43,7 @@ public class EmployeeFormController extends BaseFormController {
 		if (validator != null) { // validator is null during testing
 			validator.validate(employeeForm, errors);
 
-			if (errors.hasErrors() && StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
-				// validate
-				// when
-				// deleting
+			if (errors.hasErrors() && !StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
 				return new ModelAndView("employee", "employee", employeeForm);
 			}
 		}

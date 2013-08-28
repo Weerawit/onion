@@ -94,7 +94,7 @@ public class SaleReceiptFormController extends BaseFormController {
 				}
 			}
 
-			if (errors.hasErrors() && StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
+			if (errors.hasErrors() && !StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
 				return new ModelAndView("saleReceipt", "saleReceipt", saleReceiptForm).addObject("receiptTypeList", lookupManager.getAllReceiptType(request.getLocale()));
 			}
 		}
