@@ -60,7 +60,7 @@ public class CatalogTypeListController extends BaseFormController {
 				saveMessage(request, getText("catalogType.deleted", catalogType.getCode(), locale));
 			}
 		} else {
-			saveError(request, "global.errorNoCheckboxSelectForDelete");
+			saveError(request, getText("global.errorNoCheckboxSelectForDelete", request.getLocale()));
 		}
 		return new ModelAndView("redirect:/catalogTypeList");
 	}

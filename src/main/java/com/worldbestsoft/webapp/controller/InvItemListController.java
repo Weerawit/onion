@@ -76,7 +76,7 @@ public class InvItemListController extends BaseFormController {
 				saveMessage(request, getText("invItem.deleted", invItem.getCode(), locale));
 			}
 		} else {
-			saveError(request, "global.errorNoCheckboxSelectForDelete");
+			saveError(request, getText("global.errorNoCheckboxSelectForDelete", request.getLocale()));
 		}
 		return new ModelAndView("redirect:/invItemList");
 	}

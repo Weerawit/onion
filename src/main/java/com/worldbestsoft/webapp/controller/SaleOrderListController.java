@@ -92,7 +92,7 @@ public class SaleOrderListController extends BaseFormController {
 				saveMessage(request, getText("catalog.deleted", catalog.getSaleOrderNo(), locale));
 			}
 		} else {
-			saveError(request, "global.errorNoCheckboxSelectForDelete");
+			saveError(request, getText("global.errorNoCheckboxSelectForDelete", request.getLocale()));
 		}
 		return new ModelAndView("redirect:/saleOrderList");
 	}

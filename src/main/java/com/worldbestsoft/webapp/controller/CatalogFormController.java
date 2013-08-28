@@ -297,7 +297,7 @@ public class CatalogFormController extends BaseFormController implements Applica
 				saveMessage(request, getText("catalogItem.deleted", catalogItem.getInvItem().getCode(), locale));
 			}
 		} else {
-			saveError(request, "global.errorNoCheckboxSelectForDelete");
+			saveError(request, getText("global.errorNoCheckboxSelectForDelete", request.getLocale()));
 		}
 		return new ModelAndView("redirect:/catalog");
 	}

@@ -171,7 +171,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 				saveMessage(request, getText("invGoodsReceiptItem.deleted", invGoodsReceiptItem.getInvItem().getCode(), locale));
 			}
 		} else {
-			saveError(request, "global.errorNoCheckboxSelectForDelete");
+			saveError(request, getText("global.errorNoCheckboxSelectForDelete", request.getLocale()));
 		}
 		return new ModelAndView("redirect:/invGoodsReceipt");
 	}

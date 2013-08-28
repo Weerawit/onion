@@ -69,7 +69,7 @@ public class UserController extends BaseFormController {
 				saveMessage(request, getText("user.deleted", user.getUsername(), locale));
 			}
 		} else {
-			saveError(request, "global.errorNoCheckboxSelectForDelete");
+			saveError(request, getText("global.errorNoCheckboxSelectForDelete", request.getLocale()));
 		}
 		return new ModelAndView("redirect:/admin/users");
 	}

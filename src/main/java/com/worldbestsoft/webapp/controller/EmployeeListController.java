@@ -61,7 +61,7 @@ public class EmployeeListController extends BaseFormController {
 				saveMessage(request, getText("employee.deleted", employee.getId().toString(), locale));
 			}
 		} else {
-			saveError(request, "global.errorNoCheckboxSelectForDelete");
+			saveError(request, getText("global.errorNoCheckboxSelectForDelete", request.getLocale()));
 		}
 		return new ModelAndView("redirect:/employeeList");
 	}

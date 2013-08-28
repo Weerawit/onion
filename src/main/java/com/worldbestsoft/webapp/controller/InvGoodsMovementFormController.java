@@ -167,7 +167,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 				saveMessage(request, getText("invGoodsMovementItem.deleted", invGoodsMovementItem.getInvItem().getCode(), locale));
 			}
 		} else {
-			saveError(request, "global.errorNoCheckboxSelectForDelete");
+			saveError(request, getText("global.errorNoCheckboxSelectForDelete", request.getLocale()));
 		}
 		return new ModelAndView("redirect:/invGoodsMovement");
 	}
