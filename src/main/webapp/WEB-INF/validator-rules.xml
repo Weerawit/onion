@@ -49,13 +49,14 @@
                                 focusField = field;
                             }
                             fields[i++] = oRequired[x][1];
+                            addErrorMessage(field, oRequired[x][1]);
                             isValid = false;
                         }
                     }
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   //alert(fields.join('\n'));
                 }
                 return isValid;
             }
@@ -112,13 +113,14 @@
                                 focusField = field;
                             }
                             fields[i++] = oMinLength[x][1];
+                            addErrorMessage(field, oMinLength[x][1]);
                             isValid = false;
                         }
                     }
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   //alert(fields.join('\n'));
                 }
                 return isValid;
             }]]>
@@ -157,13 +159,14 @@
                                 focusField = field;
                             }
                             fields[i++] = oMaxLength[x][1];
+                            addErrorMessage(field, oMaxLength[x][1]);
                             isValid = false;
                         }
                     }
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   //alert(fields.join('\n'));
                 }
                 return isValid;
             }]]>
@@ -202,6 +205,7 @@
                                 focusField = field;
                             }
                             fields[i++] = oMasked[x][1];
+                            addErrorMessage(field, oMasked[x][1]);
                             isValid = false;
                         }
                     }
@@ -209,7 +213,7 @@
                 
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   //alert(fields.join('\n'));
                 }
                 return isValid;
             }
@@ -276,6 +280,7 @@
                                         focusField = field;
                                     }
                                     fields[i++] = oByte[x][1];
+                                    addErrorMessage(field, oByte[x][1]);
                                     bValid = false;
                                 }
                             }
@@ -285,7 +290,7 @@
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   //alert(fields.join('\n'));
                 }
                 return bValid;
             }]]>
@@ -348,6 +353,7 @@
                                         focusField = field;
                                     }
                                     fields[i++] = oShort[x][1];
+                                    addErrorMessage(field, oShort[x][1]);
                                     bValid = false;
                                 }
                            }
@@ -356,7 +362,7 @@
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   //alert(fields.join('\n'));
                 }
                 return bValid;
             }]]>
@@ -419,6 +425,7 @@
                                         focusField = field;
                                     }
                                     fields[i++] = oInteger[x][1];
+                                    addErrorMessage(field, oInteger[x][1]);
                                     bValid = false;
                                }
                            }
@@ -427,7 +434,7 @@
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   //alert(fields.join('\n'));
                 }
                 return bValid;
             }
@@ -525,6 +532,7 @@
                                         focusField = field;
                                     }
                                     fields[i++] = oFloat[x][1];
+                                    addErrorMessage(field, oFloat[x][1]);
                                     bValid = false;
                                 }
                             }
@@ -533,7 +541,7 @@
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   //alert(fields.join('\n'));
                 }
                 return bValid;
             }]]>
@@ -684,13 +692,14 @@
                              focusField = form[oDate[x][0]];
                          }
                          fields[i++] = oDate[x][1];
+                         addErrorMessage(field, oDate[x][1]);
                          bValid =  false;
                      }
                   }
                }
                if (fields.length > 0) {
                   focusField.focus();
-                  alert(fields.join('\n'));
+                  //alert(fields.join('\n'));
                }
                return bValid;
             }
@@ -772,13 +781,14 @@
                                 focusField = field;
                             }
                             fields[i++] = oRange[x][1];
+                            addErrorMessage(field, oRange[x][1]);
                             isValid = false;
                         }
                     }
                 }
                 if (fields.length > 0) {
                     focusField.focus();
-                    alert(fields.join('\n'));
+                    //alert(fields.join('\n'));
                 }
                 return isValid;
             }]]>
@@ -819,13 +829,14 @@
                                 focusField = field;
                             }
                             fields[i++] = oRange[x][1];
+                            addErrorMessage(field, oRange[x][1]);
                             isValid = false;
                         }
                     }
                 }
                 if (fields.length > 0) {
                     focusField.focus();
-                    alert(fields.join('\n'));
+                    //alert(fields.join('\n'));
                 }
                 return isValid;
             }]]>
@@ -860,13 +871,14 @@
                                 focusField = form[oCreditCard[x][0]];
                             }
                             fields[i++] = oCreditCard[x][1];
+                            addErrorMessage(field, oCreditCard[x][1]);
                             bValid = false;
                         }
                     }
                 }
                 if (fields.length > 0) {
                     focusField.focus();
-                    alert(fields.join('\n'));
+                    //alert(fields.join('\n'));
                 }
                 return bValid;
             }
@@ -938,13 +950,14 @@
                                 focusField = form[oEmail[x][0]];
                             }
                             fields[i++] = oEmail[x][1];
+                            addErrorMessage(field, oEmail[x][1]);
                             bValid = false;
                         }
                     }
                 }
                 if (fields.length > 0) {
                     focusField.focus();
-                    alert(fields.join('\n'));
+                    //alert(fields.join('\n'));
                 }
                 return bValid;
             }

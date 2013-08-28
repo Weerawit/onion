@@ -88,27 +88,24 @@ function updateURLParameter(url, param, paramVal) {
 	return baseURL + "?" + newAdditionalURL + rows_txt;
 }
 
+/** used in validtor-rules.xml */
+function addErrorMessage(field, message) {
+	$(field).closest('.control-group').addClass('error');
+	$(field).closest('.control-group').find('.help-inline').remove();
+    $(field).after("<span class='help-inline'>" + message + "</span>");
+
+    $(field).keyup(function() {
+    		$(field).closest('.control-group').removeClass('error');
+    		$(field).closest('.control-group').find('.help-inline').remove();
+    });
+    
+    $(field).change(function() {
+		$(field).closest('.control-group').removeClass('error');
+		$(field).closest('.control-group').find('.help-inline').remove();
+});
+}
+
 function confirmMessage(msg, cb) {
-	
 	bootbox.confirm(msg, cb);
 	return false;
-	
-	/*
-	
-	
-	$('#confirmModal .modal-body').text(msg);
-	$('#confirmModal #confirmTrue').on('click', function () {
-		if (cb) {
-			cb(true);
-		}
-	});
-	$('#confirmModal #confirmFalse').on('click', function () {
-		if (cb) {
-			cb(false);
-		}
-	});
-	
-	$('#confirmModal').modal('show');
-	return false;
-	*/
 }
