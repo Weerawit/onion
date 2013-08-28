@@ -66,7 +66,8 @@
 			</div>
 		</div>
 	</form>
-	<form method="post" action="${ctx}/saleReceiptList" id="deleteForm" onSubmit="return validateDelete(this.checkbox)">
+	<form method="post" action="${ctx}/saleReceiptList" id="deleteForm">
+		<input type="hidden" name="cancelReason"/>
 		<c:if test="${not empty saleReceiptList }">
 			<div class="control-group pull-right">
 				<fmt:message key="label.showPagination" />
@@ -78,7 +79,7 @@
 			<a class="btn btn-primary" href="<c:url value='/saleReceipt?method=Add&from=list'/>"> <i class="icon-plus icon-white"></i> <fmt:message key="button.add" />
 			</a>
 
-			<button id="button.delete" class="btn" type="submit">
+			<button id="button.delete" class="btn" type="submit" onclick="return validateDelete()">
 				<i class="icon-trash"></i>
 				<fmt:message key="button.delete" />
 			</button>
@@ -103,25 +104,46 @@
 			<display:setProperty name="export.csv.filename" value="SaleReceipt.csv" />
 			<display:setProperty name="export.pdf.filename" value="SaleReceipt.pdf" />
 		</display:table>
-
 	</form>
 </div>
 
 
-<script type="text/javascript">
-	function validateDelete(checkbox) {
+<div class="modal hide fade" id="cancelReasonDialog">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3><fmt:message key="saleReceipt.cancelReason"/></h3>
+	</div>
+	<div class="modal-body">
+		<div class="control-group">
+		<div class="controls">
+			<textarea class="input-xlarge" name="cancelReasonArea" id="cancelReasonArea"></textarea>
+		</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn"><fmt:message key="button.close"/></a> <a class="btn btn-primary" onclick="cancel()"><fmt:message key="button.save"/></a>
+	</div>
+</div>
 
-		if (!hasChecked(checkbox)) {
+
+
+<script type="text/javascript">
+	function validateDelete() {
+		var form = document.forms['deleteForm'];
+		if (!hasChecked(form.checkbox)) {
 			alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
 			return false;
 		}
-		if (confirmMessage('<fmt:message key="global.confirm.delete"/>')) {
-			return true;
-		} else {
-			return false;
-		}
+		$('#cancelReasonDialog').modal();
+		return false;
 	}
-
+	
+	function cancel() {
+		var form = document.forms['deleteForm'];
+		form["cancelReason"].value = $('#cancelReasonArea').val(); 
+		form.submit();
+	}
+	
 	<c:if test="${not empty saleReceiptList}">
 	$(document).ready(function() {
 		$("#chkSelectAll").click(function() {

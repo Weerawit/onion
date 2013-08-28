@@ -41,11 +41,10 @@
                 </button>
                 <a class="brand" href="<c:url value='/'/>"><fmt:message key="webapp.name"/></a>
                 <%@ include file="/common/menu.jsp" %>
-                <c:if test="${pageContext.request.locale.language != 'en'}">
-                    <div id="switchLocale"><a href="<c:url value='/?locale=en'/>">
-                        <fmt:message key="webapp.name"/> in English</a>
-                    </div>
-                </c:if>
+                 <div id="switchLocale"><a href="<c:url value='/?locale=en'/>">English</a> | <a href="<c:url value='/?locale=th'/>">Thai</a>
+                 </div>
+                 <%--<c:if test="${pageContext.request.locale.language != 'en'}">
+                </c:if> --%>
             </div>
         </div>
     </div>
