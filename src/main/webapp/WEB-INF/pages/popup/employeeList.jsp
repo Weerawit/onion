@@ -73,7 +73,12 @@
 				jsonObject.addProperty("lastName", employeeObj.getLastName());
 				jsonObject.addProperty("nickName", employeeObj.getNickName());
 				jsonObject.addProperty("address", employeeObj.getAddress());
-				jsonObject.addProperty("wage", employeeObj.getWage().toString());
+				jsonObject.addProperty("fullname", employeeObj.getFullname());
+				if (null != employeeObj.getWage()) {
+					jsonObject.addProperty("wage", employeeObj.getWage().toString());
+				} else {
+					jsonObject.addProperty("wage", "0");
+				}
 				String json = gson.toJson(jsonObject);
 			%>
 			<input type="radio" id="radio" name="radio" value='<%=json%>' />

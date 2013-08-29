@@ -11,6 +11,7 @@
     <menu:displayMenu name="MainMenu"/>
     <menu:displayMenu name="UserMenu"/>
     <menu:displayMenu name="SaleOrderMenu"/>
+    <menu:displayMenu name="JobOrderMenu"/>
     <menu:displayMenu name="CatalogMenu"/>
     <menu:displayMenu name="InvMenu"/>
     <menu:displayMenu name="EmployeeMenu"/>

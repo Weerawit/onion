@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.JsonObject;
 import com.worldbestsoft.model.Catalog;
 import com.worldbestsoft.model.Customer;
 import com.worldbestsoft.model.Employee;
@@ -96,20 +95,21 @@ public class JsonController {
 	}
 	
 	@RequestMapping(value="/employee*", method = RequestMethod.GET)
-	public @ResponseBody List<Map<String, String>> getEmployeeList(@RequestParam("q") String name) {
+	public @ResponseBody List<Map<String, Object>> getEmployeeList(@RequestParam("q") String name) {
 		Employee criteria = new Employee();
 		criteria.setFirstName(name);
-		List<Map<String, String>> resultList = new ArrayList<Map<String,String>>();
+		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
 		List<Employee> employeeList = employeeManager.query(criteria, 0, 10, null, null);
 		for (Employee employee : employeeList) {
-			Map<String, String> model = new HashMap<String, String>();
+			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("id", employee.getId().toString());
 			model.put("firstName", employee.getFirstName());
 			model.put("lastName", employee.getLastName());
 			model.put("nickName", employee.getNickName());
 			model.put("address", employee.getAddress());
+			model.put("fullname", employee.getFullname());
 			if (null != employee.getWage()) {
-				model.put("wage", employee.getWage().toString());
+				model.put("wage", employee.getWage());
 			} else {
 				model.put("wage", "0");
 			}

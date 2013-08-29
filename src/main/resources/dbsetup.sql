@@ -462,11 +462,11 @@ DROP TABLE IF EXISTS `onion`.`job_order` ;
 CREATE  TABLE IF NOT EXISTS `onion`.`job_order` (
   `id` BIGINT NOT NULL AUTO_INCREMENT ,
   `sale_order_item_id` BIGINT NOT NULL ,
-  `status` VARCHAR(3) NULL DEFAULT NULL COMMENT '- มาใหม่\r- มอบหมาย\nและกำลังผลิต\r- ผลิตเสร็จแล้ว\r- ส่งมอบ' ,
+  `status` VARCHAR(10) NULL DEFAULT NULL COMMENT '- มาใหม่ (NEW)\r- มอบหมาย (INPROGRESS)\nและกำลังผลิต\r- ผลิตเสร็จแล้ว (DONE)\r- ส่งมอบ (DELIVERY)' ,
   `start_date` DATETIME NULL DEFAULT NULL ,
   `end_date` DATETIME NULL DEFAULT NULL ,
   `actual_end_date` DATETIME NULL DEFAULT NULL ,
-  `employee_id` BIGINT NOT NULL ,
+  `employee_id` BIGINT NULL ,
   PRIMARY KEY (`id`) ,
   CONSTRAINT `fk_job_order_sale_order_item1`
     FOREIGN KEY (`sale_order_item_id` )

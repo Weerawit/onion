@@ -58,7 +58,7 @@ public class EmployeeListController extends BaseFormController {
 			for (int i = 0; i < checkbox.length; i++) {
 				Employee employee = employeeManager.get(Long.valueOf(checkbox[i]));
 				employeeManager.remove(Long.valueOf(checkbox[i]));
-				saveMessage(request, getText("employee.deleted", employee.getId().toString(), locale));
+				saveMessage(request, getText("employee.deleted", employee.getId(), locale));
 			}
 		} else {
 			saveError(request, getText("global.errorNoCheckboxSelectForDelete", request.getLocale()));

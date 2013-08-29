@@ -248,10 +248,10 @@
 		$('input[name="owner"]').lookup({
 			type: 'employee',
 			displayProperty: function (json) {
-				return json.firstName + ' ' + json.lastName;
+				return json.fullname;
 			},
 			selectProperty: function (json) {
-				return json.firstName + ' ' + json.lastName;
+				return json.fullname;
 			},
 			btnSearchCondition: function () {
 				return {firstName: $('input[name="owner"]').val()};	

@@ -358,7 +358,7 @@
 			},
 			btnSearchCondition : function() {
 				return {
-					name : $('input[name="saleOrder.saleOrderNo"]').val()
+					saleOrderNo : $('input[name="saleOrder.saleOrderNo"]').val()
 				};
 			},
 			handler : function(json) {

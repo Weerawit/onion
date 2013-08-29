@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.Constants;
 import com.worldbestsoft.dao.LookupDao;
+import com.worldbestsoft.model.JobOrderStatus;
 import com.worldbestsoft.model.LabelValue;
 import com.worldbestsoft.model.Role;
 import com.worldbestsoft.service.LookupManager;
@@ -85,6 +86,17 @@ public class LookupManagerImpl implements LookupManager {
 		receiptTypeList.add(new LabelValue(resourceBundle.getString("receiptType.1"), "1"));
 		receiptTypeList.add(new LabelValue(resourceBundle.getString("receiptType.2"), "2"));
 		return receiptTypeList;
+	}
+
+    @Override
+    public List<LabelValue> getAllJobOrderStatus(Locale locale) {
+		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
+		List<LabelValue> list = new ArrayList<LabelValue>();
+		list.add(new LabelValue(resourceBundle.getString("jobOrderStatus.NEW"), JobOrderStatus.NEW.getCode()));
+		list.add(new LabelValue(resourceBundle.getString("jobOrderStatus.INPROGRESS"), JobOrderStatus.INPROGRESS.getCode()));
+		list.add(new LabelValue(resourceBundle.getString("jobOrderStatus.DONE"), JobOrderStatus.DONE.getCode()));
+		list.add(new LabelValue(resourceBundle.getString("jobOrderStatus.DELIVERY"), JobOrderStatus.DELIVERY.getCode()));
+		return list;
 	}
 
 }

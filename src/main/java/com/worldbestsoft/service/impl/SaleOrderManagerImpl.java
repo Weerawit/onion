@@ -3,6 +3,7 @@ package com.worldbestsoft.service.impl;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
@@ -14,15 +15,25 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
+import com.worldbestsoft.dao.InvItemLevelDao;
 import com.worldbestsoft.dao.SaleOrderDao;
 import com.worldbestsoft.dao.SaleOrderItemDao;
+import com.worldbestsoft.dao.hibernate.JobOrderDao;
+import com.worldbestsoft.model.InvGoodsMovementItem;
 import com.worldbestsoft.model.InvGoodsReceipt;
+import com.worldbestsoft.model.InvItemLevel;
+import com.worldbestsoft.model.InvStock;
+import com.worldbestsoft.model.JobOrder;
+import com.worldbestsoft.model.JobOrderStatus;
+import com.worldbestsoft.model.RefType;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleOrderItem;
 import com.worldbestsoft.model.SaleReceipt;
 import com.worldbestsoft.model.criteria.SaleOrderCriteria;
 import com.worldbestsoft.service.DocumentNumberGenerator;
 import com.worldbestsoft.service.DocumentNumberGeneratorException;
+import com.worldbestsoft.service.InvItemLevelChangedEvent;
+import com.worldbestsoft.service.InvStockManager;
 import com.worldbestsoft.service.SaleOrderManager;
 
 @Service("saleOrderManager")
@@ -30,8 +41,11 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 	
 	private SaleOrderDao saleOrderDao;
 	private SaleOrderItemDao saleOrderItemDao;
+	private JobOrderDao jobOrderDao;
+	private InvItemLevelDao invItemLevelDao;
 	private DocumentNumberGenerator documentNumberGenerator;
 	private ApplicationContext context;
+	private InvStockManager invStockManager;
 
 	private String documentNumberFormat = "SA{0,number,00000}";
 	
@@ -75,7 +89,33 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 	public void setApplicationContext(ApplicationContext arg0) throws BeansException {
 		this.context = arg0;
 	}
+	
+	public InvStockManager getInvStockManager() {
+		return invStockManager;
+	}
 
+	@Autowired
+	public void setInvStockManager(InvStockManager invStockManager) {
+		this.invStockManager = invStockManager;
+	}
+	
+	public JobOrderDao getJobOrderDao() {
+		return jobOrderDao;
+	}
+
+	@Autowired
+	public void setJobOrderDao(JobOrderDao jobOrderDao) {
+		this.jobOrderDao = jobOrderDao;
+	}
+	
+	public InvItemLevelDao getInvItemLevelDao() {
+		return invItemLevelDao;
+	}
+
+	@Autowired
+	public void setInvItemLevelDao(InvItemLevelDao invItemLevelDao) {
+		this.invItemLevelDao = invItemLevelDao;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.worldbestsoft.service.impl.SaleOrderManager#query(com.worldbestsoft.model.SaleOrderCriteria, int, int, java.lang.String, java.lang.String)
@@ -152,16 +192,6 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 			saleOrder = saleOrderDao.save(saleOrder);
 		} else {
 			SaleOrder saleOrderSave = saleOrderDao.save(saleOrder);
-			BigDecimal totalPrice = BigDecimal.ZERO;
-			if (null != newSaleOrderItemList) {
-				for (SaleOrderItem saleOrderItem : newSaleOrderItemList) {
-					saleOrderItem.setPrice(saleOrderItem.getPricePerUnit().multiply(saleOrderItem.getQty()));
-					totalPrice = totalPrice.add(saleOrderItem.getPrice());
-					saleOrderItem.setSaleOrder(saleOrderSave);
-					saleOrderItemDao.save(saleOrderItem);
-				}
-			}
-			saleOrderSave.setTotalPrice(totalPrice);
 			
 			//get document number
             try {
@@ -172,6 +202,66 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
             } catch (DocumentNumberGeneratorException e) {
     				throw new RuntimeException(e);
             }
+            
+			BigDecimal totalPrice = BigDecimal.ZERO;
+			if (null != newSaleOrderItemList) {
+				for (SaleOrderItem saleOrderItem : newSaleOrderItemList) {
+					saleOrderItem.setPrice(saleOrderItem.getPricePerUnit().multiply(saleOrderItem.getQty()));
+					totalPrice = totalPrice.add(saleOrderItem.getPrice());
+					saleOrderItem.setSaleOrder(saleOrderSave);
+					saleOrderItem = saleOrderItemDao.save(saleOrderItem);
+					
+					//check stock
+					InvStock invStock = invStockManager.findByInvItemCode(saleOrderItem.getCatalog().getInvItem().getCode());
+					//not in stock and qty less than current in stock
+					BigDecimal currentQtyInStock = BigDecimal.ZERO;
+					if (null != invStock) {
+						currentQtyInStock = invStock.getQty();
+					}
+					BigDecimal qtyStockAfter = currentQtyInStock.subtract(saleOrderItem.getQty());
+					
+					if (qtyStockAfter.compareTo(BigDecimal.ZERO) < 0) {
+						//need to create job
+						int size = qtyStockAfter.intValue() * -1; //make it > 0
+						for (int i = 0; i < size; i++) {
+							//create job
+							JobOrder jobOrder = new JobOrder();
+							jobOrder.setSaleOrderItem(saleOrderItem);
+							jobOrder.setEndDate(saleOrder.getDeliveryDate());
+							jobOrder.setStatus(JobOrderStatus.NEW.getCode());
+							jobOrderDao.save(jobOrder);
+						}
+						//remove from stock all current qty
+						InvItemLevel invItemLevel = new InvItemLevel();
+						invItemLevel.setInvItem(saleOrderItem.getCatalog().getInvItem());
+						invItemLevel.setQtyInStock(currentQtyInStock.multiply(BigDecimal.valueOf(-1)));
+						invItemLevel.setTransactionDate(new Date());
+						invItemLevel.setRefDocument(saleOrderSave.getSaleOrderNo());
+						invItemLevel.setRefType(RefType.SALE_ORDER.getCode());
+
+						invItemLevelDao.save(invItemLevel);
+
+						InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
+						context.publishEvent(invItemLevelChangedEvent);
+					} else {
+						//remoe from stock only
+						//remove from stock all current qty
+						InvItemLevel invItemLevel = new InvItemLevel();
+						invItemLevel.setInvItem(saleOrderItem.getCatalog().getInvItem());
+						invItemLevel.setQtyInStock(saleOrderItem.getQty().multiply(BigDecimal.valueOf(-1)));
+						invItemLevel.setTransactionDate(new Date());
+						invItemLevel.setRefDocument(saleOrderSave.getSaleOrderNo());
+						invItemLevel.setRefType(RefType.SALE_ORDER.getCode());
+
+						invItemLevelDao.save(invItemLevel);
+
+						InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
+						context.publishEvent(invItemLevelChangedEvent);
+					}
+					
+				}
+			}
+			saleOrderSave.setTotalPrice(totalPrice);
 			
 			saleOrder = saleOrderDao.save(saleOrderSave);
 		}

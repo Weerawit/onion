@@ -5,19 +5,19 @@
 		<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleOrderItem_rowNum - 1}'/>" />
 	</display:column>
 	<display:column titleKey="saleOrderItem.catalog.code" sortable="true" sortProperty="catalog.code" class="span5">
-			<span class="span2">
+			<span>
 				<img id="image<c:out value='${saleOrderItem_rowNum - 1}'/>" src="<c:url value='/img/thumbnail/catalog/${saleOrderItem.catalog.id}?t=100'/>" class="img-polaroid"/>
 			</span>
-			<span class="span10">
+			<span>
 				<input type="hidden" name="catalog.code" value="<c:out value='${saleOrderItem.catalog.code }'/>"/>
-				<input type="text" name="catalog.name" value="<c:out value='${saleOrderItem.catalog.name }'/>" class="span12" autocomplete="off"/>
+				<input type="text" name="catalog.name" value="<c:out value='${saleOrderItem.catalog.name }'/>" class="input-large" autocomplete="off"/>
 			</span>
 	</display:column>
 	<display:column sortable="true" titleKey="saleOrderItem.qty" sortProperty="qty" class="span2">
-		<input type="text" name="qty" value="<c:out value='${saleOrderItem.qty }'/>" class="span12" autocomplete="off"/>
+		<input type="text" name="qty" value="<c:out value='${saleOrderItem.qty }'/>" autocomplete="off"/>
 	</display:column>
 	<display:column sortable="true" titleKey="saleOrderItem.pricePerUnit" sortProperty="pricePerUnit" class="span2">
-		<input type="text" name="pricePerUnit" value="<c:out value='${saleOrderItem.pricePerUnit }'/>" class="span12" autocomplete="off"/>
+		<input type="text" name="pricePerUnit" value="<c:out value='${saleOrderItem.pricePerUnit }'/>" autocomplete="off"/>
 	</display:column>
 	<display:column sortable="true" titleKey="saleOrderItem.price" sortProperty="price" class="span2">
 		<label id="price"><fmt:formatNumber value='${saleOrderItem.price }' pattern="#,##0.##"/></label>

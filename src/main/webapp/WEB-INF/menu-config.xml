@@ -16,6 +16,9 @@
         		<Item name="SaleOrder" title="menu.saleOrder.saleOrder" page="/saleOrderList"/>
         		<Item name="SaleReceipt" title="menu.saleOrder.saleReceipt" page="/saleReceiptList"/>
         </Menu>
+        <Menu name="JobOrderMenu" title="menu.jobOrder" description="Job Order Menu" roles="ROLE_ADMIN,ROLE_USER">
+        		<Item name="JobOrder" title="menu.jobOrder.jobOrder" page="/jobOrderList"/>
+        </Menu>
         <Menu name="CatalogMenu" title="menu.catalog" description="Catalog Menu" roles="ROLE_ADMIN,ROLE_USER">
             <Item name="CatalogTypes" title="menu.catalog.catalogType" page="/catalogTypeList"/>
             <Item name="Catalog" title="menu.catalog.catalog" page="/catalogList"/>

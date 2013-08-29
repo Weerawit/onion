@@ -72,7 +72,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 			//since code input is readonly, no value pass to form then we need to query from db.
 //			InvGoodReceipt InvGoodReceipt = getInvGoodReceiptManager().get(invGoodsReceiptForm.getId());
 			getInvGoodsReceiptManager().remove(invGoodsReceiptForm.getId());
-			saveMessage(request, getText("invGoodsReceipt.deleted", invGoodsReceiptForm.getId().toString(), locale));
+			saveMessage(request, getText("invGoodsReceipt.deleted", invGoodsReceiptForm.getId(), locale));
 			return new ModelAndView("redirect:/invGoodsReceiptList");
 		} else {
 			
@@ -99,7 +99,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 					invGoodsReceiptSession = getInvGoodsReceiptManager().saveToStock(invGoodsReceiptSession);
 					saveMessage(request, getText("invGoodsReceipt.added", invGoodsReceiptSession.getRunningNo(), locale));
 				} else {
-					saveMessage(request, getText("invGoodsReceipt.added", invGoodsReceiptSession.getId().toString(), locale));
+					saveMessage(request, getText("invGoodsReceipt.added", invGoodsReceiptSession.getId(), locale));
 				}
 
 				return new ModelAndView("redirect:/invGoodsReceipt").addObject("id", invGoodsReceiptSession.getId());
@@ -120,7 +120,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 					invGoodsReceipt = getInvGoodsReceiptManager().saveToStock(invGoodsReceipt);
 					saveMessage(request, getText("invGoodsReceipt.saved", invGoodsReceipt.getRunningNo(), locale));
 				} else {
-					saveMessage(request, getText("invGoodsReceipt.saved", invGoodsReceipt.getId().toString(), locale));
+					saveMessage(request, getText("invGoodsReceipt.saved", invGoodsReceipt.getId(), locale));
 				}
 
 				request.setAttribute("invGoodsReceipt", invGoodsReceipt);

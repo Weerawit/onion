@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 23, 2013 9:54:03 PM by Hibernate Tools 4.0.0
+// Generated Aug 29, 2013 12:54:40 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -33,8 +33,7 @@ public class JobOrder implements java.io.Serializable {
 	public JobOrder() {
 	}
 
-	public JobOrder(Employee employee, SaleOrderItem saleOrderItem) {
-		this.employee = employee;
+	public JobOrder(SaleOrderItem saleOrderItem) {
 		this.saleOrderItem = saleOrderItem;
 	}
 
@@ -59,7 +58,7 @@ public class JobOrder implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "employee_id", nullable = false)
+	@JoinColumn(name = "employee_id")
 	public Employee getEmployee() {
 		return this.employee;
 	}
@@ -78,7 +77,7 @@ public class JobOrder implements java.io.Serializable {
 		this.saleOrderItem = saleOrderItem;
 	}
 
-	@Column(name = "status", length = 3)
+	@Column(name = "status", length = 10)
 	public String getStatus() {
 		return this.status;
 	}

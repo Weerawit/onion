@@ -71,7 +71,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 			//since code input is readonly, no value pass to form then we need to query from db.
 //			InvGoodReceipt InvGoodReceipt = getInvGoodReceiptManager().get(invGoodsMovementForm.getId());
 			getInvGoodsMovementManager().remove(invGoodsMovementForm.getId());
-			saveMessage(request, getText("invGoodsMovement.deleted", invGoodsMovementForm.getId().toString(), locale));
+			saveMessage(request, getText("invGoodsMovement.deleted", invGoodsMovementForm.getId(), locale));
 			return new ModelAndView("redirect:/invGoodsMovementList");
 		} else {
 			
@@ -94,7 +94,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 					invGoodsMovementSession = getInvGoodsMovementManager().saveToStock(invGoodsMovementSession);
 					saveMessage(request, getText("invGoodsMovement.added", invGoodsMovementSession.getRunningNo(), locale));
 				} else {
-					saveMessage(request, getText("invGoodsMovement.added", invGoodsMovementSession.getId().toString(), locale));
+					saveMessage(request, getText("invGoodsMovement.added", invGoodsMovementSession.getId(), locale));
 				}
 
 				return new ModelAndView("redirect:/invGoodsMovement").addObject("id", invGoodsMovementSession.getId());
@@ -113,7 +113,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 					invGoodsMovement = getInvGoodsMovementManager().saveToStock(invGoodsMovement);
 					saveMessage(request, getText("invGoodsMovement.saved", invGoodsMovement.getRunningNo(), locale));
 				} else {
-					saveMessage(request, getText("invGoodsMovement.saved", invGoodsMovement.getId().toString(), locale));
+					saveMessage(request, getText("invGoodsMovement.saved", invGoodsMovement.getId(), locale));
 				}
 
 				request.setAttribute("invGoodsMovement", invGoodsMovement);

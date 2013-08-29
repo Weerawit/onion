@@ -122,7 +122,7 @@ public class BaseFormController implements ServletContextAware {
 	 *            the current locale
 	 * @return
 	 */
-	public String getText(String msgKey, String arg, Locale locale) {
+	public String getText(String msgKey, Object arg, Locale locale) {
 		return getText(msgKey, new Object[] { arg }, locale);
 	}
 

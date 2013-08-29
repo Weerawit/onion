@@ -55,7 +55,7 @@ public class EmployeeFormController extends BaseFormController {
 			//since code input is readonly, no value pass to form then we need to query from db.
 //			Employee employee = getEmployeeManager().get(employeeForm.getId());
 			getEmployeeManager().remove(employeeForm.getId());
-			saveMessage(request, getText("employee.deleted", employeeForm.getId().toString(), locale));
+			saveMessage(request, getText("employee.deleted", employeeForm.getId(), locale));
 			return new ModelAndView("redirect:/employeeList");
 		} else {
 			
@@ -65,7 +65,7 @@ public class EmployeeFormController extends BaseFormController {
 
 				employeeForm = getEmployeeManager().save(employeeForm);
 
-				saveMessage(request, getText("employee.added", employeeForm.getId().toString(), locale));
+				saveMessage(request, getText("employee.added", employeeForm.getId(), locale));
 				return new ModelAndView("redirect:/employee").addObject("id", employeeForm.getId());
 			} else {
 				// edit
@@ -82,7 +82,7 @@ public class EmployeeFormController extends BaseFormController {
 				employee = getEmployeeManager().save(employee);
 
 				request.setAttribute("employee", employee);
-				saveMessage(request, getText("employee.saved", employee.getId().toString(), locale));
+				saveMessage(request, getText("employee.saved", employee.getId(), locale));
 				return new ModelAndView("redirect:/employeeList");
 			}
 

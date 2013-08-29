@@ -144,6 +144,10 @@ public class PopupController extends BaseFormController {
 	@RequestMapping(value="/employee*", method = RequestMethod.GET)
 	public ModelAndView listEmployee(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Employee criteria = new Employee();
+		String id = request.getParameter("id");
+		if (StringUtils.isNotBlank(id) && StringUtils.isNumeric(id)) {
+			criteria.setId(Long.valueOf(id));
+		}
 		criteria.setFirstName(request.getParameter("firstName"));
 		criteria.setLastName(request.getParameter("lastName"));
 		criteria.setNickName(request.getParameter("nickName"));
