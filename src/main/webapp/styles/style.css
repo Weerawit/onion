@@ -25,6 +25,10 @@ body#login {
     right: 10px;
 }
 
+#switchLocale a {
+	color: white
+}
+
 h1, h2 {
     margin-bottom: 10px;
 }

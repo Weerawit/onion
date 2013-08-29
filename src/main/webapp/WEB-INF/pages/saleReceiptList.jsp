@@ -21,35 +21,46 @@
 	</h2>
 
 	<form method="get" action="${ctx}/saleReceiptList" id="searchForm" class="well form-horizontal">
-		<div class="control-group">
-			<label class="control-label" for="saleOrder.saleOrderNo"><fmt:message key="saleOrder.saleOrderNo" />:</label>
-			<div class="controls">
-				<input type="text" class="input-medium" name="saleOrder.saleOrderNo" id="saleOrder.saleOrderNo" value="${param['saleOrder.saleOrderNo']}" placeholder="" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="saleOrder.customer.name"><fmt:message key="saleReceipt.saleOrder.customer.name" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="saleOrder.customer.name" id="saleOrder.customer.name" value="${param['saleOrder.customer.name']}" placeholder="" />
-			</div>
-		</div>
-
-		<div class="control-group">
-			<label class="control-label" for="receiptDateFrom"><fmt:message key="saleReceipt.receiptDateFrom" />:</label>
-			<div class="controls">
-				<div class="input-append date" id="receiptDateFromDatepicker">
-					<input type="text" class="input-medium" name="receiptDateFrom" value="<c:out value='${param.receiptDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="saleOrder.saleOrderNo"><fmt:message key="saleOrder.saleOrderNo" />:</label>
+				<div class="controls">
+					<input type="text" class="input-medium" name="saleOrder.saleOrderNo" id="saleOrder.saleOrderNo" value="${param['saleOrder.saleOrderNo']}" placeholder="" />
 				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="receiptDateTo"><fmt:message key="saleReceipt.receiptDateTo" />:</label>
-			<div class="controls">
-				<div class="input-append date" id="receiptDateToDatepicker">
-					<input type="text" class="input-medium" name="receiptDateTo" value="<c:out value='${param.receiptDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="saleOrder.customer.name"><fmt:message key="saleReceipt.saleOrder.customer.name" />:</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" name="saleOrder.customer.name" id="saleOrder.customer.name" value="${param['saleOrder.customer.name']}" placeholder="" />
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="receiptDateFrom"><fmt:message key="saleReceipt.receiptDateFrom" />:</label>
+				<div class="controls">
+					<div class="input-append date" id="receiptDateFromDatepicker">
+						<input type="text" class="input-medium" name="receiptDateFrom" value="<c:out value='${param.receiptDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="receiptDateTo"><fmt:message key="saleReceipt.receiptDateTo" />:</label>
+				<div class="controls">
+					<div class="input-append date" id="receiptDateToDatepicker">
+						<input type="text" class="input-medium" name="receiptDateTo" value="<c:out value='${param.receiptDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 		<div class="control-group">
 			<div class="controls">

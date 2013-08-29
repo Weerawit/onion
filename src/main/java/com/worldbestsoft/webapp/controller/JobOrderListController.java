@@ -110,6 +110,8 @@ public class JobOrderListController extends BaseFormController {
 			saveError(request, getText("errors.date", new Object[] { endTime }, request.getLocale()));
 			return new ModelAndView("jobOrderList", model.asMap());
 		}
+		
+		criteria.setStatus(request.getParameter("status"));
 
 		
 		int page = getPage(request);

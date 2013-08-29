@@ -56,6 +56,10 @@ public class JobOrderDaoHibernate extends GenericDaoHibernate<JobOrder, Long> im
 				hsql += " and o.endDate <= :endDateTo";
 				params.put("endDateTo", criteria.getEndDateTo());
 			}
+			if (StringUtils.isNotBlank(criteria.getStatus())) {
+				hsql += " and o.status = :status";
+				params.put("status", criteria.getStatus());
+			}
 			
 		}
 		if (StringUtils.isNotBlank(sortColumn)) {
@@ -107,6 +111,11 @@ public class JobOrderDaoHibernate extends GenericDaoHibernate<JobOrder, Long> im
 				hsql += " and o.endDate <= :endDateTo";
 				params.put("endDateTo", criteria.getEndDateTo());
 			}
+			if (StringUtils.isNotBlank(criteria.getStatus())) {
+				hsql += " and o.status = :status";
+				params.put("status", criteria.getStatus());
+			}
+			
 		}
 		Query queryObj = getSession().createQuery(hsql);
 		queryObj.setProperties(params);

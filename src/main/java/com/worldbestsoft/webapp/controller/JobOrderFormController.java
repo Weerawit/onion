@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.JobOrder;
+import com.worldbestsoft.service.EmployeeManager;
 import com.worldbestsoft.service.JobOrderManager;
 import com.worldbestsoft.service.LookupManager;
 
@@ -25,6 +27,7 @@ public class JobOrderFormController extends BaseFormController {
 	
 	private LookupManager lookupManager;
 	private JobOrderManager jobOrderManager;
+	private EmployeeManager employeeManager;
 	
 	public LookupManager getLookupManager() {
 		return lookupManager;
@@ -42,6 +45,15 @@ public class JobOrderFormController extends BaseFormController {
 	@Autowired
 	public void setJobOrderManager(JobOrderManager jobOrderManager) {
 		this.jobOrderManager = jobOrderManager;
+	}
+	
+	public EmployeeManager getEmployeeManager() {
+		return employeeManager;
+	}
+
+	@Autowired
+	public void setEmployeeManager(EmployeeManager employeeManager) {
+		this.employeeManager = employeeManager;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -72,7 +84,12 @@ public class JobOrderFormController extends BaseFormController {
 			JobOrder jobOrder = getJobOrderManager().get(jobOrderForm.getId());
 			jobOrder.setStatus(jobOrderForm.getStatus());
 			jobOrder.setActualEndDate(jobOrderForm.getActualEndDate());
-			jobOrder.setEmployee(jobOrderForm.getEmployee());
+			if (null != jobOrderForm.getEmployee()) {
+				Employee employee = getEmployeeManager().get(jobOrderForm.getEmployee().getId());
+				jobOrder.setEmployee(employee);
+			} else {
+				jobOrder.setEmployee(null);
+			}
 			jobOrder = getJobOrderManager().save(jobOrder);
 
 			request.setAttribute("jobOrder", jobOrder);

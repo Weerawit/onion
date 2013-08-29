@@ -22,81 +22,99 @@
 	</h2>
 
 	<form method="get" action="${ctx}/jobOrderList" id="searchForm" class="well form-horizontal">
-		<div class="control-group">
-			<label class="control-label" for="employee.name"><fmt:message key="jobOrder.employee.name" />:</label>
-			<div class="controls">
-				<input type="hidden" name="employee.id" id="employee.id" value="${param['employee.id']}" placeholder="" />
-				<input type="text" class="input-xlarge" name="employee.name" id="employee.name" value="${param['employee.name']}" placeholder="" autocomplete="off"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<appfuse:label styleClass="control-label" key="jobOrder.saleOrderItem.saleOrder.saleOrderNo" />
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="saleOrderItem.saleOrder.saleOrderNo" id="saleOrderItem.saleOrder.saleOrderNo" value="${param['saleOrderItem.saleOrder.saleOrderNo']}" placeholder="" autocomplete="off"/>
-			</div>
-		</div>
-		
-		<div class="control-group">
-			<label class="control-label" for="startDateFrom"><fmt:message key="jobOrder.startDateFrom" />:</label>
-			<div class="controls">
-				<div class="input-append date" id="startDateFromDatepicker">
-					<input type="text" class="input-medium" name="startDateFrom" value="<c:out value='${param.startDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="employee.name"><fmt:message key="jobOrder.employee.name" />:</label>
+				<div class="controls">
+					<input type="hidden" name="employee.id" id="employee.id" value="${param['employee.id']}" placeholder="" />
+					<input type="text" class="input-xlarge" name="employee.name" id="employee.name" value="${param['employee.name']}" placeholder="" autocomplete="off"/>
 				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="startDateTo"><fmt:message key="jobOrder.startDateTo" />:</label>
-			<div class="controls">
-				<div class="input-append date" id="startDateToDatepicker">
-					<input type="text" class="input-medium" name="startDateTo" value="<c:out value='${param.startDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
+		<div class="span6">
+			<div class="control-group">
+				<appfuse:label styleClass="control-label" key="jobOrder.saleOrderItem.saleOrder.saleOrderNo" />
+				<div class="controls">
+					<input type="text" class="input-xlarge" name="saleOrderItem.saleOrder.saleOrderNo" id="saleOrderItem.saleOrder.saleOrderNo" value="${param['saleOrderItem.saleOrder.saleOrderNo']}" placeholder="" autocomplete="off"/>
 				</div>
 			</div>
 		</div>
-		
-		<div class="control-group">
-			<label class="control-label" for="startDateFrom"><fmt:message key="jobOrder.endDateFrom" />:</label>
-			<div class="controls">
-				<div class="input-append date" id="endDateFromDatepicker">
-					<input type="text" class="input-medium" name="endDateFrom" value="<c:out value='${param.endDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
+	</div>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="startDateFrom"><fmt:message key="jobOrder.startDateFrom" />:</label>
+				<div class="controls">
+					<div class="input-append date" id="startDateFromDatepicker">
+						<input type="text" class="input-medium" name="startDateFrom" value="<c:out value='${param.startDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="endDateTo"><fmt:message key="jobOrder.endDateTo" />:</label>
-			<div class="controls">
-				<div class="input-append date" id="endDateToDatepicker">
-					<input type="text" class="input-medium" name="endDateTo" value="<c:out value='${param.endDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="startDateTo"><fmt:message key="jobOrder.startDateTo" />:</label>
+				<div class="controls">
+					<div class="input-append date" id="startDateToDatepicker">
+						<input type="text" class="input-medium" name="startDateTo" value="<c:out value='${param.startDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
+					</div>
 				</div>
 			</div>
 		</div>
-		
-		<div class="control-group">
-			<label for="status" class="control-label"><fmt:message key="jobOrder.status" /></label>
-			<div class="controls">
-				<select id=status name="status">
-					<option value=""></option>
-					<c:forEach items="${jobOrderStatusList}" var="jobOrderStatus">
-						<option value="${jobOrderStatus.value}" ${(jobOrderStatus.value == param['status']) ? 'selected' : ''}>${jobOrderStatus.label}</option>
-					</c:forEach>
-				</select>
+	</div>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="startDateFrom"><fmt:message key="jobOrder.endDateFrom" />:</label>
+				<div class="controls">
+					<div class="input-append date" id="endDateFromDatepicker">
+						<input type="text" class="input-medium" name="endDateFrom" value="<c:out value='${param.endDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
+					</div>
+				</div>
 			</div>
 		</div>
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="endDateTo"><fmt:message key="jobOrder.endDateTo" />:</label>
+				<div class="controls">
+					<div class="input-append date" id="endDateToDatepicker">
+						<input type="text" class="input-medium" name="endDateTo" value="<c:out value='${param.endDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label for="status" class="control-label"><fmt:message key="jobOrder.status" /></label>
+				<div class="controls">
+					<select id=status name="status">
+						<option value=""></option>
+						<c:forEach items="${jobOrderStatusList}" var="jobOrderStatus">
+							<option value="${jobOrderStatus.value}" ${(jobOrderStatus.value == param['status']) ? 'selected' : ''}>${jobOrderStatus.label}</option>
+						</c:forEach>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
 		
-		
-		<div class="control-group">
-			<div class="controls">
+	<div class="control-group">
+		<div class="controls">
 
-				<button id="button.search" class="btn" type="submit">
-					<i class="icon-search"></i>
-					<fmt:message key="button.search" />
-				</button>
+			<button id="button.search" class="btn" type="submit">
+				<i class="icon-search"></i>
+				<fmt:message key="button.search" />
+			</button>
 
-				<button id="button.reset" class="btn" type="button" onclick="clearForm($('#searchForm'))">
-					<i class="icon-remove"></i>
-					<fmt:message key="button.reset" />
-				</button>
-			</div>
+			<button id="button.reset" class="btn" type="button" onclick="clearForm($('#searchForm'))">
+				<i class="icon-remove"></i>
+				<fmt:message key="button.reset" />
+			</button>
 		</div>
+	</div>
 	</form>
 	<form method="post" action="${ctx}/jobOrderList" id="deleteForm">
 	<c:if test="${not empty jobOrderList }">

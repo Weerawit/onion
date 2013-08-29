@@ -31,7 +31,6 @@
 	</spring:bind>
 
 	<form:form commandName="jobOrder" method="post" action="jobOrder" onsubmit="return onFormSubmit(this)" id="jobOrder" >
-		<form:hidden path="id" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
 		<input type="hidden" name="action"/>
 
@@ -52,6 +51,7 @@
 						<appfuse:label styleClass="control-label" key="jobOrder.employee.id" />
 						<div class="controls">
 							<form:input path="employee.fullname" id="employee.fullname"  cssClass="input-xlarge" maxlength="255" autocomplete="off"/>
+							<form:hidden path="employee.id"/>
 							<form:errors path="employee.id" cssClass="help-inline" />
 						</div>
 					</div>
