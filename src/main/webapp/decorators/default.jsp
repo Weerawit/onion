@@ -51,7 +51,7 @@
 
 	<div class="container-fluid">
 		<%@ include file="/common/messages.jsp"%>
-		<div class="row-fluid">
+		<div class="row">
 			<decorator:body />
 		</div>
 	</div>

@@ -3,7 +3,6 @@ package com.worldbestsoft.webapp.controller;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.taglibs.standard.lang.jstl.NullLiteral;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,11 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.worldbestsoft.model.Customer;
-import com.worldbestsoft.model.InvItem;
-import com.worldbestsoft.model.InvItemGroup;
 import com.worldbestsoft.model.SaleOrder;
-import com.worldbestsoft.model.SaleOrderItem;
 import com.worldbestsoft.model.SaleReceipt;
 import com.worldbestsoft.service.LookupManager;
 import com.worldbestsoft.service.SaleOrderManager;

@@ -37,6 +37,8 @@
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
 		<form:hidden path="receiptType" />
 		<form:hidden path="receiptNo" />
+		<input type="hidden" name="cancelReason"/>
+		<input type="hidden" name="action"/>
 		<%--
 		<spring:bind path="saleReceipt.receiptType">
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
@@ -247,24 +249,66 @@
 				</c:if>
 
 				<c:if test="${param.from == 'list' and param.method != 'Add'}">
-					<button type="submit" class="btn" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
-						<i class="icon-trash"></i>
-						<fmt:message key="button.delete" />
+					<button type="submit" class="btn" name="delete" onclick="bCancel=true;return validateCancel()">
+						<i class="icon-remove"></i>
+						<fmt:message key="button.cancel" />
 					</button>
 				</c:if>
 
 				<button type="submit" class="btn" name="cancel" onclick="bCancel=true">
-					<i class="icon-remove"></i>
-					<fmt:message key="button.cancel" />
+					<i class="icon-ok"></i>
+					<fmt:message key="button.done" />
 				</button>
 			</fieldset>
 		</div>
 	</form:form>
 </div>
+
+<div class="modal hide fade" id="cancelReasonDialog">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3><fmt:message key="saleReceipt.cancelReason"/></h3>
+	</div>
+	<div class="modal-body">
+		<div class="control-group">
+		<div class="controls">
+			<textarea class="input-xlarge" name="cancelReasonArea" id="cancelReasonArea"></textarea>
+		</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal"><fmt:message key="button.close"/></a> <a class="btn btn-primary" onclick="cancel()"><fmt:message key="button.save"/></a>
+	</div>
+</div>
+
 <script type="text/javascript">
-<!-- This is here so we can exclude the selectAll call when roles is hidden -->
+	function validateCancel() {
+		$('#cancelReasonDialog').show(function () {
+			$(this).find('.control-group').removeClass('error');
+    			$(this).find('.help-inline').remove();
+		});
+		$('#cancelReasonDialog').modal();
+		
+		return false;
+	}
+	function cancel() {
+		var form = document.forms['saleReceipt'];
+		//since cancelReasonArea is not in form, using get(0) to convert to read object
+		if (checkRequired($('#cancelReasonArea').get(0), '<tags:validateMessage errorKey="errors.required" field="saleReceipt.cancelReason"/>')) {
+			form["cancelReason"].value = $('#cancelReasonArea').val();
+			form['action'].value="delete";
+			form.submit();
+		}
+	}
+	
 	function onFormSubmit(theForm) {
-		return validateSaleReceipt(theForm);
+		var valid = true;
+		if ($('input[name="receiptType"]').val("2") && !bCancel) {
+			valid = checkRequired(theForm['chequeNo'], '<tags:validateMessage errorKey="errors.required" field="saleReceipt.chequeNo"/>') && valid;
+			valid = checkRequired(theForm['chequeBank'], '<tags:validateMessage errorKey="errors.required" field="saleReceipt.chequeBank"/>') && valid;
+			valid = checkRequired(theForm['chequeDate'], '<tags:validateMessage errorKey="errors.required" field="saleReceipt.chequeDate"/>') && valid;
+		}
+		return validateSaleReceipt(theForm) && valid;
 	}
 
 	$(function() {

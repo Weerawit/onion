@@ -80,8 +80,8 @@
 			</a>
 
 			<button id="button.delete" class="btn" type="submit" onclick="return validateDelete()">
-				<i class="icon-trash"></i>
-				<fmt:message key="button.delete" />
+				<i class="icon-remove"></i>
+				<fmt:message key="button.cancel" />
 			</button>
 
 			<a class="btn" href="<c:url value='/mainMenu'/>"> <i class="icon-ok"></i> <fmt:message key="button.done" /></a>
@@ -121,7 +121,7 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<a href="#" class="btn"><fmt:message key="button.close"/></a> <a class="btn btn-primary" onclick="cancel()"><fmt:message key="button.save"/></a>
+		<a href="#" class="btn" data-dismiss="modal"><fmt:message key="button.close"/></a> <a class="btn btn-primary" onclick="cancel()"><fmt:message key="button.save"/></a>
 	</div>
 </div>
 
@@ -134,14 +134,21 @@
 			alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
 			return false;
 		}
+		$('#cancelReasonDialog').show(function () {
+			$(this).find('.control-group').removeClass('error');
+    			$(this).find('.help-inline').remove();
+		});
 		$('#cancelReasonDialog').modal();
 		return false;
 	}
 	
 	function cancel() {
 		var form = document.forms['deleteForm'];
-		form["cancelReason"].value = $('#cancelReasonArea').val(); 
-		form.submit();
+		//since cancelReasonArea is not in form, using get(0) to convert to read object
+		if (checkRequired($('#cancelReasonArea').get(0), '<tags:validateMessage errorKey="errors.required" field="saleReceipt.cancelReason"/>')) {
+			form["cancelReason"].value = $('#cancelReasonArea').val();
+			form.submit();
+		}
 	}
 	
 	<c:if test="${not empty saleReceiptList}">

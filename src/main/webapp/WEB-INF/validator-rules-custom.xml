@@ -50,13 +50,14 @@
                                 focusField = field;
                             }
                             fields[i++] = oTwoFields[x][1];
+                            addErrorMessage(field, oTwoFields[x][1]);
                             bValid = false;
                         }
                     }
                 }
                 if (fields.length > 0) {
                    focusField.focus();
-                   alert(fields.join('\n'));
+                   //alert(fields.join('\n'));
                 }
                 return bValid;
             }]]>

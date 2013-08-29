@@ -93,16 +93,52 @@ function addErrorMessage(field, message) {
 	$(field).closest('.control-group').addClass('error');
 	$(field).closest('.control-group').find('.help-inline').remove();
     $(field).after("<span class='help-inline'>" + message + "</span>");
-
-    $(field).keyup(function() {
-    		$(field).closest('.control-group').removeClass('error');
-    		$(field).closest('.control-group').find('.help-inline').remove();
-    });
     
-    $(field).change(function() {
-		$(field).closest('.control-group').removeClass('error');
-		$(field).closest('.control-group').find('.help-inline').remove();
-});
+    if (field.type == 'text' ||
+            field.type == 'textarea' ||
+            field.type == 'password') {
+        $(field).keyup(function() {
+	    		$(field).closest('.control-group').removeClass('error');
+	    		$(field).closest('.control-group').find('.help-inline').remove();
+        });
+    }
+
+    if (field.type == 'file' ||
+            field.type == 'select-one' ||
+            field.type == 'radio') {
+    		$(field).change(function() {
+    			$(field).closest('.control-group').removeClass('error');
+    			$(field).closest('.control-group').find('.help-inline').remove();
+    		});
+    }
+}
+//validate custom field
+function checkRequired(field, msg) {
+    var isValid = true;
+    if (field.type == 'text' ||
+        field.type == 'textarea' ||
+        field.type == 'file' ||
+        field.type == 'select-one' ||
+        field.type == 'radio' ||
+        field.type == 'password') {
+            
+    		var value = '';
+        // get field's value
+        if (field.type == "select-one") {
+            var si = field.selectedIndex;
+            if (si >= 0) {
+                value = field.options[si].value;
+            }
+        } else {
+            value = field.value;
+        }
+            
+        if (value.trim().length == 0) {
+            addErrorMessage(field, msg);
+            isValid = false;
+        }
+    }
+    return isValid;
 }
 
 function confirmMessage(msg, cb) {
