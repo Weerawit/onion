@@ -135,8 +135,8 @@
 		<div class="well form-horizontal">
 			<div class="tabbable">
 				<ul class="nav nav-tabs" id="receiptTypeTab">
-					<li><a href="#tab1" data-toggle="tab"><fmt:message key="receiptType.1" /></a></li>
-					<li><a href="#tab2" data-toggle="tab"><fmt:message key="receiptType.2" /></a></li>
+					<li><a href="#tab1" data-toggle="tab"><fmt:message key="receiptType.CASH" /></a></li>
+					<li><a href="#tab2" data-toggle="tab"><fmt:message key="receiptType.CHEQUE" /></a></li>
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="tab1">
@@ -145,97 +145,129 @@
 					<div class="tab-pane" id="tab2">
 						<c:choose>
 							<c:when test="${saleReceipt.id != null }">
-								<div class="control-group">
-									<appfuse:label styleClass="control-label" key="saleReceipt.chequeNo" />
-									<div class="controls">
-										<span class="input-medium uneditable-input"><c:out value="${saleReceipt.chequeNo}" /></span>
+								<div class="row-fluid">
+									<div class="span6">
+										<div class="control-group">
+											<appfuse:label styleClass="control-label" key="saleReceipt.chequeNo" />
+											<div class="controls">
+												<span class="input-medium uneditable-input"><c:out value="${saleReceipt.chequeNo}" /></span>
+											</div>
+										</div>
+									</div>
+									<div class="span6">
+										<div class="control-group">
+											<appfuse:label styleClass="control-label" key="saleReceipt.chequeBank" />
+											<div class="controls">
+												<span class="input-medium uneditable-input"><c:out value="${saleReceipt.chequeBank}" /></span>
+											</div>
+										</div>
 									</div>
 								</div>
-								<div class="control-group">
-									<appfuse:label styleClass="control-label" key="saleReceipt.chequeBank" />
-									<div class="controls">
-										<span class="input-medium uneditable-input"><c:out value="${saleReceipt.chequeBank}" /></span>
-									</div>
-								</div>
-								<div class="control-group">
-									<appfuse:label styleClass="control-label" key="saleReceipt.chequeDate" />
-									<div class="controls">
-										<span class="input-medium uneditable-input"><fmt:formatDate value="${saleReceipt.chequeDate}" pattern="dd/MM/yyyy HH:mm:ss"/></span>
+								<div class="row-fluid">
+									<div class="span6">
+										<div class="control-group">
+											<appfuse:label styleClass="control-label" key="saleReceipt.chequeDate" />
+											<div class="controls">
+												<span class="input-medium uneditable-input"><fmt:formatDate value="${saleReceipt.chequeDate}" pattern="dd/MM/yyyy HH:mm:ss"/></span>
+											</div>
+										</div>
 									</div>
 								</div>
 							</c:when>
 							<c:otherwise>
-								<spring:bind path="saleReceipt.chequeNo">
-									<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-										<appfuse:label styleClass="control-label" key="saleReceipt.chequeNo" />
-										<div class="controls">
-											<form:input path="chequeNo" id="chequeNo" cssClass="input-medium"  maxlength="50"/>
-											<form:errors path="chequeNo" cssClass="help-inline" />
-										</div>
-									</div>
-								</spring:bind>
-								<spring:bind path="saleReceipt.chequeBank">
-									<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-										<appfuse:label styleClass="control-label" key="saleReceipt.chequeBank" />
-										<div class="controls">
-											<form:input path="chequeBank" id="chequeBank" cssClass="input-medium" maxlength="50"/>
-											<form:errors path="chequeBank" cssClass="help-inline" />
-										</div>
-									</div>
-								</spring:bind>
-								<spring:bind path="saleReceipt.chequeDate">
-									<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-										<appfuse:label styleClass="control-label" key="saleReceipt.chequeDate" />
-										<div class="controls">
-											<div class="input-append date" id="chequeDateDatepicker">
-												<form:input path="chequeDate" id="chequeDate" cssClass="input-medium" maxlength="50" />
-												<span class="add-on"><i class="icon-th"></i></span>
+								<div class="row-fluid">
+									<div class="span6">
+										<spring:bind path="saleReceipt.chequeNo">
+											<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+												<appfuse:label styleClass="control-label" key="saleReceipt.chequeNo" />
+												<div class="controls">
+													<form:input path="chequeNo" id="chequeNo" cssClass="input-medium"  maxlength="50"/>
+													<form:errors path="chequeNo" cssClass="help-inline" />
+												</div>
 											</div>
-											<form:errors path="chequeDate" cssClass="help-inline" />
-										</div>
+										</spring:bind>
 									</div>
-								</spring:bind>
+									<div class="span6">
+										<spring:bind path="saleReceipt.chequeBank">
+											<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+												<appfuse:label styleClass="control-label" key="saleReceipt.chequeBank" />
+												<div class="controls">
+													<form:input path="chequeBank" id="chequeBank" cssClass="input-medium" maxlength="50"/>
+													<form:errors path="chequeBank" cssClass="help-inline" />
+												</div>
+											</div>
+										</spring:bind>
+									</div>
+								</div>
+								<div class="row-fluid">
+									<div class="span6">
+										<spring:bind path="saleReceipt.chequeDate">
+											<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+												<appfuse:label styleClass="control-label" key="saleReceipt.chequeDate" />
+												<div class="controls">
+													<div class="input-append date" id="chequeDateDatepicker">
+														<form:input path="chequeDate" id="chequeDate" cssClass="input-medium" maxlength="50" />
+														<span class="add-on"><i class="icon-th"></i></span>
+													</div>
+													<form:errors path="chequeDate" cssClass="help-inline" />
+												</div>
+											</div>
+										</spring:bind>
+									</div>
+								</div>
 							</c:otherwise>
 						</c:choose>	
 					</div>
 					
 					<c:choose>
 						<c:when test="${saleReceipt.id != null }">
-							<div class="control-group">
-								<appfuse:label styleClass="control-label" key="saleReceipt.receiptAmount" />
-								<div class="controls">
-									<span class="input-medium uneditable-input"><fmt:formatNumber value="${saleReceipt.receiptAmount}" pattern="#,##0.00" /></span>
+							<div class="row-fluid">
+								<div class="span6">
+									<div class="control-group">
+										<appfuse:label styleClass="control-label" key="saleReceipt.receiptAmount" />
+										<div class="controls">
+											<span class="input-medium uneditable-input"><fmt:formatNumber value="${saleReceipt.receiptAmount}" pattern="#,##0.00" /></span>
+										</div>
+									</div>
 								</div>
-							</div>
-							<div class="control-group">
-								<appfuse:label styleClass="control-label" key="saleReceipt.receiptDate" />
-								<div class="controls">
-									<span class="input-medium uneditable-input"><fmt:formatDate value="${saleReceipt.receiptDate }" pattern="dd/MM/yyyy HH:mm:ss"/></span>
+								<div class="span6">
+									<div class="control-group">
+										<appfuse:label styleClass="control-label" key="saleReceipt.receiptDate" />
+										<div class="controls">
+											<span class="input-medium uneditable-input"><fmt:formatDate value="${saleReceipt.receiptDate }" pattern="dd/MM/yyyy HH:mm:ss"/></span>
+										</div>
+									</div>
 								</div>
 							</div>
 						</c:when>
 						<c:otherwise>
-							<spring:bind path="saleReceipt.receiptAmount">
-								<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-									<appfuse:label styleClass="control-label" key="saleReceipt.receiptAmount" />
-									<div class="controls">
-										<form:input path="receiptAmount" id="receiptAmount" cssClass="input-medium" />
-										<form:errors path="receiptAmount" cssClass="help-inline" />
-									</div>
-								</div>
-							</spring:bind>
-							<spring:bind path="saleReceipt.receiptDate">
-								<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-									<appfuse:label styleClass="control-label" key="saleReceipt.receiptDate" />
-									<div class="controls">
-										<div class="input-append date" id="receiptDateDatepicker">
-											<form:input path="receiptDate" id="receiptDate" cssClass="input-medium" maxlength="50" />
-											<span class="add-on"><i class="icon-th"></i></span>
+							<div class="row-fluid">
+								<div class="span6">
+									<spring:bind path="saleReceipt.receiptAmount">
+										<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+											<appfuse:label styleClass="control-label" key="saleReceipt.receiptAmount" />
+											<div class="controls">
+												<form:input path="receiptAmount" id="receiptAmount" cssClass="input-medium" />
+												<form:errors path="receiptAmount" cssClass="help-inline" />
+											</div>
 										</div>
-										<form:errors path="receiptDate" cssClass="help-inline" />
-									</div>
+									</spring:bind>
 								</div>
-							</spring:bind>
+								<div class="span6">
+									<spring:bind path="saleReceipt.receiptDate">
+										<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+											<appfuse:label styleClass="control-label" key="saleReceipt.receiptDate" />
+											<div class="controls">
+												<div class="input-append date" id="receiptDateDatepicker">
+													<form:input path="receiptDate" id="receiptDate" cssClass="input-medium" maxlength="50" />
+													<span class="add-on"><i class="icon-th"></i></span>
+												</div>
+												<form:errors path="receiptDate" cssClass="help-inline" />
+											</div>
+										</div>
+									</spring:bind>
+								</div>
+							</div>
 						</c:otherwise>
 					</c:choose>	
 				</div>

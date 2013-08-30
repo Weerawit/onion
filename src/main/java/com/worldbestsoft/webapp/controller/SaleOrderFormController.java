@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.worldbestsoft.model.Catalog;
+import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.Customer;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleOrderItem;
@@ -194,6 +195,7 @@ public class SaleOrderFormController extends BaseFormController {
 		SaleOrder saleOrder = (SaleOrder) session.getAttribute("saleOrder");
 		if (null == saleOrder || StringUtils.equalsIgnoreCase(method, "add")) {
 			saleOrder = new SaleOrder();
+			saleOrder.setDeliveryStatus(ConstantModel.SaleOrderDeliveryStatus.NEW.getCode());
 			SaleOrderItem item = new SaleOrderItem();
 			Catalog catalog = new Catalog();
 			catalog.setId(Long.valueOf(0));

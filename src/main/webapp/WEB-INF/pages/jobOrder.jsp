@@ -119,6 +119,7 @@
 			<div class="media">
 				<img id="image" src="<c:url value='/img/thumbnail/catalog/${jobOrder.saleOrderItem.catalog.id}?t=400'/>" class="img-polaroid pull-left" />
 				<div class="media-body">
+					<h4 class="media-heading"><fmt:message key="jobOrder.material"/></h4>
 					<display:table name="catalogItemList" cellspacing="0" cellpadding="0" requestURI="" id="catalogItem" class="table table-condensed table-striped table-hover table-bordered">
 						<display:column titleKey="catalogItem.invItem.code" sortable="true" class="span3">
 							<c:out value="${catalogItem.invItem.code}" />
