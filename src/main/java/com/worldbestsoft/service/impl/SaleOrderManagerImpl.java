@@ -19,13 +19,10 @@ import com.worldbestsoft.dao.InvItemLevelDao;
 import com.worldbestsoft.dao.SaleOrderDao;
 import com.worldbestsoft.dao.SaleOrderItemDao;
 import com.worldbestsoft.dao.hibernate.JobOrderDao;
-import com.worldbestsoft.model.InvGoodsMovementItem;
-import com.worldbestsoft.model.InvGoodsReceipt;
+import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.InvItemLevel;
 import com.worldbestsoft.model.InvStock;
 import com.worldbestsoft.model.JobOrder;
-import com.worldbestsoft.model.JobOrderStatus;
-import com.worldbestsoft.model.RefType;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleOrderItem;
 import com.worldbestsoft.model.SaleReceipt;
@@ -228,7 +225,7 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 							JobOrder jobOrder = new JobOrder();
 							jobOrder.setSaleOrderItem(saleOrderItem);
 							jobOrder.setEndDate(saleOrder.getDeliveryDate());
-							jobOrder.setStatus(JobOrderStatus.NEW.getCode());
+							jobOrder.setStatus(ConstantModel.JobOrderStatus.NEW.getCode());
 							jobOrderDao.save(jobOrder);
 						}
 						//remove from stock all current qty
@@ -237,7 +234,7 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 						invItemLevel.setQtyInStock(currentQtyInStock.multiply(BigDecimal.valueOf(-1)));
 						invItemLevel.setTransactionDate(new Date());
 						invItemLevel.setRefDocument(saleOrderSave.getSaleOrderNo());
-						invItemLevel.setRefType(RefType.SALE_ORDER.getCode());
+						invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
 
 						invItemLevelDao.save(invItemLevel);
 
@@ -251,7 +248,7 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 						invItemLevel.setQtyInStock(saleOrderItem.getQty().multiply(BigDecimal.valueOf(-1)));
 						invItemLevel.setTransactionDate(new Date());
 						invItemLevel.setRefDocument(saleOrderSave.getSaleOrderNo());
-						invItemLevel.setRefType(RefType.SALE_ORDER.getCode());
+						invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
 
 						invItemLevelDao.save(invItemLevel);
 
@@ -309,11 +306,11 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 			3 = Fully paid
 		 */
 		if (BigDecimal.ZERO.equals(paymentPaid)) {
-			saleOrder.setPaymentStatus("1");
+			saleOrder.setPaymentStatus(ConstantModel.PaymentStatus.NONE.getCode());
 		} else if (saleOrder.getTotalPrice().compareTo(saleOrder.getPaymentPaid()) <= 0) {
-			saleOrder.setPaymentStatus("3");
+			saleOrder.setPaymentStatus(ConstantModel.PaymentStatus.FULLY_PAID.getCode());
 		} else {
-			saleOrder.setPaymentStatus("2");
+			saleOrder.setPaymentStatus(ConstantModel.PaymentStatus.PARTAIL_PAID.getCode());
 		}
 		saleOrderDao.save(saleOrder);
 	}

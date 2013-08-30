@@ -17,10 +17,10 @@ import org.springframework.stereotype.Service;
 import com.worldbestsoft.dao.InvGoodsMovementDao;
 import com.worldbestsoft.dao.InvGoodsMovementItemDao;
 import com.worldbestsoft.dao.InvItemLevelDao;
+import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.InvGoodsMovement;
 import com.worldbestsoft.model.InvGoodsMovementItem;
 import com.worldbestsoft.model.InvItemLevel;
-import com.worldbestsoft.model.RefType;
 import com.worldbestsoft.model.criteria.InvGoodsMovementCriteria;
 import com.worldbestsoft.service.DocumentNumberGenerator;
 import com.worldbestsoft.service.DocumentNumberGeneratorException;
@@ -162,7 +162,7 @@ public class InvGoodsMovementManagerImpl implements ApplicationContextAware, Inv
 				invItemLevel.setQtyInStock(invGoodsMovementItem.getQty().multiply(BigDecimal.valueOf(-1)));
 				invItemLevel.setTransactionDate(new Date());
 				invItemLevel.setRefDocument(invGoodsMovement.getRunningNo());
-				invItemLevel.setRefType(RefType.GOOD_MOVEMENT.getCode());
+				invItemLevel.setRefType(ConstantModel.RefType.GOOD_MOVEMENT.getCode());
 
 				invItemLevelDao.save(invItemLevel);
 

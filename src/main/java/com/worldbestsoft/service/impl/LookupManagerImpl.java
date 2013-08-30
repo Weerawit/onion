@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.Constants;
 import com.worldbestsoft.dao.LookupDao;
-import com.worldbestsoft.model.JobOrderStatus;
+import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.LabelValue;
 import com.worldbestsoft.model.Role;
 import com.worldbestsoft.service.LookupManager;
@@ -44,9 +44,9 @@ public class LookupManagerImpl implements LookupManager {
 		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
 		List<LabelValue> customerTypeList = new ArrayList<LabelValue>();
 		// personal
-		customerTypeList.add(new LabelValue(resourceBundle.getString("customerType.100"), "100"));
+		customerTypeList.add(new LabelValue(resourceBundle.getString(ConstantModel.CustomerType.PERSONAL.getKey()), ConstantModel.CustomerType.PERSONAL.getCode()));
 		// company
-		customerTypeList.add(new LabelValue(resourceBundle.getString("customerType.200"), "200"));
+		customerTypeList.add(new LabelValue(resourceBundle.getString(ConstantModel.CustomerType.COMPANY.getKey()), ConstantModel.CustomerType.COMPANY.getCode()));
 		return customerTypeList;
 	}
 
@@ -54,7 +54,7 @@ public class LookupManagerImpl implements LookupManager {
     public List<LabelValue> getAllInvGoodsMovementType(Locale locale) {
 		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
 		List<LabelValue> list = new ArrayList<LabelValue>();
-		list.add(new LabelValue(resourceBundle.getString("invGoodsMovementType.100"), "100"));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.MovementType.FOR_PRODUCTION.getKey()), ConstantModel.MovementType.FOR_PRODUCTION.getCode()));
 		return list;
 	}
 	
@@ -63,9 +63,9 @@ public class LookupManagerImpl implements LookupManager {
 		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
 		List<LabelValue> paymentTypeList = new ArrayList<LabelValue>();
 		// credit
-		paymentTypeList.add(new LabelValue(resourceBundle.getString("paymentType.1"), "1"));
+		paymentTypeList.add(new LabelValue(resourceBundle.getString(ConstantModel.PaymentType.CREDIT.getKey()), ConstantModel.PaymentType.CREDIT.getCode()));
 		// cash
-		paymentTypeList.add(new LabelValue(resourceBundle.getString("paymentType.2"), "2"));
+		paymentTypeList.add(new LabelValue(resourceBundle.getString(ConstantModel.PaymentType.CASH.getKey()), ConstantModel.PaymentType.CASH.getCode()));
 		return paymentTypeList;
 	}
 	
@@ -73,8 +73,8 @@ public class LookupManagerImpl implements LookupManager {
     public List<LabelValue> getAllSaleOrderDeliveryStatusList(Locale locale) {
 		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
 		List<LabelValue> list = new ArrayList<LabelValue>();
-		list.add(new LabelValue(resourceBundle.getString("saleOrderDeliveryStatus.1"), "1"));
-		list.add(new LabelValue(resourceBundle.getString("saleOrderDeliveryStatus.2"), "2"));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.SaleOrderDeliveryStatus.NEW.getKey()), ConstantModel.SaleOrderDeliveryStatus.NEW.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.SaleOrderDeliveryStatus.FINISH.getKey()), ConstantModel.SaleOrderDeliveryStatus.FINISH.getCode()));
 		return list;
 	}
     
@@ -83,8 +83,8 @@ public class LookupManagerImpl implements LookupManager {
     public List<LabelValue> getAllReceiptType(Locale locale) {
 		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
 		List<LabelValue> receiptTypeList = new ArrayList<LabelValue>();
-		receiptTypeList.add(new LabelValue(resourceBundle.getString("receiptType.1"), "1"));
-		receiptTypeList.add(new LabelValue(resourceBundle.getString("receiptType.2"), "2"));
+		receiptTypeList.add(new LabelValue(resourceBundle.getString(ConstantModel.ReceiptType.CASH.getKey()), ConstantModel.ReceiptType.CASH.getCode()));
+		receiptTypeList.add(new LabelValue(resourceBundle.getString(ConstantModel.ReceiptType.CHEQUE.getKey()), ConstantModel.ReceiptType.CHEQUE.getCode()));
 		return receiptTypeList;
 	}
 
@@ -92,10 +92,20 @@ public class LookupManagerImpl implements LookupManager {
     public List<LabelValue> getAllJobOrderStatus(Locale locale) {
 		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
 		List<LabelValue> list = new ArrayList<LabelValue>();
-		list.add(new LabelValue(resourceBundle.getString("jobOrderStatus.NEW"), JobOrderStatus.NEW.getCode()));
-		list.add(new LabelValue(resourceBundle.getString("jobOrderStatus.INPROGRESS"), JobOrderStatus.INPROGRESS.getCode()));
-		list.add(new LabelValue(resourceBundle.getString("jobOrderStatus.DONE"), JobOrderStatus.DONE.getCode()));
-		list.add(new LabelValue(resourceBundle.getString("jobOrderStatus.DELIVERY"), JobOrderStatus.DELIVERY.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.JobOrderStatus.NEW.getKey()), ConstantModel.JobOrderStatus.NEW.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.JobOrderStatus.INPROGRESS.getKey()), ConstantModel.JobOrderStatus.INPROGRESS.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.JobOrderStatus.DONE.getKey()), ConstantModel.JobOrderStatus.DONE.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.JobOrderStatus.DELIVERY.getKey()), ConstantModel.JobOrderStatus.DELIVERY.getCode()));
+		return list;
+	}
+    
+    @Override
+    public List<LabelValue> getAllPaymentStatus(Locale locale) {
+		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
+		List<LabelValue> list = new ArrayList<LabelValue>();
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.PaymentStatus.NONE.getKey()), ConstantModel.PaymentStatus.NONE.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.PaymentStatus.PARTAIL_PAID.getKey()), ConstantModel.PaymentStatus.PARTAIL_PAID.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.PaymentStatus.FULLY_PAID.getKey()), ConstantModel.PaymentStatus.FULLY_PAID.getCode()));
 		return list;
 	}
 

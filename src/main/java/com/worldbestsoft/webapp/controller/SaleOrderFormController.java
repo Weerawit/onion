@@ -18,7 +18,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -94,46 +93,47 @@ public class SaleOrderFormController extends BaseFormController {
 		if (validator != null) { // validator is null during testing
 			validator.validate(saleOrderForm, errors);
 			
-			if (null != saleOrderForm.getCustomer()) {
-				Customer customer = getCustomerManager().get(saleOrderForm.getCustomer().getId());
-				saleOrderForm.setCustomer(customer);
-				if (null == customer) {
-					errors.rejectValue("customer.name", "errors.invalid", new Object[] { getText("saleOrder.customer.name", request.getLocale())}, "errors.invalid");	
-				}
-			}
+			//validate only for add
+			if (saleOrderForm.getId() == null) {
 			
-			BigDecimal totalPrice = BigDecimal.ZERO;
-			boolean foundSaleOrderItem = false;
-			if (null != saleOrderSession.getSaleOrderItems()) {
-				for (SaleOrderItem saleOrderItem : saleOrderSession.getSaleOrderItems()) {
-					if (null != saleOrderItem.getCatalog() && StringUtils.isNotBlank(saleOrderItem.getCatalog().getCode())) {
-						Catalog catalog = catalogManager.findByCatalogCode(saleOrderItem.getCatalog().getCode());
-						if (null == catalog) {
-							errors.rejectValue("saleOrderItems", "errors.invalid",new Object[] { getText("saleOrderItem.catalog.code", request.getLocale())}, "errors.invalid");
-						} else {
-							saleOrderItem.setPrice(saleOrderItem.getPricePerUnit().multiply(saleOrderItem.getQty()));
-							totalPrice = totalPrice.add(saleOrderItem.getPrice());
-							foundSaleOrderItem = true;
+				if (null != saleOrderForm.getCustomer()) {
+					Customer customer = getCustomerManager().get(saleOrderForm.getCustomer().getId());
+					saleOrderForm.setCustomer(customer);
+					if (null == customer) {
+						errors.rejectValue("customer.name", "errors.invalid", new Object[] { getText("saleOrder.customer.name", request.getLocale())}, "errors.invalid");	
+					}
+				}
+				
+				BigDecimal totalPrice = BigDecimal.ZERO;
+				boolean foundSaleOrderItem = false;
+				if (null != saleOrderSession.getSaleOrderItems()) {
+					for (SaleOrderItem saleOrderItem : saleOrderSession.getSaleOrderItems()) {
+						if (null != saleOrderItem.getCatalog() && StringUtils.isNotBlank(saleOrderItem.getCatalog().getCode())) {
+							Catalog catalog = catalogManager.findByCatalogCode(saleOrderItem.getCatalog().getCode());
+							if (null == catalog) {
+								errors.rejectValue("saleOrderItems", "errors.invalid",new Object[] { getText("saleOrderItem.catalog.code", request.getLocale())}, "errors.invalid");
+							} else {
+								saleOrderItem.setPrice(saleOrderItem.getPricePerUnit().multiply(saleOrderItem.getQty()));
+								totalPrice = totalPrice.add(saleOrderItem.getPrice());
+								foundSaleOrderItem = true;
+							}
 						}
 					}
 				}
-			}
-			
-			saleOrderForm.setTotalPrice(totalPrice);
-			
-			if (!foundSaleOrderItem) {
-				errors.rejectValue("saleOrderItems", "errors.required",new Object[] { getText("saleOrder.saleOrerItem", request.getLocale())}, "errors.required");
+				
+				saleOrderForm.setTotalPrice(totalPrice);
+				
+				if (!foundSaleOrderItem) {
+					errors.rejectValue("saleOrderItems", "errors.required",new Object[] { getText("saleOrder.saleOrerItem", request.getLocale())}, "errors.required");
+				}
 			}
 
-			if (errors.hasErrors() && request.getParameter("delete") == null) { // don't
-																				// validate
-																				// when
-																				// deleting
+			if (errors.hasErrors() && !StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
 				Map<String, Object> model = new HashMap<String, Object>();
 				model.put("saleOrder", saleOrderForm);
 				model.put("paymentTypeList", lookupManager.getAllPaymentType(request.getLocale()));
 				model.put("saleOrderItemList", saleOrderSession.getSaleOrderItems());
-				model.put("saleOrderStatusList", lookupManager.getAllSaleOrderDeliveryStatusList(request.getLocale()));
+				model.put("deliveryStatusList", lookupManager.getAllSaleOrderDeliveryStatusList(request.getLocale()));
 				return new ModelAndView("saleOrder", model);
 			}
 		}
@@ -141,7 +141,7 @@ public class SaleOrderFormController extends BaseFormController {
 
 		Locale locale = request.getLocale();
 
-		if (request.getParameter("delete") != null) {
+		if (StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) {
 			// since code input is readonly, no value pass to form then we need
 			// to query from db.
 			SaleOrder saleOrder = getSaleOrderManager().get(saleOrderForm.getId());
@@ -158,6 +158,7 @@ public class SaleOrderFormController extends BaseFormController {
 				saleOrder.setCreateDate(new Date());
 				saleOrder.setCreateUser(request.getRemoteUser());
 				
+				
 				saleOrder = getSaleOrderManager().save(saleOrder, saleOrderSession.getSaleOrderItems());
 
 				saveMessage(request, getText("saleOrder.added", saleOrder.getSaleOrderNo(), locale));
@@ -167,13 +168,13 @@ public class SaleOrderFormController extends BaseFormController {
 
 				SaleOrder saleOrder = getSaleOrderManager().get(saleOrderForm.getId());
 				saleOrder.setDeliveryDate(saleOrderForm.getDeliveryDate());
+				saleOrder.setDeliveryStatus(saleOrderForm.getDeliveryStatus());
 				saleOrder.setPaymentType(saleOrderForm.getPaymentType());
-				saleOrder.setTotalPrice(saleOrderForm.getTotalPrice());
-				saleOrder.setCustomer(saleOrderForm.getCustomer());
+				//saleOrder.setTotalPrice(saleOrderForm.getTotalPrice());
+				//saleOrder.setCustomer(saleOrderForm.getCustomer());
 				
 				saleOrder.setUpdateDate(new Date());
 				saleOrder.setUpdateUser(request.getRemoteUser());
-				
 				
 				saleOrder = getSaleOrderManager().save(saleOrder, saleOrderSession.getSaleOrderItems());
 
@@ -222,7 +223,7 @@ public class SaleOrderFormController extends BaseFormController {
 		model.put("saleOrder", saleOrder);
 		model.put("paymentTypeList", lookupManager.getAllPaymentType(request.getLocale()));
 		model.put("saleOrderItemList", saleOrder.getSaleOrderItems());
-		model.put("saleOrderStatusList", lookupManager.getAllSaleOrderDeliveryStatusList(request.getLocale()));
+		model.put("deliveryStatusList", lookupManager.getAllSaleOrderDeliveryStatusList(request.getLocale()));
 		return new ModelAndView("saleOrder", model);
 	}
 

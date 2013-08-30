@@ -37,32 +37,36 @@
 		<form:hidden path="id" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
 		<form:hidden path="saleOrderNo" />
-
+		<input type="hidden" name="action"/>
+	
 		<div class="well">
 			<fieldset>
 				<legend>
 				<fmt:message key="saleOrder.customer.name"/>
 				</legend>
 				<spring:bind path="saleOrder.customer.name">
-					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-						<div class="controls">
-							<form:input path="customer.name" id="customer.name" cssClass="input-large" maxlength="50" autocomplete="off" />
-							<form:errors path="customer.name" cssClass="help-inline" />
-							<form:hidden path="customer.id"/>
-						</div>
-					</div>
-					<%--
-					<dl class="dl-horizontal">
-						<dt><appfuse:label styleClass="control-label" key="saleOrder.customer.contactName" /></dt>
-						<dd><label id="contactName"></label></dd>
-						<dt><appfuse:label styleClass="control-label" key="saleOrder.customer.contactTel" /></dt>
-						<dd><label id="contactTel"></label></dd>
-						<dt><appfuse:label styleClass="control-label" key="saleOrder.customer.billingAddress" /></dt>
-						<dd><address id="billingAddress"></address></dd>
-						<dt><appfuse:label styleClass="control-label" key="saleOrder.customer.shipingAddress" /></dt>
-						<dd><address id="shipingAddress"></address></dd>
-					</dl>
-					 --%>
+					<c:choose>
+						<c:when test="${saleOrder.saleOrderNo == null }">
+							<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+								<div class="controls">
+									<form:input path="customer.name" id="customer.name" cssClass="input-large" maxlength="50" autocomplete="off" />
+									<form:errors path="customer.name" cssClass="help-inline" />
+									<form:hidden path="customer.id"/>
+								</div>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+								<div class="controls">
+									<span class="input-large uneditable-input"><c:out value="${saleOrder.customer.name}" /></span>
+									<form:hidden path="customer.name"/>
+									<form:errors path="customer.name" cssClass="help-inline" />
+									<form:hidden path="customer.id"/>
+								</div>
+							</div>
+						</c:otherwise>
+					</c:choose>
+					
 					<div class="row-fluid">
 						<fieldset class="span6">
 							<legend>
@@ -96,22 +100,22 @@
 		</div>
 		
 
+		<c:choose>
+			<c:when test="${saleOrder.saleOrderNo == null }">
+				<div id="actions">
+					<input type="hidden" name="addcatalog">
+					<button id="addDetailBtn" class="btn btn-primary" type="button" >
+						<i class="icon-plus icon-white"></i>
+						<fmt:message key="button.add" />
+					</button>
+					<button id="deleteDetailBtn" class="btn" type="button">
+						<i class="icon-trash"></i>
+						<fmt:message key="button.delete" />
+					</button>
+				</div>
+			</c:when>
+		</c:choose>
 		
-		<div id="actions">
-		
-			<input type="hidden" name="addcatalog">
-		
-			<button id="addDetailBtn" class="btn btn-primary" type="button" >
-				<i class="icon-plus icon-white"></i>
-				<fmt:message key="button.add" />
-			</button>
-			
-			<button id="deleteDetailBtn" class="btn" type="button">
-				<i class="icon-trash"></i>
-				<fmt:message key="button.delete" />
-			</button>
-			
-		</div>
 		
 		<spring:bind path="saleOrder.saleOrderItems">
 			<div id="tableDiv" class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
@@ -149,26 +153,22 @@
 					</spring:bind>
 				</span>
 			</div>
-			<%--
-			
-			change saleOrderStatus to DeliveryStatus
 			<div class="row-fluid">
 				<span class="span6">
-					<spring:bind path="saleOrder.status">
+					<spring:bind path="saleOrder.deliveryStatus">
 						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="saleOrder.status" />
+							<appfuse:label styleClass="control-label" key="saleOrder.deliveryStatus" />
 							<div class="controls">
-								<form:select path="status">
+								<form:select path="deliveryStatus">
 									<form:option value=""></form:option>
-									<form:options items="${saleOrderStatusList}" itemLabel="label" itemValue="value" />
+									<form:options items="${deliveryStatusList}" itemLabel="label" itemValue="value" />
 								</form:select>
-								<form:errors path="status" cssClass="help-inline" />
+								<form:errors path="deliveryStatus" cssClass="help-inline" />
 							</div>
 						</div>
 					</spring:bind>
 				</span>
 			</div>
-			 --%>
 		</div>
 
 		<fieldset class="form-actions text-center">
@@ -273,7 +273,7 @@
 				var fnLoad = function() {
 					self.pageLoadedHandler.call(self);
 				};
-				
+				<c:if test="${saleOrder.saleOrderNo == null }">
 				//register popup
 				$('input[name="catalog.name"]').each(function(i) {
 					$(this).lookup({
@@ -333,6 +333,8 @@
 						$('#tableDiv').load(url, $('#saleOrderItemForm').serialize(), fnLoad);
 					});
 				});
+				
+				</c:if>
 			}
 		});
 		

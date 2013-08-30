@@ -17,10 +17,10 @@ import org.springframework.stereotype.Service;
 import com.worldbestsoft.dao.InvGoodsReceiptDao;
 import com.worldbestsoft.dao.InvGoodsReceiptItemDao;
 import com.worldbestsoft.dao.InvItemLevelDao;
+import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.InvGoodsReceipt;
 import com.worldbestsoft.model.InvGoodsReceiptItem;
 import com.worldbestsoft.model.InvItemLevel;
-import com.worldbestsoft.model.RefType;
 import com.worldbestsoft.model.criteria.InvGoodsReceiptCriteria;
 import com.worldbestsoft.service.DocumentNumberGenerator;
 import com.worldbestsoft.service.DocumentNumberGeneratorException;
@@ -218,7 +218,7 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager, Appli
 				invItemLevel.setQtyInStock(invGoodsReceiptItem.getQty());
 				invItemLevel.setTransactionDate(new Date());
 				invItemLevel.setRefDocument(invGoodsReceipt.getRunningNo());
-				invItemLevel.setRefType(RefType.GOOD_RECEIPT.getCode());
+				invItemLevel.setRefType(ConstantModel.RefType.GOOD_RECEIPT.getCode());
 
 				invItemLevelDao.save(invItemLevel);
 

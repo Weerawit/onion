@@ -9,8 +9,8 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.worldbestsoft.dao.InvItemLevelDao;
+import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.InvItemLevel;
-import com.worldbestsoft.model.RefType;
 
 @Repository("invItemLevelDao")
 public class InvItemLevelDaoHibernate extends GenericDaoHibernate<InvItemLevel, Long> implements InvItemLevelDao {
@@ -23,7 +23,7 @@ public class InvItemLevelDaoHibernate extends GenericDaoHibernate<InvItemLevel, 
 	 * @see com.worldbestsoft.dao.hibernate.InvItemLevelDao#findByRefDocument(java.lang.String, com.worldbestsoft.model.RefType)
 	 */
 	@Override
-    public List<InvItemLevel> findByRefDocument(String refDocument, RefType refType) {
+    public List<InvItemLevel> findByRefDocument(String refDocument, ConstantModel.RefType refType) {
 		String hsql = "select o from InvItemLevel o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		if (StringUtils.isNotEmpty(refDocument)) {
