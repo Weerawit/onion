@@ -22,33 +22,45 @@
 	</h2>
 
 	<form method="get" action="${ctx}/popup/customer" id="searchForm" class="well form-horizontal">
-		<div class="control-group">
-			<label for="customerType" class="control-label"><fmt:message key="customer.customerType" /></label>
-			<div class="controls">
-				<select id=customerType name="customerType">
-					<option value=""></option>
-					<c:forEach items="${customerTypeList}" var="customerType">
-						<option value="${customerType.value}" ${(customerType.value == param['customerType']) ? 'selected' : ''}>${customerType.label}</option>
-					</c:forEach>
-				</select>
+		<div class="row">
+			<div class="span5">
+				<div class="control-group">
+					<label for="customerType" class="control-label"><fmt:message key="customer.customerType" /></label>
+					<div class="controls">
+						<select id=customerType name="customerType">
+							<option value=""></option>
+							<c:forEach items="${customerTypeList}" var="customerType">
+								<option value="${customerType.value}" ${(customerType.value == param['customerType']) ? 'selected' : ''}>${customerType.label}</option>
+							</c:forEach>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="span5">
+				<div class="control-group">
+					<label class="control-label" for="name"><fmt:message key="customer.name" />:</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="name" id="name" value="${param.name}" placeholder="" />
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="name"><fmt:message key="customer.name" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="name" id="name" value="${param.name}" placeholder="" />
+		<div class="row">
+			<div class="span5">
+				<div class="control-group">
+					<label class="control-label" for="contactName"><fmt:message key="customer.contactName" />:</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="contactName" id="contactName" value="${param.contactName}" placeholder="" />
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="contactName"><fmt:message key="customer.contactName" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="contactName" id="contactName" value="${param.contactName}" placeholder="" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="contactTel"><fmt:message key="customer.contactTel" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="contactTel" id="contactTel" value="${param.contactTel}" placeholder="668" />
+			<div class="span5">
+				<div class="control-group">
+					<label class="control-label" for="contactTel"><fmt:message key="customer.contactTel" />:</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="contactTel" id="contactTel" value="${param.contactTel}" placeholder="668" />
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="control-group">

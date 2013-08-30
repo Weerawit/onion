@@ -12,7 +12,7 @@
 		<fmt:message key="employee.message" />
 	</p>
 </div>
-<div class="span7">
+<div class="span10">
 	<spring:bind path="employee.*">
 		<c:if test="${not empty status.errorMessages}">
 			<div class="alert alert-error fade in">

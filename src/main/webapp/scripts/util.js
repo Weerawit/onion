@@ -92,7 +92,11 @@ function updateURLParameter(url, param, paramVal) {
 function addErrorMessage(field, message) {
 	$(field).closest('.control-group').addClass('error');
 	$(field).closest('.control-group').find('.help-inline').remove();
-    $(field).after("<span class='help-inline'>" + message + "</span>");
+	if ($(field).parent().hasClass("controls")) {
+		$(field).after("<span class='help-inline'>" + message + "</span>");
+	} else {
+		$(field).parent().after("<span class='help-inline'>" + message + "</span>");
+	}
     
     if (field.type == 'text' ||
             field.type == 'textarea' ||

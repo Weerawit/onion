@@ -22,22 +22,32 @@
 	</h2>
 
 	<form method="get" action="${ctx}/popup/employee" id="searchForm" class="well form-horizontal">
-		<div class="control-group">
-			<label class="control-label" for="firstName"><fmt:message key="employee.firstName" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="firstName" id="firstName" value="${param.firstName}" placeholder="" />
+		<div class="row">
+			<div class="span5">
+				<div class="control-group">
+					<label class="control-label" for="firstName"><fmt:message key="employee.firstName" />:</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="firstName" id="firstName" value="${param.firstName}" placeholder="" />
+					</div>
+				</div>
+			</div>
+			<div class="span5">
+				<div class="control-group">
+					<label class="control-label" for="lastName"><fmt:message key="employee.lastName" />:</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="lastName" id="lastName" value="${param.lastName}" placeholder="" />
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="lastName"><fmt:message key="employee.lastName" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="lastName" id="lastName" value="${param.lastName}" placeholder="" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="nickName"><fmt:message key="employee.nickName" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="nickName" id="nickName" value="${param.nickName}" placeholder="" />
+		<div class="row">
+			<div class="span5">
+				<div class="control-group">
+					<label class="control-label" for="nickName"><fmt:message key="employee.nickName" />:</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="nickName" id="nickName" value="${param.nickName}" placeholder="" />
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="control-group">
