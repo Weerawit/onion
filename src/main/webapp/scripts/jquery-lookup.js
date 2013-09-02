@@ -22,7 +22,7 @@
 		type : undefined,
 		displayProperty : undefined,
 		selectProperty : undefined, //incase , select value to display is diff from custom display list.
-		btnSearch : '<a class="btn"> <i class="icon-search"></i></a>', //valid html for  button, 
+		btnSearch : '<a class="btn add-on"> <i class="icon-search"></i></a>', //valid html for  button, 
 		showBtnSearch : true,
 		appendBtnAndText : true,
 		btnSearchCondition : undefined, //function that return json condition to be pass as param.

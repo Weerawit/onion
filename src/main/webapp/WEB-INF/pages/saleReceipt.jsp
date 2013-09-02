@@ -335,7 +335,7 @@
 	
 	function onFormSubmit(theForm) {
 		var valid = true;
-		if ($('input[name="receiptType"]').val("2") && !bCancel) {
+		if ($('input[name="receiptType"]').val() == "2" && !bCancel) {
 			valid = checkRequired(theForm['chequeNo'], '<tags:validateMessage errorKey="errors.required" field="saleReceipt.chequeNo"/>') && valid;
 			valid = checkRequired(theForm['chequeBank'], '<tags:validateMessage errorKey="errors.required" field="saleReceipt.chequeBank"/>') && valid;
 			valid = checkRequired(theForm['chequeDate'], '<tags:validateMessage errorKey="errors.required" field="saleReceipt.chequeDate"/>') && valid;
