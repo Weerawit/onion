@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 24, 2013 12:54:01 PM by Hibernate Tools 4.0.0
+// Generated Sep 3, 2013 11:42:24 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -30,6 +30,7 @@ public class InvGoodsReceipt implements java.io.Serializable {
 	private Supplier supplier;
 	private String runningNo;
 	private Date receiptDate;
+	private String receiptType;
 	private BigDecimal totalCost;
 	private String memo;
 	private Date createDate;
@@ -45,10 +46,11 @@ public class InvGoodsReceipt implements java.io.Serializable {
 		this.supplier = supplier;
 	}
 
-	public InvGoodsReceipt(Supplier supplier, String runningNo, Date receiptDate, BigDecimal totalCost, String memo, Date createDate, String createUser, Date updateDate, String updateUser, Set<InvGoodsReceiptItem> invGoodsReceiptItems) {
+	public InvGoodsReceipt(Supplier supplier, String runningNo, Date receiptDate, String receiptType, BigDecimal totalCost, String memo, Date createDate, String createUser, Date updateDate, String updateUser, Set<InvGoodsReceiptItem> invGoodsReceiptItems) {
 		this.supplier = supplier;
 		this.runningNo = runningNo;
 		this.receiptDate = receiptDate;
+		this.receiptType = receiptType;
 		this.totalCost = totalCost;
 		this.memo = memo;
 		this.createDate = createDate;
@@ -96,6 +98,15 @@ public class InvGoodsReceipt implements java.io.Serializable {
 
 	public void setReceiptDate(Date receiptDate) {
 		this.receiptDate = receiptDate;
+	}
+
+	@Column(name = "receipt_type", length = 3)
+	public String getReceiptType() {
+		return this.receiptType;
+	}
+
+	public void setReceiptType(String receiptType) {
+		this.receiptType = receiptType;
 	}
 
 	@Column(name = "total_cost", precision = 10)

@@ -18,29 +18,39 @@
 	</h2>
 
 	<form method="get" action="${ctx}/invItemList" id="searchForm" class="well form-horizontal">
-		<div class="control-group">
-			<label for="invItem.invItemGroup.code" class="control-label"><fmt:message key="invItem.invItemGroup.code" /></label>
-			<div class="controls">
-				<select id=invItem.invItemGroup.code name="invItem.invItemGroup.code">
-					<option value=""></option>
-					<c:forEach items="${invItemGroupList}" var="invItemGroup">
-						<option value="${invItemGroup.code}" ${(invItemGroup.code == param['invItem.invItemGroup.code']) ? 'selected' : ''}>${invItemGroup.code} : ${invItemGroup.name}</option>
-					</c:forEach>
-				</select>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label for="invItem.invItemGroup.code" class="control-label"><fmt:message key="invItem.invItemGroup.code" /></label>
+				<div class="controls">
+					<select id=invItem.invItemGroup.code name="invItem.invItemGroup.code">
+						<option value=""></option>
+						<c:forEach items="${invItemGroupList}" var="invItemGroup">
+							<option value="${invItemGroup.code}" ${(invItemGroup.code == param['invItem.invItemGroup.code']) ? 'selected' : ''}>${invItemGroup.code} : ${invItemGroup.name}</option>
+						</c:forEach>
+					</select>
+				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="code"><fmt:message key="invItem.code" />:</label>
-			<div class="controls">
-				<input type="text" class="input-medium" name="code" id="code" value="${param.code}" placeholder="" />
+	</div>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="code"><fmt:message key="invItem.code" />:</label>
+				<div class="controls">
+					<input type="text" class="input-medium" name="code" id="code" value="${param.code}" placeholder="" />
+				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="name"><fmt:message key="invItem.name" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="name" id="name" value="${param.name}" placeholder="" />
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="name"><fmt:message key="invItem.name" />:</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" name="name" id="name" value="${param.name}" placeholder="" />
+				</div>
 			</div>
 		</div>
+	</div>
 		
 		<div class="control-group">
 			<div class="controls">

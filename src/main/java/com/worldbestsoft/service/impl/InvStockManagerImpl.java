@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.worldbestsoft.dao.InvItemLevelDao;
 import com.worldbestsoft.dao.InvStockDao;
 import com.worldbestsoft.model.InvItemLevel;
 import com.worldbestsoft.model.InvStock;
@@ -18,6 +19,7 @@ import com.worldbestsoft.service.InvStockManager;
 public class InvStockManagerImpl implements InvStockManager {
 	
 	private InvStockDao invStockDao;
+	private InvItemLevelDao invItemLevelDao;
 
 	public InvStockDao getInvStockDao() {
 		return invStockDao;
@@ -28,6 +30,15 @@ public class InvStockManagerImpl implements InvStockManager {
 		this.invStockDao = invStockDao;
 	}
 	
+	public InvItemLevelDao getInvItemLevelDao() {
+		return invItemLevelDao;
+	}
+
+	@Autowired
+	public void setInvItemLevelDao(InvItemLevelDao invItemLevelDao) {
+		this.invItemLevelDao = invItemLevelDao;
+	}
+
 	/* (non-Javadoc)
 	 * @see com.worldbestsoft.service.impl.InvStockManager#updateStock(com.worldbestsoft.model.InvItemLevel)
 	 */
@@ -39,11 +50,20 @@ public class InvStockManagerImpl implements InvStockManager {
 			invStock = new InvStock();
 			invStock.setInvItem(invItemLevel.getInvItem());
 			invStock.setQty(BigDecimal.ZERO);
+			invStock.setQtyAvailable(BigDecimal.ZERO);
 		}
+		invItemLevel.setQtyBefore(invStock.getQty());
+		invItemLevel.setQtyAvailableBefore(invStock.getQtyAvailable());
+		BigDecimal qtyAfter = invStock.getQty().add(invItemLevel.getQtyAdjust());
+		BigDecimal qtyAvailableAfter = invStock.getQtyAvailable().add(invItemLevel.getQtyAvailableAdjust());
+		invItemLevel.setQtyAfter(qtyAfter);
+		invItemLevel.setQtyAvailableAfter(qtyAvailableAfter);
+		invItemLevel = invItemLevelDao.save(invItemLevel);
 		
 		invStock.setUpdateDate(new Date());
-		BigDecimal newQty = invStock.getQty().add(invItemLevel.getQtyInStock());
-		invStock.setQty(newQty);
+		invStock.setUpdateUser(invItemLevel.getUpdateUser());
+		invStock.setQty(qtyAfter);
+		invStock.setQtyAvailable(qtyAvailableAfter);
 		return invStockDao.save(invStock);
 	}
 	

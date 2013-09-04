@@ -1,14 +1,12 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 29, 2013 7:18:05 PM by Hibernate Tools 4.0.0
+// Generated Sep 3, 2013 11:42:24 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,23 +24,28 @@ public class InvStock implements java.io.Serializable {
 	private Long id;
 	private InvItem invItem;
 	private BigDecimal qty;
+	private BigDecimal qtyAvailable;
 	private Date updateDate;
+	private String updateUser;
 
 	public InvStock() {
 	}
 
-	public InvStock(InvItem invItem) {
+	public InvStock(Long id, InvItem invItem) {
+		this.id = id;
 		this.invItem = invItem;
 	}
 
-	public InvStock(InvItem invItem, BigDecimal qty, Date updateDate) {
+	public InvStock(Long id, InvItem invItem, BigDecimal qty, BigDecimal qtyAvailable, Date updateDate, String updateUser) {
+		this.id = id;
 		this.invItem = invItem;
 		this.qty = qty;
+		this.qtyAvailable = qtyAvailable;
 		this.updateDate = updateDate;
+		this.updateUser = updateUser;
 	}
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	public Long getId() {
 		return this.id;
@@ -71,6 +74,15 @@ public class InvStock implements java.io.Serializable {
 		this.qty = qty;
 	}
 
+	@Column(name = "qty_available", precision = 10)
+	public BigDecimal getQtyAvailable() {
+		return this.qtyAvailable;
+	}
+
+	public void setQtyAvailable(BigDecimal qtyAvailable) {
+		this.qtyAvailable = qtyAvailable;
+	}
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "update_date", length = 19)
 	public Date getUpdateDate() {
@@ -79,6 +91,15 @@ public class InvStock implements java.io.Serializable {
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	@Column(name = "update_user", length = 50)
+	public String getUpdateUser() {
+		return this.updateUser;
+	}
+
+	public void setUpdateUser(String updateUser) {
+		this.updateUser = updateUser;
 	}
 
 }

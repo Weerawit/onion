@@ -187,6 +187,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
 		if (null == invGoodsReceipt || StringUtils.equalsIgnoreCase(method, "add")) {
 			invGoodsReceipt = new InvGoodsReceipt();
+			invGoodsReceipt.setReceiptDate(new Date());
 		}
 		
 		if (!isFormSubmission(request)) {

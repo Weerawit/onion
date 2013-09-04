@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 23, 2013 9:54:03 PM by Hibernate Tools 4.0.0
+// Generated Sep 4, 2013 9:43:52 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -26,9 +26,16 @@ public class InvItemLevel implements java.io.Serializable {
 	private Long id;
 	private InvItem invItem;
 	private Date transactionDate;
-	private BigDecimal qtyInStock;
+	private BigDecimal qtyBefore;
+	private BigDecimal qtyAdjust;
+	private BigDecimal qtyAfter;
+	private BigDecimal qtyAvailableBefore;
+	private BigDecimal qtyAvailableAdjust;
+	private BigDecimal qtyAvailableAfter;
 	private String refDocument;
 	private String refType;
+	private String transactionType;
+	private String updateUser;
 
 	public InvItemLevel() {
 	}
@@ -38,12 +45,19 @@ public class InvItemLevel implements java.io.Serializable {
 		this.transactionDate = transactionDate;
 	}
 
-	public InvItemLevel(InvItem invItem, Date transactionDate, BigDecimal qtyInStock, String refDocument, String refType) {
+	public InvItemLevel(InvItem invItem, Date transactionDate, BigDecimal qtyBefore, BigDecimal qtyAdjust, BigDecimal qtyAfter, BigDecimal qtyAvailableBefore, BigDecimal qtyAvailableAdjust, BigDecimal qtyAvailableAfter, String refDocument, String refType, String transactionType, String updateUser) {
 		this.invItem = invItem;
 		this.transactionDate = transactionDate;
-		this.qtyInStock = qtyInStock;
+		this.qtyBefore = qtyBefore;
+		this.qtyAdjust = qtyAdjust;
+		this.qtyAfter = qtyAfter;
+		this.qtyAvailableBefore = qtyAvailableBefore;
+		this.qtyAvailableAdjust = qtyAvailableAdjust;
+		this.qtyAvailableAfter = qtyAvailableAfter;
 		this.refDocument = refDocument;
 		this.refType = refType;
+		this.transactionType = transactionType;
+		this.updateUser = updateUser;
 	}
 
 	@Id
@@ -77,13 +91,58 @@ public class InvItemLevel implements java.io.Serializable {
 		this.transactionDate = transactionDate;
 	}
 
-	@Column(name = "qty_in_stock", precision = 10)
-	public BigDecimal getQtyInStock() {
-		return this.qtyInStock;
+	@Column(name = "qty_before", precision = 10)
+	public BigDecimal getQtyBefore() {
+		return this.qtyBefore;
 	}
 
-	public void setQtyInStock(BigDecimal qtyInStock) {
-		this.qtyInStock = qtyInStock;
+	public void setQtyBefore(BigDecimal qtyBefore) {
+		this.qtyBefore = qtyBefore;
+	}
+
+	@Column(name = "qty_adjust", precision = 10)
+	public BigDecimal getQtyAdjust() {
+		return this.qtyAdjust;
+	}
+
+	public void setQtyAdjust(BigDecimal qtyAdjust) {
+		this.qtyAdjust = qtyAdjust;
+	}
+
+	@Column(name = "qty_after", precision = 10)
+	public BigDecimal getQtyAfter() {
+		return this.qtyAfter;
+	}
+
+	public void setQtyAfter(BigDecimal qtyAfter) {
+		this.qtyAfter = qtyAfter;
+	}
+
+	@Column(name = "qty_available_before", precision = 10)
+	public BigDecimal getQtyAvailableBefore() {
+		return this.qtyAvailableBefore;
+	}
+
+	public void setQtyAvailableBefore(BigDecimal qtyAvailableBefore) {
+		this.qtyAvailableBefore = qtyAvailableBefore;
+	}
+
+	@Column(name = "qty_available_adjust", precision = 10)
+	public BigDecimal getQtyAvailableAdjust() {
+		return this.qtyAvailableAdjust;
+	}
+
+	public void setQtyAvailableAdjust(BigDecimal qtyAvailableAdjust) {
+		this.qtyAvailableAdjust = qtyAvailableAdjust;
+	}
+
+	@Column(name = "qty_available_after", precision = 10)
+	public BigDecimal getQtyAvailableAfter() {
+		return this.qtyAvailableAfter;
+	}
+
+	public void setQtyAvailableAfter(BigDecimal qtyAvailableAfter) {
+		this.qtyAvailableAfter = qtyAvailableAfter;
 	}
 
 	@Column(name = "ref_document", length = 50)
@@ -102,6 +161,24 @@ public class InvItemLevel implements java.io.Serializable {
 
 	public void setRefType(String refType) {
 		this.refType = refType;
+	}
+
+	@Column(name = "transaction_type", length = 3)
+	public String getTransactionType() {
+		return this.transactionType;
+	}
+
+	public void setTransactionType(String transactionType) {
+		this.transactionType = transactionType;
+	}
+
+	@Column(name = "update_user", length = 50)
+	public String getUpdateUser() {
+		return this.updateUser;
+	}
+
+	public void setUpdateUser(String updateUser) {
+		this.updateUser = updateUser;
 	}
 
 }

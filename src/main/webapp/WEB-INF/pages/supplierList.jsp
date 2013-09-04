@@ -18,30 +18,42 @@
 	</h2>
 
 	<form method="get" action="${ctx}/supplierList" id="searchForm" class="well form-horizontal">
-		<div class="control-group">
-			<label class="control-label" for="code"><fmt:message key="supplier.code" />:</label>
-			<div class="controls">
-				<input type="text" class="input-medium" name="code" id="code" value="${param.code}" placeholder="" />
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="code"><fmt:message key="supplier.code" />:</label>
+				<div class="controls">
+					<input type="text" class="input-medium" name="code" id="code" value="${param.code}" placeholder="" />
+				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="name"><fmt:message key="supplier.name" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="name" id="name" value="${param.name}" placeholder="" />
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="name"><fmt:message key="supplier.name" />:</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" name="name" id="name" value="${param.name}" placeholder="" />
+				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="name"><fmt:message key="supplier.contactName" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="contactName" id="contactName" value="${param.contactName}" placeholder="" />
+	</div>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="name"><fmt:message key="supplier.contactName" />:</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" name="contactName" id="contactName" value="${param.contactName}" placeholder="" />
+				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="name"><fmt:message key="supplier.contactTel" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="contactTel" id="contactTel" value="${param.contactTel}" placeholder="66xxxxxxxxx" />
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="name"><fmt:message key="supplier.contactTel" />:</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" name="contactTel" id="contactTel" value="${param.contactTel}" placeholder="66xxxxxxxxx" />
+				</div>
 			</div>
 		</div>
+	</div>
 		
 		<div class="control-group">
 			<div class="controls">

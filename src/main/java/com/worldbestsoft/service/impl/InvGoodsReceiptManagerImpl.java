@@ -31,7 +31,6 @@ import com.worldbestsoft.service.InvItemLevelChangedEvent;
 public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager, ApplicationContextAware {
 	private InvGoodsReceiptDao invGoodsReceiptDao;
 	private InvGoodsReceiptItemDao invGoodsReceiptItemDao;
-	private InvItemLevelDao invItemLevelDao;
 	private DocumentNumberGenerator documentNumberGenerator;
 	private ApplicationContext context;
 
@@ -53,15 +52,6 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager, Appli
 	@Autowired
 	public void setInvGoodsReceiptItemDao(InvGoodsReceiptItemDao invGoodsReceiptItemDao) {
 		this.invGoodsReceiptItemDao = invGoodsReceiptItemDao;
-	}
-
-	public InvItemLevelDao getInvItemLevelDao() {
-		return invItemLevelDao;
-	}
-
-	@Autowired
-	public void setInvItemLevelDao(InvItemLevelDao invItemLevelDao) {
-		this.invItemLevelDao = invItemLevelDao;
 	}
 
 	public DocumentNumberGenerator getDocumentNumberGenerator() {
@@ -215,12 +205,12 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager, Appli
 			for (InvGoodsReceiptItem invGoodsReceiptItem : invGoodsReceiptItemList) {
 				InvItemLevel invItemLevel = new InvItemLevel();
 				invItemLevel.setInvItem(invGoodsReceiptItem.getInvItem());
-				invItemLevel.setQtyInStock(invGoodsReceiptItem.getQty());
+				invItemLevel.setQtyAdjust(invGoodsReceiptItem.getQty());
 				invItemLevel.setTransactionDate(new Date());
+				invItemLevel.setUpdateUser(invGoodsReceipt.getUpdateUser());
 				invItemLevel.setRefDocument(invGoodsReceipt.getRunningNo());
 				invItemLevel.setRefType(ConstantModel.RefType.GOOD_RECEIPT.getCode());
-
-				invItemLevelDao.save(invItemLevel);
+				invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
 
 				// design to do one by one itemLevel, if not work will change to
 				// per invGoodReeipt

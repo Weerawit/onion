@@ -158,6 +158,7 @@ CREATE  TABLE IF NOT EXISTS `onion`.`inv_goods_receipt` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ใบรับของสินค้า\n' ,
   `running_no` VARCHAR(20) NULL ,
   `receipt_date` DATETIME NULL DEFAULT NULL ,
+  `receipt_type` VARCHAR(3) NULL COMMENT '- Production\n- Purchase' ,
   `total_cost` DECIMAL(10,2) NULL DEFAULT NULL COMMENT 'ราคารวม ทั้งหมด\n' ,
   `memo` VARCHAR(255) NULL DEFAULT NULL ,
   `supplier_id` BIGINT NOT NULL COMMENT 'ชื่อบ.ที่ขาย สินค้าให้เรา' ,
@@ -210,7 +211,7 @@ CREATE  TABLE IF NOT EXISTS `onion`.`inv_goods_movement` (
   `id` BIGINT NOT NULL AUTO_INCREMENT ,
   `running_no` VARCHAR(20) NULL DEFAULT NULL ,
   `movement_date` DATETIME NULL DEFAULT NULL ,
-  `movement_type` VARCHAR(3) NULL DEFAULT NULL COMMENT '100 เบิกของ' ,
+  `movement_type` VARCHAR(3) NULL DEFAULT NULL COMMENT '100 เบิกของเพื่อผลิต' ,
   `owner` VARCHAR(50) NULL DEFAULT NULL COMMENT 'ผู้เบิก' ,
   `memo` VARCHAR(255) NULL ,
   `create_date` DATETIME NULL DEFAULT NULL ,
@@ -489,8 +490,10 @@ DROP TABLE IF EXISTS `onion`.`inv_stock` ;
 CREATE  TABLE IF NOT EXISTS `onion`.`inv_stock` (
   `id` BIGINT NOT NULL AUTO_INCREMENT ,
   `inv_item_id` BIGINT NOT NULL ,
-  `qty` DECIMAL(10,2) NULL DEFAULT NULL ,
+  `qty` DECIMAL(10,2) NULL DEFAULT NULL COMMENT 'qty ที่มีอยู่จริงใน stock\n' ,
+  `qty_available` DECIMAL(10,2) NULL DEFAULT NULL COMMENT 'qty ที่สามารถนำไปใช้งานได้\nโดยจะมีการหัก qty บางส่วนที่จองไว้แล้ว สำหรับงานขาย' ,
   `update_date` DATETIME NULL ,
+  `update_user` VARCHAR(50) NULL ,
   PRIMARY KEY (`id`) ,
   CONSTRAINT `fk_inv_stock_inv_item1`
     FOREIGN KEY (`inv_item_id` )
@@ -508,10 +511,17 @@ DROP TABLE IF EXISTS `onion`.`inv_item_level` ;
 CREATE  TABLE IF NOT EXISTS `onion`.`inv_item_level` (
   `id` BIGINT NOT NULL AUTO_INCREMENT ,
   `transaction_date` DATETIME NOT NULL ,
-  `qty_in_stock` DECIMAL(10,2) NULL DEFAULT NULL COMMENT 'มากกว่า0 เป็นการนำเข้า, น้อยกว่า 0 เป็นการเอาออก' ,
+  `qty_before` DECIMAL(10,2) NULL ,
+  `qty_adjust` DECIMAL(10,2) NULL DEFAULT NULL COMMENT 'มากกว่า0 เป็นการนำเข้า, น้อยกว่า 0 เป็นการเอาออก' ,
+  `qty_after` DECIMAL(10,2) NULL ,
+  `qty_available_before` DECIMAL(10,2) NULL ,
+  `qty_available_adjust` DECIMAL(10,2) NULL ,
+  `qty_available_after` DECIMAL(10,2) NULL ,
   `ref_document` VARCHAR(50) NULL DEFAULT NULL COMMENT 'key ที่อ้างอิง จาก 2 table\n inv_good_receipt_item, inv_good_movement_item' ,
-  `ref_type` VARCHAR(3) NULL DEFAULT NULL COMMENT '1=goodReceipt(in)\n2=movement (out)' ,
+  `ref_type` VARCHAR(3) NULL DEFAULT NULL COMMENT '1=goodReceipt(in)\n2=movement (out)\n3=Sale\n4=Manual Adjust' ,
+  `transaction_type` VARCHAR(3) NULL COMMENT '- reserved (available ลดลง)\n- commit (qty จริง ลดลง/เพิ่มขึ้น)\n- rollback (ยกเลิก คืนค่าเก่า)\n' ,
   `inv_item_id` BIGINT NOT NULL ,
+  `update_user` VARCHAR(50) NULL ,
   PRIMARY KEY (`id`) ,
   CONSTRAINT `fk_inv_item_level_inv_item1`
     FOREIGN KEY (`inv_item_id` )

@@ -173,5 +173,29 @@ public class ConstantModel {
 			return key;
 		}
 	}
+	
+	public enum ItemSockTransactionType {
+		COMMIT("COM"), RESERVED("REV"), CANCEL("CAN");
+
+		private final String code;
+		private String key;
+		
+		private ItemSockTransactionType(String code) {
+			this.code = code;
+		}
+
+		private ItemSockTransactionType(String code, String key) {
+			this.code = code;
+			this.key = key;
+		}
+
+		public String getCode() {
+			return code;
+		}
+
+		public String getKey() {
+			return key;
+		}
+	}
 
 }

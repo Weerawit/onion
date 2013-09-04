@@ -21,42 +21,51 @@
 	</h2>
 
 	<form method="get" action="${ctx}/invGoodsReceiptList" id="searchForm" class="well form-horizontal">
-		<div class="control-group">
-			<label for="invGoodsReceipt.supplier.code" class="control-label"><fmt:message key="invGoodsReceipt.supplier.code" /></label>
-			<div class="controls">
-				<select id=invGoodsReceipt.supplier.code name="invGoodsReceipt.supplier.code">
-					<option value=""></option>
-					<c:forEach items="${supplierList}" var="supplier">
-						<option value="${supplier.code}" ${(supplier.code == param['invGoodsReceipt.supplier.code']) ? 'selected' : ''}>${supplier.code} : ${supplier.name}</option>
-					</c:forEach>
-				</select>
-			</div>
-		</div>
-		
-		<div class="control-group">
-			<label class="control-label" for="runningNo"><fmt:message key="invGoodsReceipt.runningNo" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="runningNo" id="runningNo" value="${param.runningNo}" placeholder="" />
-			</div>
-		</div>
-		
-		
-		<div class="control-group">
-			<label class="control-label" for="receiptDateFrom"><fmt:message key="invGoodsReceipt.receiptDateFrom" />:</label>
-			<div class="controls">
-				<div class="input-append date" id="receiptDateFromDatepicker">
-					<input type="text" class="input-medium" name="receiptDateFrom" value="<c:out value='${param.receiptDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label for="invGoodsReceipt.supplier.code" class="control-label"><fmt:message key="invGoodsReceipt.supplier.code" /></label>
+				<div class="controls">
+					<select id=invGoodsReceipt.supplier.code name="invGoodsReceipt.supplier.code">
+						<option value=""></option>
+						<c:forEach items="${supplierList}" var="supplier">
+							<option value="${supplier.code}" ${(supplier.code == param['invGoodsReceipt.supplier.code']) ? 'selected' : ''}>${supplier.code} : ${supplier.name}</option>
+						</c:forEach>
+					</select>
 				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="receiptDateTo"><fmt:message key="invGoodsReceipt.receiptDateTo" />:</label>
-			<div class="controls">
-				<div class="input-append date" id="receiptDateToDatepicker">
-					<input type="text" class="input-medium" name="receiptDateTo" value="<c:out value='${param.receiptDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
+		<div class="span6">	
+			<div class="control-group">
+				<label class="control-label" for="runningNo"><fmt:message key="invGoodsReceipt.runningNo" />:</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" name="runningNo" id="runningNo" value="${param.runningNo}" placeholder="" />
 				</div>
 			</div>
 		</div>
+	</div>	
+	<div class="row-fluid">
+		<div class="span6">	
+			<div class="control-group">
+				<label class="control-label" for="receiptDateFrom"><fmt:message key="invGoodsReceipt.receiptDateFrom" />:</label>
+				<div class="controls">
+					<div class="input-append date" id="receiptDateFromDatepicker">
+						<input type="text" class="input-medium" name="receiptDateFrom" value="<c:out value='${param.receiptDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="receiptDateTo"><fmt:message key="invGoodsReceipt.receiptDateTo" />:</label>
+				<div class="controls">
+					<div class="input-append date" id="receiptDateToDatepicker">
+						<input type="text" class="input-medium" name="receiptDateTo" value="<c:out value='${param.receiptDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 		
 		<div class="control-group">
 			<div class="controls">

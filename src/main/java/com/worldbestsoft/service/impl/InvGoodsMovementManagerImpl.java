@@ -32,7 +32,6 @@ public class InvGoodsMovementManagerImpl implements ApplicationContextAware, Inv
 	private InvGoodsMovementDao invGoodsMovementDao;
 	private InvGoodsMovementItemDao invGoodsMovementItemDao;
 	
-	private InvItemLevelDao invItemLevelDao;
 	private DocumentNumberGenerator documentNumberGenerator;
 	private ApplicationContext context;
 
@@ -55,15 +54,6 @@ public class InvGoodsMovementManagerImpl implements ApplicationContextAware, Inv
 	@Autowired
 	public void setInvGoodsMovementItemDao(InvGoodsMovementItemDao invGoodsMovementItemDao) {
 		this.invGoodsMovementItemDao = invGoodsMovementItemDao;
-	}
-
-	public InvItemLevelDao getInvItemLevelDao() {
-		return invItemLevelDao;
-	}
-
-	@Autowired
-	public void setInvItemLevelDao(InvItemLevelDao invItemLevelDao) {
-		this.invItemLevelDao = invItemLevelDao;
 	}
 
 	public DocumentNumberGenerator getDocumentNumberGenerator() {
@@ -159,13 +149,13 @@ public class InvGoodsMovementManagerImpl implements ApplicationContextAware, Inv
 			for (InvGoodsMovementItem invGoodsMovementItem : invGoodsMovementItemList) {
 				InvItemLevel invItemLevel = new InvItemLevel();
 				invItemLevel.setInvItem(invGoodsMovementItem.getInvItem());
-				invItemLevel.setQtyInStock(invGoodsMovementItem.getQty().multiply(BigDecimal.valueOf(-1)));
+				invItemLevel.setQtyAdjust(invGoodsMovementItem.getQty().multiply(BigDecimal.valueOf(-1)));
 				invItemLevel.setTransactionDate(new Date());
+				invItemLevel.setUpdateUser(invGoodsMovement.getUpdateUser());
 				invItemLevel.setRefDocument(invGoodsMovement.getRunningNo());
 				invItemLevel.setRefType(ConstantModel.RefType.GOOD_MOVEMENT.getCode());
-
-				invItemLevelDao.save(invItemLevel);
-
+				invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+				
 				// design to do one by one itemLevel, if not work will change to
 				// per invGoodReeipt
 				// by changing constructor and move out from loop

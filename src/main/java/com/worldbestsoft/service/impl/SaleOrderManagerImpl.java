@@ -39,7 +39,6 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 	private SaleOrderDao saleOrderDao;
 	private SaleOrderItemDao saleOrderItemDao;
 	private JobOrderDao jobOrderDao;
-	private InvItemLevelDao invItemLevelDao;
 	private DocumentNumberGenerator documentNumberGenerator;
 	private ApplicationContext context;
 	private InvStockManager invStockManager;
@@ -105,15 +104,6 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 		this.jobOrderDao = jobOrderDao;
 	}
 	
-	public InvItemLevelDao getInvItemLevelDao() {
-		return invItemLevelDao;
-	}
-
-	@Autowired
-	public void setInvItemLevelDao(InvItemLevelDao invItemLevelDao) {
-		this.invItemLevelDao = invItemLevelDao;
-	}
-
 	/* (non-Javadoc)
 	 * @see com.worldbestsoft.service.impl.SaleOrderManager#query(com.worldbestsoft.model.SaleOrderCriteria, int, int, java.lang.String, java.lang.String)
 	 */
@@ -231,12 +221,11 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 						//remove from stock all current qty
 						InvItemLevel invItemLevel = new InvItemLevel();
 						invItemLevel.setInvItem(saleOrderItem.getCatalog().getInvItem());
-						invItemLevel.setQtyInStock(currentQtyInStock.multiply(BigDecimal.valueOf(-1)));
+						invItemLevel.setQtyAvailableAdjust(currentQtyInStock.multiply(BigDecimal.valueOf(-1)));
 						invItemLevel.setTransactionDate(new Date());
 						invItemLevel.setRefDocument(saleOrderSave.getSaleOrderNo());
 						invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
 
-						invItemLevelDao.save(invItemLevel);
 
 						InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
 						context.publishEvent(invItemLevelChangedEvent);
@@ -245,12 +234,10 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 						//remove from stock all current qty
 						InvItemLevel invItemLevel = new InvItemLevel();
 						invItemLevel.setInvItem(saleOrderItem.getCatalog().getInvItem());
-						invItemLevel.setQtyInStock(saleOrderItem.getQty().multiply(BigDecimal.valueOf(-1)));
+						invItemLevel.setQtyAvailableAdjust(saleOrderItem.getQty().multiply(BigDecimal.valueOf(-1)));
 						invItemLevel.setTransactionDate(new Date());
 						invItemLevel.setRefDocument(saleOrderSave.getSaleOrderNo());
 						invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
-
-						invItemLevelDao.save(invItemLevel);
 
 						InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
 						context.publishEvent(invItemLevelChangedEvent);
