@@ -11,11 +11,11 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.SaleReceiptDao;
+import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.SaleReceipt;
 import com.worldbestsoft.model.criteria.SaleReceiptCriteria;
 import com.worldbestsoft.service.DocumentNumberGenerator;
 import com.worldbestsoft.service.DocumentNumberGeneratorException;
-import com.worldbestsoft.service.InvItemLevelChangedEvent;
 import com.worldbestsoft.service.SaleReceiptChangedEvent;
 import com.worldbestsoft.service.SaleReceiptManager;
 
@@ -115,7 +115,7 @@ public class SaleReceiptManagerImpl implements SaleReceiptManager, ApplicationCo
 		SaleReceipt saleReceipt = saleReceiptDao.get(id);
 		saleReceipt.setUpdateDate(new Date());
 		saleReceipt.setUpdateUser(user);
-		saleReceipt.setStatus("X"); //cancel
+		saleReceipt.setStatus(ConstantModel.SaleReceiptStatus.CANCEL.getCode()); //cancel
 		saleReceipt.setCancelReason(cancelReason);
 		saleReceipt = saleReceiptDao.save(saleReceipt);
 		SaleReceiptChangedEvent event = new SaleReceiptChangedEvent(saleReceipt);

@@ -2,7 +2,7 @@
 <form id="saleOrderItemForm" name="saleOrderItemForm">
 <c:choose>
 	<c:when test="${saleOrder.saleOrderNo == null }">
-		<display:table name="saleOrderItemList" cellspacing="0" cellpadding="0" requestURI="" id="saleOrderItem" class="table table-condensed table-striped table-hover table-bordered" export="false" pagesize="10" partialList="false">
+		<display:table name="saleOrderItemList" cellspacing="0" cellpadding="0" excludedParams="*" requestURI="" id="saleOrderItem" class="table table-condensed table-striped table-hover table-bordered" export="false" pagesize="10" partialList="false">
 			<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" headerClass="span1" class="span1">
 				<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleOrderItem_rowNum - 1}'/>" />
 			</display:column>
@@ -34,7 +34,7 @@
 		</display:table>
 	</c:when>
 	<c:otherwise>
-		<display:table name="saleOrderItemList" cellspacing="0" cellpadding="0" requestURI="" id="saleOrderItem" class="table table-condensed table-striped table-hover table-bordered" export="false" pagesize="10" partialList="false">
+		<display:table name="saleOrderItemList" cellspacing="0" cellpadding="0" excludedParams="*" requestURI="" id="saleOrderItem" class="table table-condensed table-striped table-hover table-bordered" export="false" pagesize="10" partialList="false">
 			<display:column titleKey="saleOrderItem.catalog.code" sortable="true" sortProperty="catalog.code" class="span5">
 				<div class="media">
 					<img id="image<c:out value='${saleOrderItem_rowNum - 1}'/>" src="<c:url value='/img/thumbnail/catalog/${saleOrderItem.catalog.id}?t=100'/>"  class="img-polaroid pull-left"/>

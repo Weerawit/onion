@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.worldbestsoft.model.Catalog;
-import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.Customer;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleOrderItem;
@@ -134,7 +133,6 @@ public class SaleOrderFormController extends BaseFormController {
 				model.put("saleOrder", saleOrderForm);
 				model.put("paymentTypeList", lookupManager.getAllPaymentType(request.getLocale()));
 				model.put("saleOrderItemList", saleOrderSession.getSaleOrderItems());
-				model.put("deliveryStatusList", lookupManager.getAllSaleOrderDeliveryStatusList(request.getLocale()));
 				return new ModelAndView("saleOrder", model);
 			}
 		}
@@ -145,9 +143,8 @@ public class SaleOrderFormController extends BaseFormController {
 		if (StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) {
 			// since code input is readonly, no value pass to form then we need
 			// to query from db.
-			SaleOrder saleOrder = getSaleOrderManager().get(saleOrderForm.getId());
-			getSaleOrderManager().remove(saleOrderForm.getId());
-			saveMessage(request, getText("saleOrder.deleted", saleOrder.getSaleOrderNo(), locale));
+			getSaleOrderManager().remove(saleOrderForm.getId(), request.getRemoteUser(), saleOrderForm.getCancelReason());
+			saveMessage(request, getText("saleOrder.deleted", saleOrderForm.getSaleOrderNo(), locale));
 			return new ModelAndView("redirect:/saleOrderList");
 		} else {
 
@@ -169,7 +166,6 @@ public class SaleOrderFormController extends BaseFormController {
 
 				SaleOrder saleOrder = getSaleOrderManager().get(saleOrderForm.getId());
 				saleOrder.setDeliveryDate(saleOrderForm.getDeliveryDate());
-				saleOrder.setDeliveryStatus(saleOrderForm.getDeliveryStatus());
 				saleOrder.setPaymentType(saleOrderForm.getPaymentType());
 				//saleOrder.setTotalPrice(saleOrderForm.getTotalPrice());
 				//saleOrder.setCustomer(saleOrderForm.getCustomer());
@@ -195,7 +191,6 @@ public class SaleOrderFormController extends BaseFormController {
 		SaleOrder saleOrder = (SaleOrder) session.getAttribute("saleOrder");
 		if (null == saleOrder || StringUtils.equalsIgnoreCase(method, "add")) {
 			saleOrder = new SaleOrder();
-			saleOrder.setDeliveryStatus(ConstantModel.SaleOrderDeliveryStatus.NEW.getCode());
 			SaleOrderItem item = new SaleOrderItem();
 			Catalog catalog = new Catalog();
 			catalog.setId(Long.valueOf(0));
@@ -225,7 +220,6 @@ public class SaleOrderFormController extends BaseFormController {
 		model.put("saleOrder", saleOrder);
 		model.put("paymentTypeList", lookupManager.getAllPaymentType(request.getLocale()));
 		model.put("saleOrderItemList", saleOrder.getSaleOrderItems());
-		model.put("deliveryStatusList", lookupManager.getAllSaleOrderDeliveryStatusList(request.getLocale()));
 		return new ModelAndView("saleOrder", model);
 	}
 
@@ -284,7 +278,7 @@ public class SaleOrderFormController extends BaseFormController {
 				saleOrderItemList.remove(Integer.parseInt(checkbox[i]));
 			}
 		}
-		saleOrder.setSaleOrderItems(new HashSet<SaleOrderItem>(saleOrderItemList));
+		saleOrder.setSaleOrderItems(new LinkedHashSet<SaleOrderItem>(saleOrderItemList));
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("saleOrderItemList", saleOrder.getSaleOrderItems());
 		model.put("saleOrder", saleOrder);
@@ -315,11 +309,19 @@ public class SaleOrderFormController extends BaseFormController {
 				BigDecimal qty = null;
 				BigDecimal pricePerUnit = null;
 				if (StringUtils.isNotBlank(qtysString)) {
-					qty = NumberUtils.createBigDecimal(qtysString);
+					try {
+						qty = NumberUtils.createBigDecimal(qtysString);
+					} catch (NumberFormatException e) {
+						qty = BigDecimal.ZERO;
+					}
 					foundSaleOrderItem.setQty(qty);
 				} 
 				if (StringUtils.isNotBlank(pricePerUnitsString)) {
-					pricePerUnit = NumberUtils.createBigDecimal(pricePerUnitsString);
+					try {
+						pricePerUnit = NumberUtils.createBigDecimal(pricePerUnitsString);
+					} catch (NumberFormatException e) {
+						pricePerUnit = BigDecimal.ZERO;
+					}
 					foundSaleOrderItem.setPricePerUnit(pricePerUnit);
 				}
 				if (null != qty && null != pricePerUnit) {
@@ -346,11 +348,25 @@ public class SaleOrderFormController extends BaseFormController {
 						foundSaleOrderItem.setCatalog(catalog);
 						saleOrderItemList.add(foundSaleOrderItem);
 					} 
-					BigDecimal qty = NumberUtils.createBigDecimal(qtys[i]);
-					BigDecimal pricePerUnit = NumberUtils.createBigDecimal(pricePerUnits[i]);
-					foundSaleOrderItem.setQty(qty);
-					foundSaleOrderItem.setPricePerUnit(pricePerUnit);
-					
+					BigDecimal qty = null;
+					BigDecimal pricePerUnit = null;
+					if (StringUtils.isNotBlank(qtys[i])) {
+						try {
+							qty = NumberUtils.createBigDecimal(qtys[i]);
+						} catch (NumberFormatException e) {
+							qty = BigDecimal.ZERO;
+						}
+						foundSaleOrderItem.setQty(qty);
+					} 
+					if (StringUtils.isNotBlank(pricePerUnits[i])) {
+						try {
+							pricePerUnit = NumberUtils.createBigDecimal(pricePerUnits[i]);
+						} catch (NumberFormatException e) {
+							pricePerUnit = BigDecimal.ZERO;
+						}
+						foundSaleOrderItem.setPricePerUnit(pricePerUnit);
+					}
+				
 					if (null != qty && null != pricePerUnit) {
 						foundSaleOrderItem.setPrice(qty.multiply(pricePerUnit));
 					}
@@ -358,7 +374,7 @@ public class SaleOrderFormController extends BaseFormController {
 			}
 		}
 		
-		saleOrder.setSaleOrderItems(new HashSet<SaleOrderItem>(saleOrderItemList));
+		saleOrder.setSaleOrderItems(new LinkedHashSet<SaleOrderItem>(saleOrderItemList));
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("saleOrderItemList", saleOrder.getSaleOrderItems());
 		model.put("saleOrder", saleOrder);

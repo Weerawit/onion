@@ -21,7 +21,7 @@
 		<div class="control-group">
 			<label for="catalog.catalogType.code" class="control-label"><fmt:message key="catalog.catalogType.code" /></label>
 			<div class="controls">
-				<select id=catalogType.code name="catalogType.code">
+				<select id="catalogType.code" name="catalogType.code">
 					<option value=""></option>
 					<c:forEach items="${catalogTypeList}" var="catalogType">
 						<option value="${catalogType.code}" ${(catalogType.code == param['catalogType.code']) ? 'selected' : ''}>${catalogType.name}</option>

@@ -22,30 +22,39 @@
 	</h2>
 
 	<form method="get" action="${ctx}/popup/catalog" id="searchForm" class="well form-horizontal">
-		<div class="control-group">
-			<label for="catalog.catalogType.code" class="control-label"><fmt:message key="catalog.catalogType.code" /></label>
-			<div class="controls">
-				<select id=catalogType.code name="catalogType.code">
-					<option value=""></option>
-					<c:forEach items="${catalogTypeList}" var="catalogType">
-						<option value="${catalogType.code}" ${(catalogType.code == param['catalogType.code']) ? 'selected' : ''}>${catalogType.name}</option>
-					</c:forEach>
-				</select>
+	<div class="row-fluid">
+		<div class="span5">
+			<div class="control-group">
+				<label for="catalog.catalogType.code" class="control-label"><fmt:message key="catalog.catalogType.code" /></label>
+				<div class="controls">
+					<select id="catalogType.code" name="catalogType.code">
+						<option value=""></option>
+						<c:forEach items="${catalogTypeList}" var="catalogType">
+							<option value="${catalogType.code}" ${(catalogType.code == param['catalogType.code']) ? 'selected' : ''}>${catalogType.name}</option>
+						</c:forEach>
+					</select>
+				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="code"><fmt:message key="catalog.code" />:</label>
-			<div class="controls">
-				<input type="text" class="input-medium" name="code" id="code" value="${param.code}" placeholder="" />
+	</div>
+	<div class="row-fluid">
+		<div class="span5">
+			<div class="control-group">
+				<label class="control-label" for="code"><fmt:message key="catalog.code" />:</label>
+				<div class="controls">
+					<input type="text" class="input-medium" name="code" id="code" value="${param.code}" placeholder="" />
+				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="name"><fmt:message key="catalog.name" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="name" id="name" value="${param.name}" placeholder="" />
+		<div class="span5">
+			<div class="control-group">
+				<label class="control-label" for="name"><fmt:message key="catalog.name" />:</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" name="name" id="name" value="${param.name}" placeholder="" />
+				</div>
 			</div>
 		</div>
-		
+	</div>
 		<div class="control-group">
 			<div class="controls">
 
@@ -90,6 +99,7 @@
 		<display:column property="code" escapeXml="true" sortable="true" titleKey="catalog.code" sortName="code" />
 		<display:column property="name" escapeXml="true" sortable="true" titleKey="catalog.name" sortName="name" />
 		<display:column property="finalPrice"  sortable="true" titleKey="catalog.finalPrice" sortName="finalPrice" format="{0,number,#,###.00}" />
+		<display:column property="invItem.invStock.qtyAvailable" escapeXml="false" sortable="true" titleKey="invItem.invStock.qtyAvailable" sortName="invItem.invStock.qtyAvailable" format="{0,number, #,##0.##}"/>
 	</display:table>
 </div>
 

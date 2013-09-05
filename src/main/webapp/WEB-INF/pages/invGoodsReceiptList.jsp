@@ -26,7 +26,7 @@
 			<div class="control-group">
 				<label for="invGoodsReceipt.receiptType" class="control-label"><fmt:message key="invGoodsReceipt.receiptType" /></label>
 				<div class="controls">
-					<select id=receiptType name="receiptType">
+					<select id="receiptType" name="receiptType">
 						<option value=""></option>
 						<c:forEach items="${goodsReceiptTypeList}" var="goodsReceiptType">
 							<option value="${goodsReceiptType.value}" ${(goodsReceiptType.value == param['receiptType']) ? 'selected' : ''}>${goodsReceiptType.label}</option>

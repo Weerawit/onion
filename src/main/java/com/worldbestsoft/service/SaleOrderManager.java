@@ -19,10 +19,10 @@ public interface SaleOrderManager {
 
 	public abstract SaleOrder save(SaleOrder saleOrder, Collection<SaleOrderItem> newSaleOrderItemList);
 
-	public abstract void remove(Long id);
-
 	public abstract SaleOrder get(Long id);
 
 	public abstract void updateSaleOrderPayment(SaleOrder saleOrder);
+
+	public abstract void remove(Long id, String user, String cancelReason);
 
 }

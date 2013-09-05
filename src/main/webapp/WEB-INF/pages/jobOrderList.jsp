@@ -90,7 +90,7 @@
 			<div class="control-group">
 				<label for="status" class="control-label"><fmt:message key="jobOrder.status" /></label>
 				<div class="controls">
-					<select id=status name="status">
+					<select id="status" name="status">
 						<option value=""></option>
 						<c:forEach items="${jobOrderStatusList}" var="jobOrderStatus">
 							<option value="${jobOrderStatus.value}" ${(jobOrderStatus.value == param['status']) ? 'selected' : ''}>${jobOrderStatus.label}</option>

@@ -21,6 +21,7 @@ import com.worldbestsoft.model.Customer;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleReceipt;
 import com.worldbestsoft.model.criteria.SaleReceiptCriteria;
+import com.worldbestsoft.service.LookupManager;
 import com.worldbestsoft.service.SaleReceiptManager;
 
 @Controller
@@ -30,6 +31,7 @@ public class SaleReceiptListController extends BaseFormController {
 	private static final String[] DATE_PATTERN = new String[] {"dd/MM/yyyy HH:mm:ss", "dd/MM/yyyy"};
 
 	private SaleReceiptManager saleReceiptManager;
+	private LookupManager lookupManager;
 	
 	public SaleReceiptManager getSaleReceiptManager() {
 		return saleReceiptManager;
@@ -40,11 +42,20 @@ public class SaleReceiptListController extends BaseFormController {
 		this.saleReceiptManager = saleReceiptManager;
 	}
 
+	public LookupManager getLookupManager() {
+		return lookupManager;
+	}
+
+	@Autowired
+	public void setLookupManager(LookupManager lookupManager) {
+		this.lookupManager = lookupManager;
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Model model = new ExtendedModelMap();
-
+		model.addAttribute("saleReceiptStatusList", lookupManager.getAllSaleReceiptStatusList(request.getLocale()));
+		
 		SaleReceiptCriteria criteria = new SaleReceiptCriteria();
 		SaleOrder saleOrder = new SaleOrder();
 		saleOrder.setSaleOrderNo(request.getParameter("saleOrder.saleOrderNo"));
@@ -53,6 +64,8 @@ public class SaleReceiptListController extends BaseFormController {
 		customer.setName(request.getParameter("saleOrder.customer.name"));
 		saleOrder.setCustomer(customer);
 		criteria.setSaleOrder(saleOrder);
+		
+		criteria.setStatus(request.getParameter("status"));
 		
 		String startTime = request.getParameter("receiptDateFrom");
 		String endTime = request.getParameter("receiptDateTo");
@@ -74,6 +87,7 @@ public class SaleReceiptListController extends BaseFormController {
 			saveError(request, getText("errors.date", new Object[] { endTime }, request.getLocale()));
 			return new ModelAndView("saleReceiptList", model.asMap());
 		}
+		
 
 		
 		int page = getPage(request);

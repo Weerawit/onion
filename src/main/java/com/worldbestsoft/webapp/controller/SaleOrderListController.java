@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.worldbestsoft.model.Customer;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.criteria.SaleOrderCriteria;
+import com.worldbestsoft.service.LookupManager;
 import com.worldbestsoft.service.SaleOrderManager;
 
 @Controller
@@ -30,6 +31,8 @@ public class SaleOrderListController extends BaseFormController {
 
 	private SaleOrderManager saleOrderManager;
 	
+	private LookupManager lookupManager;
+	
 	public SaleOrderManager getSaleOrderManager() {
 		return saleOrderManager;
 	}
@@ -38,11 +41,24 @@ public class SaleOrderListController extends BaseFormController {
 	public void setSaleOrderManager(SaleOrderManager saleOrderManager) {
 		this.saleOrderManager = saleOrderManager;
 	}
+	
+	public LookupManager getLookupManager() {
+		return lookupManager;
+	}
+
+	@Autowired
+	public void setLookupManager(LookupManager lookupManager) {
+		this.lookupManager = lookupManager;
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Model model = new ExtendedModelMap();
+		model.addAttribute("saleOrderStatusList", lookupManager.getAllSaleOrderStatusList(request.getLocale()));
 		SaleOrderCriteria criteria = new SaleOrderCriteria();
 		criteria.setSaleOrderNo(request.getParameter("saleOrderNo"));
+		
+		criteria.setStatus(request.getParameter("status"));
 		
 		String startTime = request.getParameter("deliveryDateFrom");
 		String endTime = request.getParameter("deliveryDateTo");
@@ -53,7 +69,7 @@ public class SaleOrderListController extends BaseFormController {
 			}
 		} catch (ParseException e) {
 			saveError(request, getText("errors.date", new Object[] { startTime }, request.getLocale()));
-			return new ModelAndView("saleOrderList");
+			return new ModelAndView("saleOrderList", model.asMap());
 		}
 		try {
 			if (StringUtils.isNotBlank(endTime)) {
@@ -62,7 +78,7 @@ public class SaleOrderListController extends BaseFormController {
 			}
 		} catch (ParseException e) {
 			saveError(request, getText("errors.date", new Object[] { endTime }, request.getLocale()));
-			return new ModelAndView("saleOrderList");
+			return new ModelAndView("saleOrderList", model.asMap());
 		}
 		
 		Customer customer = new Customer();
@@ -75,7 +91,7 @@ public class SaleOrderListController extends BaseFormController {
 
 		log.info(request.getRemoteUser() + " is quering SaleOrder criteria := " + criteria);
 
-		Model model = new ExtendedModelMap();
+		
 		model.addAttribute("resultSize", saleOrderManager.querySize(criteria));
 		model.addAttribute("saleOrderList", saleOrderManager.query(criteria, page, size, sortColumn, order));
 		return new ModelAndView("saleOrderList", model.asMap());
@@ -85,10 +101,12 @@ public class SaleOrderListController extends BaseFormController {
 	public ModelAndView delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Locale locale = request.getLocale();
 		String[] checkbox = request.getParameterValues("checkbox");
+		String user = request.getRemoteUser();
+		String cancelReason = request.getParameter("cancelReason");
 		if (null != checkbox && checkbox.length > 0) {
 			for (int i = 0; i < checkbox.length; i++) {
 				SaleOrder catalog = saleOrderManager.get(Long.valueOf(checkbox[i]));
-				saleOrderManager.remove(Long.valueOf(checkbox[i]));
+				saleOrderManager.remove(Long.valueOf(checkbox[i]), user, cancelReason);
 				saveMessage(request, getText("catalog.deleted", catalog.getSaleOrderNo(), locale));
 			}
 		} else {

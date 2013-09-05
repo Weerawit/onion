@@ -153,22 +153,6 @@
 					</spring:bind>
 				</span>
 			</div>
-			<div class="row-fluid">
-				<span class="span6">
-					<spring:bind path="saleOrder.deliveryStatus">
-						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="saleOrder.deliveryStatus" />
-							<div class="controls">
-								<form:select path="deliveryStatus">
-									<form:option value=""></form:option>
-									<form:options items="${deliveryStatusList}" itemLabel="label" itemValue="value" />
-								</form:select>
-								<form:errors path="deliveryStatus" cssClass="help-inline" />
-							</div>
-						</div>
-					</spring:bind>
-				</span>
-			</div>
 		</div>
 
 		<fieldset class="form-actions text-center">
@@ -282,7 +266,10 @@
 								//index of whole list
 								var index = $('input[name="checkbox"]:eq(' + i + ')').val();
 								var url = '${ctx}/saleOrder/updateRow' + $(self).data('link');
-								$('#tableDiv').load(url, {'index' : index, 'qty' : 1, 'pricePerUnit' : json.finalPrice, 'catalog.code' : json.code}, fnLoad);
+								$.post(url, {'index' : index, 'qty' : 1, 'pricePerUnit' : json.finalPrice, 'catalog.code' : json.code}, function(data) {
+									$('#tableDiv').html(data);
+									fnLoad();
+								});
 							} else {
 								$('#image' + i).prop('src', "<c:url value='/img/thumbnail/catalog/'/>" + 0 + "?t=100");
 								$('input[name="pricePerUnit"]:eq(' + i + ')').val('');
@@ -290,7 +277,10 @@
 								//index of whole list
 								var index = $('input[name="checkbox"]:eq(' + i + ')').val();
 								var url = '${ctx}/saleOrder/updateRow' + $(self).data('link');
-								$('#tableDiv').load(url, {'index' : index, 'qty' : 1, 'pricePerUnit' : '', 'catalog.code' : ''}, fnLoad);
+								$.post(url, {'index' : index, 'qty' : 1, 'pricePerUnit' : '', 'catalog.code' : ''}, function(data) {
+									$('#tableDiv').html(data);
+									fnLoad();
+								});
 							}
 						}
 					});
@@ -303,7 +293,10 @@
 				//register button add & delete
 				$('#addDetailBtn').off();
 				$('#addDetailBtn').on('click', function () {
-					$('#tableDiv').load('${ctx}/saleOrder/addRow?ajax=true', $.extend({}, $(self).data('link')), fnLoad);
+					$.post('${ctx}/saleOrder/addRow?ajax=true', $.extend({}, $(self).data('link')), function(data) {
+						$('#tableDiv').html(data);
+						fnLoad();
+					});
 				});
 				$('#deleteDetailBtn').off();
 				$('#deleteDetailBtn').on('click', function () {
@@ -315,7 +308,10 @@
 					confirmMessage('<fmt:message key="global.confirm.delete"/>', function(result) {
 						if (result) {
 							var url = '${ctx}/saleOrder/deleteRow' + $(self).data('link');
-							$('#tableDiv').load(url, $('#saleOrderItemForm').serialize(), fnLoad);			
+							$.post(url, $('#saleOrderItemForm').serialize(), function(data) {
+								$('#tableDiv').html(data);
+								fnLoad();
+							});			
 						}
 					});
 				});
@@ -324,7 +320,10 @@
 				$('#saleOrderItemForm input[name="qty"], #saleOrderItemForm input[name="pricePerUnit"]').each(function(i) {
 					$(this).on('focusout', function() {
 						var url = '${ctx}/saleOrder/updateRow' + $(self).data('link');
-						$('#tableDiv').load(url, $('#saleOrderItemForm').serialize(), fnLoad);
+						$.post(url, $('#saleOrderItemForm').serialize(), function(data) {
+							$('#tableDiv').html(data);
+							fnLoad();
+						});
 					});
 				});
 				

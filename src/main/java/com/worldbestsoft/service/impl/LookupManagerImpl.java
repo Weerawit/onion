@@ -70,13 +70,23 @@ public class LookupManagerImpl implements LookupManager {
 	}
 	
     @Override
-    public List<LabelValue> getAllSaleOrderDeliveryStatusList(Locale locale) {
+    public List<LabelValue> getAllSaleOrderStatusList(Locale locale) {
 		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
 		List<LabelValue> list = new ArrayList<LabelValue>();
-		list.add(new LabelValue(resourceBundle.getString(ConstantModel.SaleOrderDeliveryStatus.NEW.getKey()), ConstantModel.SaleOrderDeliveryStatus.NEW.getCode()));
-		list.add(new LabelValue(resourceBundle.getString(ConstantModel.SaleOrderDeliveryStatus.FINISH.getKey()), ConstantModel.SaleOrderDeliveryStatus.FINISH.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.SaleOrderStatus.ACTIVE.getKey()), ConstantModel.SaleOrderStatus.ACTIVE.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.SaleOrderStatus.CANCEL.getKey()), ConstantModel.SaleOrderStatus.CANCEL.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.SaleOrderStatus.DELIVERY.getKey()), ConstantModel.SaleOrderStatus.DELIVERY.getCode()));
 		return list;
 	}
+    
+    @Override
+    public List<LabelValue> getAllSaleReceiptStatusList(Locale locale) {
+ 		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
+ 		List<LabelValue> list = new ArrayList<LabelValue>();
+ 		list.add(new LabelValue(resourceBundle.getString(ConstantModel.SaleReceiptStatus.ACTIVE.getKey()), ConstantModel.SaleReceiptStatus.ACTIVE.getCode()));
+ 		list.add(new LabelValue(resourceBundle.getString(ConstantModel.SaleReceiptStatus.CANCEL.getKey()), ConstantModel.SaleReceiptStatus.CANCEL.getCode()));
+ 		return list;
+ 	}
     
 
     @Override

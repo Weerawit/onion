@@ -49,7 +49,7 @@ public class InvItemListController extends BaseFormController {
 		criteria.setCode(request.getParameter("code"));
 		criteria.setName(request.getParameter("name"));
 		InvItemGroup invItemGroup = new InvItemGroup();
-		invItemGroup.setCode(request.getParameter("invItem.invItemGroup.code"));
+		invItemGroup.setCode(request.getParameter("invItemGroup.code"));
 		criteria.setInvItemGroup(invItemGroup);
 		int page = getPage(request);
 		String sortColumn = getSortColumn(request);

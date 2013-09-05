@@ -15,7 +15,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
-import com.worldbestsoft.dao.InvItemLevelDao;
 import com.worldbestsoft.dao.SaleOrderDao;
 import com.worldbestsoft.dao.SaleOrderItemDao;
 import com.worldbestsoft.dao.hibernate.JobOrderDao;
@@ -253,18 +252,28 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 	    return saleOrder;
     }
 
-    /* (non-Javadoc)
-	 * @see com.worldbestsoft.service.impl.SaleOrderManager#remove(java.lang.Long)
-	 */
+//    /* (non-Javadoc)
+//	 * @see com.worldbestsoft.service.impl.SaleOrderManager#remove(java.lang.Long)
+//	 */
+//    @Override
+//    public void remove(Long id) {
+//		SaleOrder saleOrder = saleOrderDao.get(id);
+//		if (null != saleOrder.getSaleOrderItems()) {
+//			for (SaleOrderItem saleOrderItem : saleOrder.getSaleOrderItems()) {
+//				saleOrderItemDao.remove(saleOrderItem.getId());
+//			}
+//		}
+//	    saleOrderDao.remove(id);
+//    }
+    
     @Override
-    public void remove(Long id) {
-		SaleOrder saleOrder = saleOrderDao.get(id);
-		if (null != saleOrder.getSaleOrderItems()) {
-			for (SaleOrderItem saleOrderItem : saleOrder.getSaleOrderItems()) {
-				saleOrderItemDao.remove(saleOrderItem.getId());
-			}
-		}
-	    saleOrderDao.remove(id);
+    public void remove(Long id, String user, String cancelReason) {
+    		SaleOrder saleOrder = saleOrderDao.get(id);
+		saleOrder.setUpdateDate(new Date());
+		saleOrder.setUpdateUser(user);
+		saleOrder.setStatus(ConstantModel.SaleOrderStatus.CANCEL.getCode()); //cancel
+		saleOrder.setCancelReason(cancelReason);
+		saleOrder = saleOrderDao.save(saleOrder);
     }
 
 	@Override

@@ -27,10 +27,10 @@
 			<div class="control-group">
 				<label for="invItem.invItemGroup.code" class="control-label"><fmt:message key="invItem.invItemGroup.code" /></label>
 				<div class="controls">
-					<select id=invItem.invItemGroup.code name="invItem.invItemGroup.code">
+					<select id="invItemGroup.code" name="invItemGroup.code">
 						<option value=""></option>
 						<c:forEach items="${invItemGroupList}" var="invItemGroup">
-							<option value="${invItemGroup.code}" ${(invItemGroup.code == param['invItem.invItemGroup.code']) ? 'selected' : ''}>${invItemGroup.code} : ${invItemGroup.name}</option>
+							<option value="${invItemGroup.code}" ${(invItemGroup.code == param['invItemGroup.code']) ? 'selected' : ''}>${invItemGroup.code} : ${invItemGroup.name}</option>
 						</c:forEach>
 					</select>
 				</div>

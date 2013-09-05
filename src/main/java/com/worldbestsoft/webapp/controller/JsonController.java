@@ -185,7 +185,8 @@ public class JsonController {
 			model.put("saleOrderNo", saleOrder.getSaleOrderNo());
 			model.put("totalPrice", saleOrder.getTotalPrice());
 			model.put("paymentPaid", saleOrder.getPaymentPaid());
-			model.put("deliveryStatus", saleOrder.getDeliveryStatus());
+			model.put("status", saleOrder.getStatus());
+			model.put("cancelReason", saleOrder.getCancelReason());
 			model.put("paymentStatus", saleOrder.getPaymentStatus());
 			model.put("deliveryDate", saleOrder.getDeliveryDate());
 			

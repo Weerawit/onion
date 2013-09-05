@@ -26,35 +26,62 @@
 	</h2>
 
 	<form method="get" action="${ctx}/popup/saleOrder" id="searchForm" class="well form-horizontal">
-		<div class="control-group">
-			<label class="control-label" for="saleOrderNo"><fmt:message key="saleOrder.saleOrderNo" />:</label>
-			<div class="controls">
-				<input type="text" class="input-medium" name="saleOrderNo" id="saleOrderNo" value="${param.saleOrderNo}" placeholder="" />
+		<div class="row-fluid">
+			<div class="span5">
+				<div class="control-group">
+					<label class="control-label" for="saleOrderNo"><fmt:message key="saleOrder.saleOrderNo" />:</label>
+					<div class="controls">
+						<input type="text" class="input-medium" name="saleOrderNo" id="saleOrderNo" value="${param.saleOrderNo}" placeholder="" />
+					</div>
+				</div>
+			</div>
+			<div class="span5">
+				<div class="control-group">
+					<label class="control-label" for="customer.name"><fmt:message key="saleOrder.customer.name" />:</label>
+					<div class="controls">
+						<input type="text" class="input-xlarge" name="customer.name" id="customer.name" value="${param['customer.name']}" placeholder="" />
+					</div>
+				</div>
+			</div>
+		</div>	
+		<div class="row-fluid">
+			<div class="span5">
+				<div class="control-group">
+					<label class="control-label" for="deliveryDateFrom"><fmt:message key="saleOrder.deliveryDateFrom" />:</label>
+					<div class="controls">
+						<div class="input-append date" id="deliveryDateFromDatepicker">
+							<input type="text" class="input-medium" name="deliveryDateFrom" value="<c:out value='${param.deliveryDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="span5">
+				<div class="control-group">
+					<label class="control-label" for="deliveryDateTo"><fmt:message key="saleOrder.deliveryDateTo" />:</label>
+					<div class="controls">
+						<div class="input-append date" id="deliveryDateToDatepicker">
+							<input type="text" class="input-medium" name="deliveryDateTo" value="<c:out value='${param.deliveryDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="customer.name"><fmt:message key="saleOrder.customer.name" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="customer.name" id="customer.name" value="${param['customer.name']}" placeholder="" />
+		<div class="row-fluid">
+			<div class="span5">
+				<div class="control-group">
+						<label for="saleOrder.status" class="control-label"><fmt:message key="saleOrder.status" /></label>
+						<div class="controls">
+							<select id=status name="status">
+								<option value=""></option>
+								<c:forEach items="${saleOrderStatusList}" var="saleOrderStatus">
+									<option value="${saleOrderStatus.value}" ${(saleOrderStatus.value == param['status']) ? 'selected' : ''}>${saleOrderStatus.label}</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
 			</div>
 		</div>
 		
-		<div class="control-group">
-			<label class="control-label" for="deliveryDateFrom"><fmt:message key="saleOrder.deliveryDateFrom" />:</label>
-			<div class="controls">
-				<div class="input-append date" id="deliveryDateFromDatepicker">
-					<input type="text" class="input-medium" name="deliveryDateFrom" value="<c:out value='${param.deliveryDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
-				</div>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="deliveryDateTo"><fmt:message key="saleOrder.deliveryDateTo" />:</label>
-			<div class="controls">
-				<div class="input-append date" id="deliveryDateToDatepicker">
-					<input type="text" class="input-medium" name="deliveryDateTo" value="<c:out value='${param.deliveryDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
-				</div>
-			</div>
-		</div>
 		
 		<div class="control-group">
 			<div class="controls">
@@ -88,7 +115,8 @@
 				jsonObject.addProperty("saleOrderNo", saleOrderObj.getSaleOrderNo());
 				jsonObject.addProperty("totalPrice", saleOrderObj.getTotalPrice().toString());
 				jsonObject.addProperty("paymentPaid", saleOrderObj.getPaymentPaid().toString());
-				jsonObject.addProperty("deliveryStatus", saleOrderObj.getDeliveryStatus());
+				jsonObject.addProperty("status", saleOrderObj.getStatus());
+				jsonObject.addProperty("cancelReason", saleOrderObj.getCancelReason());
 				jsonObject.addProperty("paymentStatus", saleOrderObj.getPaymentStatus());
 				jsonObject.addProperty("deliveryDate", saleOrderObj.getDeliveryDate().toString());
 				

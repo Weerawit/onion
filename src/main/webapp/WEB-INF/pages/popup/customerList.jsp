@@ -27,7 +27,7 @@
 				<div class="control-group">
 					<label for="customerType" class="control-label"><fmt:message key="customer.customerType" /></label>
 					<div class="controls">
-						<select id=customerType name="customerType">
+						<select id="customerType" name="customerType">
 							<option value=""></option>
 							<c:forEach items="${customerTypeList}" var="customerType">
 								<option value="${customerType.value}" ${(customerType.value == param['customerType']) ? 'selected' : ''}>${customerType.label}</option>

@@ -61,6 +61,21 @@
 			</div>
 		</div>
 	</div>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+					<label for="saleReceipt.status" class="control-label"><fmt:message key="saleReceipt.status" /></label>
+					<div class="controls">
+						<select id=status name="status">
+							<option value=""></option>
+							<c:forEach items="${saleReceiptStatusList}" var="saleReceiptStatus">
+								<option value="${saleReceiptStatus.value}" ${(saleReceiptStatus.value == param['status']) ? 'selected' : ''}>${saleReceiptStatus.label}</option>
+							</c:forEach>
+						</select>
+					</div>
+				</div>
+		</div>
+	</div>
 
 		<div class="control-group">
 			<div class="controls">
@@ -186,6 +201,25 @@
 				if (json) {
 				} else {
 					$('input[name="saleOrder.customer.name"]').val('');
+				}
+			}
+		});
+		
+		$('input[name="saleOrder.saleOrderNo"]').lookup({
+			type : 'saleOrder',
+			displayProperty : function(json) {
+				return json.saleOrderNo;
+			},
+			selectProperty : 'saleOrderNo',
+			btnSearchCondition : function() {
+				return {
+					saleOrderNo : $('input[name="saleOrder.saleOrderNo"]').val()
+				};
+			},
+			handler : function(json) {
+				if (json) {
+				} else {
+					$('input[name="saleOrder.saleOrderNo"]').val('');
 				}
 			}
 		});

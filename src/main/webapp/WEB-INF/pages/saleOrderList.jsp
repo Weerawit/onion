@@ -61,6 +61,22 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+					<label for="saleOrder.status" class="control-label"><fmt:message key="saleOrder.status" /></label>
+					<div class="controls">
+						<select id=status name="status">
+							<option value=""></option>
+							<c:forEach items="${saleOrderStatusList}" var="saleOrderStatus">
+								<option value="${saleOrderStatus.value}" ${(saleOrderStatus.value == param['status']) ? 'selected' : ''}>${saleOrderStatus.label}</option>
+							</c:forEach>
+						</select>
+					</div>
+				</div>
+		</div>
+	</div>
 		
 		<div class="control-group">
 			<div class="controls">

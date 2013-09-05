@@ -114,13 +114,13 @@ public class ConstantModel {
 		}
 	}
 
-	public enum SaleOrderDeliveryStatus {
-		NEW("1", "saleOrderDeliveryStatus.NEW"), FINISH("2", "saleOrderDeliveryStatus.FINISH");
+	public enum SaleOrderStatus {
+		ACTIVE("A", "saleOrderStatus.ATCIVE"), CANCEL("C", "saleOrderStatus.CANCEL"), DELIVERY("D", "saleOrderStatus.DELIVERY");
 
 		private final String code;
 		private String key;
 
-		private SaleOrderDeliveryStatus(String code, String key) {
+		private SaleOrderStatus(String code, String key) {
 			this.code = code;
 			this.key = key;
 		}
@@ -133,6 +133,27 @@ public class ConstantModel {
 			return key;
 		}
 	}
+	
+	public enum SaleReceiptStatus {
+		ACTIVE("A", "saleReceiptStatus.ATCIVE"), CANCEL("C", "saleReceiptStatus.CANCEL");
+
+		private final String code;
+		private String key;
+
+		private SaleReceiptStatus(String code, String key) {
+			this.code = code;
+			this.key = key;
+		}
+
+		public String getCode() {
+			return code;
+		}
+
+		public String getKey() {
+			return key;
+		}
+	}
+
 
 	public enum CustomerType {
 		PERSONAL("100", "customerType.PERSONAL"), COMPANY("200", "customerType.COMPANY");

@@ -26,7 +26,7 @@
 			<div class="control-group">
 				<label for="invGoodsMovement.movementType" class="control-label"><fmt:message key="invGoodsMovement.movementType" /></label>
 				<div class="controls">
-					<select id=invGoodsMovement.movementType name="invGoodsMovement.movementType">
+					<select id="movementType" name="movementType">
 						<option value=""></option>
 						<c:forEach items="${movementTypeList}" var="movementType">
 							<option value="${movementType.value}" ${(movementType.value == param['movementType']) ? 'selected' : ''}>${movementType.label}</option>

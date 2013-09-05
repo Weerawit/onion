@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.worldbestsoft.dao.SaleReceiptDao;
+import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.SaleReceipt;
 import com.worldbestsoft.model.criteria.SaleReceiptCriteria;
 
@@ -24,7 +25,7 @@ public class SaleReceiptDaoHibernate extends GenericDaoHibernate<SaleReceipt, Lo
 	 */
     @Override
     public List<SaleReceipt> query(SaleReceiptCriteria criteria, final int page, final int pageSize, final String sortColumn, final String order) {
-		String hsql = "select o from SaleReceipt o where 1=1 and o.status = 'A' ";
+		String hsql = "select o from SaleReceipt o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		if (null != criteria) {
 			if (null != criteria.getReceiptDateFrom()) {
@@ -48,6 +49,10 @@ public class SaleReceiptDaoHibernate extends GenericDaoHibernate<SaleReceipt, Lo
 				}
 			}
 			
+			if (StringUtils.isNotBlank(criteria.getStatus())) {
+				hsql += " and o.status = :status";
+				params.put("status", criteria.getStatus());
+			}
 		}
 		if (StringUtils.isNotBlank(sortColumn)) {
 			hsql += " order by o." + sortColumn;
@@ -89,6 +94,10 @@ public class SaleReceiptDaoHibernate extends GenericDaoHibernate<SaleReceipt, Lo
 				}
 			}
 			
+			if (StringUtils.isNotBlank(criteria.getStatus())) {
+				hsql += " and o.status = :status";
+				params.put("status", criteria.getStatus());
+			}
 		}
 		Query queryObj = getSession().createQuery(hsql);
 		queryObj.setProperties(params);
@@ -97,10 +106,11 @@ public class SaleReceiptDaoHibernate extends GenericDaoHibernate<SaleReceipt, Lo
 	
 	@Override
     public List<SaleReceipt> findBySaleOrderNo(String saleOrderNo) {
-		String hsql = "select o from SaleReceipt o where 1=1 and o.status = 'A' ";
+		String hsql = "select o from SaleReceipt o where 1=1 and o.status = :status' ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		hsql += " and o.saleOrder.saleOrderNo = :saleOrderNo";
 		params.put("saleOrderNo", saleOrderNo);
+		params.put("status", ConstantModel.SaleReceiptStatus.ACTIVE.getCode());
 		Query queryObj = getSession().createQuery(hsql);
 		queryObj.setProperties(params);
 		return queryObj.list();

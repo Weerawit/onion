@@ -43,6 +43,10 @@ public class SaleOrderDaoHibernate extends GenericDaoHibernate<SaleOrder, Long> 
 				hsql += " and o.deliveryDate <= :deliveryDateTo";
 				params.put("deliveryDateTo", criteria.getDeliveryDateTo());
 			}
+			if (StringUtils.isNotBlank(criteria.getStatus())) {
+				hsql += " and o.status = :status";
+				params.put("status", criteria.getStatus());
+			}
 		}
 		if (StringUtils.isNotBlank(sortColumn)) {
 			hsql += " order by o." + sortColumn;
@@ -78,6 +82,10 @@ public class SaleOrderDaoHibernate extends GenericDaoHibernate<SaleOrder, Long> 
 			if (null != criteria.getDeliveryDateTo()) {
 				hsql += " and o.deliveryDate <= :deliveryDateTo";
 				params.put("deliveryDateTo", criteria.getDeliveryDateTo());
+			}
+			if (StringUtils.isNotBlank(criteria.getStatus())) {
+				hsql += " and o.status = :status";
+				params.put("status", criteria.getStatus());
 			}
 		}
 		Query queryObj = getSession().createQuery(hsql);

@@ -4,9 +4,7 @@
 	<display:column property="saleOrder.saleOrderNo" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.saleOrderNo" sortName="saleOrder.saleOrderNo" />
 	<display:column property="receiptDate" escapeXml="false" sortable="true" titleKey="saleReceipt.receiptDate" sortName="receiptDate"  format="{0, date, dd/MM/yyyy HH:mm}"/>
 	<display:column escapeXml="false" sortable="true" titleKey="saleReceipt.status" sortName="status" >
-		<c:if test="${saleReceipt.status == 'X' }">
-			<fmt:message key="saleReceipt.status.X"/>
-		</c:if>
+		<tags:labelValue value="${saleReceipt.status}" list="${saleReceiptStatusList}"/> 
 	</display:column>
 	<display:column property="receiptAmount" escapeXml="false" sortable="true" titleKey="saleReceipt.receiptAmount" sortName="receiptAmount"  format="{0, number, #,##0.##}"/>
 	

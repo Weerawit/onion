@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleReceipt;
 import com.worldbestsoft.service.LookupManager;
@@ -76,7 +77,7 @@ public class SaleReceiptFormController extends BaseFormController {
 				}
 			}
 			
-			if (StringUtils.equalsIgnoreCase(saleReceiptForm.getReceiptType(), "2")) {//cheque
+			if (StringUtils.equalsIgnoreCase(saleReceiptForm.getReceiptType(), ConstantModel.ReceiptType.CHEQUE.getCode())) {//cheque
 				if (StringUtils.isBlank(saleReceiptForm.getChequeNo())) {
 					errors.rejectValue("chequeNo", "errors.required", new Object[] { getText("saleReceipt.chequeNo", request.getLocale())}, "errors.required");
 				}
@@ -131,7 +132,7 @@ public class SaleReceiptFormController extends BaseFormController {
 		String id = request.getParameter("id");
 		String saleOrderNo = request.getParameter("saleOrderNo");
 		SaleReceipt saleReceipt = new SaleReceipt();
-		saleReceipt.setReceiptType("1");//default cash
+		saleReceipt.setReceiptType(ConstantModel.ReceiptType.CASH.getCode());//default cash
 		saleReceipt.setReceiptDate(new Date());
 		
 		if (StringUtils.isNotBlank(saleOrderNo)) {
@@ -167,12 +168,13 @@ public class SaleReceiptFormController extends BaseFormController {
 		HttpSession session = request.getSession();
 		String saleOrderNo = request.getParameter("saleOrderNo");
 		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("saleReceiptStatusList", lookupManager.getAllSaleReceiptStatusList(request.getLocale()));
 		if (StringUtils.isNotBlank(saleOrderNo)) {
 			SaleOrder saleOrder = saleOrderManager.findBySaleOrderNo(saleOrderNo);
 			BigDecimal paymentPaid = BigDecimal.ZERO;
 			if (null != saleOrder) {
 				for (SaleReceipt saleReceipt : saleOrder.getSaleReceipts()) {
-					if (StringUtils.equalsIgnoreCase("A", saleReceipt.getStatus())) {
+					if (StringUtils.equalsIgnoreCase(ConstantModel.SaleReceiptStatus.ACTIVE.getCode(), saleReceipt.getStatus())) {
 						paymentPaid = paymentPaid.add(saleReceipt.getReceiptAmount());
 					}
 				}

@@ -75,7 +75,7 @@
 			$(element).find("table th.sortable").each(function() {
 				$(this).click(function() {
 					// "this" is scoped as the sortable th element
-					var link = $(this).find("a").attr("href");
+					var link = $(this).find("a").attr("href") + "&ajax=true";
 					$(self).data('link', link);
 					var params = self.options.params;
 					if (typeof params == 'function') {
@@ -91,7 +91,7 @@
 			
 			$(element).find(".pagination a").each(function() {
 				$(this).click(function() {
-					var link = $(this).attr("href");
+					var link = $(this).attr("href") + "&ajax=true";
 					$(self).data('link', link);
 					var params = self.options.params;
 					if (typeof params == 'function') {

@@ -137,7 +137,7 @@ public class PopupController extends BaseFormController {
 		criteria.setCode(request.getParameter("code"));
 		criteria.setName(request.getParameter("name"));
 		InvItemGroup invItemGroup = new InvItemGroup();
-		invItemGroup.setCode(request.getParameter("invItem.invItemGroup.code"));
+		invItemGroup.setCode(request.getParameter("invItemGroup.code"));
 		criteria.setInvItemGroup(invItemGroup);
 		int page = getPage(request);
 		String sortColumn = getSortColumn(request);
@@ -241,8 +241,12 @@ public class PopupController extends BaseFormController {
 	
 	@RequestMapping(value="/saleOrder*", method = RequestMethod.GET)
 	public ModelAndView listSaleOrder(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Model model = new ExtendedModelMap();
+		model.addAttribute("saleOrderStatusList", lookupManager.getAllSaleOrderStatusList(request.getLocale()));
 		SaleOrderCriteria criteria = new SaleOrderCriteria();
 		criteria.setSaleOrderNo(request.getParameter("saleOrderNo"));
+		
+		criteria.setStatus(request.getParameter("status"));
 		
 		String startTime = request.getParameter("deliveryDateFrom");
 		String endTime = request.getParameter("deliveryDateTo");
@@ -253,7 +257,7 @@ public class PopupController extends BaseFormController {
 			}
 		} catch (ParseException e) {
 			saveError(request, getText("errors.date", new Object[] { startTime }, request.getLocale()));
-			return new ModelAndView("saleOrderList");
+			return new ModelAndView("popup/saleOrderList", model.asMap());
 		}
 		try {
 			if (StringUtils.isNotBlank(endTime)) {
@@ -262,7 +266,7 @@ public class PopupController extends BaseFormController {
 			}
 		} catch (ParseException e) {
 			saveError(request, getText("errors.date", new Object[] { endTime }, request.getLocale()));
-			return new ModelAndView("saleOrderList");
+			return new ModelAndView("popup/saleOrderList", model.asMap());
 		}
 		
 		Customer customer = new Customer();
@@ -275,7 +279,6 @@ public class PopupController extends BaseFormController {
 
 		log.info(request.getRemoteUser() + " is quering SaleOrder criteria := " + criteria);
 
-		Model model = new ExtendedModelMap();
 		model.addAttribute("resultSize", saleOrderManager.querySize(criteria));
 		model.addAttribute("saleOrderList", saleOrderManager.query(criteria, page, size, sortColumn, order));
 		return new ModelAndView("popup/saleOrderList", model.asMap());

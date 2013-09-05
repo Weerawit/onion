@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Aug 23, 2013 9:22:00 AM by Hibernate Tools 4.0.0
+// Generated Sep 5, 2013 11:11:20 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,7 +34,8 @@ public class SaleOrder implements java.io.Serializable {
 	private BigDecimal totalPrice;
 	private BigDecimal paymentPaid;
 	private String paymentStatus;
-	private String deliveryStatus;
+	private String status;
+	private String cancelReason;
 	private Date createDate;
 	private String createUser;
 	private Date updateDate;
@@ -49,7 +50,7 @@ public class SaleOrder implements java.io.Serializable {
 		this.customer = customer;
 	}
 
-	public SaleOrder(Customer customer, String saleOrderNo, String paymentType, Date deliveryDate, BigDecimal totalPrice, BigDecimal paymentPaid, String paymentStatus, String deliveryStatus, Date createDate, String createUser, Date updateDate, String updateUser, Set<SaleReceipt> saleReceipts, Set<SaleOrderItem> saleOrderItems) {
+	public SaleOrder(Customer customer, String saleOrderNo, String paymentType, Date deliveryDate, BigDecimal totalPrice, BigDecimal paymentPaid, String paymentStatus, String status, String cancelReason, Date createDate, String createUser, Date updateDate, String updateUser, Set<SaleReceipt> saleReceipts, Set<SaleOrderItem> saleOrderItems) {
 		this.customer = customer;
 		this.saleOrderNo = saleOrderNo;
 		this.paymentType = paymentType;
@@ -57,7 +58,8 @@ public class SaleOrder implements java.io.Serializable {
 		this.totalPrice = totalPrice;
 		this.paymentPaid = paymentPaid;
 		this.paymentStatus = paymentStatus;
-		this.deliveryStatus = deliveryStatus;
+		this.status = status;
+		this.cancelReason = cancelReason;
 		this.createDate = createDate;
 		this.createUser = createUser;
 		this.updateDate = updateDate;
@@ -142,13 +144,22 @@ public class SaleOrder implements java.io.Serializable {
 		this.paymentStatus = paymentStatus;
 	}
 
-	@Column(name = "delivery_status", length = 3)
-	public String getDeliveryStatus() {
-		return this.deliveryStatus;
+	@Column(name = "status", length = 3)
+	public String getStatus() {
+		return this.status;
 	}
 
-	public void setDeliveryStatus(String deliveryStatus) {
-		this.deliveryStatus = deliveryStatus;
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	@Column(name = "cancelReason")
+	public String getCancelReason() {
+		return this.cancelReason;
+	}
+
+	public void setCancelReason(String cancelReason) {
+		this.cancelReason = cancelReason;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
