@@ -24,6 +24,7 @@ import com.worldbestsoft.model.InvGoodsReceipt;
 import com.worldbestsoft.model.InvGoodsReceiptItem;
 import com.worldbestsoft.model.Supplier;
 import com.worldbestsoft.service.InvGoodsReceiptManager;
+import com.worldbestsoft.service.LookupManager;
 import com.worldbestsoft.service.SupplierManager;
 
 @Controller
@@ -32,6 +33,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 	
 	private InvGoodsReceiptManager invGoodsReceiptManager;
 	private SupplierManager supplierManager;
+	private LookupManager lookupManager;
 
 	public InvGoodsReceiptManager getInvGoodsReceiptManager() {
 		return invGoodsReceiptManager;
@@ -50,6 +52,15 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 	public void setSupplierManager(SupplierManager supplierManager) {
 		this.supplierManager = supplierManager;
 	}
+	
+	public LookupManager getLookupManager() {
+		return lookupManager;
+	}
+
+	@Autowired
+	public void setLookupManager(LookupManager lookupManager) {
+		this.lookupManager = lookupManager;
+	}
 
 	@RequestMapping(value="/save" ,method = RequestMethod.POST)
 	public ModelAndView save(InvGoodsReceipt invGoodsReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -61,7 +72,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 			validator.validate(invGoodsReceiptForm, errors);
 
 			if (errors.hasErrors() && !StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
-				return new ModelAndView("invGoodsReceipt", "invGoodsReceipt", invGoodsReceiptForm);
+				return new ModelAndView("invGoodsReceipt", "invGoodsReceipt", invGoodsReceiptForm).addObject("goodsReceiptTypeList", lookupManager.getAllGoodsReceiptType(request.getLocale()));
 			}
 		}
 		log.info(request.getRemoteUser() + " is saving InvGoodsReceipt := " + invGoodsReceiptForm);
@@ -80,7 +91,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 			InvGoodsReceipt invGoodsReceiptSession = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
 			
 			if (null == invGoodsReceiptForm.getId()) {
-				
+				invGoodsReceiptSession.setReceiptType(invGoodsReceiptForm.getReceiptType());
 				invGoodsReceiptSession.setReceiptDate(invGoodsReceiptForm.getReceiptDate());
 				invGoodsReceiptSession.setSupplier(invGoodsReceiptForm.getSupplier());
 				invGoodsReceiptSession.setMemo(invGoodsReceiptForm.getMemo());
@@ -93,6 +104,8 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 
 				invGoodsReceiptSession.setCreateDate(new Date());
 				invGoodsReceiptSession.setCreateUser(request.getRemoteUser());
+				invGoodsReceiptSession.setUpdateDate(new Date());
+				invGoodsReceiptSession.setUpdateUser(request.getRemoteUser());
 				invGoodsReceiptSession = getInvGoodsReceiptManager().save(invGoodsReceiptSession, invGoodsReceiptSession.getInvGoodsReceiptItems());
 				
 				if (StringUtils.equalsIgnoreCase("saveToStock", request.getParameter("action"))) {
@@ -106,6 +119,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 			} else {
 				// edit
 				InvGoodsReceipt invGoodsReceipt = getInvGoodsReceiptManager().get(invGoodsReceiptForm.getId());
+				invGoodsReceipt.setReceiptType(invGoodsReceiptForm.getReceiptType());
 				if (null != invGoodsReceiptForm.getSupplier()) {
 					Supplier supplier = getSupplierManager().findBySupplierCode(invGoodsReceiptForm.getSupplier().getCode());
 					invGoodsReceipt.setSupplier(supplier);
@@ -133,6 +147,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 	public ModelAndView add(InvGoodsReceipt invGoodsReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
 		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
+		invGoodsReceipt.setReceiptType(invGoodsReceiptForm.getReceiptType());
 		invGoodsReceipt.setReceiptDate(invGoodsReceiptForm.getReceiptDate());
 		invGoodsReceipt.setSupplier(invGoodsReceiptForm.getSupplier());
 		invGoodsReceipt.setMemo(invGoodsReceiptForm.getMemo());
@@ -144,6 +159,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 	public ModelAndView edit(InvGoodsReceipt invGoodsReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
 		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
+		invGoodsReceipt.setReceiptType(invGoodsReceiptForm.getReceiptType());
 		invGoodsReceipt.setReceiptDate(invGoodsReceiptForm.getReceiptDate());
 		invGoodsReceipt.setSupplier(invGoodsReceiptForm.getSupplier());
 		invGoodsReceipt.setMemo(invGoodsReceiptForm.getMemo());
@@ -155,6 +171,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 	public ModelAndView delete(InvGoodsReceipt invGoodsReceiptForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
 		InvGoodsReceipt invGoodsReceipt = (InvGoodsReceipt) session.getAttribute("invGoodsReceipt");
+		invGoodsReceipt.setReceiptType(invGoodsReceiptForm.getReceiptType());
 		invGoodsReceipt.setReceiptDate(invGoodsReceiptForm.getReceiptDate());
 		invGoodsReceipt.setSupplier(invGoodsReceiptForm.getSupplier());
 		invGoodsReceipt.setMemo(invGoodsReceiptForm.getMemo());
@@ -208,7 +225,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("invGoodsReceipt", invGoodsReceipt);
 		model.put("invGoodsReceiptItemList", invGoodsReceipt.getInvGoodsReceiptItems());
-		model.put("supplierList", supplierManager.getAll());
+		model.put("goodsReceiptTypeList", lookupManager.getAllGoodsReceiptType(request.getLocale()));
 		
 		return new ModelAndView("invGoodsReceipt", model);
 	}

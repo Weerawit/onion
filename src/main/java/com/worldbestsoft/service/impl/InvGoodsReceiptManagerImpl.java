@@ -206,6 +206,7 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager, Appli
 				InvItemLevel invItemLevel = new InvItemLevel();
 				invItemLevel.setInvItem(invGoodsReceiptItem.getInvItem());
 				invItemLevel.setQtyAdjust(invGoodsReceiptItem.getQty());
+				invItemLevel.setQtyAvailableAdjust(invGoodsReceiptItem.getQty());
 				invItemLevel.setTransactionDate(new Date());
 				invItemLevel.setUpdateUser(invGoodsReceipt.getUpdateUser());
 				invItemLevel.setRefDocument(invGoodsReceipt.getRunningNo());

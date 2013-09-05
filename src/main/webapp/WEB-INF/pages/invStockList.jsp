@@ -53,10 +53,11 @@
 		<a class="btn" href="<c:url value='/mainMenu'/>"> <i class="icon-ok"></i> <fmt:message key="button.done" /></a>
 		
 	</div>
-	<display:table name="invStockList" cellspacing="0" cellpadding="0" requestURI="" id="invItem"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
+	<display:table name="invStockList" cellspacing="0" cellpadding="0" requestURI="" id="invStock"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
 		<display:column property="invItem.code" url="/invStock?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="invStock.invItem.code" sortName="invItem.code" />
 		<display:column property="invItem.name" escapeXml="true" sortable="true" titleKey="invStock.invItem.name" sortName="invItem.name" />
 		<display:column property="qty" sortable="true" titleKey="invStock.qty" sortName="qty" format="{0,number,#,##0.##}"/>
+		<display:column property="qtyAvailable" sortable="true" titleKey="invStock.qtyAvailable" sortName="qtyAvailable" format="{0,number,#,##0.##}"/>
 		<display:setProperty name="export.csv" value="true"></display:setProperty>
 		<display:setProperty name="export.excel" value="true"></display:setProperty>
 		<display:setProperty name="export.xml" value="false"></display:setProperty>

@@ -21,49 +21,61 @@
 	</h2>
 
 	<form method="get" action="${ctx}/invGoodsMovementList" id="searchForm" class="well form-horizontal">
-		<div class="control-group">
-			<label for="invGoodsMovement.movementType" class="control-label"><fmt:message key="invGoodsMovement.movementType" /></label>
-			<div class="controls">
-				<select id=invGoodsMovement.movementType name="invGoodsMovement.movementType">
-					<option value=""></option>
-					<c:forEach items="${movementTypeList}" var="movementType">
-						<option value="${movementType.value}" ${(movementType.value == param['invGoodsMovement.movementType']) ? 'selected' : ''}>${movementType.label}</option>
-					</c:forEach>
-				</select>
-			</div>
-		</div>
-		
-		<div class="control-group">
-			<label class="control-label" for="runningNo"><fmt:message key="invGoodsMovement.runningNo" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="runningNo" id="runningNo" value="${param.runningNo}" placeholder="" />
-			</div>
-		</div>
-		
-		<div class="control-group">
-			<label class="control-label" for="owner"><fmt:message key="invGoodsMovement.owner" />:</label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" name="owner" id="owner" value="${param.owner}" placeholder="" />
-			</div>
-		</div>
-		
-		
-		<div class="control-group">
-			<label class="control-label" for="movementDateFrom"><fmt:message key="invGoodsMovement.movementDateFrom" />:</label>
-			<div class="controls">
-				<div class="input-append date" id="movementDateFromDatepicker">
-					<input type="text" class="input-medium" name="movementDateFrom" value="<c:out value='${param.movementDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label for="invGoodsMovement.movementType" class="control-label"><fmt:message key="invGoodsMovement.movementType" /></label>
+				<div class="controls">
+					<select id=invGoodsMovement.movementType name="invGoodsMovement.movementType">
+						<option value=""></option>
+						<c:forEach items="${movementTypeList}" var="movementType">
+							<option value="${movementType.value}" ${(movementType.value == param['movementType']) ? 'selected' : ''}>${movementType.label}</option>
+						</c:forEach>
+					</select>
 				</div>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="movementDateTo"><fmt:message key="invGoodsMovement.movementDateTo" />:</label>
-			<div class="controls">
-				<div class="input-append date" id="movementDateToDatepicker">
-					<input type="text" class="input-medium" name="movementDateTo" value="<c:out value='${param.movementDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
+	</div>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="runningNo"><fmt:message key="invGoodsMovement.runningNo" />:</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" name="runningNo" id="runningNo" value="${param.runningNo}" placeholder="" />
+				</div>
+			</div>
+		</div>		
+		<div class="span6">	
+			<div class="control-group">
+				<label class="control-label" for="owner"><fmt:message key="invGoodsMovement.owner" />:</label>
+				<div class="controls">
+					<input type="text" class="input-xlarge" name="owner" id="owner" value="${param.owner}" placeholder="" />
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span6">	
+			<div class="control-group">
+				<label class="control-label" for="movementDateFrom"><fmt:message key="invGoodsMovement.movementDateFrom" />:</label>
+				<div class="controls">
+					<div class="input-append date" id="movementDateFromDatepicker">
+						<input type="text" class="input-medium" name="movementDateFrom" value="<c:out value='${param.movementDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="span6">	
+			<div class="control-group">
+				<label class="control-label" for="movementDateTo"><fmt:message key="invGoodsMovement.movementDateTo" />:</label>
+				<div class="controls">
+					<div class="input-append date" id="movementDateToDatepicker">
+						<input type="text" class="input-medium" name="movementDateTo" value="<c:out value='${param.movementDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 		
 		<div class="control-group">
 			<div class="controls">

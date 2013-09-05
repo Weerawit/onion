@@ -208,19 +208,6 @@
 		return validateSaleOrder(theForm);
 	}
 	
-	function validateDelete(checkbox) {
-
-		if (!hasChecked(checkbox)) {
-			alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
-			return false;
-		}
-		if (confirmMessage('<fmt:message key="global.confirm.delete"/>')) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
 	$(function() {
 		var st = $('#deliveryDateDatepicker').datetimepicker({
 			format : "dd/MM/yyyy hh:mm:ss"
@@ -320,10 +307,17 @@
 				});
 				$('#deleteDetailBtn').off();
 				$('#deleteDetailBtn').on('click', function () {
-					if (validateDelete($('#saleOrderItemForm input[name="checkbox"]'))) {
-						var url = '${ctx}/saleOrder/deleteRow' + $(self).data('link');
-						$('#tableDiv').load(url, $('#saleOrderItemForm').serialize(), fnLoad);							
+					
+					if (!hasChecked($('#saleOrderItemForm input[name="checkbox"]'))) {
+						alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
+						return false;
 					}
+					confirmMessage('<fmt:message key="global.confirm.delete"/>', function(result) {
+						if (result) {
+							var url = '${ctx}/saleOrder/deleteRow' + $(self).data('link');
+							$('#tableDiv').load(url, $('#saleOrderItemForm').serialize(), fnLoad);			
+						}
+					});
 				});
 				
 				//calculate qty

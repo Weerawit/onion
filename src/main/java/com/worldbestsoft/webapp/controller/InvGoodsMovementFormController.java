@@ -88,6 +88,8 @@ public class InvGoodsMovementFormController extends BaseFormController {
 
 				invGoodsMovementSession.setCreateDate(new Date());
 				invGoodsMovementSession.setCreateUser(request.getRemoteUser());
+				invGoodsMovementSession.setUpdateDate(new Date());
+				invGoodsMovementSession.setUpdateUser(request.getRemoteUser());
 				invGoodsMovementSession = getInvGoodsMovementManager().save(invGoodsMovementSession, invGoodsMovementSession.getInvGoodsMovementItems());
 				
 				if (StringUtils.equalsIgnoreCase("saveToStock", request.getParameter("action"))) {
@@ -183,6 +185,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 		InvGoodsMovement invGoodsMovement = (InvGoodsMovement) session.getAttribute("invGoodsMovement");
 		if (null == invGoodsMovement || StringUtils.equalsIgnoreCase(method, "add")) {
 			invGoodsMovement = new InvGoodsMovement();
+			invGoodsMovement.setMovementDate(new Date());
 		}
 		
 		if (!isFormSubmission(request)) {

@@ -17,12 +17,14 @@ import com.worldbestsoft.model.Customer;
 import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.InvItem;
 import com.worldbestsoft.model.SaleOrder;
+import com.worldbestsoft.model.Supplier;
 import com.worldbestsoft.model.criteria.SaleOrderCriteria;
 import com.worldbestsoft.service.CatalogManager;
 import com.worldbestsoft.service.CustomerManager;
 import com.worldbestsoft.service.EmployeeManager;
 import com.worldbestsoft.service.InvItemManager;
 import com.worldbestsoft.service.SaleOrderManager;
+import com.worldbestsoft.service.SupplierManager;
 
 @Controller
 @RequestMapping("/json*")
@@ -33,6 +35,7 @@ public class JsonController {
 	private CustomerManager customerManager;
 	private CatalogManager catalogManager;
 	private SaleOrderManager saleOrderManager;
+	private SupplierManager supplierManager;
 	
 	public InvItemManager getInvItemManager() {
 		return invItemManager;
@@ -77,6 +80,15 @@ public class JsonController {
 	@Autowired
 	public void setSaleOrderManager(SaleOrderManager saleOrderManager) {
 		this.saleOrderManager = saleOrderManager;
+	}
+	
+	public SupplierManager getSupplierManager() {
+		return supplierManager;
+	}
+
+	@Autowired
+	public void setSupplierManager(SupplierManager supplierManager) {
+		this.supplierManager = supplierManager;
 	}
 
 	@RequestMapping(value="/item*", method = RequestMethod.GET)
@@ -187,6 +199,25 @@ public class JsonController {
 			customerMap.put("contactTel", saleOrder.getCustomer().getContactTel());
 			customerMap.put("memo", saleOrder.getCustomer().getMemo());
 			model.put("customer", customerMap);
+			resultList.add(model);
+		}
+		return resultList;
+	}
+	
+	@RequestMapping(value="/supplier*", method = RequestMethod.GET)
+	public @ResponseBody List<Map<String, Object>> getSupplierList(@RequestParam("q") String name) {
+		Supplier criteria = new Supplier();
+		criteria.setName(name);
+		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
+		List<Supplier> supplierList = supplierManager.query(criteria, 0, 10, null, null);
+		for (Supplier supplier : supplierList) {
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("id", supplier.getId().toString());
+			model.put("code", supplier.getCode());
+			model.put("name", supplier.getName());
+			model.put("address", supplier.getAddress());
+			model.put("contactName", supplier.getContactName());
+			model.put("contactTel", supplier.getContactTel());
 			resultList.add(model);
 		}
 		return resultList;

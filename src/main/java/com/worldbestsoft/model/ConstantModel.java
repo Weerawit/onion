@@ -4,7 +4,7 @@ public class ConstantModel {
 
 	public enum RefType {
 
-		GOOD_RECEIPT("GR"), GOOD_MOVEMENT("GM"), SALE_ORDER("SA");
+		GOOD_RECEIPT("GR"), GOOD_MOVEMENT("GM"), SALE_ORDER("SA"), ADJUST("ADJ");
 
 		private final String code;
 		private String resourceKey;
@@ -198,4 +198,27 @@ public class ConstantModel {
 		}
 	}
 
+	public enum GoodsReceiptType {
+		PRODUCTION("100", "goodsReceiptType.FROM_PRODUCTION"), PURCHASE("200", "goodsReceiptType.FROM_PURCHASE");
+
+		private final String code;
+		private String key;
+		
+		private GoodsReceiptType(String code) {
+			this.code = code;
+		}
+
+		private GoodsReceiptType(String code, String key) {
+			this.code = code;
+			this.key = key;
+		}
+
+		public String getCode() {
+			return code;
+		}
+
+		public String getKey() {
+			return key;
+		}
+	}
 }

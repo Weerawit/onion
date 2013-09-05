@@ -1,12 +1,14 @@
 package com.worldbestsoft.model;
 
-// Generated Sep 3, 2013 11:42:24 AM by Hibernate Tools 4.0.0
+// Generated Sep 4, 2013 1:02:51 PM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -31,13 +33,11 @@ public class InvStock implements java.io.Serializable {
 	public InvStock() {
 	}
 
-	public InvStock(Long id, InvItem invItem) {
-		this.id = id;
+	public InvStock(InvItem invItem) {
 		this.invItem = invItem;
 	}
 
-	public InvStock(Long id, InvItem invItem, BigDecimal qty, BigDecimal qtyAvailable, Date updateDate, String updateUser) {
-		this.id = id;
+	public InvStock(InvItem invItem, BigDecimal qty, BigDecimal qtyAvailable, Date updateDate, String updateUser) {
 		this.invItem = invItem;
 		this.qty = qty;
 		this.qtyAvailable = qtyAvailable;
@@ -46,6 +46,7 @@ public class InvStock implements java.io.Serializable {
 	}
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	public Long getId() {
 		return this.id;

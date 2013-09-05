@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.worldbestsoft.model.Supplier;
 import com.worldbestsoft.model.criteria.InvGoodsReceiptCriteria;
 import com.worldbestsoft.service.InvGoodsReceiptManager;
-import com.worldbestsoft.service.SupplierManager;
+import com.worldbestsoft.service.LookupManager;
 
 @Controller
 @RequestMapping("/invGoodsReceiptList*")
@@ -27,18 +27,9 @@ public class InvGoodsReceiptListController extends BaseFormController {
 	
 	private static final String[] DATE_PATTERN = new String[] {"dd/MM/yyyy HH:mm:ss", "dd/MM/yyyy"};
 
-	private SupplierManager supplierManager;
-	
 	private InvGoodsReceiptManager invGoodsReceiptManager;
 	
-	public SupplierManager getSupplierManager() {
-		return supplierManager;
-	}
-
-	@Autowired
-	public void setSupplierManager(SupplierManager supplierManager) {
-		this.supplierManager = supplierManager;
-	}
+	private LookupManager lookupManager;
 	
 	public InvGoodsReceiptManager getInvGoodsReceiptManager() {
 		return invGoodsReceiptManager;
@@ -48,16 +39,26 @@ public class InvGoodsReceiptListController extends BaseFormController {
 	public void setInvGoodsReceiptManager(InvGoodsReceiptManager invGoodsReceiptManager) {
 		this.invGoodsReceiptManager = invGoodsReceiptManager;
 	}
+	
+	public LookupManager getLookupManager() {
+		return lookupManager;
+	}
+
+	@Autowired
+	public void setLookupManager(LookupManager lookupManager) {
+		this.lookupManager = lookupManager;
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Model model = new ExtendedModelMap();
-		model.addAttribute("supplierList", supplierManager.getAll());
+		model.addAttribute("goodsReceiptTypeList", lookupManager.getAllGoodsReceiptType(request.getLocale()));
 
 		InvGoodsReceiptCriteria criteria = new InvGoodsReceiptCriteria();
+		criteria.setReceiptType(request.getParameter("receiptType"));
 		criteria.setRunningNo(request.getParameter("runningNo"));
 		Supplier supplier = new Supplier();
-		supplier.setCode(request.getParameter("invGoodsReceipt.supplier.code"));
+		supplier.setName(request.getParameter("supplier.name"));
 		criteria.setSupplier(supplier);
 		
 		String startTime = request.getParameter("receiptDateFrom");

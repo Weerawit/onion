@@ -40,7 +40,7 @@
 				<appfuse:label styleClass="control-label" key="catalogItem.invItem.name" />
 				<div class="controls">
 					<form:hidden path="invItem.code" id="invItem.code" maxlength="20"/>
-					<form:input path="invItem.name" id="invItem.name" cssClass="input-medium" maxlength="20" autocomplete="off"  data-lookup-key-value="${catalogItem.invItem.code}"/>
+					<form:input path="invItem.name" id="invItem.name" cssClass="input-medium" maxlength="20" autocomplete="off"  data-lookup-key-value="${catalogItem.invItem.name}"/>
 					<form:errors path="invItem.code" cssClass="help-inline" />
 				</div>
 			</div>

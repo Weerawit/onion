@@ -161,7 +161,7 @@ CREATE  TABLE IF NOT EXISTS `onion`.`inv_goods_receipt` (
   `receipt_type` VARCHAR(3) NULL COMMENT '- Production\n- Purchase' ,
   `total_cost` DECIMAL(10,2) NULL DEFAULT NULL COMMENT 'ราคารวม ทั้งหมด\n' ,
   `memo` VARCHAR(255) NULL DEFAULT NULL ,
-  `supplier_id` BIGINT NOT NULL COMMENT 'ชื่อบ.ที่ขาย สินค้าให้เรา' ,
+  `supplier_id` BIGINT NULL COMMENT 'ชื่อบ.ที่ขาย สินค้าให้เรา' ,
   `create_date` DATETIME NULL DEFAULT NULL ,
   `create_user` VARCHAR(50) NULL DEFAULT NULL ,
   `update_date` DATETIME NULL DEFAULT NULL ,

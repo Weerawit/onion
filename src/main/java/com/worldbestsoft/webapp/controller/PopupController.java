@@ -22,6 +22,7 @@ import com.worldbestsoft.model.Customer;
 import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.InvItem;
 import com.worldbestsoft.model.InvItemGroup;
+import com.worldbestsoft.model.Supplier;
 import com.worldbestsoft.model.criteria.SaleOrderCriteria;
 import com.worldbestsoft.service.CatalogManager;
 import com.worldbestsoft.service.CatalogTypeManager;
@@ -31,6 +32,7 @@ import com.worldbestsoft.service.InvItemGroupManager;
 import com.worldbestsoft.service.InvItemManager;
 import com.worldbestsoft.service.LookupManager;
 import com.worldbestsoft.service.SaleOrderManager;
+import com.worldbestsoft.service.SupplierManager;
 
 @Controller
 @RequestMapping("/popup*")
@@ -46,6 +48,7 @@ public class PopupController extends BaseFormController {
 	private CatalogManager catalogManager;
 	private CatalogTypeManager catalogTypeManager;
 	private SaleOrderManager saleOrderManager;
+	private SupplierManager supplierManager;
 	
 	public InvItemManager getInvItemManager() {
 		return invItemManager;
@@ -118,6 +121,15 @@ public class PopupController extends BaseFormController {
 	public void setSaleOrderManager(SaleOrderManager saleOrderManager) {
 		this.saleOrderManager = saleOrderManager;
 	}
+	
+	public SupplierManager getSupplierManager() {
+		return supplierManager;
+	}
+
+	@Autowired
+	public void setSupplierManager(SupplierManager supplierManager) {
+		this.supplierManager = supplierManager;
+	}
 
 	@RequestMapping(value="/item*", method = RequestMethod.GET)
 	public ModelAndView listItem(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -183,6 +195,26 @@ public class PopupController extends BaseFormController {
 		model.addAttribute("customerList", customerManager.query(criteria, page, size, sortColumn, order));
 		model.addAttribute("customerTypeList", lookupManager.getAllCustomerType(request.getLocale()));
 		return new ModelAndView("popup/customerList", model.asMap());
+	}
+	
+	@RequestMapping(value="/supplier*", method = RequestMethod.GET)
+	public ModelAndView listSupplier(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Supplier criteria = new Supplier();
+		criteria.setCode(request.getParameter("code"));
+		criteria.setName(request.getParameter("name"));
+		criteria.setContactName(request.getParameter("contactName"));
+		criteria.setContactTel(request.getParameter("contactTel"));
+		int page = getPage(request);
+		String sortColumn = getSortColumn(request);
+		String order = getSortOrder(request);
+		int size = getPageSize(request);
+
+		log.info(request.getRemoteUser() + " is quering Supplier criteria := " + criteria);
+
+		Model model = new ExtendedModelMap();
+		model.addAttribute("resultSize", supplierManager.querySize(criteria));
+		model.addAttribute("supplierList", supplierManager.query(criteria, page, size, sortColumn, order));
+		return new ModelAndView("popup/supplierList", model.asMap());
 	}
 	
 	@RequestMapping(value="/catalog*", method = RequestMethod.GET)

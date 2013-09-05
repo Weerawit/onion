@@ -5,7 +5,7 @@
 <meta name="menu" content="InvMenu" />
 <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/scripts/datepicker/css/bootstrap-datetimepicker.min.css'/>" />
 <script type="text/javascript" src="<c:url value='/scripts/datepicker/js/bootstrap-datetimepicker.min.js'/>"></script>
-
+<script type="text/javascript" src="<c:url value='/scripts/jquery-lookup.js'/>"></script>
 </head>
 
 <c:if test="${not empty searchError}">
@@ -24,14 +24,25 @@
 	<div class="row-fluid">
 		<div class="span6">
 			<div class="control-group">
-				<label for="invGoodsReceipt.supplier.code" class="control-label"><fmt:message key="invGoodsReceipt.supplier.code" /></label>
+				<label for="invGoodsReceipt.receiptType" class="control-label"><fmt:message key="invGoodsReceipt.receiptType" /></label>
 				<div class="controls">
-					<select id=invGoodsReceipt.supplier.code name="invGoodsReceipt.supplier.code">
+					<select id=receiptType name="receiptType">
 						<option value=""></option>
-						<c:forEach items="${supplierList}" var="supplier">
-							<option value="${supplier.code}" ${(supplier.code == param['invGoodsReceipt.supplier.code']) ? 'selected' : ''}>${supplier.code} : ${supplier.name}</option>
+						<c:forEach items="${goodsReceiptTypeList}" var="goodsReceiptType">
+							<option value="${goodsReceiptType.value}" ${(goodsReceiptType.value == param['receiptType']) ? 'selected' : ''}>${goodsReceiptType.label}</option>
 						</c:forEach>
 					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label for="invGoodsReceipt.supplier.code" class="control-label"><fmt:message key="invGoodsReceipt.supplier.code" /></label>
+				<div class="controls">
+					<input type="hidden" name="supplier.code" id="supplier.code"/>
+					<input type="text" name="supplier.name" id="supplier.name" class="input-medium" maxlength="20" autocomplete="off"  data-lookup-key-value="${param['supplier.name']}" value="${param['supplier.name']}"/>
 				</div>
 			</div>
 		</div>
@@ -99,6 +110,9 @@
 	<display:table name="invGoodsReceiptList" cellspacing="0" cellpadding="0" requestURI="" id="invGoodsReceipt"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
 		<display:column property="id" url="/invGoodsReceipt?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="invGoodsReceipt.id" sortName="id" />
 		<display:column property="runningNo" escapeXml="true" sortable="true" titleKey="invGoodsReceipt.runningNo" sortName="runningNo" />
+		<display:column escapeXml="true" sortable="true" titleKey="invGoodsReceipt.receiptType" sortName="receiptType" >
+			<tags:labelValue value="${invGoodsReceipt.receiptType}" list="${goodsReceiptTypeList}"></tags:labelValue>
+		</display:column>
 		<display:column escapeXml="true" sortable="true" titleKey="invGoodsReceipt.receiptDate" sortName="receiptDate" defaultorder="descending">
 			<fmt:formatDate value="${invGoodsReceipt.receiptDate}" pattern="dd/MM/yyyy HH:mm:ss" />
 		</display:column>
@@ -157,6 +171,27 @@
 				if (null != e.date
 						&& e.date.valueOf() < stObj.getDate().valueOf()) {
 					stObj.setDate(null);
+				}
+			}
+		});
+	});
+	
+	$(document).ready(function () {
+		$('input[name="supplier.name"]').lookup({
+			type: 'supplier',
+			displayProperty: function (json) {
+				return json.code + ' : ' + json.name;
+			},
+			selectProperty: 'name',
+			btnSearchCondition: function () {
+				return {code: $('input[name="supplier.code"]').val()};	
+			},
+			handler: function (json) {
+				if (json) {
+					$('input[name="supplier.code"]').val(json.code);
+				} else {
+					$('input[name="supplier.code"]').val('');
+					$('input[name="supplier.name"]').val('');
 				}
 			}
 		});

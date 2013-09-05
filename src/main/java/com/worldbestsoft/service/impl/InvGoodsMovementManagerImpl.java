@@ -150,6 +150,7 @@ public class InvGoodsMovementManagerImpl implements ApplicationContextAware, Inv
 				InvItemLevel invItemLevel = new InvItemLevel();
 				invItemLevel.setInvItem(invGoodsMovementItem.getInvItem());
 				invItemLevel.setQtyAdjust(invGoodsMovementItem.getQty().multiply(BigDecimal.valueOf(-1)));
+				invItemLevel.setQtyAvailableAdjust(invGoodsMovementItem.getQty().multiply(BigDecimal.valueOf(-1)));
 				invItemLevel.setTransactionDate(new Date());
 				invItemLevel.setUpdateUser(invGoodsMovement.getUpdateUser());
 				invItemLevel.setRefDocument(invGoodsMovement.getRunningNo());

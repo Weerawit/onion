@@ -28,15 +28,17 @@
 	<form:form commandName="invStock" method="post" action="invStock" onsubmit="return onFormSubmit(this)" id="invStock" cssClass="well form-horizontal">
 		<form:hidden path="id" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
-
-		
-		<div class="control-group">
-			<appfuse:label styleClass="control-label" key="invStock.invItem.name" />
-			<div class="controls">
-				<span class="input-medium uneditable-input"><c:out value="${invStock.invItem.name}" /></span>
-				<form:hidden path="invItem.code"/>
+	
+		<spring:bind path="invStock.invItem.code">
+			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+				<appfuse:label styleClass="control-label" key="invStock.invItem.code" />
+				<div class="controls">
+					<form:hidden path="invItem.code" id="invItem.code" maxlength="20"/>
+					<span class="input-medium uneditable-input"><c:out value="${invStock.invItem.name}" /></span>
+					<form:errors path="invItem.code" cssClass="help-inline" />
+				</div>
 			</div>
-		</div>
+		</spring:bind>
 		
 		<div class="control-group">
 			<appfuse:label styleClass="control-label" key="invStock.oldQty" />
@@ -45,11 +47,18 @@
 			</div>
 		</div>
 		
+		<div class="control-group">
+			<appfuse:label styleClass="control-label" key="invStock.oldQtyAvailable" />
+			<div class="controls">
+				<span class="input-medium uneditable-input"><fmt:formatNumber value="${invStock.qtyAvailable }" pattern="#,##0.##"/></span>
+			</div>
+		</div>
+		
 		<spring:bind path="invStock.qty">
 			<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-				<appfuse:label styleClass="control-label" key="invStock.qty" />
+				<appfuse:label styleClass="control-label" key="invStock.qtyAdjust" />
 				<div class="controls">
-					<form:input path="qty" id="qty" cssClass="input-medium" maxlength="10" />
+					<input type="text" name="qty" id="qty" class="input-medium" maxlength="10" placeholder="+/-"/>
 					<form:errors path="qty" cssClass="help-inline" />
 				</div>
 			</div>

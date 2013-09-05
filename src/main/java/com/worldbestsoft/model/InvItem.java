@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 23, 2013 9:54:03 PM by Hibernate Tools 4.0.0
+// Generated Sep 4, 2013 12:25:17 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,7 +35,7 @@ public class InvItem implements java.io.Serializable {
 	private String createUser;
 	private Date updateDate;
 	private String updateUser;
-	private Set<InvStock> invStocks = new HashSet<InvStock>(0);
+	private InvStock invStock;
 	private Set<Catalog> catalogs = new HashSet<Catalog>(0);
 	private Set<InvGoodsMovementItem> invGoodsMovementItems = new HashSet<InvGoodsMovementItem>(0);
 	private Set<InvGoodsReceiptItem> invGoodsReceiptItems = new HashSet<InvGoodsReceiptItem>(0);
@@ -49,7 +50,7 @@ public class InvItem implements java.io.Serializable {
 		this.code = code;
 	}
 
-	public InvItem(InvItemGroup invItemGroup, String code, String name, String description, Date createDate, String createUser, Date updateDate, String updateUser, Set<InvStock> invStocks, Set<Catalog> catalogs, Set<InvGoodsMovementItem> invGoodsMovementItems, Set<InvGoodsReceiptItem> invGoodsReceiptItems, Set<InvItemLevel> invItemLevels, Set<CatalogItem> catalogItems) {
+	public InvItem(InvItemGroup invItemGroup, String code, String name, String description, Date createDate, String createUser, Date updateDate, String updateUser, InvStock invStock, Set<Catalog> catalogs, Set<InvGoodsMovementItem> invGoodsMovementItems, Set<InvGoodsReceiptItem> invGoodsReceiptItems, Set<InvItemLevel> invItemLevels, Set<CatalogItem> catalogItems) {
 		this.invItemGroup = invItemGroup;
 		this.code = code;
 		this.name = name;
@@ -58,7 +59,7 @@ public class InvItem implements java.io.Serializable {
 		this.createUser = createUser;
 		this.updateDate = updateDate;
 		this.updateUser = updateUser;
-		this.invStocks = invStocks;
+		this.invStock = invStock;
 		this.catalogs = catalogs;
 		this.invGoodsMovementItems = invGoodsMovementItems;
 		this.invGoodsReceiptItems = invGoodsReceiptItems;
@@ -152,13 +153,13 @@ public class InvItem implements java.io.Serializable {
 		this.updateUser = updateUser;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invItem")
-	public Set<InvStock> getInvStocks() {
-		return this.invStocks;
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "invItem")
+	public InvStock getInvStock() {
+		return this.invStock;
 	}
 
-	public void setInvStocks(Set<InvStock> invStocks) {
-		this.invStocks = invStocks;
+	public void setInvStock(InvStock invStock) {
+		this.invStock = invStock;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invItem")

@@ -5,7 +5,7 @@
 <meta name="menu" content="InvMenu" />
 <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/scripts/datepicker/css/bootstrap-datetimepicker.min.css'/>" />
 <script type="text/javascript" src="<c:url value='/scripts/datepicker/js/bootstrap-datetimepicker.min.js'/>"></script>
-
+<script type="text/javascript" src="<c:url value='/scripts/jquery-lookup.js'/>"></script>
 </head>
 <div class="span2">
 	<h2>
@@ -81,15 +81,26 @@
 			</c:when>
 			<c:otherwise>
 				<%-- form input --%>
+				
+				<spring:bind path="invGoodsReceipt.receiptType">
+					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+						<appfuse:label styleClass="control-label" key="invGoodsReceipt.receiptType" />
+						<div class="controls">
+							<form:select path="receiptType">
+								<form:option value=""></form:option>
+								<form:options items="${goodsReceiptTypeList}" itemLabel="label" itemValue="value"/>
+							</form:select>
+							<form:errors path="receiptType" cssClass="help-inline" />
+						</div>
+					</div>
+				</spring:bind>
 			
 				<spring:bind path="invGoodsReceipt.supplier.code">
 					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 						<appfuse:label styleClass="control-label" key="invGoodsReceipt.supplier.code" />
 						<div class="controls">
-							<form:select path="supplier.code">
-								<form:option value=""></form:option>
-								<form:options items="${supplierList}" itemLabel="name" itemValue="code"/>
-							</form:select>
+							<form:hidden path="supplier.code" id="supplier.code" maxlength="20"/>
+							<form:input path="supplier.name" id="supplier.name" cssClass="input-medium" maxlength="20" autocomplete="off"  data-lookup-key-value="${invGoodsReceipt.supplier.name}"/>
 							<form:errors path="supplier.code" cssClass="help-inline" />
 						</div>
 					</div>
@@ -229,13 +240,38 @@
 <script type="text/javascript">
 <!-- This is here so we can exclude the selectAll call when roles is hidden -->
 	function onFormSubmit(theForm) {	
-		return validateInvGoodsReceipt(theForm);
+		var valid = validateInvGoodsReceipt(theForm);
+		if ($('input[name="receiptType"]').val() == "200" && !bCancel) {
+			valid = checkRequired(theForm['supplier.name'], '<tags:validateMessage errorKey="errors.required" field="invGoodsReceipt.supplier.code"/>') && valid;
+		}
+		return valid;
 	}
 	<c:if  test="${invGoodsReceipt.runningNo == null }">
 	$(function() {
 
 		var st = $('#receiptDateDatepicker').datetimepicker({
 			format : "dd/MM/yyyy hh:mm:ss"
+		});
+	});
+	
+	$(document).ready(function () {
+		$('input[name="supplier.name"]').lookup({
+			type: 'supplier',
+			displayProperty: function (json) {
+				return json.code + ' : ' + json.name;
+			},
+			selectProperty: 'name',
+			btnSearchCondition: function () {
+				return {code: $('input[name="supplier.code"]').val()};	
+			},
+			handler: function (json) {
+				if (json) {
+					$('input[name="supplier.code"]').val(json.code);
+				} else {
+					$('input[name="supplier.code"]').val('');
+					$('input[name="supplier.name"]').val('');
+				}
+			}
 		});
 	});
 	</c:if>

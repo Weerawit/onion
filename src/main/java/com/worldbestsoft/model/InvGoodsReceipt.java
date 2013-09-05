@@ -42,10 +42,6 @@ public class InvGoodsReceipt implements java.io.Serializable {
 	public InvGoodsReceipt() {
 	}
 
-	public InvGoodsReceipt(Supplier supplier) {
-		this.supplier = supplier;
-	}
-
 	public InvGoodsReceipt(Supplier supplier, String runningNo, Date receiptDate, String receiptType, BigDecimal totalCost, String memo, Date createDate, String createUser, Date updateDate, String updateUser, Set<InvGoodsReceiptItem> invGoodsReceiptItems) {
 		this.supplier = supplier;
 		this.runningNo = runningNo;
@@ -72,7 +68,7 @@ public class InvGoodsReceipt implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "supplier_id", nullable = false)
+	@JoinColumn(name = "supplier_id")
 	public Supplier getSupplier() {
 		return this.supplier;
 	}

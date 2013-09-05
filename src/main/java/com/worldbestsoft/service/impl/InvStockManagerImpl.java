@@ -4,22 +4,30 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.worldbestsoft.dao.InvItemDao;
 import com.worldbestsoft.dao.InvItemLevelDao;
 import com.worldbestsoft.dao.InvStockDao;
+import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.InvItemLevel;
 import com.worldbestsoft.model.InvStock;
+import com.worldbestsoft.service.InvItemLevelChangedEvent;
 import com.worldbestsoft.service.InvStockManager;
 
 @Service("invStockManager")
-public class InvStockManagerImpl implements InvStockManager {
+public class InvStockManagerImpl implements InvStockManager, ApplicationContextAware {
 	
 	private InvStockDao invStockDao;
 	private InvItemLevelDao invItemLevelDao;
+	private InvItemDao invItemDao;
+	private ApplicationContext context;
 
 	public InvStockDao getInvStockDao() {
 		return invStockDao;
@@ -38,6 +46,21 @@ public class InvStockManagerImpl implements InvStockManager {
 	public void setInvItemLevelDao(InvItemLevelDao invItemLevelDao) {
 		this.invItemLevelDao = invItemLevelDao;
 	}
+	
+	public InvItemDao getInvItemDao() {
+		return invItemDao;
+	}
+
+	@Autowired
+	public void setInvItemDao(InvItemDao invItemDao) {
+		this.invItemDao = invItemDao;
+	}
+	
+	@Override
+	public void setApplicationContext(ApplicationContext arg0) throws BeansException {
+		this.context = arg0;
+	}
+
 
 	/* (non-Javadoc)
 	 * @see com.worldbestsoft.service.impl.InvStockManager#updateStock(com.worldbestsoft.model.InvItemLevel)
@@ -54,16 +77,22 @@ public class InvStockManagerImpl implements InvStockManager {
 		}
 		invItemLevel.setQtyBefore(invStock.getQty());
 		invItemLevel.setQtyAvailableBefore(invStock.getQtyAvailable());
-		BigDecimal qtyAfter = invStock.getQty().add(invItemLevel.getQtyAdjust());
-		BigDecimal qtyAvailableAfter = invStock.getQtyAvailable().add(invItemLevel.getQtyAvailableAdjust());
-		invItemLevel.setQtyAfter(qtyAfter);
-		invItemLevel.setQtyAvailableAfter(qtyAvailableAfter);
+		if (null != invItemLevel.getQtyAdjust()) {
+			BigDecimal qtyAfter = invStock.getQty().add(invItemLevel.getQtyAdjust());
+			invItemLevel.setQtyAfter(qtyAfter);
+			invStock.setQty(qtyAfter);
+
+		}
+		if (null != invItemLevel.getQtyAvailableAdjust()) {
+			BigDecimal qtyAvailableAfter = invStock.getQtyAvailable().add(invItemLevel.getQtyAvailableAdjust());
+			invItemLevel.setQtyAvailableAfter(qtyAvailableAfter);
+			invStock.setQtyAvailable(qtyAvailableAfter);
+		}
 		invItemLevel = invItemLevelDao.save(invItemLevel);
 		
 		invStock.setUpdateDate(new Date());
 		invStock.setUpdateUser(invItemLevel.getUpdateUser());
-		invStock.setQty(qtyAfter);
-		invStock.setQtyAvailable(qtyAvailableAfter);
+		
 		return invStockDao.save(invStock);
 	}
 	
@@ -77,9 +106,18 @@ public class InvStockManagerImpl implements InvStockManager {
 	    return invStockDao.query(criteria, page, pageSize, sortColumn, order);
     }
 
-	@Override
-    public InvStock save(InvStock object) {
-	    return invStockDao.save(object);
+    public void save(InvStock invStock) {
+		InvItemLevel invItemLevel = new InvItemLevel();
+		invItemLevel.setInvItem(invStock.getInvItem());
+		invItemLevel.setQtyAdjust(invStock.getQty());
+		invItemLevel.setQtyAvailableAdjust(invStock.getQty());
+		invItemLevel.setTransactionDate(new Date());
+		invItemLevel.setUpdateUser(invStock.getUpdateUser());
+		invItemLevel.setRefType(ConstantModel.RefType.ADJUST.getCode());
+		invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+
+		InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
+		context.publishEvent(invItemLevelChangedEvent);
     }
 
 	/**

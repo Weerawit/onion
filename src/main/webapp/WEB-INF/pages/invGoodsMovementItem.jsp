@@ -14,7 +14,7 @@
 		<fmt:message key="invGoodsMovementItem.message" />
 	</p>
 </div>
-<div class="span7">
+<div class="span10">
 	<spring:bind path="invGoodsMovementItem.*">
 		<c:if test="${not empty status.errorMessages}">
 			<div class="alert alert-error fade in">
@@ -88,7 +88,7 @@
 						<appfuse:label styleClass="control-label" key="invGoodsMovementItem.invItem.code" />
 						<div class="controls">
 							<form:hidden path="invItem.code" id="invItem.code" maxlength="20"/>
-							<form:input path="invItem.name" id="invItem.name" cssClass="input-medium" maxlength="20" autocomplete="off"  data-lookup-key-value="${invGoodsMovementItem.invItem.code}"/>
+							<form:input path="invItem.name" id="invItem.name" cssClass="input-medium" maxlength="20" autocomplete="off"  data-lookup-key-value="${invGoodsMovementItem.invItem.name}"/>
 							<form:errors path="invItem.code" cssClass="help-inline" />
 						</div>
 					</div>

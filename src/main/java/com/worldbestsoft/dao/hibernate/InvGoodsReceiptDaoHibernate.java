@@ -27,7 +27,10 @@ public class InvGoodsReceiptDaoHibernate extends GenericDaoHibernate<InvGoodsRec
 		String hsql = "select o from InvGoodsReceipt o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		if (null != criteria) {
-			
+			if (StringUtils.isNotBlank(criteria.getReceiptType())) {
+				hsql += " and o.receiptType = :receiptType";
+				params.put("receiptType", criteria.getReceiptType());
+			}
 			if (null != criteria.getReceiptDateFrom()) {
 				hsql += " and o.receiptDate >= :receiptDateFrom";
 				params.put("receiptDateFrom", criteria.getReceiptDateFrom());
@@ -65,7 +68,10 @@ public class InvGoodsReceiptDaoHibernate extends GenericDaoHibernate<InvGoodsRec
 		String hsql = "select count(*) from InvGoodsReceipt o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		if (null != criteria) {
-			
+			if (StringUtils.isNotBlank(criteria.getReceiptType())) {
+				hsql += " and o.receiptType = :receiptType";
+				params.put("receiptType", criteria.getReceiptType());
+			}
 			if (null != criteria.getReceiptDateFrom()) {
 				hsql += " and o.receiptDate >= :receiptDateFrom";
 				params.put("receiptDateFrom", criteria.getReceiptDateFrom());

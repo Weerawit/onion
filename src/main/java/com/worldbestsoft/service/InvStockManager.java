@@ -15,7 +15,7 @@ public interface InvStockManager {
 
 	public abstract InvStock findByInvItemCode(String invItemCode);
 
-	public abstract InvStock save(InvStock object);
+	public abstract void save(InvStock object);
 
 	public abstract List<InvStock> query(InvStock criteria, int page, int pageSize, String sortColumn, String order);
 
