@@ -82,7 +82,7 @@
 		
 	</div>
 	<display:table name="employeeList" cellspacing="0" cellpadding="0" requestURI="" id="employee"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
-		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" headerClass="span1" class="span1">
+		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
 			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${employee.id}'/>" />
 		</display:column>
 		<display:column property="id" url="/employee?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="employee.id" sortName="id" />

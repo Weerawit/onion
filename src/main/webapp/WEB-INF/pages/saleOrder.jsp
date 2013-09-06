@@ -259,7 +259,9 @@
 			format : "dd/MM/yyyy hh:mm:ss"
 		});
 	});
-
+	
+	
+	<c:if test="${saleOrder.saleOrderNo == null }">
 	$(document).ready(function () {
 		$('input[name="customer.name"]').lookup({
 			type: 'customer',
@@ -294,6 +296,7 @@
 			}
 		});
 	});
+	</c:if>
 
 	
 	

@@ -135,7 +135,7 @@
 			
 		</div>
 		<display:table name="catalogItemList" cellspacing="0" cellpadding="0" requestURI="" id="catalogItem" class="table table-condensed table-striped table-hover table-bordered">
-			<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" headerClass="span1" class="span1">
+			<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
 				<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${catalogItem_rowNum - 1}'/>" />
 			</display:column>
 			<display:column titleKey="catalogItem.invItem.code" sortable="true">

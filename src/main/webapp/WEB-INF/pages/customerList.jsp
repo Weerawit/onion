@@ -95,7 +95,7 @@
 		
 	</div>
 	<display:table name="customerList" cellspacing="0" cellpadding="0" requestURI="" id="customer"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
-		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" headerClass="span1" class="span1">
+		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
 			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${customer.id}'/>" />
 		</display:column>
 		<display:column property="id" url="/customer?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="customer.id" sortName="id" />
