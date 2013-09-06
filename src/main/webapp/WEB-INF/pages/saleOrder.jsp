@@ -161,20 +161,38 @@
 				<fmt:message key="button.save" />
 			</button>
 
-			<c:if test="${param.from == 'list' and param.method != 'Add'}">
-				<button type="submit" class="btn" name="delete" onclick="bCancel=true;return confirmMessage(msgDelConfirm)">
-					<i class="icon-trash"></i>
-					<fmt:message key="button.delete" />
-				</button>
-			</c:if>
-			
 			<c:if test="${saleOrder.id != null}">
 				<c:choose>
-				<c:when test="${saleOrder.paymentStatus != '3' }">
-					<a class="btn btn-info" href="<c:url value='/saleReceipt?method=Add&from=list&saleOrderNo=${saleOrder.saleOrderNo}'/>"><fmt:formatNumber value="${saleOrder.totalPrice - saleOrder.paymentPaid }" pattern="#,##0.00"/></a>
-				</c:when>
-			</c:choose>
+					<c:when test="${saleOrder.paymentStatus != '3' }">
+						<a class="btn btn-info" href="<c:url value='/saleReceipt?method=Add&from=list&saleOrderNo=${saleOrder.saleOrderNo}'/>">
+						<i class="icon-tag"></i>
+						<fmt:formatNumber value="${saleOrder.totalPrice - saleOrder.paymentPaid }" pattern="#,##0.00"/>
+						</a>
+					</c:when>
+				</c:choose>
 				
+				<c:choose>
+					<c:when test="${saleOrder.status == 'A' }">
+						<button type="submit" class="btn" name="delete" onclick="bCancel=true;return validateCancel()">
+							<i class="icon-trash"></i>
+							<fmt:message key="button.delete" />
+						</button>
+						<button type="button" class="btn" name="deliveryBtn" onclick="bCancel=true;return delivery()">
+							<i class="icon-tasks"></i>
+							<fmt:message key="button.delivery" />
+						</button>
+					</c:when>
+					<c:when test="${saleOrder.status == 'D' }">
+						<button type="submit" class="btn disabled" name="delete" disabled="disabled">
+							<i class="icon-trash"></i>
+							<fmt:message key="button.delete" />
+						</button>
+						<button type="button" class="btn disabled" name="deliveryBtn" disabled="disabled">
+							<i class="icon-tasks"></i>
+							<fmt:message key="button.delivery" />
+						</button>
+					</c:when>
+				</c:choose>
 			</c:if>
 			
 
@@ -186,10 +204,54 @@
 	</form:form>
 
 </div>
+
+<div class="modal hide fade" id="cancelReasonDialog">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3><fmt:message key="saleOrder.cancelReason"/></h3>
+	</div>
+	<div class="modal-body">
+		<div class="control-group">
+		<div class="controls">
+			<textarea class="input-xlarge" name="cancelReasonArea" id="cancelReasonArea"></textarea>
+		</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal"><fmt:message key="button.close"/></a> <a class="btn btn-primary" onclick="cancel()"><fmt:message key="button.save"/></a>
+	</div>
+</div>
+
 <script type="text/javascript">
 <!-- This is here so we can exclude the selectAll call when roles is hidden -->
 	function onFormSubmit(theForm) {
 		return validateSaleOrder(theForm);
+	}
+	
+	function validateCancel() {
+		$('#cancelReasonDialog').show(function () {
+			$(this).find('.control-group').removeClass('error');
+    			$(this).find('.help-inline').remove();
+		});
+		$('#cancelReasonDialog').modal();
+		
+		return false;
+	}
+	
+	function cancel() {
+		var form = document.forms['saleOrder'];
+		//since cancelReasonArea is not in form, using get(0) to convert to read object
+		if (checkRequired($('#cancelReasonArea').get(0), '<tags:validateMessage errorKey="errors.required" field="saleOrder.cancelReason"/>')) {
+			form["cancelReason"].value = $('#cancelReasonArea').val();
+			form['action'].value="delete";
+			form.submit();
+		}
+	}
+	
+	function delivery() {
+		var form = document.forms['saleOrder'];
+		form['action'].value="delivery";
+		form.submit();
 	}
 	
 	$(function() {
@@ -244,6 +306,10 @@
 				var fnLoad = function() {
 					self.pageLoadedHandler.call(self);
 				};
+				
+				var getLink = function() {
+					return self.getLink();	
+				};
 				<c:if test="${saleOrder.saleOrderNo == null }">
 				//register popup
 				$('input[name="catalog.name"]').each(function(i) {
@@ -265,7 +331,7 @@
 								$('input[name="catalog.code"]:eq(' + i + ')').val(json.code);
 								//index of whole list
 								var index = $('input[name="checkbox"]:eq(' + i + ')').val();
-								var url = '${ctx}/saleOrder/updateRow' + $(self).data('link');
+								var url = '${ctx}/saleOrder/updateRow' + getLink();
 								$.post(url, {'index' : index, 'qty' : 1, 'pricePerUnit' : json.finalPrice, 'catalog.code' : json.code}, function(data) {
 									$('#tableDiv').html(data);
 									fnLoad();
@@ -276,7 +342,7 @@
 								$('input[name="catalog.code"]:eq(' + i + ')').val('');
 								//index of whole list
 								var index = $('input[name="checkbox"]:eq(' + i + ')').val();
-								var url = '${ctx}/saleOrder/updateRow' + $(self).data('link');
+								var url = '${ctx}/saleOrder/updateRow' + getLink();
 								$.post(url, {'index' : index, 'qty' : 1, 'pricePerUnit' : '', 'catalog.code' : ''}, function(data) {
 									$('#tableDiv').html(data);
 									fnLoad();
@@ -293,7 +359,7 @@
 				//register button add & delete
 				$('#addDetailBtn').off();
 				$('#addDetailBtn').on('click', function () {
-					$.post('${ctx}/saleOrder/addRow?ajax=true', $.extend({}, $(self).data('link')), function(data) {
+					$.post('${ctx}/saleOrder/addRow?ajax=true', $.extend({}, getLink()), function(data) {
 						$('#tableDiv').html(data);
 						fnLoad();
 					});
@@ -307,7 +373,7 @@
 					}
 					confirmMessage('<fmt:message key="global.confirm.delete"/>', function(result) {
 						if (result) {
-							var url = '${ctx}/saleOrder/deleteRow' + $(self).data('link');
+							var url = '${ctx}/saleOrder/deleteRow' + getLink();
 							$.post(url, $('#saleOrderItemForm').serialize(), function(data) {
 								$('#tableDiv').html(data);
 								fnLoad();
@@ -319,7 +385,7 @@
 				//calculate qty
 				$('#saleOrderItemForm input[name="qty"], #saleOrderItemForm input[name="pricePerUnit"]').each(function(i) {
 					$(this).on('focusout', function() {
-						var url = '${ctx}/saleOrder/updateRow' + $(self).data('link');
+						var url = '${ctx}/saleOrder/updateRow' + getLink();
 						$.post(url, $('#saleOrderItemForm').serialize(), function(data) {
 							$('#tableDiv').html(data);
 							fnLoad();

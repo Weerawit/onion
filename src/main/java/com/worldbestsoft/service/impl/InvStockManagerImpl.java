@@ -76,18 +76,21 @@ public class InvStockManagerImpl implements InvStockManager, ApplicationContextA
 			invStock.setQtyAvailable(BigDecimal.ZERO);
 		}
 		invItemLevel.setQtyBefore(invStock.getQty());
-		invItemLevel.setQtyAvailableBefore(invStock.getQtyAvailable());
+		BigDecimal qtyAfter = invStock.getQty();
 		if (null != invItemLevel.getQtyAdjust()) {
-			BigDecimal qtyAfter = invStock.getQty().add(invItemLevel.getQtyAdjust());
-			invItemLevel.setQtyAfter(qtyAfter);
-			invStock.setQty(qtyAfter);
-
+			qtyAfter = invStock.getQty().add(invItemLevel.getQtyAdjust());
 		}
+		invItemLevel.setQtyAfter(qtyAfter);
+		invStock.setQty(qtyAfter);
+		
+		invItemLevel.setQtyAvailableBefore(invStock.getQtyAvailable());
+		BigDecimal qtyAvailableAfter = invStock.getQtyAvailable();
 		if (null != invItemLevel.getQtyAvailableAdjust()) {
-			BigDecimal qtyAvailableAfter = invStock.getQtyAvailable().add(invItemLevel.getQtyAvailableAdjust());
-			invItemLevel.setQtyAvailableAfter(qtyAvailableAfter);
-			invStock.setQtyAvailable(qtyAvailableAfter);
+			qtyAvailableAfter = invStock.getQtyAvailable().add(invItemLevel.getQtyAvailableAdjust());
 		}
+		invItemLevel.setQtyAvailableAfter(qtyAvailableAfter);
+		invStock.setQtyAvailable(qtyAvailableAfter);
+		
 		invItemLevel = invItemLevelDao.save(invItemLevel);
 		
 		invStock.setUpdateDate(new Date());

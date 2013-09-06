@@ -70,6 +70,11 @@
 			}
 		},
 		
+		getLink : function() {
+			var self = this._self, element = this.element;
+			return $(self).data('link');
+		},
+		
 		ajaxDisplayTagLoadHandler : function() {
 			var self = this._self, element = this.element;
 			$(element).find("table th.sortable").each(function() {

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.worldbestsoft.model.Catalog;
+import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.Customer;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleOrderItem;
@@ -146,6 +147,10 @@ public class SaleOrderFormController extends BaseFormController {
 			getSaleOrderManager().remove(saleOrderForm.getId(), request.getRemoteUser(), saleOrderForm.getCancelReason());
 			saveMessage(request, getText("saleOrder.deleted", saleOrderForm.getSaleOrderNo(), locale));
 			return new ModelAndView("redirect:/saleOrderList");
+		}  else if (StringUtils.equalsIgnoreCase("delivery", request.getParameter("action"))) {
+			getSaleOrderManager().delivery(saleOrderForm.getId());
+			saveMessage(request, getText("saleOrder.delivery", saleOrderForm.getSaleOrderNo(), locale));
+			return new ModelAndView("redirect:/saleOrderList");
 		} else {
 
 			if (null == saleOrderForm.getId()) {
@@ -155,7 +160,6 @@ public class SaleOrderFormController extends BaseFormController {
 				saleOrder.setPaymentPaid(BigDecimal.ZERO);
 				saleOrder.setCreateDate(new Date());
 				saleOrder.setCreateUser(request.getRemoteUser());
-				
 				
 				saleOrder = getSaleOrderManager().save(saleOrder, saleOrderSession.getSaleOrderItems());
 

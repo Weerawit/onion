@@ -20,8 +20,6 @@ import com.worldbestsoft.dao.SaleOrderItemDao;
 import com.worldbestsoft.dao.hibernate.JobOrderDao;
 import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.InvItemLevel;
-import com.worldbestsoft.model.InvStock;
-import com.worldbestsoft.model.JobOrder;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleOrderItem;
 import com.worldbestsoft.model.SaleReceipt;
@@ -134,6 +132,29 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
     public List<SaleOrderItem> findBySaleOrder(Long id) {
 	    return saleOrderItemDao.findBySaleOrder(id);
     }
+	
+	@Override
+    public SaleOrder delivery(Long saleOrderId) {
+		SaleOrder saleOrder = saleOrderDao.get(saleOrderId);
+		saleOrder.setStatus(ConstantModel.SaleOrderStatus.DELIVERY.getCode());
+		saleOrder = saleOrderDao.save(saleOrder);
+		List<SaleOrderItem> saleOrderItemList = saleOrderItemDao.findBySaleOrder(saleOrder.getId());
+		
+		for (SaleOrderItem saleOrderItem : saleOrderItemList) {
+			InvItemLevel invItemLevel = new InvItemLevel();
+			invItemLevel.setInvItem(saleOrderItem.getCatalog().getInvItem());
+			invItemLevel.setQtyAdjust(saleOrderItem.getQty().multiply(BigDecimal.valueOf(-1)));
+			invItemLevel.setTransactionDate(new Date());
+			invItemLevel.setUpdateUser(saleOrder.getCreateUser());
+			invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+			invItemLevel.setRefDocument(saleOrder.getSaleOrderNo());
+			invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
+			
+			InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
+			context.publishEvent(invItemLevelChangedEvent);
+		}
+		return saleOrder;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.worldbestsoft.service.impl.SaleOrderManager#save(com.worldbestsoft.model.SaleOrder, java.util.Collection)
@@ -177,6 +198,7 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 			
 			saleOrder = saleOrderDao.save(saleOrder);
 		} else {
+			saleOrder.setStatus(ConstantModel.SaleOrderStatus.ACTIVE.getCode());
 			SaleOrder saleOrderSave = saleOrderDao.save(saleOrder);
 			
 			//get document number
@@ -197,50 +219,64 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 					saleOrderItem.setSaleOrder(saleOrderSave);
 					saleOrderItem = saleOrderItemDao.save(saleOrderItem);
 					
-					//check stock
-					InvStock invStock = invStockManager.findByInvItemCode(saleOrderItem.getCatalog().getInvItem().getCode());
-					//not in stock and qty less than current in stock
-					BigDecimal currentQtyInStock = BigDecimal.ZERO;
-					if (null != invStock) {
-						currentQtyInStock = invStock.getQty();
-					}
-					BigDecimal qtyStockAfter = currentQtyInStock.subtract(saleOrderItem.getQty());
 					
-					if (qtyStockAfter.compareTo(BigDecimal.ZERO) < 0) {
-						//need to create job
-						int size = qtyStockAfter.intValue() * -1; //make it > 0
-						for (int i = 0; i < size; i++) {
-							//create job
-							JobOrder jobOrder = new JobOrder();
-							jobOrder.setSaleOrderItem(saleOrderItem);
-							jobOrder.setEndDate(saleOrder.getDeliveryDate());
-							jobOrder.setStatus(ConstantModel.JobOrderStatus.NEW.getCode());
-							jobOrderDao.save(jobOrder);
-						}
-						//remove from stock all current qty
-						InvItemLevel invItemLevel = new InvItemLevel();
-						invItemLevel.setInvItem(saleOrderItem.getCatalog().getInvItem());
-						invItemLevel.setQtyAvailableAdjust(currentQtyInStock.multiply(BigDecimal.valueOf(-1)));
-						invItemLevel.setTransactionDate(new Date());
-						invItemLevel.setRefDocument(saleOrderSave.getSaleOrderNo());
-						invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
-
-
-						InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
-						context.publishEvent(invItemLevelChangedEvent);
-					} else {
-						//remoe from stock only
-						//remove from stock all current qty
-						InvItemLevel invItemLevel = new InvItemLevel();
-						invItemLevel.setInvItem(saleOrderItem.getCatalog().getInvItem());
-						invItemLevel.setQtyAvailableAdjust(saleOrderItem.getQty().multiply(BigDecimal.valueOf(-1)));
-						invItemLevel.setTransactionDate(new Date());
-						invItemLevel.setRefDocument(saleOrderSave.getSaleOrderNo());
-						invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
-
-						InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
-						context.publishEvent(invItemLevelChangedEvent);
-					}
+					InvItemLevel invItemLevel = new InvItemLevel();
+					invItemLevel.setInvItem(saleOrderItem.getCatalog().getInvItem());
+					invItemLevel.setQtyAvailableAdjust(saleOrderItem.getQty().multiply(BigDecimal.valueOf(-1)));
+					invItemLevel.setTransactionDate(new Date());
+					invItemLevel.setUpdateUser(saleOrder.getCreateUser());
+					invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.RESERVED.getCode());
+					invItemLevel.setRefDocument(saleOrderSave.getSaleOrderNo());
+					invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
+					
+					InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
+					context.publishEvent(invItemLevelChangedEvent);
+					
+//					//check stock
+//					InvStock invStock = invStockManager.findByInvItemCode(saleOrderItem.getCatalog().getInvItem().getCode());
+//					//not in stock and qty less than current in stock
+//					BigDecimal currentQtyInStock = BigDecimal.ZERO;
+//					if (null != invStock) {
+//						currentQtyInStock = invStock.getQtyAvailable();
+//					}
+//					BigDecimal qtyStockAfter = currentQtyInStock.subtract(saleOrderItem.getQty());
+//					
+//					if (qtyStockAfter.compareTo(BigDecimal.ZERO) < 0) {
+//						//need to create job
+//						int size = qtyStockAfter.intValue() * -1; //make it > 0
+//						for (int i = 0; i < size; i++) {
+//							//create job
+//							JobOrder jobOrder = new JobOrder();
+//							jobOrder.setSaleOrderItem(saleOrderItem);
+//							jobOrder.setEndDate(saleOrder.getDeliveryDate());
+//							jobOrder.setStatus(ConstantModel.JobOrderStatus.NEW.getCode());
+//							jobOrderDao.save(jobOrder);
+//						}
+//						//remove from stock all current qty
+//						InvItemLevel invItemLevel = new InvItemLevel();
+//						invItemLevel.setInvItem(saleOrderItem.getCatalog().getInvItem());
+//						invItemLevel.setQtyAvailableAdjust(currentQtyInStock.multiply(BigDecimal.valueOf(-1)));
+//						invItemLevel.setTransactionDate(new Date());
+//						invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.RESERVED.getCode());
+//						invItemLevel.setRefDocument(saleOrderSave.getSaleOrderNo());
+//						invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
+//
+//
+//						InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
+//						context.publishEvent(invItemLevelChangedEvent);
+//					} else {
+//						//remoe from stock only
+//						//remove from stock all current qty
+//						InvItemLevel invItemLevel = new InvItemLevel();
+//						invItemLevel.setInvItem(saleOrderItem.getCatalog().getInvItem());
+//						invItemLevel.setQtyAvailableAdjust(saleOrderItem.getQty().multiply(BigDecimal.valueOf(-1)));
+//						invItemLevel.setTransactionDate(new Date());
+//						invItemLevel.setRefDocument(saleOrderSave.getSaleOrderNo());
+//						invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
+//
+//						InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
+//						context.publishEvent(invItemLevelChangedEvent);
+//					}
 					
 				}
 			}
