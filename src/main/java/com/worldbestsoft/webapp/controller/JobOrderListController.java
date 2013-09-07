@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.worldbestsoft.model.Catalog;
 import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.JobOrder;
 import com.worldbestsoft.model.SaleOrder;
@@ -64,10 +65,12 @@ public class JobOrderListController extends BaseFormController {
 			criteria.setEmployee(employee);
 		}
 		SaleOrder saleOrder = new SaleOrder();
-		saleOrder.setSaleOrderNo(request.getParameter("saleOrderItem.saleOrder.saleOrderNo"));
-		SaleOrderItem saleOrderItem = new SaleOrderItem();
-		saleOrderItem.setSaleOrder(saleOrder);
-		criteria.setSaleOrderItem(saleOrderItem);
+		saleOrder.setSaleOrderNo(request.getParameter("saleOrder.saleOrderNo"));
+		criteria.setSaleOrder(saleOrder);
+		
+		Catalog  catalog = new Catalog();
+		catalog.setCode(request.getParameter("catalog.code"));
+		criteria.setCatalog(catalog);
 		
 		String startTime = request.getParameter("startDateFrom");
 		String endTime = request.getParameter("startDateTo");
@@ -90,12 +93,12 @@ public class JobOrderListController extends BaseFormController {
 			return new ModelAndView("jobOrderList", model.asMap());
 		}
 		
-		startTime = request.getParameter("endDateFrom");
-		endTime = request.getParameter("endDateTo");
+		startTime = request.getParameter("targetEndDateFrom");
+		endTime = request.getParameter("targetEndDateTo");
 		try {
 			if (StringUtils.isNotBlank(startTime)) {
 				Date startTimeDate = DateUtils.parseDateStrictly(startTime, DATE_PATTERN);
-				criteria.setEndDateFrom(startTimeDate);
+				criteria.setTargetEndDateFrom(startTimeDate);
 			}
 		} catch (ParseException e) {
 			saveError(request, getText("errors.date", new Object[] { startTime }, request.getLocale()));
@@ -104,7 +107,7 @@ public class JobOrderListController extends BaseFormController {
 		try {
 			if (StringUtils.isNotBlank(endTime)) {
 				Date endTimeDate = DateUtils.parseDate(endTime, DATE_PATTERN);
-				criteria.setEndDateTo(endTimeDate);
+				criteria.setTargetEndDateTo(endTimeDate);
 			}
 		} catch (ParseException e) {
 			saveError(request, getText("errors.date", new Object[] { endTime }, request.getLocale()));

@@ -30,13 +30,13 @@ public class JobOrderDaoHibernate extends GenericDaoHibernate<JobOrder, Long> im
 				hsql += " and o.employee.id = :employeeId";
 				params.put("employeeId", criteria.getEmployee().getId());
 			}
-			if (null != criteria.getSaleOrderItem() && null != criteria.getSaleOrderItem().getSaleOrder() && StringUtils.isNotBlank(criteria.getSaleOrderItem().getSaleOrder().getSaleOrderNo())) {
-				hsql += " and o.saleOrderItem.saleOrder.saleOrderNo = :saleOrderNo";
-				params.put("saleOrderNo", criteria.getSaleOrderItem().getSaleOrder().getSaleOrderNo());
+			if (null != criteria.getSaleOrder() && StringUtils.isNotBlank(criteria.getSaleOrder().getSaleOrderNo())) {
+				hsql += " and o.saleOrder.saleOrderNo = :saleOrderNo";
+				params.put("saleOrderNo", criteria.getSaleOrder().getSaleOrderNo());
 			}
-			if (null != criteria.getSaleOrderItem() && null != criteria.getSaleOrderItem().getCatalog() && StringUtils.isNotBlank(criteria.getSaleOrderItem().getCatalog().getCode())) {
-				hsql += " and o.saleOrderItem.catalog = :catalogCode";
-				params.put("catalogCode", criteria.getSaleOrderItem().getCatalog().getCode());
+			if (null != criteria.getCatalog() && null != criteria.getCatalog() && StringUtils.isNotBlank(criteria.getCatalog().getCode())) {
+				hsql += " and o.catalog = :catalogCode";
+				params.put("catalogCode", criteria.getCatalog().getCode());
 			}
 			
 			if (null != criteria.getStartDateFrom()) {
@@ -48,13 +48,13 @@ public class JobOrderDaoHibernate extends GenericDaoHibernate<JobOrder, Long> im
 				params.put("startDateTo", criteria.getStartDateTo());
 			}
 			
-			if (null != criteria.getEndDateFrom()) {
-				hsql += " and o.endDate >= :endDateFrom";
-				params.put("endDateFrom", criteria.getEndDateFrom());
+			if (null != criteria.getTargetEndDateFrom()) {
+				hsql += " and o.targetEndDate >= :targetEndDateFrom";
+				params.put("targetEndDateFrom", criteria.getTargetEndDateFrom());
 			}
 			if (null != criteria.getStartDateTo()) {
-				hsql += " and o.endDate <= :endDateTo";
-				params.put("endDateTo", criteria.getEndDateTo());
+				hsql += " and o.targetEndDate <= :targetEndDateTo";
+				params.put("targetEndDateTo", criteria.getTargetEndDateTo());
 			}
 			if (StringUtils.isNotBlank(criteria.getStatus())) {
 				hsql += " and o.status = :status";
@@ -85,13 +85,13 @@ public class JobOrderDaoHibernate extends GenericDaoHibernate<JobOrder, Long> im
 				hsql += " and o.employee.id = :employeeId";
 				params.put("employeeId", criteria.getEmployee().getId());
 			}
-			if (null != criteria.getSaleOrderItem() && null != criteria.getSaleOrderItem().getSaleOrder() && StringUtils.isNotBlank(criteria.getSaleOrderItem().getSaleOrder().getSaleOrderNo())) {
-				hsql += " and o.saleOrderItem.saleOrder.saleOrderNo = :saleOrderNo";
-				params.put("saleOrderNo", criteria.getSaleOrderItem().getSaleOrder().getSaleOrderNo());
+			if (null != criteria.getSaleOrder() && StringUtils.isNotBlank(criteria.getSaleOrder().getSaleOrderNo())) {
+				hsql += " and o.saleOrder.saleOrderNo = :saleOrderNo";
+				params.put("saleOrderNo", criteria.getSaleOrder().getSaleOrderNo());
 			}
-			if (null != criteria.getSaleOrderItem() && null != criteria.getSaleOrderItem().getCatalog() && StringUtils.isNotBlank(criteria.getSaleOrderItem().getCatalog().getCode())) {
-				hsql += " and o.saleOrderItem.catalog = :catalogCode";
-				params.put("catalogCode", criteria.getSaleOrderItem().getCatalog().getCode());
+			if (null != criteria.getCatalog() && null != criteria.getCatalog() && StringUtils.isNotBlank(criteria.getCatalog().getCode())) {
+				hsql += " and o.catalog = :catalogCode";
+				params.put("catalogCode", criteria.getCatalog().getCode());
 			}
 			
 			if (null != criteria.getStartDateFrom()) {
@@ -103,13 +103,13 @@ public class JobOrderDaoHibernate extends GenericDaoHibernate<JobOrder, Long> im
 				params.put("startDateTo", criteria.getStartDateTo());
 			}
 			
-			if (null != criteria.getEndDateFrom()) {
-				hsql += " and o.endDate >= :endDateFrom";
-				params.put("endDateFrom", criteria.getEndDateFrom());
+			if (null != criteria.getTargetEndDateFrom()) {
+				hsql += " and o.targetEndDate >= :targetEndDateFrom";
+				params.put("targetEndDateFrom", criteria.getTargetEndDateFrom());
 			}
 			if (null != criteria.getStartDateTo()) {
-				hsql += " and o.endDate <= :endDateTo";
-				params.put("endDateTo", criteria.getEndDateTo());
+				hsql += " and o.targetEndDate <= :targetEndDateTo";
+				params.put("targetEndDateTo", criteria.getTargetEndDateTo());
 			}
 			if (StringUtils.isNotBlank(criteria.getStatus())) {
 				hsql += " and o.status = :status";

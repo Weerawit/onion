@@ -9,8 +9,8 @@ import com.worldbestsoft.model.SaleOrderItem;
 public class JobOrderCriteria extends JobOrder {
 	private Date startDateFrom;
 	private Date startDateTo;
-	private Date endDateFrom;
-	private Date endDateTo;
+	private Date targetEndDateFrom;
+	private Date targetEndDateTo;
 	public Date getStartDateFrom() {
 		return startDateFrom;
 	}
@@ -23,17 +23,17 @@ public class JobOrderCriteria extends JobOrder {
 	public void setStartDateTo(Date startDateTo) {
 		this.startDateTo = startDateTo;
 	}
-	public Date getEndDateFrom() {
-		return endDateFrom;
+	public Date getTargetEndDateFrom() {
+		return targetEndDateFrom;
 	}
-	public void setEndDateFrom(Date endDateFrom) {
-		this.endDateFrom = endDateFrom;
+	public void setTargetEndDateFrom(Date targetEndDateFrom) {
+		this.targetEndDateFrom = targetEndDateFrom;
 	}
-	public Date getEndDateTo() {
-		return endDateTo;
+	public Date getTargetEndDateTo() {
+		return targetEndDateTo;
 	}
-	public void setEndDateTo(Date endDateTo) {
-		this.endDateTo = endDateTo;
+	public void setTargetEndDateTo(Date targetEndDateTo) {
+		this.targetEndDateTo = targetEndDateTo;
 	}
 	
 	

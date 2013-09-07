@@ -1,20 +1,19 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 23, 2013 9:54:03 PM by Hibernate Tools 4.0.0
+// Generated Sep 7, 2013 8:08:08 AM by Hibernate Tools 4.0.0
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
-import javax.persistence.Basic;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -43,6 +42,7 @@ public class Catalog implements java.io.Serializable {
 	private String createUser;
 	private Date createDate;
 	private String updateUser;
+	private Set<JobOrder> jobOrders = new HashSet<JobOrder>(0);
 	private Set<CatalogItem> catalogItems = new HashSet<CatalogItem>(0);
 	private Set<SaleOrderItem> saleOrderItems = new HashSet<SaleOrderItem>(0);
 
@@ -54,7 +54,7 @@ public class Catalog implements java.io.Serializable {
 		this.catalogType = catalogType;
 	}
 
-	public Catalog(InvItem invItem, CatalogType catalogType, String code, String name, BigDecimal finalPrice, BigDecimal estPrice, byte[] img, Date updateDate, String createUser, Date createDate, String updateUser, Set<CatalogItem> catalogItems, Set<SaleOrderItem> saleOrderItems) {
+	public Catalog(InvItem invItem, CatalogType catalogType, String code, String name, BigDecimal finalPrice, BigDecimal estPrice, byte[] img, Date updateDate, String createUser, Date createDate, String updateUser, Set<JobOrder> jobOrders, Set<CatalogItem> catalogItems, Set<SaleOrderItem> saleOrderItems) {
 		this.invItem = invItem;
 		this.catalogType = catalogType;
 		this.code = code;
@@ -66,6 +66,7 @@ public class Catalog implements java.io.Serializable {
 		this.createUser = createUser;
 		this.createDate = createDate;
 		this.updateUser = updateUser;
+		this.jobOrders = jobOrders;
 		this.catalogItems = catalogItems;
 		this.saleOrderItems = saleOrderItems;
 	}
@@ -184,6 +185,15 @@ public class Catalog implements java.io.Serializable {
 
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "catalog")
+	public Set<JobOrder> getJobOrders() {
+		return this.jobOrders;
+	}
+
+	public void setJobOrders(Set<JobOrder> jobOrders) {
+		this.jobOrders = jobOrders;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "catalog")

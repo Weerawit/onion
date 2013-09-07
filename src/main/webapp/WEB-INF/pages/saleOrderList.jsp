@@ -104,12 +104,12 @@
 	<div id="actions">
 		<a class="btn btn-primary" href="<c:url value='/saleOrder?method=Add&from=list'/>"> <i class="icon-plus icon-white"></i> <fmt:message key="button.add" />
 		</a>
-
+	<%--
 		<button id="button.delete" class="btn" type="submit">
 			<i class="icon-trash"></i>
 			<fmt:message key="button.delete" />
 		</button>
-
+ 	--%>
 		<a class="btn" href="<c:url value='/mainMenu'/>"> <i class="icon-ok"></i> <fmt:message key="button.done" /></a>
 		
 	</div>
@@ -123,13 +123,16 @@
 		
 		<display:column escapeXml="false" sortable="true" titleKey="saleOrder.paymentPaid" sortName="paymentPaid">
 			<c:choose>
-				<c:when test="${saleOrder.paymentStatus != '3' }">
+				<c:when test="${saleOrder.paymentStatus != '3'}">
 					<a class="btn btn-small btn-primary" href="<c:url value='/saleReceipt?method=Add&from=list&saleOrderNo=${saleOrder.saleOrderNo}'/>"><fmt:formatNumber value="${saleOrder.totalPrice - saleOrder.paymentPaid }" pattern="#,##0.00"/></a>
 				</c:when>
 				<c:otherwise>
 					<fmt:formatNumber value="${saleOrder.paymentPaid }" pattern="#,##0.00"/>
 				</c:otherwise>
 			</c:choose>
+		</display:column>
+		<display:column escapeXml="true" sortable="true" titleKey="saleOrder.status" sortName="status" >
+			<tags:labelValue value="${saleOrder.status}" list="${saleOrderStatusList}"></tags:labelValue>
 		</display:column>
 		<display:setProperty name="export.csv" value="true"></display:setProperty>
 		<display:setProperty name="export.excel" value="true"></display:setProperty>

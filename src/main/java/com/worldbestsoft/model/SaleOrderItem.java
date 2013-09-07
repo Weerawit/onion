@@ -1,11 +1,9 @@
 package com.worldbestsoft.model;
 
-// Generated Jul 24, 2013 12:06:40 PM by Hibernate Tools 4.0.0
+// Generated Sep 6, 2013 7:28:59 PM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +12,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,7 +33,6 @@ public class SaleOrderItem implements java.io.Serializable {
 	private String createUser;
 	private Date updateDate;
 	private String updateUser;
-	private Set<JobOrder> jobOrders = new HashSet<JobOrder>(0);
 
 	public SaleOrderItem() {
 	}
@@ -46,7 +42,7 @@ public class SaleOrderItem implements java.io.Serializable {
 		this.catalog = catalog;
 	}
 
-	public SaleOrderItem(SaleOrder saleOrder, Catalog catalog, BigDecimal qty, BigDecimal pricePerUnit, BigDecimal price, Date createDate, String createUser, Date updateDate, String updateUser, Set<JobOrder> jobOrders) {
+	public SaleOrderItem(SaleOrder saleOrder, Catalog catalog, BigDecimal qty, BigDecimal pricePerUnit, BigDecimal price, Date createDate, String createUser, Date updateDate, String updateUser) {
 		this.saleOrder = saleOrder;
 		this.catalog = catalog;
 		this.qty = qty;
@@ -56,7 +52,6 @@ public class SaleOrderItem implements java.io.Serializable {
 		this.createUser = createUser;
 		this.updateDate = updateDate;
 		this.updateUser = updateUser;
-		this.jobOrders = jobOrders;
 	}
 
 	@Id
@@ -153,15 +148,6 @@ public class SaleOrderItem implements java.io.Serializable {
 
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "saleOrderItem")
-	public Set<JobOrder> getJobOrders() {
-		return this.jobOrders;
-	}
-
-	public void setJobOrders(Set<JobOrder> jobOrders) {
-		this.jobOrders = jobOrders;
 	}
 
 }

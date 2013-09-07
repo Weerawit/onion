@@ -37,6 +37,7 @@
 		<form:hidden path="id" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
 		<form:hidden path="saleOrderNo" />
+		<input type="hidden" name="cancelReason"/>
 		<input type="hidden" name="action"/>
 	
 		<div class="well">
@@ -123,37 +124,75 @@
 			</div>
 		</spring:bind>
 		
-		<div class="well">
-			<div class="row-fluid">
-				<span class="span6">
-					<spring:bind path="saleOrder.paymentType">
-					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-						<appfuse:label styleClass="control-label" key="saleOrder.paymentType" />
-						<div class="controls">
-							<form:select path="paymentType">
-								<form:option value=""></form:option>
-								<form:options items="${paymentTypeList}" itemLabel="label" itemValue="value" />
-							</form:select>
-							<form:errors path="paymentType" cssClass="help-inline" />
+		<c:choose>
+			<c:when test="${saleOrder.status == 'A' }">
+				<div class="well">
+					<div class="row-fluid">
+						<div class="span6">
+							<spring:bind path="saleOrder.paymentType">
+							<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+								<appfuse:label styleClass="control-label" key="saleOrder.paymentType" />
+								<div class="controls">
+									<form:select path="paymentType">
+										<form:option value=""></form:option>
+										<form:options items="${paymentTypeList}" itemLabel="label" itemValue="value" />
+									</form:select>
+									<form:errors path="paymentType" cssClass="help-inline" />
+								</div>
+							</div>
+							</spring:bind>
+						</div>
+						<div class="span6">
+							<spring:bind path="saleOrder.deliveryDate">
+								<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+									<appfuse:label styleClass="control-label" key="saleOrder.deliveryDate" />
+									<div class="controls">
+										<div class="input-append date" id="deliveryDateDatepicker">
+											<form:input path="deliveryDate" id="deliveryDate" cssClass="input-medium" maxlength="50" /><span class="add-on"><i class="icon-th"></i></span>
+										</div>
+										<form:errors path="deliveryDate" cssClass="help-inline" />
+									</div>
+								</div>
+							</spring:bind>
 						</div>
 					</div>
-				</spring:bind>
-				</span>
-				<span class="span6">
-					<spring:bind path="saleOrder.deliveryDate">
-						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="saleOrder.deliveryDate" />
-							<div class="controls">
-								<div class="input-append date" id="deliveryDateDatepicker">
-									<form:input path="deliveryDate" id="deliveryDate" cssClass="input-medium" maxlength="50" /><span class="add-on"><i class="icon-th"></i></span>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="well">
+					<div class="row-fluid">
+						<div class="span6">
+							<div class="control-group">
+								<appfuse:label styleClass="control-label" key="saleOrder.paymentType" />
+								<div class="controls">
+									<span class="input-medium uneditable-input"><tags:labelValue value="${saleOrder.paymentType}" list="${paymentTypeList}"/> </span>
 								</div>
-								<form:errors path="deliveryDate" cssClass="help-inline" />
 							</div>
 						</div>
-					</spring:bind>
-				</span>
-			</div>
-		</div>
+						<div class="span6">
+							<div class="control-group">
+								<appfuse:label styleClass="control-label" key="saleOrder.deliveryDate" />
+								<div class="controls">
+									<span class="input-medium uneditable-input"><fmt:formatDate value="${saleOrder.deliveryDate}" pattern="dd/MM/yyyy HH:mm:ss" /></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<c:if test="${saleOrder.status == 'C' }">
+					<div class="row-fluid">
+						<div class="span6">
+							<div class="control-group">
+								<appfuse:label styleClass="control-label" key="saleOrder.cancelReason" />
+								<div class="controls">
+									<span class="input-xlarge uneditable-input"><c:out value="${saleOrder.cancelReason }"/> </span>
+								</div>
+							</div>
+						</div>
+					</div>
+					</c:if>
+				</div>
+			</c:otherwise>
+		</c:choose>
 
 		<fieldset class="form-actions text-center">
 			<button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
@@ -254,11 +293,13 @@
 		form.submit();
 	}
 	
+	<c:if test="${saleOrder.status == 'A' }">
 	$(function() {
 		var st = $('#deliveryDateDatepicker').datetimepicker({
 			format : "dd/MM/yyyy hh:mm:ss"
 		});
 	});
+	</c:if>
 	
 	
 	<c:if test="${saleOrder.saleOrderNo == null }">

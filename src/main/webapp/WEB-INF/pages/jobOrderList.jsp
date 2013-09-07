@@ -34,9 +34,20 @@
 		</div>
 		<div class="span6">
 			<div class="control-group">
-				<appfuse:label styleClass="control-label" key="jobOrder.saleOrderItem.saleOrder.saleOrderNo" />
+				<appfuse:label styleClass="control-label" key="jobOrder.saleOrder.saleOrderNo" />
 				<div class="controls">
-					<input type="text" class="input-xlarge" name="saleOrderItem.saleOrder.saleOrderNo" id="saleOrderItem.saleOrder.saleOrderNo" value="${param['saleOrderItem.saleOrder.saleOrderNo']}" placeholder="" autocomplete="off"/>
+					<input type="text" class="input-xlarge" name="saleOrder.saleOrderNo" id="saleOrder.saleOrderNo" value="${param['saleOrder.saleOrderNo']}" placeholder="" autocomplete="off"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span6">
+			<div class="control-group">
+				<label class="control-label" for="catalog.code"><fmt:message key="jobOrder.catalog.code" />:</label>
+				<div class="controls">
+					<input type="hidden" name="catalog.code" id="catalog.code" value="${param['catalog.code']}" placeholder="" />
+					<input type="text" class="input-xlarge" name="catalog.name" id="catalog.name" value="${param['catalog.name']}" placeholder="" autocomplete="off"/>
 				</div>
 			</div>
 		</div>
@@ -66,20 +77,20 @@
 	<div class="row-fluid">
 		<div class="span6">
 			<div class="control-group">
-				<label class="control-label" for="startDateFrom"><fmt:message key="jobOrder.endDateFrom" />:</label>
+				<label class="control-label" for="targetEndDateFrom"><fmt:message key="jobOrder.targetEndDateFrom" />:</label>
 				<div class="controls">
-					<div class="input-append date" id="endDateFromDatepicker">
-						<input type="text" class="input-medium" name="endDateFrom" value="<c:out value='${param.endDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
+					<div class="input-append date" id="targetEndDateFromDatepicker">
+						<input type="text" class="input-medium" name="targetEndDateFrom" value="<c:out value='${param.targetEndDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="span6">
 			<div class="control-group">
-				<label class="control-label" for="endDateTo"><fmt:message key="jobOrder.endDateTo" />:</label>
+				<label class="control-label" for="targetEndDateTo"><fmt:message key="jobOrder.targetEndDateTo" />:</label>
 				<div class="controls">
-					<div class="input-append date" id="endDateToDatepicker">
-						<input type="text" class="input-medium" name="endDateTo" value="<c:out value='${param.endDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
+					<div class="input-append date" id="targetEndDateToDatepicker">
+						<input type="text" class="input-medium" name="targetEndDateTo" value="<c:out value='${param.targetEndDateTo}'/>"><span class="add-on"><i class="icon-th"></i></span>
 					</div>
 				</div>
 			</div>
@@ -141,12 +152,12 @@
 			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${jobOrder.id}'/>" />
 		</display:column>
 		<display:column property="id" url="/jobOrder?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="jobOrder.id" sortName="id" />
-		<display:column property="saleOrderItem.catalog.code" escapeXml="true" sortable="true" titleKey="jobOrder.saleOrderItem.catalog.code" sortName="saleOrderItem.catalog.code" />
+		<display:column property="catalog.code" escapeXml="true" sortable="true" titleKey="jobOrder.catalog.code" sortName="catalog.code" />
 		<display:column escapeXml="true" sortable="true" titleKey="jobOrder.employee.name" sortName="employee.firstName" >
 			<c:out value="${jobOrder.employee.firstName} ${jobOrder.employee.lastName }"/>
 		</display:column>
 		<display:column property="startDate" escapeXml="false" sortable="true" titleKey="jobOrder.startDate" sortName="startDate" format="{0, date, dd/MM/yyyy}" />
-		<display:column property="endDate" escapeXml="false" sortable="true" titleKey="jobOrder.endDate" sortName="endDate" format="{0, date, dd/MM/yyyy}" />
+		<display:column property="targetEndDate" escapeXml="false" sortable="true" titleKey="jobOrder.targetEndDate" sortName="targetEndDate" format="{0, date, dd/MM/yyyy}" />
 		<display:column property="status" escapeXml="true" sortable="true" titleKey="jobOrder.status" sortName="status" />
 		<display:setProperty name="export.csv" value="true"></display:setProperty>
 		<display:setProperty name="export.excel" value="true"></display:setProperty>
@@ -197,8 +208,7 @@
 				}
 			}
 		});
-		
-		$('input[name="saleOrderItem.saleOrder.saleOrderNo"]').lookup({
+		$('input[name="saleOrder.saleOrderNo"]').lookup({
 			type : 'saleOrder',
 			displayProperty : function(json) {
 				return json.saleOrderNo;
@@ -208,14 +218,14 @@
 			},
 			btnSearchCondition : function() {
 				return {
-					saleOrderNo : $('input[name="saleOrderItem.saleOrder.saleOrderNo"]').val()
+					saleOrderNo : $('input[name="saleOrder.saleOrderNo"]').val()
 				};
 			},
 			handler : function(json) {
 				if (json) {
 					
 				} else {
-					$('input[name="saleOrderItem.saleOrder.saleOrderNo"]').val('');
+					$('input[name="saleOrder.saleOrderNo"]').val('');
 				}
 			}
 		});
@@ -275,16 +285,16 @@
 	
 	$(function() {
 
-		var st = $('#endDateFromDatepicker').datetimepicker({
+		var st = $('#targetEndDateFromDatepicker').datetimepicker({
 			format : "dd/MM/yyyy hh:mm:ss"
 		});
-		var ed = $('#endDateToDatepicker').datetimepicker({
+		var ed = $('#targetEndDateToDatepicker').datetimepicker({
 			format : "dd/MM/yyyy hh:mm:ss"
 		});
 		st.on('show', function(e) {
 			var stObj = st.data('datetimepicker');
 			var edObj = ed.data('datetimepicker');
-			if ($('input[name="endDateTo"]').val() != '') {
+			if ($('input[name="targetEndDateTo"]').val() != '') {
 				stObj.setEndDate(edObj.getDate());
 			} else {
 				stObj.setEndDate(null);
@@ -301,7 +311,7 @@
 		ed.on('show', function(e) {
 			var stObj = st.data('datetimepicker');
 			var edObj = ed.data('datetimepicker');
-			if ($('input[name="endDateFrom"]').val() != '') {
+			if ($('input[name="targetEndDateFrom"]').val() != '') {
 				edObj.setStartDate(stObj.getDate());
 			} else {
 				edObj.setStartDate(null);

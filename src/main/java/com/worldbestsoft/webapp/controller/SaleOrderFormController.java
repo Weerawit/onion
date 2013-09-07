@@ -167,18 +167,19 @@ public class SaleOrderFormController extends BaseFormController {
 				return new ModelAndView("redirect:/saleOrder").addObject("id", saleOrder.getId());
 			} else {
 				// edit
-
+				
 				SaleOrder saleOrder = getSaleOrderManager().get(saleOrderForm.getId());
-				saleOrder.setDeliveryDate(saleOrderForm.getDeliveryDate());
-				saleOrder.setPaymentType(saleOrderForm.getPaymentType());
-				//saleOrder.setTotalPrice(saleOrderForm.getTotalPrice());
-				//saleOrder.setCustomer(saleOrderForm.getCustomer());
+				if (ConstantModel.SaleOrderStatus.ACTIVE.getCode().equals(saleOrder.getStatus())) {
 				
-				saleOrder.setUpdateDate(new Date());
-				saleOrder.setUpdateUser(request.getRemoteUser());
+					saleOrder.setDeliveryDate(saleOrderForm.getDeliveryDate());
+					saleOrder.setPaymentType(saleOrderForm.getPaymentType());
+					
+					saleOrder.setUpdateDate(new Date());
+					saleOrder.setUpdateUser(request.getRemoteUser());
+					
+					saleOrder = getSaleOrderManager().save(saleOrder, saleOrderSession.getSaleOrderItems());
+				}
 				
-				saleOrder = getSaleOrderManager().save(saleOrder, saleOrderSession.getSaleOrderItems());
-
 				request.setAttribute("saleOrder", saleOrder);
 				saveMessage(request, getText("saleOrder.saved", saleOrder.getSaleOrderNo(), locale));
 				return new ModelAndView("redirect:/saleOrderList");

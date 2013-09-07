@@ -19,11 +19,8 @@ public class InvItemLevelDaoHibernate extends GenericDaoHibernate<InvItemLevel, 
 		super(InvItemLevel.class);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.worldbestsoft.dao.hibernate.InvItemLevelDao#findByRefDocument(java.lang.String, com.worldbestsoft.model.RefType)
-	 */
-	@Override
-    public List<InvItemLevel> findByRefDocument(String refDocument, ConstantModel.RefType refType) {
+    @Override
+    public List<InvItemLevel> findByRefDocument(String refDocument, ConstantModel.RefType refType, ConstantModel.ItemSockTransactionType transactionType) {
 		String hsql = "select o from InvItemLevel o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		if (StringUtils.isNotEmpty(refDocument)) {
@@ -33,6 +30,10 @@ public class InvItemLevelDaoHibernate extends GenericDaoHibernate<InvItemLevel, 
 		if (null != refType) {
 			hsql += " and o.refType = :refType";
 			params.put("refType", refType.getCode());
+		}
+		if (null != transactionType) {
+			hsql += " and o.transactionType = :transactionType";
+			params.put("transactionType", transactionType.getCode());
 		}
 		hsql += " order by o.transactionDate";
 		Query queryObj = getSession().createQuery(hsql);

@@ -2,6 +2,7 @@ package com.worldbestsoft.service;
 
 import java.util.List;
 
+import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.InvItemLevel;
 import com.worldbestsoft.model.InvStock;
 /**
@@ -22,5 +23,7 @@ public interface InvStockManager {
 	public abstract Integer querySize(InvStock criteria);
 
 	public abstract InvStock get(Long id);
+
+	public abstract void cancelReserved(String documentNumber, ConstantModel.RefType documentType, String user);
 
 }

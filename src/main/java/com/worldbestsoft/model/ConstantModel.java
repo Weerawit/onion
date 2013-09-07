@@ -28,7 +28,7 @@ public class ConstantModel {
 	}
 
 	public enum JobOrderStatus {
-		NEW("NEW", "jobOrderStatus.NEW"), INPROGRESS("INPROGRESS", "jobOrderStatus.INPROGRESS"), DONE("DONE", "jobOrderStatus.DONE"), DELIVERY("DELIVERY", "jobOrderStatus.DELIVERY");
+		NEW("NEW", "jobOrderStatus.NEW"), INPROGRESS("INPROGRESS", "jobOrderStatus.INPROGRESS"), DONE("DONE", "jobOrderStatus.DONE"), CANCEL("C", "jobOrderStatus.CANCEL");
 
 		private final String code;
 		private String key;

@@ -105,7 +105,7 @@ public class LookupManagerImpl implements LookupManager {
 		list.add(new LabelValue(resourceBundle.getString(ConstantModel.JobOrderStatus.NEW.getKey()), ConstantModel.JobOrderStatus.NEW.getCode()));
 		list.add(new LabelValue(resourceBundle.getString(ConstantModel.JobOrderStatus.INPROGRESS.getKey()), ConstantModel.JobOrderStatus.INPROGRESS.getCode()));
 		list.add(new LabelValue(resourceBundle.getString(ConstantModel.JobOrderStatus.DONE.getKey()), ConstantModel.JobOrderStatus.DONE.getCode()));
-		list.add(new LabelValue(resourceBundle.getString(ConstantModel.JobOrderStatus.DELIVERY.getKey()), ConstantModel.JobOrderStatus.DELIVERY.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.JobOrderStatus.CANCEL.getKey()), ConstantModel.JobOrderStatus.CANCEL.getCode()));
 		return list;
 	}
     

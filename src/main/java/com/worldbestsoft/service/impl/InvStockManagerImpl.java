@@ -4,30 +4,24 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.worldbestsoft.dao.InvItemDao;
 import com.worldbestsoft.dao.InvItemLevelDao;
 import com.worldbestsoft.dao.InvStockDao;
 import com.worldbestsoft.model.ConstantModel;
+import com.worldbestsoft.model.ConstantModel.ItemSockTransactionType;
 import com.worldbestsoft.model.InvItemLevel;
 import com.worldbestsoft.model.InvStock;
-import com.worldbestsoft.service.InvItemLevelChangedEvent;
 import com.worldbestsoft.service.InvStockManager;
 
 @Service("invStockManager")
-public class InvStockManagerImpl implements InvStockManager, ApplicationContextAware {
+public class InvStockManagerImpl implements InvStockManager {
 	
 	private InvStockDao invStockDao;
 	private InvItemLevelDao invItemLevelDao;
 	private InvItemDao invItemDao;
-	private ApplicationContext context;
 
 	public InvStockDao getInvStockDao() {
 		return invStockDao;
@@ -57,8 +51,22 @@ public class InvStockManagerImpl implements InvStockManager, ApplicationContextA
 	}
 	
 	@Override
-	public void setApplicationContext(ApplicationContext arg0) throws BeansException {
-		this.context = arg0;
+    public void cancelReserved(String documentNumber, ConstantModel.RefType documentType, String user) {
+		List<InvItemLevel> reservedList = invItemLevelDao.findByRefDocument(documentNumber, documentType, ItemSockTransactionType.RESERVED);
+		if (null != reservedList) {
+			for (InvItemLevel reservedInvItemLevel : reservedList) {
+				InvItemLevel cancelInvItemLevel = new InvItemLevel();
+				cancelInvItemLevel.setTransactionDate(new Date());
+				//reverse qty
+				cancelInvItemLevel.setQtyAvailableAdjust(reservedInvItemLevel.getQtyAvailableAdjust().multiply(BigDecimal.valueOf(-1)));
+				cancelInvItemLevel.setInvItem(reservedInvItemLevel.getInvItem());
+				cancelInvItemLevel.setRefDocument(reservedInvItemLevel.getRefDocument());
+				cancelInvItemLevel.setRefType(reservedInvItemLevel.getRefType());
+				cancelInvItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.CANCEL.getCode());
+				cancelInvItemLevel.setUpdateUser(user);
+				updateStock(cancelInvItemLevel);
+			}
+		}
 	}
 
 
@@ -66,8 +74,8 @@ public class InvStockManagerImpl implements InvStockManager, ApplicationContextA
 	 * @see com.worldbestsoft.service.impl.InvStockManager#updateStock(com.worldbestsoft.model.InvItemLevel)
 	 */
 	@Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
 	public InvStock updateStock(InvItemLevel invItemLevel) {
+		//TODO:handle synchronized
 		InvStock invStock = invStockDao.findByInvItemCode(invItemLevel.getInvItem().getCode());
 		if (null == invStock) {
 			invStock = new InvStock();
@@ -119,8 +127,7 @@ public class InvStockManagerImpl implements InvStockManager, ApplicationContextA
 		invItemLevel.setRefType(ConstantModel.RefType.ADJUST.getCode());
 		invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
 
-		InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
-		context.publishEvent(invItemLevelChangedEvent);
+		updateStock(invItemLevel);
     }
 
 	/**

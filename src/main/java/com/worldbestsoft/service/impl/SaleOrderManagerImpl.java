@@ -19,6 +19,7 @@ import com.worldbestsoft.dao.SaleOrderDao;
 import com.worldbestsoft.dao.SaleOrderItemDao;
 import com.worldbestsoft.dao.hibernate.JobOrderDao;
 import com.worldbestsoft.model.ConstantModel;
+import com.worldbestsoft.model.ConstantModel.RefType;
 import com.worldbestsoft.model.InvItemLevel;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleOrderItem;
@@ -310,6 +311,8 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 		saleOrder.setStatus(ConstantModel.SaleOrderStatus.CANCEL.getCode()); //cancel
 		saleOrder.setCancelReason(cancelReason);
 		saleOrder = saleOrderDao.save(saleOrder);
+		
+		getInvStockManager().cancelReserved(saleOrder.getSaleOrderNo(), RefType.SALE_ORDER, user);
     }
 
 	@Override

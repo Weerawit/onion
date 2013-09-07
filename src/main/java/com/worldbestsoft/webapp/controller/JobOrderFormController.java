@@ -15,11 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.worldbestsoft.model.Catalog;
 import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.JobOrder;
+import com.worldbestsoft.model.SaleOrder;
+import com.worldbestsoft.service.CatalogManager;
 import com.worldbestsoft.service.EmployeeManager;
 import com.worldbestsoft.service.JobOrderManager;
 import com.worldbestsoft.service.LookupManager;
+import com.worldbestsoft.service.SaleOrderManager;
 
 @Controller
 @RequestMapping("/jobOrder*")
@@ -28,6 +32,8 @@ public class JobOrderFormController extends BaseFormController {
 	private LookupManager lookupManager;
 	private JobOrderManager jobOrderManager;
 	private EmployeeManager employeeManager;
+	private SaleOrderManager saleOrderManager;
+	private CatalogManager catalogManager;
 	
 	public LookupManager getLookupManager() {
 		return lookupManager;
@@ -56,6 +62,24 @@ public class JobOrderFormController extends BaseFormController {
 		this.employeeManager = employeeManager;
 	}
 
+	public SaleOrderManager getSaleOrderManager() {
+		return saleOrderManager;
+	}
+
+	@Autowired
+	public void setSaleOrderManager(SaleOrderManager saleOrderManager) {
+		this.saleOrderManager = saleOrderManager;
+	}
+	
+	public CatalogManager getCatalogManager() {
+		return catalogManager;
+	}
+
+	@Autowired
+	public void setCatalogManager(CatalogManager catalogManager) {
+		this.catalogManager = catalogManager;
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView save(JobOrder jobOrderForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		if (request.getParameter("cancel") != null) {
@@ -64,6 +88,30 @@ public class JobOrderFormController extends BaseFormController {
 
 		if (validator != null) { // validator is null during testing
 			validator.validate(jobOrderForm, errors);
+			
+			if (null != jobOrderForm.getSaleOrder()) {
+				SaleOrder saleOrder = getSaleOrderManager().findBySaleOrderNo(jobOrderForm.getSaleOrder().getSaleOrderNo());
+				jobOrderForm.setSaleOrder(saleOrder);
+				if (null == saleOrder) {
+					errors.rejectValue("saleOrder.saleOrderNo", "errors.invalid", new Object[] { getText("jobOrder.saleOrder.saleOrderNo", request.getLocale())}, "errors.invalid");	
+				}
+			}
+			
+			if (null != jobOrderForm.getCatalog()) {
+				Catalog catalog = getCatalogManager().findByCatalogCode(jobOrderForm.getCatalog().getCode());
+				jobOrderForm.setCatalog(catalog);
+				if (null == catalog) {
+					errors.rejectValue("catalog.name", "errors.invalid", new Object[] { getText("jobOrder.catalog.name", request.getLocale())}, "errors.invalid");	
+				}
+			}
+			
+			if (null != jobOrderForm.getEmployee()) {
+				Employee employee = getEmployeeManager().get(jobOrderForm.getEmployee().getId());
+				jobOrderForm.setEmployee(employee);
+				if (null == employee) {
+					errors.rejectValue("jobOrder.employee.id", "errors.invalid", new Object[] { getText("jobOrder.employee.id", request.getLocale())}, "errors.invalid");	
+				}
+			}
 			
 			if (errors.hasErrors() && !StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
 				return new ModelAndView("jobOrder", "jobOrder", jobOrderForm).addObject("jobOrderStatusList", lookupManager.getAllJobOrderStatus(request.getLocale()));
@@ -77,23 +125,22 @@ public class JobOrderFormController extends BaseFormController {
 			//since code input is readonly, no value pass to form then we need to query from db.
 //			JobOrder jobOrder = getJobOrderManager().get(jobOrderForm.getId());
 			getJobOrderManager().remove(jobOrderForm.getId());
-			saveMessage(request, getText("jobOrder.deleted", jobOrderForm.getId(), locale));
+			saveMessage(request, getText("jobOrder.deleted", jobOrderForm.getRunningNo(), locale));
 			return new ModelAndView("redirect:/jobOrderList");
 		} else {
 			//edit
 			JobOrder jobOrder = getJobOrderManager().get(jobOrderForm.getId());
 			jobOrder.setStatus(jobOrderForm.getStatus());
 			jobOrder.setActualEndDate(jobOrderForm.getActualEndDate());
-			if (null != jobOrderForm.getEmployee()) {
-				Employee employee = getEmployeeManager().get(jobOrderForm.getEmployee().getId());
-				jobOrder.setEmployee(employee);
-			} else {
-				jobOrder.setEmployee(null);
-			}
+			jobOrder.setEmployee(jobOrderForm.getEmployee());
+			jobOrder.setQty(jobOrderForm.getQty());
+			jobOrder.setCost(jobOrderForm.getCost());
+			jobOrder.setStatus(jobOrderForm.getStatus());
+			jobOrder.setSaleOrder(jobOrderForm.getSaleOrder());
 			jobOrder = getJobOrderManager().save(jobOrder);
 
 			request.setAttribute("jobOrder", jobOrder);
-			saveMessage(request, getText("jobOrder.saved", jobOrder.getId(), locale));
+			saveMessage(request, getText("jobOrder.saved", jobOrder.getRunningNo(), locale));
 			return new ModelAndView("redirect:/jobOrderList");
 		}
 	}
@@ -101,10 +148,6 @@ public class JobOrderFormController extends BaseFormController {
 	@RequestMapping(method = { RequestMethod.GET })
 	protected ModelAndView display(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String id = request.getParameter("id");
-		if (StringUtils.isBlank(id)) {
-			//no id, mean go back to list page
-			return new ModelAndView("redirect:/jobOrderList");
-		}
 		JobOrder jobOrder = new JobOrder();
 		if (!isFormSubmission(request)) {
 			if (id != null) {
@@ -116,8 +159,19 @@ public class JobOrderFormController extends BaseFormController {
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("jobOrder", jobOrder);
 		model.put("jobOrderStatusList", lookupManager.getAllJobOrderStatus(request.getLocale()));
-		model.put("catalogItemList", jobOrder.getSaleOrderItem().getCatalog().getCatalogItems());
 		return new ModelAndView("jobOrder", model);
+	}
+	
+	@RequestMapping(value = "/displayTable")
+	protected ModelAndView displayTable(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String catalogCode = request.getParameter("catalog.code");
+		
+		Catalog catalog = getCatalogManager().findByCatalogCode(catalogCode);
+		Map<String, Object> model = new HashMap<String, Object>();
+		if (null != catalog) { 
+			model.put("catalogItemList", catalog.getCatalogItems());
+		}
+		return new ModelAndView("jobOrderTable", model);
 	}
 
 	private boolean isFormSubmission(HttpServletRequest request) {

@@ -1,7 +1,8 @@
 package com.worldbestsoft.model;
 
-// Generated Aug 29, 2013 12:54:40 PM by Hibernate Tools 4.0.0
+// Generated Sep 7, 2013 8:08:08 AM by Hibernate Tools 4.0.0
 
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,26 +25,44 @@ public class JobOrder implements java.io.Serializable {
 
 	private Long id;
 	private Employee employee;
-	private SaleOrderItem saleOrderItem;
+	private SaleOrder saleOrder;
+	private Catalog catalog;
+	private String runningNo;
+	private BigDecimal qty;
+	private BigDecimal cost;
 	private String status;
+	private String cancelReason;
 	private Date startDate;
-	private Date endDate;
+	private Date targetEndDate;
 	private Date actualEndDate;
+	private Date createDate;
+	private String createUser;
+	private Date updateDate;
+	private String updateUser;
 
 	public JobOrder() {
 	}
 
-	public JobOrder(SaleOrderItem saleOrderItem) {
-		this.saleOrderItem = saleOrderItem;
+	public JobOrder(Catalog catalog) {
+		this.catalog = catalog;
 	}
 
-	public JobOrder(Employee employee, SaleOrderItem saleOrderItem, String status, Date startDate, Date endDate, Date actualEndDate) {
+	public JobOrder(Employee employee, SaleOrder saleOrder, Catalog catalog, String runningNo, BigDecimal qty, BigDecimal cost, String status, String cancelReason, Date startDate, Date targetEndDate, Date actualEndDate, Date createDate, String createUser, Date updateDate, String updateUser) {
 		this.employee = employee;
-		this.saleOrderItem = saleOrderItem;
+		this.saleOrder = saleOrder;
+		this.catalog = catalog;
+		this.runningNo = runningNo;
+		this.qty = qty;
+		this.cost = cost;
 		this.status = status;
+		this.cancelReason = cancelReason;
 		this.startDate = startDate;
-		this.endDate = endDate;
+		this.targetEndDate = targetEndDate;
 		this.actualEndDate = actualEndDate;
+		this.createDate = createDate;
+		this.createUser = createUser;
+		this.updateDate = updateDate;
+		this.updateUser = updateUser;
 	}
 
 	@Id
@@ -68,13 +87,50 @@ public class JobOrder implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "sale_order_item_id", nullable = false)
-	public SaleOrderItem getSaleOrderItem() {
-		return this.saleOrderItem;
+	@JoinColumn(name = "sale_order_id")
+	public SaleOrder getSaleOrder() {
+		return this.saleOrder;
 	}
 
-	public void setSaleOrderItem(SaleOrderItem saleOrderItem) {
-		this.saleOrderItem = saleOrderItem;
+	public void setSaleOrder(SaleOrder saleOrder) {
+		this.saleOrder = saleOrder;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "catalog_id", nullable = false)
+	public Catalog getCatalog() {
+		return this.catalog;
+	}
+
+	public void setCatalog(Catalog catalog) {
+		this.catalog = catalog;
+	}
+
+	@Column(name = "running_no", length = 45)
+	public String getRunningNo() {
+		return this.runningNo;
+	}
+
+	public void setRunningNo(String runningNo) {
+		this.runningNo = runningNo;
+	}
+
+	@Column(name = "qty", precision = 10)
+	public BigDecimal getQty() {
+		return this.qty;
+	}
+
+	public void setQty(BigDecimal qty) {
+		this.qty = qty;
+	}
+
+	@Column(name = "cost", precision = 10)
+	public BigDecimal getCost() {
+		return this.cost;
+	}
+
+	public void setCost(BigDecimal cost) {
+		this.cost = cost;
 	}
 
 	@Column(name = "status", length = 10)
@@ -84,6 +140,15 @@ public class JobOrder implements java.io.Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	@Column(name = "cancelReason")
+	public String getCancelReason() {
+		return this.cancelReason;
+	}
+
+	public void setCancelReason(String cancelReason) {
+		this.cancelReason = cancelReason;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -97,13 +162,13 @@ public class JobOrder implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "end_date", length = 19)
-	public Date getEndDate() {
-		return this.endDate;
+	@Column(name = "target_end_date", length = 19)
+	public Date getTargetEndDate() {
+		return this.targetEndDate;
 	}
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setTargetEndDate(Date targetEndDate) {
+		this.targetEndDate = targetEndDate;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -114,6 +179,44 @@ public class JobOrder implements java.io.Serializable {
 
 	public void setActualEndDate(Date actualEndDate) {
 		this.actualEndDate = actualEndDate;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "create_date", length = 19)
+	public Date getCreateDate() {
+		return this.createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	@Column(name = "create_user", length = 50)
+	public String getCreateUser() {
+		return this.createUser;
+	}
+
+	public void setCreateUser(String createUser) {
+		this.createUser = createUser;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "update_date", length = 19)
+	public Date getUpdateDate() {
+		return this.updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	@Column(name = "update_user", length = 50)
+	public String getUpdateUser() {
+		return this.updateUser;
+	}
+
+	public void setUpdateUser(String updateUser) {
+		this.updateUser = updateUser;
 	}
 
 }

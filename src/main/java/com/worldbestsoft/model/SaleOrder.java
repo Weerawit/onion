@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Sep 5, 2013 11:11:20 AM by Hibernate Tools 4.0.0
+// Generated Sep 7, 2013 8:08:08 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -42,6 +42,7 @@ public class SaleOrder implements java.io.Serializable {
 	private String updateUser;
 	private Set<SaleReceipt> saleReceipts = new HashSet<SaleReceipt>(0);
 	private Set<SaleOrderItem> saleOrderItems = new HashSet<SaleOrderItem>(0);
+	private Set<JobOrder> jobOrders = new HashSet<JobOrder>(0);
 
 	public SaleOrder() {
 	}
@@ -50,7 +51,7 @@ public class SaleOrder implements java.io.Serializable {
 		this.customer = customer;
 	}
 
-	public SaleOrder(Customer customer, String saleOrderNo, String paymentType, Date deliveryDate, BigDecimal totalPrice, BigDecimal paymentPaid, String paymentStatus, String status, String cancelReason, Date createDate, String createUser, Date updateDate, String updateUser, Set<SaleReceipt> saleReceipts, Set<SaleOrderItem> saleOrderItems) {
+	public SaleOrder(Customer customer, String saleOrderNo, String paymentType, Date deliveryDate, BigDecimal totalPrice, BigDecimal paymentPaid, String paymentStatus, String status, String cancelReason, Date createDate, String createUser, Date updateDate, String updateUser, Set<SaleReceipt> saleReceipts, Set<SaleOrderItem> saleOrderItems, Set<JobOrder> jobOrders) {
 		this.customer = customer;
 		this.saleOrderNo = saleOrderNo;
 		this.paymentType = paymentType;
@@ -66,6 +67,7 @@ public class SaleOrder implements java.io.Serializable {
 		this.updateUser = updateUser;
 		this.saleReceipts = saleReceipts;
 		this.saleOrderItems = saleOrderItems;
+		this.jobOrders = jobOrders;
 	}
 
 	@Id
@@ -216,6 +218,15 @@ public class SaleOrder implements java.io.Serializable {
 
 	public void setSaleOrderItems(Set<SaleOrderItem> saleOrderItems) {
 		this.saleOrderItems = saleOrderItems;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "saleOrder")
+	public Set<JobOrder> getJobOrders() {
+		return this.jobOrders;
+	}
+
+	public void setJobOrders(Set<JobOrder> jobOrders) {
+		this.jobOrders = jobOrders;
 	}
 
 }
