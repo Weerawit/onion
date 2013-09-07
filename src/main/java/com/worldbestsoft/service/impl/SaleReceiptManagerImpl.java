@@ -92,7 +92,7 @@ public class SaleReceiptManagerImpl implements SaleReceiptManager, ApplicationCo
     public SaleReceipt save(SaleReceipt object) {
 		if (null == object.getId()) {
 			//save first , prevent rollback
-			object.setStatus("A");
+			object.setStatus(ConstantModel.SaleReceiptStatus.ACTIVE.getCode());
 			object = saleReceiptDao.save(object);
 			//get document number
             try {

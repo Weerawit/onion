@@ -8,11 +8,11 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.worldbestsoft.dao.DocumentNumberDao;
 import com.worldbestsoft.model.DocumentNumber;
 import com.worldbestsoft.model.InvGoodsMovement;
 import com.worldbestsoft.model.InvGoodsReceipt;
+import com.worldbestsoft.model.JobOrder;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleReceipt;
 import com.worldbestsoft.service.DocumentNumberGenerator;
@@ -32,6 +32,7 @@ public class DocumentNumberGeneratorImpl implements DocumentNumberGenerator {
 		lockObject.put(InvGoodsMovement.class.getName(), new ReentrantLock());
 		lockObject.put(SaleOrder.class.getName(), new ReentrantLock());
 		lockObject.put(SaleReceipt.class.getName(), new ReentrantLock());
+		lockObject.put(JobOrder.class.getName(), new ReentrantLock());
 	}
 
 //	public String nextDocumentNumber(Class klass) throws InterruptedException {

@@ -128,6 +128,7 @@
 	</div>
 	</form>
 	<form method="post" action="${ctx}/jobOrderList" id="deleteForm">
+	<input type="hidden" name="cancelReason"/>
 	<c:if test="${not empty jobOrderList }">
 	<div class="control-group pull-right">
 		<fmt:message key="label.showPagination" />
@@ -171,6 +172,23 @@
 	</form>
 </div>
 
+<div class="modal hide fade" id="cancelReasonDialog">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3><fmt:message key="jobOrder.cancelReason"/></h3>
+	</div>
+	<div class="modal-body">
+		<div class="control-group">
+		<div class="controls">
+			<textarea class="input-xlarge" name="cancelReasonArea" id="cancelReasonArea"></textarea>
+		</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal"><fmt:message key="button.close"/></a> <a class="btn btn-primary" onclick="cancel()"><fmt:message key="button.save"/></a>
+	</div>
+</div>
+
 
 <script type="text/javascript">
 	function validateDelete() {
@@ -179,12 +197,21 @@
 			alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
 			return false;
 		}
-		confirmMessage('<fmt:message key="global.confirm.delete"/>', function(result) {
-			if (result) {
-				form.submit();
-			}
+		$('#cancelReasonDialog').show(function () {
+			$(this).find('.control-group').removeClass('error');
+				$(this).find('.help-inline').remove();
 		});
+		$('#cancelReasonDialog').modal();
 		return false;
+	}
+	
+	function cancel() {
+		var form = document.forms['deleteForm'];
+		//since cancelReasonArea is not in form, using get(0) to convert to read object
+		if (checkRequired($('#cancelReasonArea').get(0), '<tags:validateMessage errorKey="errors.required" field="saleReceipt.cancelReason"/>')) {
+			form["cancelReason"].value = $('#cancelReasonArea').val();
+			form.submit();
+		}
 	}
 	
 	$(document).ready(function () {

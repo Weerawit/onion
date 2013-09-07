@@ -52,6 +52,22 @@
 					</div>
 				</div>
 				 --%>
+				 <div class="span6">
+					<spring:bind path="jobOrder.catalog.name">
+						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+							<appfuse:label styleClass="control-label" key="jobOrder.catalog.name" />
+							<div class="controls">
+								<form:hidden path="catalog.code"/>
+								<form:input path="catalog.name" name="catalog.name" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
+								<form:errors path="catalog.name" cssClass="help-inline" />
+							</div>
+						</div>
+					</spring:bind>
+				</div>
+				
+			</div>
+
+			<div class="row-fluid">
 				<div class="span6">
 					<spring:bind path="jobOrder.employee.id">
 						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
@@ -60,21 +76,6 @@
 								<form:input path="employee.fullname" id="employee.fullname" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
 								<form:hidden path="employee.id" />
 								<form:errors path="employee.id" cssClass="help-inline" />
-							</div>
-						</div>
-					</spring:bind>
-				</div>
-			</div>
-
-			<div class="row-fluid">
-				<div class="span6">
-					<spring:bind path="jobOrder.catalog.name">
-						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="jobOrder.catalog.name" />
-							<div class="controls">
-								<form:hidden path="catalog.code"/>
-								<form:input path="catalog.name" name="catalog.name" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
-								<form:errors path="catalog.name" cssClass="help-inline" />
 							</div>
 						</div>
 					</spring:bind>

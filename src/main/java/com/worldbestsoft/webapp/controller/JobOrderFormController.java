@@ -1,5 +1,7 @@
 package com.worldbestsoft.webapp.controller;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -7,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -89,28 +92,34 @@ public class JobOrderFormController extends BaseFormController {
 		if (validator != null) { // validator is null during testing
 			validator.validate(jobOrderForm, errors);
 			
-			if (null != jobOrderForm.getSaleOrder()) {
+			if (null != jobOrderForm.getSaleOrder() && StringUtils.isNotBlank(jobOrderForm.getSaleOrder().getSaleOrderNo())) {
 				SaleOrder saleOrder = getSaleOrderManager().findBySaleOrderNo(jobOrderForm.getSaleOrder().getSaleOrderNo());
 				jobOrderForm.setSaleOrder(saleOrder);
 				if (null == saleOrder) {
 					errors.rejectValue("saleOrder.saleOrderNo", "errors.invalid", new Object[] { getText("jobOrder.saleOrder.saleOrderNo", request.getLocale())}, "errors.invalid");	
 				}
+			} else {
+				jobOrderForm.setSaleOrder(null);
 			}
 			
-			if (null != jobOrderForm.getCatalog()) {
+			if (null != jobOrderForm.getCatalog() && StringUtils.isNotBlank(jobOrderForm.getCatalog().getCode())) {
 				Catalog catalog = getCatalogManager().findByCatalogCode(jobOrderForm.getCatalog().getCode());
 				jobOrderForm.setCatalog(catalog);
 				if (null == catalog) {
 					errors.rejectValue("catalog.name", "errors.invalid", new Object[] { getText("jobOrder.catalog.name", request.getLocale())}, "errors.invalid");	
 				}
+			} else {
+				jobOrderForm.setCatalog(null);
 			}
 			
-			if (null != jobOrderForm.getEmployee()) {
+			if (null != jobOrderForm.getEmployee() && null != jobOrderForm.getEmployee().getId()) {
 				Employee employee = getEmployeeManager().get(jobOrderForm.getEmployee().getId());
 				jobOrderForm.setEmployee(employee);
 				if (null == employee) {
 					errors.rejectValue("jobOrder.employee.id", "errors.invalid", new Object[] { getText("jobOrder.employee.id", request.getLocale())}, "errors.invalid");	
 				}
+			} else {
+				jobOrderForm.setEmployee(null);
 			}
 			
 			if (errors.hasErrors() && !StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) { // don't validate when deleting
@@ -122,26 +131,37 @@ public class JobOrderFormController extends BaseFormController {
 		Locale locale = request.getLocale();
 
 		if (StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) {
-			//since code input is readonly, no value pass to form then we need to query from db.
-//			JobOrder jobOrder = getJobOrderManager().get(jobOrderForm.getId());
-			getJobOrderManager().remove(jobOrderForm.getId());
+			getJobOrderManager().remove(jobOrderForm.getId(), request.getRemoteUser(), jobOrderForm.getCancelReason());
 			saveMessage(request, getText("jobOrder.deleted", jobOrderForm.getRunningNo(), locale));
 			return new ModelAndView("redirect:/jobOrderList");
 		} else {
-			//edit
-			JobOrder jobOrder = getJobOrderManager().get(jobOrderForm.getId());
-			jobOrder.setStatus(jobOrderForm.getStatus());
-			jobOrder.setActualEndDate(jobOrderForm.getActualEndDate());
-			jobOrder.setEmployee(jobOrderForm.getEmployee());
-			jobOrder.setQty(jobOrderForm.getQty());
-			jobOrder.setCost(jobOrderForm.getCost());
-			jobOrder.setStatus(jobOrderForm.getStatus());
-			jobOrder.setSaleOrder(jobOrderForm.getSaleOrder());
-			jobOrder = getJobOrderManager().save(jobOrder);
+			if (null == jobOrderForm.getId()) {
+				JobOrder jobOrder = new JobOrder();
+				PropertyUtils.copyProperties(jobOrder, jobOrderForm);
+				// add
+				jobOrder.setCreateDate(new Date());
+				jobOrder.setCreateUser(request.getRemoteUser());
+				
+				jobOrder = getJobOrderManager().save(jobOrder);
 
-			request.setAttribute("jobOrder", jobOrder);
-			saveMessage(request, getText("jobOrder.saved", jobOrder.getRunningNo(), locale));
-			return new ModelAndView("redirect:/jobOrderList");
+				saveMessage(request, getText("jobOrder.added", jobOrder.getRunningNo(), locale));
+				return new ModelAndView("redirect:/jobOrder").addObject("id", jobOrder.getId());
+			} else {
+				//edit
+				JobOrder jobOrder = getJobOrderManager().get(jobOrderForm.getId());
+				jobOrder.setStatus(jobOrderForm.getStatus());
+				jobOrder.setActualEndDate(jobOrderForm.getActualEndDate());
+				jobOrder.setEmployee(jobOrderForm.getEmployee());
+				jobOrder.setQty(jobOrderForm.getQty());
+				jobOrder.setCost(jobOrderForm.getCost());
+				jobOrder.setStatus(jobOrderForm.getStatus());
+				jobOrder.setSaleOrder(jobOrderForm.getSaleOrder());
+				jobOrder = getJobOrderManager().save(jobOrder);
+	
+				request.setAttribute("jobOrder", jobOrder);
+				saveMessage(request, getText("jobOrder.saved", jobOrder.getRunningNo(), locale));
+				return new ModelAndView("redirect:/jobOrderList");
+			}
 		}
 	}
 

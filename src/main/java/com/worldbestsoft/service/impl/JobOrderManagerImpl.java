@@ -1,18 +1,27 @@
 package com.worldbestsoft.service.impl;
 
+import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.hibernate.JobOrderDao;
+import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.JobOrder;
 import com.worldbestsoft.model.criteria.JobOrderCriteria;
+import com.worldbestsoft.service.DocumentNumberGenerator;
+import com.worldbestsoft.service.DocumentNumberGeneratorException;
 import com.worldbestsoft.service.JobOrderManager;
 
 @Service("jobOrderManager")
 public class JobOrderManagerImpl implements JobOrderManager {
+	
+	private DocumentNumberGenerator documentNumberGenerator;
 	private JobOrderDao jobOrderDao;
+	
+	private String documentNumberFormat = "JB{0,number,00000}";
 	
 	public JobOrderDao getJobOrderDao() {
 		return jobOrderDao;
@@ -21,6 +30,23 @@ public class JobOrderManagerImpl implements JobOrderManager {
 	@Autowired
 	public void setJobOrderDao(JobOrderDao jobOrderDao) {
 		this.jobOrderDao = jobOrderDao;
+	}
+	
+	public DocumentNumberGenerator getDocumentNumberGenerator() {
+		return documentNumberGenerator;
+	}
+	
+	public String getDocumentNumberFormat() {
+		return documentNumberFormat;
+	}
+
+	public void setDocumentNumberFormat(String documentNumberFormat) {
+		this.documentNumberFormat = documentNumberFormat;
+	}
+
+	@Autowired
+	public void setDocumentNumberGenerator(DocumentNumberGenerator documentNumberGenerator) {
+		this.documentNumberGenerator = documentNumberGenerator;
 	}
 
 	/* (non-Javadoc)
@@ -52,13 +78,29 @@ public class JobOrderManagerImpl implements JobOrderManager {
 	 */
 	@Override
     public JobOrder save(JobOrder object) {
+		if (null == object.getId()) {
+			object.setStatus(ConstantModel.JobOrderStatus.NEW.getCode());
+			object = jobOrderDao.save(object);
+			//get document number
+            try {
+            		Long documentNumber = documentNumberGenerator.nextDocumentNumber(JobOrder.class);
+	            String runningNo = MessageFormat.format(documentNumberFormat, documentNumber);
+	            object.setRunningNo(runningNo);
+            } catch (DocumentNumberGeneratorException e) {
+    				throw new RuntimeException(e);
+            }
+		}
 	    return jobOrderDao.save(object);
     }
 
 	@Override
-    public void remove(Long id) {
-	    jobOrderDao.remove(id);
+    public void remove(Long id, String user, String cancelReason) {
+		JobOrder jobOrder = jobOrderDao.get(id);
+		jobOrder.setUpdateDate(new Date());
+		jobOrder.setUpdateUser(user);
+		jobOrder.setStatus(ConstantModel.JobOrderStatus.CANCEL.getCode()); //cancel
+		jobOrder.setCancelReason(cancelReason);
+		jobOrder = jobOrderDao.save(jobOrder);
     }
-	
 	
 }

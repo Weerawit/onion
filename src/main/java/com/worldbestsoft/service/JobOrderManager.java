@@ -15,7 +15,7 @@ public interface JobOrderManager {
 
 	public abstract JobOrder save(JobOrder object);
 
-	public abstract void remove(Long id);
+	public abstract void remove(Long id, String user, String cancelReason);
 
 
 }

@@ -133,10 +133,12 @@ public class JobOrderListController extends BaseFormController {
 	public ModelAndView delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Locale locale = request.getLocale();
 		String[] checkbox = request.getParameterValues("checkbox");
+		String user = request.getRemoteUser();
+		String cancelReason = request.getParameter("cancelReason");
 		if (null != checkbox && checkbox.length > 0) {
 			for (int i = 0; i < checkbox.length; i++) {
 				JobOrder jobOrder = jobOrderManager.get(Long.valueOf(checkbox[i]));
-				jobOrderManager.remove(Long.valueOf(checkbox[i]));
+				jobOrderManager.remove(Long.valueOf(checkbox[i]), user, cancelReason);
 				saveMessage(request, getText("jobOrder.deleted", jobOrder.getId(), locale));
 			}
 		} else {
