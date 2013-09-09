@@ -16,7 +16,7 @@
 		<fmt:message key="saleReceipt.receiptNo" />
 	</p>
 	<p>
-	<c:out value="${saleReceipt.receiptNo}" />
+	<c:out value="${saleReceipt.documentNumber.documentNo}" />
 	</p>
 </div>
 <div class="span10">
@@ -36,7 +36,7 @@
 		<form:hidden path="id" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
 		<form:hidden path="receiptType" />
-		<form:hidden path="receiptNo" />
+		<form:hidden path="documentNumber.documentNo" />
 		<input type="hidden" name="cancelReason"/>
 		<input type="hidden" name="action"/>
 		<%--
@@ -68,19 +68,19 @@
 			<c:choose>
 				<c:when test="${saleReceipt.id != null }">
 					<div class="control-group">
-						<appfuse:label styleClass="control-label" key="saleReceipt.saleOrder.saleOrderNo" />
+						<appfuse:label styleClass="control-label" key="saleReceipt.saleOrder.documentNumber.documentNo" />
 						<div class="controls">
-							<span class="input-xlarge uneditable-input"><c:out value="${saleReceipt.saleOrder.saleOrderNo}" /></span>
+							<span class="input-xlarge uneditable-input"><c:out value="${saleReceipt.saleOrder.documentNumber.documentNo}" /></span>
 						</div>
 					</div>
 				</c:when>
 				<c:otherwise>
-					<spring:bind path="saleReceipt.saleOrder.saleOrderNo">
+					<spring:bind path="saleReceipt.saleOrder.documentNumber.documentNo">
 						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="saleReceipt.saleOrder.saleOrderNo" />
+							<appfuse:label styleClass="control-label" key="saleReceipt.saleOrder.documentNumber.documentNo" />
 							<div class="controls">
-								<form:input path="saleOrder.saleOrderNo" name="saleOrder.saleOrderNo" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
-								<form:errors path="saleOrder.saleOrderNo" cssClass="help-inline" />
+								<form:input path="saleOrder.documentNumber.documentNo" name="saleOrder.documentNumber.documentNo" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
+								<form:errors path="saleOrder.documentNumber.documentNo" cssClass="help-inline" />
 							</div>
 						</div>
 					</spring:bind>
@@ -377,10 +377,10 @@
 	$(document).ready(function() {
 		$('#tableDiv').ajaxDisplaytag({
 			url : '${ctx}/saleReceipt/displayTable',
-			params : {saleOrderNo : '${saleReceipt.saleOrder.saleOrderNo}'}
+			params : {saleOrderNo : '${saleReceipt.saleOrder.documentNumber.documentNo}'}
 		});
 		
-		$('input[name="saleOrder.saleOrderNo"]').lookup({
+		$('input[name="saleOrder.documentNumber.documentNo"]').lookup({
 			type : 'saleOrder',
 			displayProperty : function(json) {
 				return json.saleOrderNo;
@@ -390,12 +390,12 @@
 			},
 			btnSearchCondition : function() {
 				return {
-					saleOrderNo : $('input[name="saleOrder.saleOrderNo"]').val()
+					'documentNumber.documentNo' : $('input[name="saleOrder.documentNumber.documentNo"]').val()
 				};
 			},
 			handler : function(json) {
 				if (json) {
-					$('input[name="saleOrder.saleOrderNo"]').val(json.saleOrderNo);
+					$('input[name="saleOrder.documentNumber.documentNo"]').val(json.saleOrderNo);
 					$('#customerName').text(json.customer.name);
 					$('#contactName').text(json.customer.contactName);
 					$('#contactTel').text(json.customer.contactTel);
@@ -417,7 +417,7 @@
 						params : {saleOrderNo : json.saleOrderNo}
 					});
 				} else {
-					$('input[name="saleOrder.saleOrderNo"]').val('');
+					$('input[name="saleOrder.documentNumber.documentNo"]').val('');
 					$('#customerName').text('');
 					$('#contactName').text('');
 					$('#contactTel').text('');

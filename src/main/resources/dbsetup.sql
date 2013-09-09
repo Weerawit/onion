@@ -6,11 +6,11 @@ CREATE SCHEMA IF NOT EXISTS `onion` DEFAULT CHARACTER SET utf8 ;
 USE `onion` ;
 
 -- -----------------------------------------------------
--- Table `onion`.`document_number`
+-- Table `onion`.`document_seq`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `onion`.`document_number` ;
+DROP TABLE IF EXISTS `onion`.`document_seq` ;
 
-CREATE TABLE IF NOT EXISTS `onion`.`document_number` (
+CREATE TABLE IF NOT EXISTS `onion`.`document_seq` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `type` VARCHAR(50) NOT NULL,
   `current_val` BIGINT NULL DEFAULT 1,
@@ -150,13 +150,26 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `onion`.`document_number`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `onion`.`document_number` ;
+
+CREATE TABLE IF NOT EXISTS `onion`.`document_number` (
+  `internal_no` BIGINT NOT NULL AUTO_INCREMENT,
+  `document_no` VARCHAR(45) NULL,
+  `update_date` DATETIME NULL,
+  PRIMARY KEY (`internal_no`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `onion`.`inv_goods_receipt`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `onion`.`inv_goods_receipt` ;
 
 CREATE TABLE IF NOT EXISTS `onion`.`inv_goods_receipt` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'ใบรับของสินค้า\n',
-  `running_no` VARCHAR(20) NULL,
+  `document_number_internal_no` BIGINT NULL COMMENT 'แทน running_no',
   `receipt_date` DATETIME NULL DEFAULT NULL,
   `receipt_type` VARCHAR(3) NULL COMMENT '- Production\n- Purchase',
   `total_cost` DECIMAL(10,2) NULL DEFAULT NULL COMMENT 'ราคารวม ทั้งหมด\n',
@@ -170,6 +183,11 @@ CREATE TABLE IF NOT EXISTS `onion`.`inv_goods_receipt` (
   CONSTRAINT `fk_inv_good_receipt_supplier1`
     FOREIGN KEY (`supplier_id`)
     REFERENCES `onion`.`supplier` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_inv_goods_receipt_document_number1`
+    FOREIGN KEY (`document_number_internal_no`)
+    REFERENCES `onion`.`document_number` (`internal_no`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -209,7 +227,7 @@ DROP TABLE IF EXISTS `onion`.`inv_goods_movement` ;
 
 CREATE TABLE IF NOT EXISTS `onion`.`inv_goods_movement` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `running_no` VARCHAR(20) NULL DEFAULT NULL,
+  `document_number_internal_no` BIGINT NULL COMMENT 'แทน running_no',
   `movement_date` DATETIME NULL DEFAULT NULL,
   `movement_type` VARCHAR(3) NULL DEFAULT NULL COMMENT '100 เบิกของเพื่อผลิต',
   `owner` VARCHAR(50) NULL DEFAULT NULL COMMENT 'ผู้เบิก',
@@ -218,7 +236,12 @@ CREATE TABLE IF NOT EXISTS `onion`.`inv_goods_movement` (
   `create_user` VARCHAR(50) NULL DEFAULT NULL,
   `update_date` DATETIME NULL DEFAULT NULL,
   `update_user` VARCHAR(50) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_inv_goods_movement_document_number1`
+    FOREIGN KEY (`document_number_internal_no`)
+    REFERENCES `onion`.`document_number` (`internal_no`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -374,7 +397,7 @@ DROP TABLE IF EXISTS `onion`.`sale_order` ;
 
 CREATE TABLE IF NOT EXISTS `onion`.`sale_order` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `sale_order_no` VARCHAR(45) NULL DEFAULT NULL COMMENT 'running no',
+  `document_number_internal_no` BIGINT NULL COMMENT 'แทน sale_order_no',
   `payment_type` VARCHAR(3) NULL DEFAULT NULL COMMENT '1-credit\n2-cash',
   `delivery_date` DATETIME NULL DEFAULT NULL,
   `total_price` DECIMAL(10,2) NULL DEFAULT NULL,
@@ -391,6 +414,11 @@ CREATE TABLE IF NOT EXISTS `onion`.`sale_order` (
   CONSTRAINT `fk_sale_order_customer1`
     FOREIGN KEY (`customer_id`)
     REFERENCES `onion`.`customer` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sale_order_document_number1`
+    FOREIGN KEY (`document_number_internal_no`)
+    REFERENCES `onion`.`document_number` (`internal_no`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -433,7 +461,7 @@ DROP TABLE IF EXISTS `onion`.`sale_receipt` ;
 
 CREATE TABLE IF NOT EXISTS `onion`.`sale_receipt` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `receipt_no` VARCHAR(20) NULL DEFAULT NULL COMMENT 'running no',
+  `document_number_internal_no` BIGINT NULL COMMENT 'ไว้แทนที่ receipt_no',
   `sale_order_id` BIGINT NOT NULL,
   `receipt_date` DATETIME NULL DEFAULT NULL,
   `receipt_type` VARCHAR(3) NULL DEFAULT NULL COMMENT '1- cash\n2- cheque',
@@ -452,6 +480,11 @@ CREATE TABLE IF NOT EXISTS `onion`.`sale_receipt` (
     FOREIGN KEY (`sale_order_id`)
     REFERENCES `onion`.`sale_order` (`id`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sale_receipt_document_number1`
+    FOREIGN KEY (`document_number_internal_no`)
+    REFERENCES `onion`.`document_number` (`internal_no`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -465,7 +498,7 @@ CREATE TABLE IF NOT EXISTS `onion`.`job_order` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `catalog_id` BIGINT NOT NULL,
   `sale_order_id` BIGINT NULL COMMENT 'ในกรณี ที่ สร้าง job จาก saleOrder',
-  `running_no` VARCHAR(45) NULL,
+  `document_number_internal_no` BIGINT NULL COMMENT 'แทน running_no',
   `employee_id` BIGINT NULL,
   `qty` DECIMAL(10,2) NULL COMMENT 'qty ที่จะผลิต\n',
   `cost` DECIMAL(10,2) NULL,
@@ -493,6 +526,11 @@ CREATE TABLE IF NOT EXISTS `onion`.`job_order` (
     FOREIGN KEY (`sale_order_id`)
     REFERENCES `onion`.`sale_order` (`id`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_job_order_document_number1`
+    FOREIGN KEY (`document_number_internal_no`)
+    REFERENCES `onion`.`document_number` (`internal_no`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -503,13 +541,12 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `onion`.`inv_stock` ;
 
 CREATE TABLE IF NOT EXISTS `onion`.`inv_stock` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `inv_item_id` BIGINT NOT NULL,
   `qty` DECIMAL(10,2) NULL DEFAULT NULL COMMENT 'qty ที่มีอยู่จริงใน stock\n',
   `qty_available` DECIMAL(10,2) NULL DEFAULT NULL COMMENT 'qty ที่สามารถนำไปใช้งานได้\nโดยจะมีการหัก qty บางส่วนที่จองไว้แล้ว สำหรับงานขาย',
   `update_date` DATETIME NULL,
   `update_user` VARCHAR(50) NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`inv_item_id`),
   CONSTRAINT `fk_inv_stock_inv_item1`
     FOREIGN KEY (`inv_item_id`)
     REFERENCES `onion`.`inv_item` (`id`)
@@ -532,7 +569,7 @@ CREATE TABLE IF NOT EXISTS `onion`.`inv_item_level` (
   `qty_available_before` DECIMAL(10,2) NULL,
   `qty_available_adjust` DECIMAL(10,2) NULL,
   `qty_available_after` DECIMAL(10,2) NULL,
-  `ref_document` VARCHAR(50) NULL DEFAULT NULL COMMENT 'key ที่อ้างอิง จาก 2 table\n inv_good_receipt_item, inv_good_movement_item',
+  `document_number_internal_no` BIGINT NULL COMMENT 'ref document number',
   `ref_type` VARCHAR(3) NULL DEFAULT NULL COMMENT '1=goodReceipt(in)\n2=movement (out)\n3=Sale\n4=Manual Adjust',
   `transaction_type` VARCHAR(3) NULL COMMENT '- reserved (available ลดลง)\n- commit (qty จริง ลดลง/เพิ่มขึ้น)\n- rollback (ยกเลิก คืนค่าเก่า)\n',
   `inv_item_id` BIGINT NOT NULL,
@@ -541,6 +578,11 @@ CREATE TABLE IF NOT EXISTS `onion`.`inv_item_level` (
   CONSTRAINT `fk_inv_item_level_inv_item1`
     FOREIGN KEY (`inv_item_id`)
     REFERENCES `onion`.`inv_item` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_inv_item_level_document_number1`
+    FOREIGN KEY (`document_number_internal_no`)
+    REFERENCES `onion`.`document_number` (`internal_no`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

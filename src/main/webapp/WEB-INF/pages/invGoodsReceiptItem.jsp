@@ -147,7 +147,7 @@
 		<fieldset class="form-actions">
 
 			<c:choose>
-				<c:when test="${invGoodsReceiptItem.invGoodsReceipt.runningNo == null}">
+				<c:when test="${invGoodsReceiptItem.invGoodsReceipt.documentNumber.documentNo == null}">
 					<button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
 						<i class="icon-ok icon-white"></i>
 						<fmt:message key="button.save" />

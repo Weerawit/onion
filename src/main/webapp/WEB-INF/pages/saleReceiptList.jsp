@@ -24,9 +24,9 @@
 	<div class="row-fluid">
 		<div class="span6">
 			<div class="control-group">
-				<label class="control-label" for="saleOrder.saleOrderNo"><fmt:message key="saleOrder.saleOrderNo" />:</label>
+				<label class="control-label" for="saleOrder.documentNumber.documentNo"><fmt:message key="saleOrder.documentNumber.documentNo" />:</label>
 				<div class="controls">
-					<input type="text" class="input-medium" name="saleOrder.saleOrderNo" id="saleOrder.saleOrderNo" value="${param['saleOrder.saleOrderNo']}" placeholder="" />
+					<input type="text" class="input-medium" name="saleOrder.documentNumber.documentNo" id="saleOrder.documentNumber.documentNo" value="${param['saleOrder.documentNumber.documentNo']}" placeholder="" />
 				</div>
 			</div>
 		</div>
@@ -118,7 +118,7 @@
 				<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleReceipt.id}'/>" />
 			</display:column>
 			<display:column property="receiptNo" url="/saleReceipt?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleReceipt.receiptNo" sortName="receiptNo" />
-			<display:column property="saleOrder.saleOrderNo" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.saleOrderNo" sortName="saleOrder.saleOrderNo" />
+			<display:column property="saleOrder.documentNumber.documentNo" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.documentNumber.documentNo" sortName="saleOrder.documentNumber.documentNo" />
 			<display:column property="saleOrder.customer.name" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.customer.name" sortName="saleOrder.customer.name" />
 			<display:column property="receiptDate" escapeXml="false" sortable="true" titleKey="saleReceipt.receiptDate" sortName="receiptDate" format="{0, date, dd/MM/yyyy HH:mm}" />
 			<display:column property="receiptAmount" escapeXml="false" sortable="true" titleKey="saleReceipt.receiptAmount" sortName="receiptAmount" format="{0, number, #,##0.##}" />
@@ -205,7 +205,7 @@
 			}
 		});
 		
-		$('input[name="saleOrder.saleOrderNo"]').lookup({
+		$('input[name="saleOrder.documentNumber.documentNo"]').lookup({
 			type : 'saleOrder',
 			displayProperty : function(json) {
 				return json.saleOrderNo;
@@ -213,13 +213,13 @@
 			selectProperty : 'saleOrderNo',
 			btnSearchCondition : function() {
 				return {
-					saleOrderNo : $('input[name="saleOrder.saleOrderNo"]').val()
+					'documentNumber.documentNo' : $('input[name="saleOrder.documentNumber.documentNo"]').val()
 				};
 			},
 			handler : function(json) {
 				if (json) {
 				} else {
-					$('input[name="saleOrder.saleOrderNo"]').val('');
+					$('input[name="saleOrder.documentNumber.documentNo"]').val('');
 				}
 			}
 		});

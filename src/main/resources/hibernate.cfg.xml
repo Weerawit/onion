@@ -12,25 +12,25 @@
 		<mapping class="com.worldbestsoft.model.User" />
 		<mapping class="com.worldbestsoft.model.Role" />
 		<mapping class="com.worldbestsoft.model.InvGoodsReceiptItem" />
-		<mapping class="com.worldbestsoft.model.InvItemGroup" />
-		<mapping class="com.worldbestsoft.model.SaleOrderItem" />
-		<mapping class="com.worldbestsoft.model.CatalogType" />
-		<mapping class="com.worldbestsoft.model.DocumentNumber" />
-		<mapping class="com.worldbestsoft.model.Employee" />
-		<mapping class="com.worldbestsoft.model.SaleOrder" />
-		<mapping class="com.worldbestsoft.model.Catalog" />
-		<mapping class="com.worldbestsoft.model.Customer" />
-		<mapping class="com.worldbestsoft.model.InvGoodsMovementItem" />
-		<mapping class="com.worldbestsoft.model.SaleReceipt" />
-		<mapping class="com.worldbestsoft.model.InvGoodsMovement" />
-		<mapping class="com.worldbestsoft.model.Supplier" />
-		<mapping class="com.worldbestsoft.model.JobOrder" />
-		<mapping class="com.worldbestsoft.model.InvGoodsReceipt" />
-		<mapping class="com.worldbestsoft.model.InvItem" />
-		<mapping class="com.worldbestsoft.model.InvStock" />
-		<mapping class="com.worldbestsoft.model.InvItemLevel" />
-		<mapping class="com.worldbestsoft.model.CatalogItem" />
-
+        <mapping class="com.worldbestsoft.model.InvItemGroup" />
+        <mapping class="com.worldbestsoft.model.SaleOrderItem" />
+        <mapping class="com.worldbestsoft.model.CatalogType" />
+        <mapping class="com.worldbestsoft.model.Employee" />
+        <mapping class="com.worldbestsoft.model.SaleOrder" />
+        <mapping class="com.worldbestsoft.model.Catalog" />
+        <mapping class="com.worldbestsoft.model.Customer" />
+        <mapping class="com.worldbestsoft.model.InvGoodsMovementItem" />
+        <mapping class="com.worldbestsoft.model.SaleReceipt" />
+        <mapping class="com.worldbestsoft.model.InvGoodsMovement" />
+        <mapping class="com.worldbestsoft.model.Supplier" />
+        <mapping class="com.worldbestsoft.model.JobOrder" />
+        <mapping class="com.worldbestsoft.model.DocumentSeq" />
+        <mapping class="com.worldbestsoft.model.InvGoodsReceipt" />
+        <mapping class="com.worldbestsoft.model.InvItem" />
+        <mapping class="com.worldbestsoft.model.DocumentNumber" />
+        <mapping class="com.worldbestsoft.model.InvStock" />
+        <mapping class="com.worldbestsoft.model.InvItemLevel" />
+        <mapping class="com.worldbestsoft.model.CatalogItem" />
 	</session-factory>
 
 </hibernate-configuration>

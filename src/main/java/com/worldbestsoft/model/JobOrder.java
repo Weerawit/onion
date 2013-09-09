@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Sep 7, 2013 8:08:08 AM by Hibernate Tools 4.0.0
+// Generated Sep 9, 2013 10:54:50 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -27,7 +27,7 @@ public class JobOrder implements java.io.Serializable {
 	private Employee employee;
 	private SaleOrder saleOrder;
 	private Catalog catalog;
-	private String runningNo;
+	private DocumentNumber documentNumber;
 	private BigDecimal qty;
 	private BigDecimal cost;
 	private String status;
@@ -47,11 +47,11 @@ public class JobOrder implements java.io.Serializable {
 		this.catalog = catalog;
 	}
 
-	public JobOrder(Employee employee, SaleOrder saleOrder, Catalog catalog, String runningNo, BigDecimal qty, BigDecimal cost, String status, String cancelReason, Date startDate, Date targetEndDate, Date actualEndDate, Date createDate, String createUser, Date updateDate, String updateUser) {
+	public JobOrder(Employee employee, SaleOrder saleOrder, Catalog catalog, DocumentNumber documentNumber, BigDecimal qty, BigDecimal cost, String status, String cancelReason, Date startDate, Date targetEndDate, Date actualEndDate, Date createDate, String createUser, Date updateDate, String updateUser) {
 		this.employee = employee;
 		this.saleOrder = saleOrder;
 		this.catalog = catalog;
-		this.runningNo = runningNo;
+		this.documentNumber = documentNumber;
 		this.qty = qty;
 		this.cost = cost;
 		this.status = status;
@@ -106,13 +106,14 @@ public class JobOrder implements java.io.Serializable {
 		this.catalog = catalog;
 	}
 
-	@Column(name = "running_no", length = 45)
-	public String getRunningNo() {
-		return this.runningNo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "document_number_internal_no")
+	public DocumentNumber getDocumentNumber() {
+		return this.documentNumber;
 	}
 
-	public void setRunningNo(String runningNo) {
-		this.runningNo = runningNo;
+	public void setDocumentNumber(DocumentNumber documentNumber) {
+		this.documentNumber = documentNumber;
 	}
 
 	@Column(name = "qty", precision = 10)

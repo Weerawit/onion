@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worldbestsoft.model.Catalog;
 import com.worldbestsoft.model.Customer;
+import com.worldbestsoft.model.DocumentNumber;
 import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.InvItem;
 import com.worldbestsoft.model.SaleOrder;
@@ -176,13 +177,15 @@ public class JsonController {
 	@RequestMapping(value="/saleOrder*", method = RequestMethod.GET)
 	public @ResponseBody List<Map<String, Object>> getSaleOrderList(@RequestParam("q") String name) {
 		SaleOrderCriteria criteria = new SaleOrderCriteria();
-		criteria.setSaleOrderNo(name);
+		DocumentNumber documentNumber = new DocumentNumber();
+		documentNumber.setDocumentNo(name);
+		criteria.setDocumentNumber(documentNumber);
 		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
 		List<SaleOrder> saleOrderList = saleOrderManager.query(criteria, 0, 10, null, null);
 		for (SaleOrder saleOrder : saleOrderList) {
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("id", saleOrder.getId().toString());
-			model.put("saleOrderNo", saleOrder.getSaleOrderNo());
+			model.put("saleOrderNo", saleOrder.getDocumentNumber().getDocumentNo());
 			model.put("totalPrice", saleOrder.getTotalPrice());
 			model.put("paymentPaid", saleOrder.getPaymentPaid());
 			model.put("status", saleOrder.getStatus());

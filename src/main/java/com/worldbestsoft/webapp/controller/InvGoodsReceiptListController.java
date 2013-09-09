@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sun.org.apache.bcel.internal.generic.DCONST;
+import com.worldbestsoft.model.DocumentNumber;
 import com.worldbestsoft.model.Supplier;
 import com.worldbestsoft.model.criteria.InvGoodsReceiptCriteria;
 import com.worldbestsoft.service.InvGoodsReceiptManager;
@@ -56,7 +58,9 @@ public class InvGoodsReceiptListController extends BaseFormController {
 
 		InvGoodsReceiptCriteria criteria = new InvGoodsReceiptCriteria();
 		criteria.setReceiptType(request.getParameter("receiptType"));
-		criteria.setRunningNo(request.getParameter("runningNo"));
+		DocumentNumber documentNumber = new DocumentNumber();
+		documentNumber.setDocumentNo(request.getParameter("documentNumber.documentNo"));
+		criteria.setDocumentNumber(documentNumber);
 		Supplier supplier = new Supplier();
 		supplier.setName(request.getParameter("supplier.name"));
 		criteria.setSupplier(supplier);

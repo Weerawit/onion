@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.worldbestsoft.model.Catalog;
 import com.worldbestsoft.model.CatalogType;
 import com.worldbestsoft.model.Customer;
+import com.worldbestsoft.model.DocumentNumber;
 import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.InvItem;
 import com.worldbestsoft.model.InvItemGroup;
@@ -244,7 +245,9 @@ public class PopupController extends BaseFormController {
 		Model model = new ExtendedModelMap();
 		model.addAttribute("saleOrderStatusList", lookupManager.getAllSaleOrderStatusList(request.getLocale()));
 		SaleOrderCriteria criteria = new SaleOrderCriteria();
-		criteria.setSaleOrderNo(request.getParameter("saleOrderNo"));
+		DocumentNumber documentNumber = new DocumentNumber();
+		documentNumber.setDocumentNo(request.getParameter("documentNumber.documentNo"));
+		criteria.setDocumentNumber(documentNumber);
 		
 		criteria.setStatus(request.getParameter("status"));
 		

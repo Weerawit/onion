@@ -69,8 +69,8 @@ public class SaleReceiptFormController extends BaseFormController {
 		if (validator != null) { // validator is null during testing
 			validator.validate(saleReceiptForm, errors);
 			
-			if (null != saleReceiptForm.getSaleOrder()) {
-				SaleOrder saleOrder = getSaleOrderManager().findBySaleOrderNo(saleReceiptForm.getSaleOrder().getSaleOrderNo());
+			if (null != saleReceiptForm.getSaleOrder() && null != saleReceiptForm.getSaleOrder().getDocumentNumber() && StringUtils.isNotBlank(saleReceiptForm.getSaleOrder().getDocumentNumber().getDocumentNo())) {
+				SaleOrder saleOrder = getSaleOrderManager().findBySaleOrderNo(saleReceiptForm.getSaleOrder().getDocumentNumber().getDocumentNo());
 				saleReceiptForm.setSaleOrder(saleOrder);
 				if (null == saleOrder) {
 					errors.rejectValue("saleOrder.saleOrderNo", "errors.invalid", new Object[] { getText("saleReceipt.saleOrder.saleOrderNo", request.getLocale())}, "errors.invalid");	
@@ -99,7 +99,7 @@ public class SaleReceiptFormController extends BaseFormController {
 		
 		if (StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) {
 			getSaleReceiptManager().remove(saleReceiptForm.getId(), request.getRemoteUser(), saleReceiptForm.getCancelReason());
-			saveMessage(request, getText("saleReceipt.deleted", saleReceiptForm.getReceiptNo(), locale));
+			saveMessage(request, getText("saleReceipt.deleted", saleReceiptForm.getDocumentNumber().getDocumentNo(), locale));
 			return new ModelAndView("redirect:/saleReceiptList");
 		} else {
 		
@@ -110,7 +110,7 @@ public class SaleReceiptFormController extends BaseFormController {
 				
 				saleReceiptForm = getSaleReceiptManager().save(saleReceiptForm);
 	
-				saveMessage(request, getText("saleReceipt.added", saleReceiptForm.getReceiptNo(), locale));
+				saveMessage(request, getText("saleReceipt.added", saleReceiptForm.getDocumentNumber().getDocumentNo(), locale));
 				return new ModelAndView("redirect:/saleReceipt").addObject("id", saleReceiptForm.getId());
 			} else {
 				// edit
@@ -121,7 +121,7 @@ public class SaleReceiptFormController extends BaseFormController {
 				saleReceipt = getSaleReceiptManager().save(saleReceipt);
 	
 				request.setAttribute("saleReceipt", saleReceipt);
-				saveMessage(request, getText("saleReceipt.saved", saleReceipt.getReceiptNo(), locale));
+				saveMessage(request, getText("saleReceipt.saved", saleReceipt.getDocumentNumber().getDocumentNo(), locale));
 				return new ModelAndView("redirect:/saleReceiptList");
 			}
 		}

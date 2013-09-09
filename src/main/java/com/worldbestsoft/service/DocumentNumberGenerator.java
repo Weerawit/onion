@@ -1,8 +1,12 @@
 package com.worldbestsoft.service;
 
+import com.worldbestsoft.model.DocumentNumber;
+
 
 public interface DocumentNumberGenerator {
 
-	public abstract Long nextDocumentNumber(Class klass) throws DocumentNumberGeneratorException;
+	public abstract DocumentNumber newDocumentNumber();
+
+	public abstract void nextDocumentNumber(Class klass,  Long internalNo, DocumentNumberFormatter formatter);
 
 }

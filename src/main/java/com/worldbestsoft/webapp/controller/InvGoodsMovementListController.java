@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.worldbestsoft.model.DocumentNumber;
 import com.worldbestsoft.model.criteria.InvGoodsMovementCriteria;
 import com.worldbestsoft.service.InvGoodsMovementManager;
 import com.worldbestsoft.service.LookupManager;
@@ -52,7 +53,9 @@ public class InvGoodsMovementListController extends BaseFormController {
 		Model model = new ExtendedModelMap();
 
 		InvGoodsMovementCriteria criteria = new InvGoodsMovementCriteria();
-		criteria.setRunningNo(request.getParameter("runningNo"));
+		DocumentNumber documentNumber = new DocumentNumber();
+		documentNumber.setDocumentNo(request.getParameter("documentNumber.documentNo"));
+		criteria.setDocumentNumber(documentNumber);
 		criteria.setOwner(request.getParameter("owner"));
 		criteria.setMovementType(request.getParameter("movementType"));
 		String startTime = request.getParameter("movementDateFrom");

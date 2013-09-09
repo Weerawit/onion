@@ -1,7 +1,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 <display:table name="saleReceiptList" cellspacing="0" cellpadding="0" requestURI="" id="saleReceipt"  class="table table-condensed table-striped table-hover table-bordered" export="false" pagesize="10" partialList="false">
 	<display:column property="receiptNo" escapeXml="true" sortable="true" titleKey="saleReceipt.receiptNo" sortName="receiptNo" />
-	<display:column property="saleOrder.saleOrderNo" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.saleOrderNo" sortName="saleOrder.saleOrderNo" />
+	<display:column property="saleOrder.documentNumber.documentNo" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.documentNumber.documentNo" sortName="saleOrder.documentNumber.documentNo" />
 	<display:column property="receiptDate" escapeXml="false" sortable="true" titleKey="saleReceipt.receiptDate" sortName="receiptDate"  format="{0, date, dd/MM/yyyy HH:mm}"/>
 	<display:column escapeXml="false" sortable="true" titleKey="saleReceipt.status" sortName="status" >
 		<tags:labelValue value="${saleReceipt.status}" list="${saleReceiptStatusList}"/> 

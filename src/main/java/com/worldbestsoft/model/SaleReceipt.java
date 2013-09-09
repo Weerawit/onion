@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Aug 24, 2013 9:07:19 AM by Hibernate Tools 4.0.0
+// Generated Sep 9, 2013 10:54:50 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -25,7 +25,7 @@ public class SaleReceipt implements java.io.Serializable {
 
 	private Long id;
 	private SaleOrder saleOrder;
-	private String receiptNo;
+	private DocumentNumber documentNumber;
 	private Date receiptDate;
 	private String receiptType;
 	private BigDecimal receiptAmount;
@@ -46,9 +46,9 @@ public class SaleReceipt implements java.io.Serializable {
 		this.saleOrder = saleOrder;
 	}
 
-	public SaleReceipt(SaleOrder saleOrder, String receiptNo, Date receiptDate, String receiptType, BigDecimal receiptAmount, String chequeNo, String chequeBank, Date chequeDate, String status, String cancelReason, Date createDate, String createUser, Date updateDate, String updateUser) {
+	public SaleReceipt(SaleOrder saleOrder, DocumentNumber documentNumber, Date receiptDate, String receiptType, BigDecimal receiptAmount, String chequeNo, String chequeBank, Date chequeDate, String status, String cancelReason, Date createDate, String createUser, Date updateDate, String updateUser) {
 		this.saleOrder = saleOrder;
-		this.receiptNo = receiptNo;
+		this.documentNumber = documentNumber;
 		this.receiptDate = receiptDate;
 		this.receiptType = receiptType;
 		this.receiptAmount = receiptAmount;
@@ -84,13 +84,14 @@ public class SaleReceipt implements java.io.Serializable {
 		this.saleOrder = saleOrder;
 	}
 
-	@Column(name = "receipt_no", length = 20)
-	public String getReceiptNo() {
-		return this.receiptNo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "document_number_internal_no")
+	public DocumentNumber getDocumentNumber() {
+		return this.documentNumber;
 	}
 
-	public void setReceiptNo(String receiptNo) {
-		this.receiptNo = receiptNo;
+	public void setDocumentNumber(DocumentNumber documentNumber) {
+		this.documentNumber = documentNumber;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Sep 4, 2013 9:43:52 AM by Hibernate Tools 4.0.0
+// Generated Sep 9, 2013 10:54:50 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -24,6 +24,7 @@ import javax.persistence.TemporalType;
 public class InvItemLevel implements java.io.Serializable {
 
 	private Long id;
+	private DocumentNumber documentNumber;
 	private InvItem invItem;
 	private Date transactionDate;
 	private BigDecimal qtyBefore;
@@ -32,7 +33,6 @@ public class InvItemLevel implements java.io.Serializable {
 	private BigDecimal qtyAvailableBefore;
 	private BigDecimal qtyAvailableAdjust;
 	private BigDecimal qtyAvailableAfter;
-	private String refDocument;
 	private String refType;
 	private String transactionType;
 	private String updateUser;
@@ -45,7 +45,8 @@ public class InvItemLevel implements java.io.Serializable {
 		this.transactionDate = transactionDate;
 	}
 
-	public InvItemLevel(InvItem invItem, Date transactionDate, BigDecimal qtyBefore, BigDecimal qtyAdjust, BigDecimal qtyAfter, BigDecimal qtyAvailableBefore, BigDecimal qtyAvailableAdjust, BigDecimal qtyAvailableAfter, String refDocument, String refType, String transactionType, String updateUser) {
+	public InvItemLevel(DocumentNumber documentNumber, InvItem invItem, Date transactionDate, BigDecimal qtyBefore, BigDecimal qtyAdjust, BigDecimal qtyAfter, BigDecimal qtyAvailableBefore, BigDecimal qtyAvailableAdjust, BigDecimal qtyAvailableAfter, String refType, String transactionType, String updateUser) {
+		this.documentNumber = documentNumber;
 		this.invItem = invItem;
 		this.transactionDate = transactionDate;
 		this.qtyBefore = qtyBefore;
@@ -54,7 +55,6 @@ public class InvItemLevel implements java.io.Serializable {
 		this.qtyAvailableBefore = qtyAvailableBefore;
 		this.qtyAvailableAdjust = qtyAvailableAdjust;
 		this.qtyAvailableAfter = qtyAvailableAfter;
-		this.refDocument = refDocument;
 		this.refType = refType;
 		this.transactionType = transactionType;
 		this.updateUser = updateUser;
@@ -69,6 +69,16 @@ public class InvItemLevel implements java.io.Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "document_number_internal_no")
+	public DocumentNumber getDocumentNumber() {
+		return this.documentNumber;
+	}
+
+	public void setDocumentNumber(DocumentNumber documentNumber) {
+		this.documentNumber = documentNumber;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -143,15 +153,6 @@ public class InvItemLevel implements java.io.Serializable {
 
 	public void setQtyAvailableAfter(BigDecimal qtyAvailableAfter) {
 		this.qtyAvailableAfter = qtyAvailableAfter;
-	}
-
-	@Column(name = "ref_document", length = 50)
-	public String getRefDocument() {
-		return this.refDocument;
-	}
-
-	public void setRefDocument(String refDocument) {
-		this.refDocument = refDocument;
 	}
 
 	@Column(name = "ref_type", length = 3)

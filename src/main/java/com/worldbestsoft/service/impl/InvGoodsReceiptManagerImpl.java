@@ -8,31 +8,29 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.InvGoodsReceiptDao;
 import com.worldbestsoft.dao.InvGoodsReceiptItemDao;
-import com.worldbestsoft.dao.InvItemLevelDao;
 import com.worldbestsoft.model.ConstantModel;
+import com.worldbestsoft.model.DocumentNumber;
 import com.worldbestsoft.model.InvGoodsReceipt;
 import com.worldbestsoft.model.InvGoodsReceiptItem;
 import com.worldbestsoft.model.InvItemLevel;
 import com.worldbestsoft.model.criteria.InvGoodsReceiptCriteria;
+import com.worldbestsoft.service.DocumentNumberFormatter;
 import com.worldbestsoft.service.DocumentNumberGenerator;
-import com.worldbestsoft.service.DocumentNumberGeneratorException;
 import com.worldbestsoft.service.InvGoodsReceiptManager;
-import com.worldbestsoft.service.InvItemLevelChangedEvent;
+import com.worldbestsoft.service.InvStockManager;
 
 @Service("invGoodsReceiptManager")
-public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager, ApplicationContextAware {
+public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 	private InvGoodsReceiptDao invGoodsReceiptDao;
 	private InvGoodsReceiptItemDao invGoodsReceiptItemDao;
 	private DocumentNumberGenerator documentNumberGenerator;
-	private ApplicationContext context;
+//	private ApplicationContext context;
+	private InvStockManager invStockManager;
 
 	private String documentNumberFormat = "GR{0,number,00000}";
 
@@ -71,10 +69,13 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager, Appli
 		this.documentNumberFormat = documentNumberFormat;
 	}
 
-	@Override
-	public void setApplicationContext(ApplicationContext arg0) throws BeansException {
-		this.context = arg0;
+	public InvStockManager getInvStockManager() {
+		return invStockManager;
+	}
 
+	@Autowired
+	public void setInvStockManager(InvStockManager invStockManager) {
+		this.invStockManager = invStockManager;
 	}
 
 	/*
@@ -194,37 +195,33 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager, Appli
 	@Override
 	public InvGoodsReceipt saveToStock(InvGoodsReceipt invGoodsReceipt) {
 		// get running no
-		try {
-			Long documentNumber = documentNumberGenerator.nextDocumentNumber(InvGoodsReceipt.class);
-			String runningNo = MessageFormat.format(documentNumberFormat, documentNumber);
-			invGoodsReceipt.setRunningNo(runningNo);
-			invGoodsReceipt = invGoodsReceiptDao.save(invGoodsReceipt);
+		
+		DocumentNumber documentNumber = documentNumberGenerator.newDocumentNumber();
+		invGoodsReceipt.setDocumentNumber(documentNumber);
+		invGoodsReceipt = invGoodsReceiptDao.save(invGoodsReceipt);
 
-			List<InvGoodsReceiptItem> invGoodsReceiptItemList = invGoodsReceiptItemDao.findByInvGoodReceipt(invGoodsReceipt.getId());
+		List<InvGoodsReceiptItem> invGoodsReceiptItemList = invGoodsReceiptItemDao.findByInvGoodReceipt(invGoodsReceipt.getId());
 
-			for (InvGoodsReceiptItem invGoodsReceiptItem : invGoodsReceiptItemList) {
-				InvItemLevel invItemLevel = new InvItemLevel();
-				invItemLevel.setInvItem(invGoodsReceiptItem.getInvItem());
-				invItemLevel.setQtyAdjust(invGoodsReceiptItem.getQty());
-				invItemLevel.setQtyAvailableAdjust(invGoodsReceiptItem.getQty());
-				invItemLevel.setTransactionDate(new Date());
-				invItemLevel.setUpdateUser(invGoodsReceipt.getUpdateUser());
-				invItemLevel.setRefDocument(invGoodsReceipt.getRunningNo());
-				invItemLevel.setRefType(ConstantModel.RefType.GOOD_RECEIPT.getCode());
-				invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+		for (InvGoodsReceiptItem invGoodsReceiptItem : invGoodsReceiptItemList) {
+			InvItemLevel invItemLevel = new InvItemLevel();
+			invItemLevel.setInvItem(invGoodsReceiptItem.getInvItem());
+			invItemLevel.setQtyAdjust(invGoodsReceiptItem.getQty());
+			invItemLevel.setQtyAvailableAdjust(invGoodsReceiptItem.getQty());
+			invItemLevel.setTransactionDate(new Date());
+			invItemLevel.setUpdateUser(invGoodsReceipt.getUpdateUser());
+			invItemLevel.setDocumentNumber(documentNumber);
+			invItemLevel.setRefType(ConstantModel.RefType.GOOD_RECEIPT.getCode());
+			invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
 
-				// design to do one by one itemLevel, if not work will change to
-				// per invGoodReeipt
-				// by changing constructor and move out from loop
-				// this should not effect current transaction, mean will not
-				// rollback.
-				InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
-				context.publishEvent(invItemLevelChangedEvent);
-			}
-		} catch (DocumentNumberGeneratorException e) {
-			// roll back transaction
-			throw new RuntimeException(e);
+			getInvStockManager().updateStock(invItemLevel);
 		}
+		documentNumberGenerator.nextDocumentNumber(InvGoodsReceipt.class, documentNumber.getInternalNo(), new DocumentNumberFormatter() {
+			
+			@Override
+			public String format(Long nextSeq) {
+				return MessageFormat.format(documentNumberFormat, nextSeq);
+			}
+		});
 		return invGoodsReceipt;
 	}
 

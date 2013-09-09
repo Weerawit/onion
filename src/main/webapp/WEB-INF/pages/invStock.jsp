@@ -26,7 +26,7 @@
 	</spring:bind>
 
 	<form:form commandName="invStock" method="post" action="invStock" onsubmit="return onFormSubmit(this)" id="invStock" cssClass="well form-horizontal">
-		<form:hidden path="id" />
+		<form:hidden path="invItemId" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
 	
 		<spring:bind path="invStock.invItem.code">

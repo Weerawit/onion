@@ -24,8 +24,8 @@ public class InvItemLevelDaoHibernate extends GenericDaoHibernate<InvItemLevel, 
 		String hsql = "select o from InvItemLevel o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		if (StringUtils.isNotEmpty(refDocument)) {
-			hsql += " and o.refDocument = :refDocument";
-			params.put("refDocument", refDocument);
+			hsql += " and o.documentNumber.documentNo = :documentNo";
+			params.put("documentNo", refDocument);
 		}
 		if (null != refType) {
 			hsql += " and o.refType = :refType";

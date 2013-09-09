@@ -33,24 +33,24 @@
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
 		<input type="hidden" name="action"/>
 <%-- 		<c:if test="${invGoodsReceipt.id == null }"> --%>
-<%-- 			<spring:bind path="invGoodsReceipt.runningNo"> --%>
+<%-- 			<spring:bind path="invGoodsReceipt.documentNumber.documentNo"> --%>
 <%-- 				<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}"> --%>
-<%-- 					<appfuse:label styleClass="control-label" key="invGoodsReceipt.runningNo" /> --%>
+<%-- 					<appfuse:label styleClass="control-label" key="invGoodsReceipt.documentNumber.documentNo" /> --%>
 <!-- 					<div class="controls"> -->
-<%-- 						<form:input path="runningNo" id="runningNo" cssClass="input-medium" maxlength="50" /> --%>
-<%-- 						<form:errors path="runningNo" cssClass="help-inline" /> --%>
+<%-- 						<form:input path="documentNumber.documentNo" id="documentNumber.documentNo" cssClass="input-medium" maxlength="50" /> --%>
+<%-- 						<form:errors path="documentNumber.documentNo" cssClass="help-inline" /> --%>
 <!-- 					</div> -->
 <!-- 				</div> -->
 <%-- 			</spring:bind> --%>
 <%-- 		</c:if> --%>
 		<c:choose>
-			<c:when test="${invGoodsReceipt.runningNo != null }">
-				<%-- since we have runningNo, readonly --%>
+			<c:when test="${invGoodsReceipt.documentNumber.documentNo != null }">
+				<%-- since we have documentNumber.documentNo, readonly --%>
 				<div class="control-group">
-					<appfuse:label styleClass="control-label" key="invGoodsReceipt.runningNo" />
+					<appfuse:label styleClass="control-label" key="invGoodsReceipt.documentNumber.documentNo" />
 					<div class="controls">
-						<span class="input-medium uneditable-input"><c:out value="${invGoodsReceipt.runningNo}" /></span>
-						<form:hidden path="runningNo"/>
+						<span class="input-medium uneditable-input"><c:out value="${invGoodsReceipt.documentNumber.documentNo}" /></span>
+						<form:hidden path="documentNumber.documentNo"/>
 					</div>
 				</div>
 				
@@ -141,7 +141,7 @@
 <!-- 		</div> -->
 <%-- 		</c:if>	 --%>
 		
-		<c:if test="${invGoodsReceipt.runningNo == null}">
+		<c:if test="${invGoodsReceipt.documentNumber.documentNo == null}">
 			<div id="actions">
 			
 				<button id="button.add" class="btn btn-primary" type="submit" onclick="bCancel=true;$('#invGoodsReceipt').attr('action', '${ctx}/invGoodsReceipt/addDetail');">
@@ -157,7 +157,7 @@
 			</div>
 		</c:if>
 		<display:table name="invGoodsReceiptItemList" cellspacing="0" cellpadding="0" requestURI="" id="invGoodsReceiptItem" class="table table-condensed table-striped table-hover table-bordered">
-			<c:if test="${invGoodsReceipt.runningNo == null }">
+			<c:if test="${invGoodsReceipt.documentNumber.documentNo == null }">
 				<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
 					<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${invGoodsReceiptItem_rowNum - 1}'/>" />
 				</display:column>
@@ -167,7 +167,7 @@
 					</button>
 				</display:column>
 			</c:if>
-			<c:if test="${invGoodsReceipt.runningNo != null }">
+			<c:if test="${invGoodsReceipt.documentNumber.documentNo != null }">
 				<display:column titleKey="invGoodsReceiptItem.invItem.code" sortable="true">
 					<a class="btn btn-link" href="${ctx}/invGoodsReceiptItem?from=list&id=${invGoodsReceiptItem_rowNum - 1}"><c:out value="${invGoodsReceiptItem.invItem.code}"/></a>
 				</display:column>
@@ -185,7 +185,7 @@
 			<display:footer>
 				<tr>
 				<c:choose>
-				<c:when test="${invGoodsReceipt.runningNo == null}">
+				<c:when test="${invGoodsReceipt.documentNumber.documentNo == null}">
 					<td colspan="4"><fmt:message key="invGoodsReceipt.totalCost"/></td>
 				</c:when>
 				<c:otherwise>
@@ -200,7 +200,7 @@
 
 		<fieldset class="form-actions">
 			<c:choose>
-				<c:when test="${invGoodsReceipt.runningNo == null}">
+				<c:when test="${invGoodsReceipt.documentNumber.documentNo == null}">
 					<button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
 						<i class="icon-ok icon-white"></i>
 						<fmt:message key="button.save" />
@@ -246,7 +246,7 @@
 		}
 		return valid;
 	}
-	<c:if  test="${invGoodsReceipt.runningNo == null }">
+	<c:if  test="${invGoodsReceipt.documentNumber.documentNo == null }">
 	$(function() {
 
 		var st = $('#receiptDateDatepicker').datetimepicker({

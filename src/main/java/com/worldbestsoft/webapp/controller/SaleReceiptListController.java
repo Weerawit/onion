@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.worldbestsoft.model.Customer;
+import com.worldbestsoft.model.DocumentNumber;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleReceipt;
 import com.worldbestsoft.model.criteria.SaleReceiptCriteria;
@@ -58,7 +59,9 @@ public class SaleReceiptListController extends BaseFormController {
 		
 		SaleReceiptCriteria criteria = new SaleReceiptCriteria();
 		SaleOrder saleOrder = new SaleOrder();
-		saleOrder.setSaleOrderNo(request.getParameter("saleOrder.saleOrderNo"));
+		DocumentNumber documentNumber = new DocumentNumber();
+		documentNumber.setDocumentNo(request.getParameter("saleOrder.documentNumber.documentNo"));
+		saleOrder.setDocumentNumber(documentNumber);
 		
 		Customer customer = new Customer();
 		customer.setName(request.getParameter("saleOrder.customer.name"));
@@ -112,7 +115,7 @@ public class SaleReceiptListController extends BaseFormController {
 			for (int i = 0; i < checkbox.length; i++) {
 				SaleReceipt saleReceipt = saleReceiptManager.get(Long.valueOf(checkbox[i]));
 				saleReceiptManager.remove(Long.valueOf(checkbox[i]), user, cancelReason);
-				saveMessage(request, getText("catalog.deleted", saleReceipt.getReceiptNo(), locale));
+				saveMessage(request, getText("saleReceipt.deleted", saleReceipt.getDocumentNumber().getDocumentNo(), locale));
 			}
 		} else {
 			saveError(request, getText("global.errorNoCheckboxSelectForDelete", request.getLocale()));

@@ -33,29 +33,8 @@
 		<%--store invGoodsMovement id in request to go back to previous page --%>
 		<input type="hidden" name="invGoodsMovement.id" value="<c:out value="${invGoodsMovementItem.invGoodsMovement.id}"/>" />
 
-		<%-- 		<c:if test="${invGoodsMovementItem.id == null }"> --%>
-		<%-- 			<spring:bind path="invGoodsMovementItem.runningNo"> --%>
-		<%-- 				<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}"> --%>
-		<%-- 					<appfuse:label styleClass="control-label" key="invGoodsMovementItem.runningNo" /> --%>
-		<!-- 					<div class="controls"> -->
-		<%-- 						<form:input path="runningNo" id="runningNo" cssClass="input-xlarge" maxlength="50" /> --%>
-		<%-- 						<form:errors path="runningNo" cssClass="help-inline" /> --%>
-		<!-- 					</div> -->
-		<!-- 				</div> -->
-		<%-- 			</spring:bind> --%>
-		<%-- 		</c:if> --%>
-		<%-- 		<c:if test="${invGoodsMovementItem.id != null }"> --%>
-		<!-- 			<div class="control-group"> -->
-		<%-- 				<appfuse:label styleClass="control-label" key="invGoodsMovementItem.runningNo" /> --%>
-		<!-- 				<div class="controls"> -->
-		<%-- 					<span class="input-xlarge uneditable-input"><c:out value="${invGoodsMovementItem.runningNo}" /></span> --%>
-		<%-- 					<form:hidden path="runningNo"/> --%>
-		<!-- 				</div> -->
-		<!-- 			</div> -->
-		<%-- 		</c:if> --%>
-
 		<c:choose>
-			<c:when test="${invGoodsMovementItem.invGoodsMovement.runningNo != null }">
+			<c:when test="${invGoodsMovementItem.invGoodsMovement.documentNumber.documentNo != null }">
 				<%--readonly --%>
 				<div class="control-group">
 					<appfuse:label styleClass="control-label" key="invGoodsMovementItem.invItem.code" />
@@ -120,7 +99,7 @@
 		<fieldset class="form-actions">
 
 			<c:choose>
-				<c:when test="${invGoodsMovementItem.invGoodsMovement.runningNo == null}">
+				<c:when test="${invGoodsMovementItem.invGoodsMovement.documentNumber.documentNo == null}">
 					<button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
 						<i class="icon-ok icon-white"></i>
 						<fmt:message key="button.save" />

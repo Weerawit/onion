@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Sep 3, 2013 11:42:24 AM by Hibernate Tools 4.0.0
+// Generated Sep 9, 2013 10:54:50 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -28,7 +28,7 @@ public class InvGoodsReceipt implements java.io.Serializable {
 
 	private Long id;
 	private Supplier supplier;
-	private String runningNo;
+	private DocumentNumber documentNumber;
 	private Date receiptDate;
 	private String receiptType;
 	private BigDecimal totalCost;
@@ -42,9 +42,9 @@ public class InvGoodsReceipt implements java.io.Serializable {
 	public InvGoodsReceipt() {
 	}
 
-	public InvGoodsReceipt(Supplier supplier, String runningNo, Date receiptDate, String receiptType, BigDecimal totalCost, String memo, Date createDate, String createUser, Date updateDate, String updateUser, Set<InvGoodsReceiptItem> invGoodsReceiptItems) {
+	public InvGoodsReceipt(Supplier supplier, DocumentNumber documentNumber, Date receiptDate, String receiptType, BigDecimal totalCost, String memo, Date createDate, String createUser, Date updateDate, String updateUser, Set<InvGoodsReceiptItem> invGoodsReceiptItems) {
 		this.supplier = supplier;
-		this.runningNo = runningNo;
+		this.documentNumber = documentNumber;
 		this.receiptDate = receiptDate;
 		this.receiptType = receiptType;
 		this.totalCost = totalCost;
@@ -77,13 +77,14 @@ public class InvGoodsReceipt implements java.io.Serializable {
 		this.supplier = supplier;
 	}
 
-	@Column(name = "running_no", length = 20)
-	public String getRunningNo() {
-		return this.runningNo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "document_number_internal_no")
+	public DocumentNumber getDocumentNumber() {
+		return this.documentNumber;
 	}
 
-	public void setRunningNo(String runningNo) {
-		this.runningNo = runningNo;
+	public void setDocumentNumber(DocumentNumber documentNumber) {
+		this.documentNumber = documentNumber;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

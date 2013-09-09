@@ -1,6 +1,5 @@
 package com.worldbestsoft.webapp.controller;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -92,8 +91,8 @@ public class JobOrderFormController extends BaseFormController {
 		if (validator != null) { // validator is null during testing
 			validator.validate(jobOrderForm, errors);
 			
-			if (null != jobOrderForm.getSaleOrder() && StringUtils.isNotBlank(jobOrderForm.getSaleOrder().getSaleOrderNo())) {
-				SaleOrder saleOrder = getSaleOrderManager().findBySaleOrderNo(jobOrderForm.getSaleOrder().getSaleOrderNo());
+			if (null != jobOrderForm.getSaleOrder() && null != jobOrderForm.getSaleOrder().getDocumentNumber() && StringUtils.isNotBlank(jobOrderForm.getSaleOrder().getDocumentNumber().getDocumentNo())) {
+				SaleOrder saleOrder = getSaleOrderManager().findBySaleOrderNo(jobOrderForm.getSaleOrder().getDocumentNumber().getDocumentNo());
 				jobOrderForm.setSaleOrder(saleOrder);
 				if (null == saleOrder) {
 					errors.rejectValue("saleOrder.saleOrderNo", "errors.invalid", new Object[] { getText("jobOrder.saleOrder.saleOrderNo", request.getLocale())}, "errors.invalid");	
@@ -132,7 +131,7 @@ public class JobOrderFormController extends BaseFormController {
 
 		if (StringUtils.equalsIgnoreCase("delete", request.getParameter("action"))) {
 			getJobOrderManager().remove(jobOrderForm.getId(), request.getRemoteUser(), jobOrderForm.getCancelReason());
-			saveMessage(request, getText("jobOrder.deleted", jobOrderForm.getRunningNo(), locale));
+			saveMessage(request, getText("jobOrder.deleted", jobOrderForm.getDocumentNumber().getDocumentNo(), locale));
 			return new ModelAndView("redirect:/jobOrderList");
 		} else {
 			if (null == jobOrderForm.getId()) {
@@ -144,7 +143,7 @@ public class JobOrderFormController extends BaseFormController {
 				
 				jobOrder = getJobOrderManager().save(jobOrder);
 
-				saveMessage(request, getText("jobOrder.added", jobOrder.getRunningNo(), locale));
+				saveMessage(request, getText("jobOrder.added", jobOrder.getDocumentNumber().getDocumentNo(), locale));
 				return new ModelAndView("redirect:/jobOrder").addObject("id", jobOrder.getId());
 			} else {
 				//edit
@@ -159,7 +158,7 @@ public class JobOrderFormController extends BaseFormController {
 				jobOrder = getJobOrderManager().save(jobOrder);
 	
 				request.setAttribute("jobOrder", jobOrder);
-				saveMessage(request, getText("jobOrder.saved", jobOrder.getRunningNo(), locale));
+				saveMessage(request, getText("jobOrder.saved", jobOrder.getDocumentNumber().getDocumentNo(), locale));
 				return new ModelAndView("redirect:/jobOrderList");
 			}
 		}

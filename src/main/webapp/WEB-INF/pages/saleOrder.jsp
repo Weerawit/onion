@@ -17,7 +17,7 @@
 		<fmt:message key="saleOrder.saleOrderNo" />
 	</p>
 	<p>
-	<c:out value="${saleOrder.saleOrderNo}" />
+	<c:out value="${saleOrder.documentNumber.documentNo}" />
 	</p>
 </div>
 <div class="span10">
@@ -36,7 +36,7 @@
 	<form:form commandName="saleOrder" method="post" action="saleOrder" onsubmit="return onFormSubmit(this)" id="saleOrder">
 		<form:hidden path="id" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
-		<form:hidden path="saleOrderNo" />
+		<form:hidden path="documentNumber.documentNo" />
 		<input type="hidden" name="cancelReason"/>
 		<input type="hidden" name="action"/>
 	
@@ -203,7 +203,7 @@
 			<c:if test="${saleOrder.id != null}">
 				<c:choose>
 					<c:when test="${saleOrder.paymentStatus != '3' }">
-						<a class="btn btn-info" href="<c:url value='/saleReceipt?method=Add&from=list&saleOrderNo=${saleOrder.saleOrderNo}'/>">
+						<a class="btn btn-info" href="<c:url value='/saleReceipt?method=Add&from=list&saleOrderNo=${saleOrder.documentNumber.documentNo}'/>">
 						<i class="icon-tag"></i>
 						<fmt:formatNumber value="${saleOrder.totalPrice - saleOrder.paymentPaid }" pattern="#,##0.00"/>
 						</a>

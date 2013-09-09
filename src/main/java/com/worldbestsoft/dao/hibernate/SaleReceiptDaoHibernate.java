@@ -38,9 +38,9 @@ public class SaleReceiptDaoHibernate extends GenericDaoHibernate<SaleReceipt, Lo
 			}
 			
 			if (null != criteria.getSaleOrder()) {
-				if (StringUtils.isNotBlank(criteria.getSaleOrder().getSaleOrderNo())) {
-					hsql += " and o.saleOrder.saleOrderNo = :saleOrderNo";
-					params.put("saleOrderNo", criteria.getSaleOrder().getSaleOrderNo());
+				if (null != criteria.getSaleOrder().getDocumentNumber() && StringUtils.isNotBlank(criteria.getSaleOrder().getDocumentNumber().getDocumentNo())) {
+					hsql += " and o.saleOrder.documentNumber.documentNo = :saleOrderNo";
+					params.put("saleOrderNo", criteria.getSaleOrder().getDocumentNumber().getDocumentNo());
 				}
 				
 				if (null != criteria.getSaleOrder().getCustomer() && StringUtils.isNotBlank(criteria.getSaleOrder().getCustomer().getName())) {
@@ -70,7 +70,7 @@ public class SaleReceiptDaoHibernate extends GenericDaoHibernate<SaleReceipt, Lo
 	 */
 	@Override
     public Integer querySize(SaleReceiptCriteria criteria) {
-		String hsql = "select count(*) from SaleReceipt o where 1=1 and o.status = 'A' ";
+		String hsql = "select count(*) from SaleReceipt o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		if (null != criteria) {
 			if (null != criteria.getReceiptDateFrom()) {
@@ -83,9 +83,9 @@ public class SaleReceiptDaoHibernate extends GenericDaoHibernate<SaleReceipt, Lo
 			}
 			
 			if (null != criteria.getSaleOrder()) {
-				if (StringUtils.isNotBlank(criteria.getSaleOrder().getSaleOrderNo())) {
-					hsql += " and o.saleOrder.saleOrderNo = :saleOrderNo";
-					params.put("saleOrderNo", criteria.getSaleOrder().getSaleOrderNo());
+				if (null != criteria.getSaleOrder().getDocumentNumber() && StringUtils.isNotBlank(criteria.getSaleOrder().getDocumentNumber().getDocumentNo())) {
+					hsql += " and o.saleOrder.documentNumber.documentNo = :saleOrderNo";
+					params.put("saleOrderNo", criteria.getSaleOrder().getDocumentNumber().getDocumentNo());
 				}
 				
 				if (null != criteria.getSaleOrder().getCustomer() && StringUtils.isNotBlank(criteria.getSaleOrder().getCustomer().getName())) {
@@ -108,7 +108,7 @@ public class SaleReceiptDaoHibernate extends GenericDaoHibernate<SaleReceipt, Lo
     public List<SaleReceipt> findBySaleOrderNo(String saleOrderNo) {
 		String hsql = "select o from SaleReceipt o where 1=1 and o.status = :status' ";
 		final Map<String, Object> params = new HashMap<String, Object>();
-		hsql += " and o.saleOrder.saleOrderNo = :saleOrderNo";
+		hsql += " and o.saleOrder.documentNumber.documentNo = :saleOrderNo";
 		params.put("saleOrderNo", saleOrderNo);
 		params.put("status", ConstantModel.SaleReceiptStatus.ACTIVE.getCode());
 		Query queryObj = getSession().createQuery(hsql);

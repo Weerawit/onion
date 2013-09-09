@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.SaleReceiptDao;
 import com.worldbestsoft.model.ConstantModel;
+import com.worldbestsoft.model.DocumentNumber;
 import com.worldbestsoft.model.SaleReceipt;
 import com.worldbestsoft.model.criteria.SaleReceiptCriteria;
+import com.worldbestsoft.service.DocumentNumberFormatter;
 import com.worldbestsoft.service.DocumentNumberGenerator;
 import com.worldbestsoft.service.DocumentNumberGeneratorException;
 import com.worldbestsoft.service.SaleReceiptChangedEvent;
@@ -92,22 +94,25 @@ public class SaleReceiptManagerImpl implements SaleReceiptManager, ApplicationCo
     public SaleReceipt save(SaleReceipt object) {
 		if (null == object.getId()) {
 			//save first , prevent rollback
+			DocumentNumber documentNumber = documentNumberGenerator.newDocumentNumber();
+			object.setDocumentNumber(documentNumber);
 			object.setStatus(ConstantModel.SaleReceiptStatus.ACTIVE.getCode());
 			object = saleReceiptDao.save(object);
 			//get document number
-            try {
-            		Long documentNumber = documentNumberGenerator.nextDocumentNumber(SaleReceipt.class);
-	            String runningNo = MessageFormat.format(documentNumberFormat, documentNumber);
-	            object.setReceiptNo(runningNo);
-            } catch (DocumentNumberGeneratorException e) {
-    				throw new RuntimeException(e);
-            }
+        		documentNumberGenerator.nextDocumentNumber(SaleReceipt.class, documentNumber.getInternalNo(), new DocumentNumberFormatter() {
+					
+					@Override
+					public String format(Long nextSeq) {
+						return MessageFormat.format(documentNumberFormat, nextSeq);
+					}
+				});
+		} else {
+			object = saleReceiptDao.save(object);
 		}
-		SaleReceipt saleReceipt = saleReceiptDao.save(object);
 		
-		SaleReceiptChangedEvent event = new SaleReceiptChangedEvent(saleReceipt);
+		SaleReceiptChangedEvent event = new SaleReceiptChangedEvent(object);
 		context.publishEvent(event);
-		return saleReceipt;
+		return object;
     }
 
     @Override

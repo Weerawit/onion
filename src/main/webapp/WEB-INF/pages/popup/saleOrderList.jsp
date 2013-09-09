@@ -29,9 +29,9 @@
 		<div class="row-fluid">
 			<div class="span5">
 				<div class="control-group">
-					<label class="control-label" for="saleOrderNo"><fmt:message key="saleOrder.saleOrderNo" />:</label>
+					<label class="control-label" for="documentNumber.documentNo"><fmt:message key="saleOrder.documentNumber.documentNo" />:</label>
 					<div class="controls">
-						<input type="text" class="input-medium" name="saleOrderNo" id="saleOrderNo" value="${param.saleOrderNo}" placeholder="" />
+						<input type="text" class="input-medium" name="documentNumber.documentNo" id="documentNumber.documentNo" value="${param['documentNumber.documentNo']}" placeholder="" />
 					</div>
 				</div>
 			</div>
@@ -112,7 +112,7 @@
 				Gson gson = new GsonBuilder().create();
 				JsonObject jsonObject = new JsonObject();
 				jsonObject.addProperty("id", saleOrderObj.getId().toString());
-				jsonObject.addProperty("saleOrderNo", saleOrderObj.getSaleOrderNo());
+				jsonObject.addProperty("saleOrderNo", saleOrderObj.getDocumentNumber().getDocumentNo());
 				jsonObject.addProperty("totalPrice", saleOrderObj.getTotalPrice().toString());
 				jsonObject.addProperty("paymentPaid", saleOrderObj.getPaymentPaid().toString());
 				jsonObject.addProperty("status", saleOrderObj.getStatus());
@@ -135,7 +135,7 @@
 			<input type="radio" id="radio" name="radio" value='<%=json%>' />
 		</display:column>
 		<display:column property="id" escapeXml="true" sortable="true" titleKey="saleOrder.id" sortName="id" />
-		<display:column property="saleOrderNo" url="/saleOrder?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleOrder.saleOrderNo" sortName="saleOrderNo" />
+		<display:column property="documentNumber.documentNo" url="/saleOrder?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleOrder.documentNumber.documentNo" sortName="documentNumber.documentNo" />
 		<display:column property="customer.name" escapeXml="true" sortable="true" titleKey="saleOrder.customer.name" sortName="customer.name" />
 		<display:column property="totalPrice" escapeXml="true" sortable="true" titleKey="saleOrder.totalPrice" sortName="totalPrice" />
 	</display:table>

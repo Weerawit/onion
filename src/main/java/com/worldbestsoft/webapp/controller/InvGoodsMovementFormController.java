@@ -94,7 +94,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 				
 				if (StringUtils.equalsIgnoreCase("saveToStock", request.getParameter("action"))) {
 					invGoodsMovementSession = getInvGoodsMovementManager().saveToStock(invGoodsMovementSession);
-					saveMessage(request, getText("invGoodsMovement.added", invGoodsMovementSession.getRunningNo(), locale));
+					saveMessage(request, getText("invGoodsMovement.added", invGoodsMovementSession.getDocumentNumber().getDocumentNo(), locale));
 				} else {
 					saveMessage(request, getText("invGoodsMovement.added", invGoodsMovementSession.getId(), locale));
 				}
@@ -113,7 +113,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 				
 				if (StringUtils.equalsIgnoreCase("saveToStock", request.getParameter("action"))) {
 					invGoodsMovement = getInvGoodsMovementManager().saveToStock(invGoodsMovement);
-					saveMessage(request, getText("invGoodsMovement.saved", invGoodsMovement.getRunningNo(), locale));
+					saveMessage(request, getText("invGoodsMovement.saved", invGoodsMovement.getDocumentNumber().getDocumentNo(), locale));
 				} else {
 					saveMessage(request, getText("invGoodsMovement.saved", invGoodsMovement.getId(), locale));
 				}
@@ -132,7 +132,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 		invGoodsMovement.setOwner(invGoodsMovementForm.getOwner());
 		invGoodsMovement.setMovementType(invGoodsMovementForm.getMovementType());
 		invGoodsMovement.setMemo(invGoodsMovementForm.getMemo());
-		invGoodsMovement.setRunningNo(invGoodsMovementForm.getRunningNo());
+		invGoodsMovement.setDocumentNumber(invGoodsMovementForm.getDocumentNumber());
 		return new ModelAndView("redirect:/invGoodsMovementItem?method=Add&from=list");
 	}
 	
@@ -144,7 +144,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 		invGoodsMovement.setOwner(invGoodsMovementForm.getOwner());
 		invGoodsMovement.setMovementType(invGoodsMovementForm.getMovementType());
 		invGoodsMovement.setMemo(invGoodsMovementForm.getMemo());
-		invGoodsMovement.setRunningNo(invGoodsMovementForm.getRunningNo());
+		invGoodsMovement.setDocumentNumber(invGoodsMovementForm.getDocumentNumber());
 		return new ModelAndView("redirect:/invGoodsMovementItem?from=list&id=" + request.getParameter("id"));
 	}
 
@@ -156,7 +156,7 @@ public class InvGoodsMovementFormController extends BaseFormController {
 		invGoodsMovement.setOwner(invGoodsMovementForm.getOwner());
 		invGoodsMovement.setMovementType(invGoodsMovementForm.getMovementType());
 		invGoodsMovement.setMemo(invGoodsMovementForm.getMemo());
-		invGoodsMovement.setRunningNo(invGoodsMovementForm.getRunningNo());
+		invGoodsMovement.setDocumentNumber(invGoodsMovementForm.getDocumentNumber());
 		List<InvGoodsMovementItem> invGoodsMovementItemList = new ArrayList<InvGoodsMovementItem>(invGoodsMovement.getInvGoodsMovementItems());
 
 		

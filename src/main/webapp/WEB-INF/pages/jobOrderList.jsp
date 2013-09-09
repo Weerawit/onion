@@ -34,9 +34,9 @@
 		</div>
 		<div class="span6">
 			<div class="control-group">
-				<appfuse:label styleClass="control-label" key="jobOrder.saleOrder.saleOrderNo" />
+				<appfuse:label styleClass="control-label" key="jobOrder.saleOrder.documentNumber.documentNo" />
 				<div class="controls">
-					<input type="text" class="input-xlarge" name="saleOrder.saleOrderNo" id="saleOrder.saleOrderNo" value="${param['saleOrder.saleOrderNo']}" placeholder="" autocomplete="off"/>
+					<input type="text" class="input-xlarge" name="saleOrder.documentNumber.documentNo" id="saleOrder.documentNumber.documentNo" value="${param['saleOrder.documentNumber.documentNo']}" placeholder="" autocomplete="off"/>
 				</div>
 			</div>
 		</div>
@@ -235,7 +235,7 @@
 				}
 			}
 		});
-		$('input[name="saleOrder.saleOrderNo"]').lookup({
+		$('input[name="saleOrder.documentNumber.documentNo"]').lookup({
 			type : 'saleOrder',
 			displayProperty : function(json) {
 				return json.saleOrderNo;
@@ -245,14 +245,14 @@
 			},
 			btnSearchCondition : function() {
 				return {
-					saleOrderNo : $('input[name="saleOrder.saleOrderNo"]').val()
+					'documentNumber.documentNo' : $('input[name="saleOrder.documentNumber.documentNo"]').val()
 				};
 			},
 			handler : function(json) {
 				if (json) {
 					
 				} else {
-					$('input[name="saleOrder.saleOrderNo"]').val('');
+					$('input[name="saleOrder.documentNumber.documentNo"]').val('');
 				}
 			}
 		});

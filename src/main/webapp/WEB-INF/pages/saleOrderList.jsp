@@ -24,9 +24,9 @@
 	<div class="row-fluid">
 		<div class="span6">
 			<div class="control-group">
-				<label class="control-label" for="saleOrderNo"><fmt:message key="saleOrder.saleOrderNo" />:</label>
+				<label class="control-label" for="documentNumber.documentNo"><fmt:message key="saleOrder.documentNumber.documentNo" />:</label>
 				<div class="controls">
-					<input type="text" class="input-medium" name="saleOrderNo" id="saleOrderNo" value="${param.saleOrderNo}" placeholder="" />
+					<input type="text" class="input-medium" name="documentNumber.documentNo" id="documentNumber.documentNo" value="${param['documentNumber.documentNo']}" placeholder="" />
 				</div>
 			</div>
 		</div>
@@ -117,14 +117,14 @@
 		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
 			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleOrder.id}'/>" />
 		</display:column>
-		<display:column property="saleOrderNo" url="/saleOrder?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleOrder.saleOrderNo" sortName="saleOrderNo" />
+		<display:column property="documentNumber.documentNo" url="/saleOrder?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleOrder.documentNumber.documentNo" sortName="documentNumber.documentNo" />
 		<display:column property="customer.name" escapeXml="true" sortable="true" titleKey="saleOrder.customer.name" sortName="customer.name" />
 		<display:column property="totalPrice" escapeXml="false" sortable="true" titleKey="saleOrder.totalPrice" sortName="totalPrice" format="{0,number,#,##0.00}"/>
 		
 		<display:column escapeXml="false" sortable="true" titleKey="saleOrder.paymentPaid" sortName="paymentPaid">
 			<c:choose>
 				<c:when test="${saleOrder.paymentStatus != '3'}">
-					<a class="btn btn-small btn-primary" href="<c:url value='/saleReceipt?method=Add&from=list&saleOrderNo=${saleOrder.saleOrderNo}'/>"><fmt:formatNumber value="${saleOrder.totalPrice - saleOrder.paymentPaid }" pattern="#,##0.00"/></a>
+					<a class="btn btn-small btn-primary" href="<c:url value='/saleReceipt?method=Add&from=list&documentNumber.documentNo=${saleOrder.documentNumber.documentNo}'/>"><fmt:formatNumber value="${saleOrder.totalPrice - saleOrder.paymentPaid }" pattern="#,##0.00"/></a>
 				</c:when>
 				<c:otherwise>
 					<fmt:formatNumber value="${saleOrder.paymentPaid }" pattern="#,##0.00"/>

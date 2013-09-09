@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Sep 7, 2013 8:08:08 AM by Hibernate Tools 4.0.0
+// Generated Sep 9, 2013 10:54:50 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -28,7 +28,7 @@ public class SaleOrder implements java.io.Serializable {
 
 	private Long id;
 	private Customer customer;
-	private String saleOrderNo;
+	private DocumentNumber documentNumber;
 	private String paymentType;
 	private Date deliveryDate;
 	private BigDecimal totalPrice;
@@ -51,9 +51,9 @@ public class SaleOrder implements java.io.Serializable {
 		this.customer = customer;
 	}
 
-	public SaleOrder(Customer customer, String saleOrderNo, String paymentType, Date deliveryDate, BigDecimal totalPrice, BigDecimal paymentPaid, String paymentStatus, String status, String cancelReason, Date createDate, String createUser, Date updateDate, String updateUser, Set<SaleReceipt> saleReceipts, Set<SaleOrderItem> saleOrderItems, Set<JobOrder> jobOrders) {
+	public SaleOrder(Customer customer, DocumentNumber documentNumber, String paymentType, Date deliveryDate, BigDecimal totalPrice, BigDecimal paymentPaid, String paymentStatus, String status, String cancelReason, Date createDate, String createUser, Date updateDate, String updateUser, Set<SaleReceipt> saleReceipts, Set<SaleOrderItem> saleOrderItems, Set<JobOrder> jobOrders) {
 		this.customer = customer;
-		this.saleOrderNo = saleOrderNo;
+		this.documentNumber = documentNumber;
 		this.paymentType = paymentType;
 		this.deliveryDate = deliveryDate;
 		this.totalPrice = totalPrice;
@@ -91,13 +91,14 @@ public class SaleOrder implements java.io.Serializable {
 		this.customer = customer;
 	}
 
-	@Column(name = "sale_order_no", length = 45)
-	public String getSaleOrderNo() {
-		return this.saleOrderNo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "document_number_internal_no")
+	public DocumentNumber getDocumentNumber() {
+		return this.documentNumber;
 	}
 
-	public void setSaleOrderNo(String saleOrderNo) {
-		this.saleOrderNo = saleOrderNo;
+	public void setDocumentNumber(DocumentNumber documentNumber) {
+		this.documentNumber = documentNumber;
 	}
 
 	@Column(name = "payment_type", length = 3)

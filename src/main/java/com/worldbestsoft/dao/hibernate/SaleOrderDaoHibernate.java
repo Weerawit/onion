@@ -27,9 +27,9 @@ public class SaleOrderDaoHibernate extends GenericDaoHibernate<SaleOrder, Long> 
 		String hsql = "select o from SaleOrder o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		if (null != criteria) {
-			if (StringUtils.isNotEmpty(criteria.getSaleOrderNo())) {
-				hsql += " and o.saleOrderNo like :saleOrderNo";
-				params.put("saleOrderNo", criteria.getSaleOrderNo() + "%");
+			if (null != criteria.getDocumentNumber() && StringUtils.isNotEmpty(criteria.getDocumentNumber().getDocumentNo())) {
+				hsql += " and o.documentNumber.documentNo No like :saleOrderNo";
+				params.put("saleOrderNo", criteria.getDocumentNumber().getDocumentNo() + "%");
 			}
 			if (null != criteria.getCustomer() && StringUtils.isNotEmpty(criteria.getCustomer().getName())) {
 				hsql += " and o.customer.name = :customerName";
@@ -67,9 +67,9 @@ public class SaleOrderDaoHibernate extends GenericDaoHibernate<SaleOrder, Long> 
 		String hsql = "select count(*) from SaleOrder o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		if (null != criteria) {
-			if (StringUtils.isNotEmpty(criteria.getSaleOrderNo())) {
-				hsql += " and o.saleOrderNo like :saleOrderNo";
-				params.put("saleOrderNo", criteria.getSaleOrderNo() + "%");
+			if (null != criteria.getDocumentNumber() && StringUtils.isNotEmpty(criteria.getDocumentNumber().getDocumentNo())) {
+				hsql += " and o.documentNumber.documentNo No like :saleOrderNo";
+				params.put("saleOrderNo", criteria.getDocumentNumber().getDocumentNo() + "%");
 			}
 			if (null != criteria.getCustomer() && StringUtils.isNotEmpty(criteria.getCustomer().getName())) {
 				hsql += " and o.customer.name = :customerName";
@@ -100,9 +100,9 @@ public class SaleOrderDaoHibernate extends GenericDaoHibernate<SaleOrder, Long> 
     public SaleOrder findBySaleOrderNo(String saleOrderNo) {
 		String hsql = "select o from SaleOrder o where 1=1 ";
 		final Map<String, Object> params = new HashMap<String, Object>();
-		hsql += " and o.saleOrderNo = :saleOrderNo";
+		hsql += " and o.documentNumber.documentNo = :saleOrderNo";
 		params.put("saleOrderNo", saleOrderNo);
-		hsql += " order by o.saleOrderNo";
+		hsql += " order by o.documentNumber.documentNo";
 		Query queryObj = getSession().createQuery(hsql);
 		queryObj.setProperties(params);
 		List<SaleOrder> result = queryObj.list();

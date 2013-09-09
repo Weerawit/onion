@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.worldbestsoft.model.Customer;
+import com.worldbestsoft.model.DocumentNumber;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.criteria.SaleOrderCriteria;
 import com.worldbestsoft.service.LookupManager;
@@ -56,7 +57,9 @@ public class SaleOrderListController extends BaseFormController {
 		Model model = new ExtendedModelMap();
 		model.addAttribute("saleOrderStatusList", lookupManager.getAllSaleOrderStatusList(request.getLocale()));
 		SaleOrderCriteria criteria = new SaleOrderCriteria();
-		criteria.setSaleOrderNo(request.getParameter("saleOrderNo"));
+		DocumentNumber documentNumber = new DocumentNumber();
+		documentNumber.setDocumentNo(request.getParameter("documentNumber.documentNo"));
+		criteria.setDocumentNumber(documentNumber);
 		
 		criteria.setStatus(request.getParameter("status"));
 		
@@ -105,9 +108,9 @@ public class SaleOrderListController extends BaseFormController {
 		String cancelReason = request.getParameter("cancelReason");
 		if (null != checkbox && checkbox.length > 0) {
 			for (int i = 0; i < checkbox.length; i++) {
-				SaleOrder catalog = saleOrderManager.get(Long.valueOf(checkbox[i]));
+				SaleOrder saleOrder = saleOrderManager.get(Long.valueOf(checkbox[i]));
 				saleOrderManager.remove(Long.valueOf(checkbox[i]), user, cancelReason);
-				saveMessage(request, getText("catalog.deleted", catalog.getSaleOrderNo(), locale));
+				saveMessage(request, getText("saleOrder.deleted", saleOrder.getDocumentNumber().getDocumentNo(), locale));
 			}
 		} else {
 			saveError(request, getText("global.errorNoCheckboxSelectForDelete", request.getLocale()));

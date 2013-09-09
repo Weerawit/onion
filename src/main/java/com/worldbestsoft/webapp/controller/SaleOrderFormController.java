@@ -145,11 +145,11 @@ public class SaleOrderFormController extends BaseFormController {
 			// since code input is readonly, no value pass to form then we need
 			// to query from db.
 			getSaleOrderManager().remove(saleOrderForm.getId(), request.getRemoteUser(), saleOrderForm.getCancelReason());
-			saveMessage(request, getText("saleOrder.deleted", saleOrderForm.getSaleOrderNo(), locale));
+			saveMessage(request, getText("saleOrder.deleted", saleOrderForm.getDocumentNumber().getDocumentNo(), locale));
 			return new ModelAndView("redirect:/saleOrderList");
 		}  else if (StringUtils.equalsIgnoreCase("delivery", request.getParameter("action"))) {
 			getSaleOrderManager().delivery(saleOrderForm.getId());
-			saveMessage(request, getText("saleOrder.delivery", saleOrderForm.getSaleOrderNo(), locale));
+			saveMessage(request, getText("saleOrder.delivery", saleOrderForm.getDocumentNumber().getDocumentNo(), locale));
 			return new ModelAndView("redirect:/saleOrderList");
 		} else {
 
@@ -163,7 +163,7 @@ public class SaleOrderFormController extends BaseFormController {
 				
 				saleOrder = getSaleOrderManager().save(saleOrder, saleOrderSession.getSaleOrderItems());
 
-				saveMessage(request, getText("saleOrder.added", saleOrder.getSaleOrderNo(), locale));
+				saveMessage(request, getText("saleOrder.added", saleOrder.getDocumentNumber().getDocumentNo(), locale));
 				return new ModelAndView("redirect:/saleOrder").addObject("id", saleOrder.getId());
 			} else {
 				// edit
@@ -181,7 +181,7 @@ public class SaleOrderFormController extends BaseFormController {
 				}
 				
 				request.setAttribute("saleOrder", saleOrder);
-				saveMessage(request, getText("saleOrder.saved", saleOrder.getSaleOrderNo(), locale));
+				saveMessage(request, getText("saleOrder.saved", saleOrder.getDocumentNumber().getDocumentNo(), locale));
 				return new ModelAndView("redirect:/saleOrderList");
 			}
 		}

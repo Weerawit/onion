@@ -44,9 +44,9 @@ public class InvGoodsReceiptDaoHibernate extends GenericDaoHibernate<InvGoodsRec
 				params.put("name", criteria.getSupplier().getName() + "%");
 			}
 			
-			if (StringUtils.isNotBlank(criteria.getRunningNo())) {
-				hsql += " and o.runningNo = :runningNo ";
-				params.put("runningNo", criteria.getRunningNo());
+			if (null != criteria.getDocumentNumber() && StringUtils.isNotBlank(criteria.getDocumentNumber().getDocumentNo())) {
+				hsql += " and o.documentNumber.documentNo = :runningNo ";
+				params.put("runningNo", criteria.getDocumentNumber().getDocumentNo());
 			}
 		}
 		if (StringUtils.isNotBlank(sortColumn)) {
@@ -85,9 +85,9 @@ public class InvGoodsReceiptDaoHibernate extends GenericDaoHibernate<InvGoodsRec
 				params.put("name", criteria.getSupplier().getName() + "%");
 			}
 			
-			if (StringUtils.isNotBlank(criteria.getRunningNo())) {
-				hsql += " and o.runningNo = :runningNo ";
-				params.put("runningNo", criteria.getRunningNo());
+			if (null != criteria.getDocumentNumber() && StringUtils.isNotBlank(criteria.getDocumentNumber().getDocumentNo())) {
+				hsql += " and o.documentNumber.documentNo = :runningNo ";
+				params.put("runningNo", criteria.getDocumentNumber().getDocumentNo());
 			}
 		}
 		Query queryObj = getSession().createQuery(hsql);

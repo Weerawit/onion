@@ -41,9 +41,9 @@ public class InvGoodsMovementDaoHibernate extends GenericDaoHibernate<InvGoodsMo
 				params.put("owner", criteria.getOwner() + "%");
 			}
 			
-			if (StringUtils.isNotBlank(criteria.getRunningNo())) {
-				hsql += " and o.runningNo = :runningNo ";
-				params.put("runningNo", criteria.getRunningNo());
+			if (null != criteria.getDocumentNumber() && StringUtils.isNotBlank(criteria.getDocumentNumber().getDocumentNo())) {
+				hsql += " and o.documentNumber.documentNo = :runningNo ";
+				params.put("runningNo", criteria.getDocumentNumber().getDocumentNo());
 			}
 			
 			if (StringUtils.isNotBlank(criteria.getMovementType())) {
@@ -84,9 +84,9 @@ public class InvGoodsMovementDaoHibernate extends GenericDaoHibernate<InvGoodsMo
 				params.put("owner", criteria.getOwner() + "%");
 			}
 			
-			if (StringUtils.isNotBlank(criteria.getRunningNo())) {
-				hsql += " and o.runningNo = :runningNo ";
-				params.put("runningNo", criteria.getRunningNo());
+			if (null != criteria.getDocumentNumber() && StringUtils.isNotBlank(criteria.getDocumentNumber().getDocumentNo())) {
+				hsql += " and o.documentNumber.documentNo = :runningNo ";
+				params.put("runningNo", criteria.getDocumentNumber().getDocumentNo());
 			}
 			
 			if (StringUtils.isNotBlank(criteria.getMovementType())) {

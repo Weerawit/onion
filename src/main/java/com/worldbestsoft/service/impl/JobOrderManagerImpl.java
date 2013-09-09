@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.hibernate.JobOrderDao;
 import com.worldbestsoft.model.ConstantModel;
+import com.worldbestsoft.model.DocumentNumber;
 import com.worldbestsoft.model.JobOrder;
 import com.worldbestsoft.model.criteria.JobOrderCriteria;
+import com.worldbestsoft.service.DocumentNumberFormatter;
 import com.worldbestsoft.service.DocumentNumberGenerator;
 import com.worldbestsoft.service.DocumentNumberGeneratorException;
 import com.worldbestsoft.service.JobOrderManager;
@@ -79,18 +81,22 @@ public class JobOrderManagerImpl implements JobOrderManager {
 	@Override
     public JobOrder save(JobOrder object) {
 		if (null == object.getId()) {
+			DocumentNumber documentNumber = documentNumberGenerator.newDocumentNumber();
+			object.setDocumentNumber(documentNumber);
 			object.setStatus(ConstantModel.JobOrderStatus.NEW.getCode());
 			object = jobOrderDao.save(object);
 			//get document number
-            try {
-            		Long documentNumber = documentNumberGenerator.nextDocumentNumber(JobOrder.class);
-	            String runningNo = MessageFormat.format(documentNumberFormat, documentNumber);
-	            object.setRunningNo(runningNo);
-            } catch (DocumentNumberGeneratorException e) {
-    				throw new RuntimeException(e);
-            }
+        		documentNumberGenerator.nextDocumentNumber(JobOrder.class, documentNumber.getInternalNo(), new DocumentNumberFormatter() {
+					
+					@Override
+					public String format(Long nextSeq) {
+						return MessageFormat.format(documentNumberFormat, nextSeq);
+					}
+				});
+            return object;
+		} else {
+			return jobOrderDao.save(object);
 		}
-	    return jobOrderDao.save(object);
     }
 
 	@Override

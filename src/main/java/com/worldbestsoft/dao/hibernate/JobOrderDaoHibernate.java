@@ -30,9 +30,9 @@ public class JobOrderDaoHibernate extends GenericDaoHibernate<JobOrder, Long> im
 				hsql += " and o.employee.id = :employeeId";
 				params.put("employeeId", criteria.getEmployee().getId());
 			}
-			if (null != criteria.getSaleOrder() && StringUtils.isNotBlank(criteria.getSaleOrder().getSaleOrderNo())) {
-				hsql += " and o.saleOrder.saleOrderNo = :saleOrderNo";
-				params.put("saleOrderNo", criteria.getSaleOrder().getSaleOrderNo());
+			if (null != criteria.getSaleOrder() && null != criteria.getSaleOrder().getDocumentNumber() && StringUtils.isNotBlank(criteria.getSaleOrder().getDocumentNumber().getDocumentNo())) {
+				hsql += " and o.saleOrder.documentNumber.documentNo = :saleOrderNo";
+				params.put("saleOrderNo", criteria.getSaleOrder().getDocumentNumber().getDocumentNo());
 			}
 			if (null != criteria.getCatalog() && null != criteria.getCatalog() && StringUtils.isNotBlank(criteria.getCatalog().getCode())) {
 				hsql += " and o.catalog = :catalogCode";
@@ -85,9 +85,9 @@ public class JobOrderDaoHibernate extends GenericDaoHibernate<JobOrder, Long> im
 				hsql += " and o.employee.id = :employeeId";
 				params.put("employeeId", criteria.getEmployee().getId());
 			}
-			if (null != criteria.getSaleOrder() && StringUtils.isNotBlank(criteria.getSaleOrder().getSaleOrderNo())) {
-				hsql += " and o.saleOrder.saleOrderNo = :saleOrderNo";
-				params.put("saleOrderNo", criteria.getSaleOrder().getSaleOrderNo());
+			if (null != criteria.getSaleOrder() && null != criteria.getSaleOrder().getDocumentNumber() && StringUtils.isNotBlank(criteria.getSaleOrder().getDocumentNumber().getDocumentNo())) {
+				hsql += " and o.saleOrder.documentNumber.documentNo = :saleOrderNo";
+				params.put("saleOrderNo", criteria.getSaleOrder().getDocumentNumber().getDocumentNo());
 			}
 			if (null != criteria.getCatalog() && null != criteria.getCatalog() && StringUtils.isNotBlank(criteria.getCatalog().getCode())) {
 				hsql += " and o.catalog = :catalogCode";

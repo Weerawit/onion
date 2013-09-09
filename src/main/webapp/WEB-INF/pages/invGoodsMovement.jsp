@@ -34,24 +34,24 @@
 		<input type="hidden" name="action"/>
 
 <%-- 		<c:if test="${invGoodsMovement.id == null }"> --%>
-<%-- 			<spring:bind path="invGoodsMovement.runningNo"> --%>
+<%-- 			<spring:bind path="invGoodsMovement.documentNumber.documentNo"> --%>
 <%-- 				<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}"> --%>
-<%-- 					<appfuse:label styleClass="control-label" key="invGoodsMovement.runningNo" /> --%>
+<%-- 					<appfuse:label styleClass="control-label" key="invGoodsMovement.documentNumber.documentNo" /> --%>
 <!-- 					<div class="controls"> -->
-<%-- 						<form:input path="runningNo" id="runningNo" cssClass="input-medium" maxlength="50" /> --%>
-<%-- 						<form:errors path="runningNo" cssClass="help-inline" /> --%>
+<%-- 						<form:input path="documentNumber.documentNo" id="documentNumber.documentNo" cssClass="input-medium" maxlength="50" /> --%>
+<%-- 						<form:errors path="documentNumber.documentNo" cssClass="help-inline" /> --%>
 <!-- 					</div> -->
 <!-- 				</div> -->
 <%-- 			</spring:bind> --%>
 <%-- 		</c:if> --%>
 		<c:choose>
-			<c:when test="${invGoodsMovement.runningNo != null }">
+			<c:when test="${invGoodsMovement.documentNumber.documentNo != null }">
 				<%-- since we have runningNo, readonly --%>
 				<div class="control-group">
-					<appfuse:label styleClass="control-label" key="invGoodsMovement.runningNo" />
+					<appfuse:label styleClass="control-label" key="invGoodsMovement.documentNumber.documentNo" />
 					<div class="controls">
-						<span class="input-medium uneditable-input"><c:out value="${invGoodsMovement.runningNo}" /></span>
-						<form:hidden path="runningNo"/>
+						<span class="input-medium uneditable-input"><c:out value="${invGoodsMovement.documentNumber.documentNo}" /></span>
+						<form:hidden path="documentNumber.documentNo"/>
 					</div>
 				</div>
 				
@@ -149,7 +149,7 @@
 <!-- 		</div> -->
 <%-- 		</c:if>	 --%>
 		
-		<c:if test="${invGoodsMovement.runningNo == null}">
+		<c:if test="${invGoodsMovement.documentNumber.documentNo == null}">
 			<div id="actions">
 			
 				<button id="button.add" class="btn btn-primary" type="submit" onclick="bCancel=true;$('#invGoodsMovement').attr('action', '${ctx}/invGoodsMovement/addDetail');">
@@ -165,7 +165,7 @@
 			</div>
 		</c:if>
 		<display:table name="invGoodsMovementItemList" cellspacing="0" cellpadding="0" requestURI="" id="invGoodsMovementItem" class="table table-condensed table-striped table-hover table-bordered">
-			<c:if test="${invGoodsMovement.runningNo == null }">
+			<c:if test="${invGoodsMovement.documentNumber.documentNo == null }">
 				<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
 					<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${invGoodsMovementItem_rowNum - 1}'/>" />
 				</display:column>
@@ -175,7 +175,7 @@
 					</button>
 				</display:column>
 			</c:if>
-			<c:if test="${invGoodsMovement.runningNo != null }">
+			<c:if test="${invGoodsMovement.documentNumber.documentNo != null }">
 				<display:column titleKey="invGoodsMovementItem.invItem.code" sortable="true">
 					<a class="btn btn-link" href="${ctx}/invGoodsMovementItem?from=list&id=${invGoodsMovementItem_rowNum - 1}"><c:out value="${invGoodsMovementItem.invItem.code}"/></a>
 				</display:column>
@@ -194,7 +194,7 @@
 
 		<fieldset class="form-actions">
 			<c:choose>
-				<c:when test="${invGoodsMovement.runningNo == null}">
+				<c:when test="${invGoodsMovement.documentNumber.documentNo == null}">
 					<button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
 						<i class="icon-ok icon-white"></i>
 						<fmt:message key="button.save" />
@@ -236,7 +236,7 @@
 	function onFormSubmit(theForm) {	
 		return validateInvGoodsMovement(theForm);
 	}
-	<c:if  test="${invGoodsMovement.runningNo == null }">
+	<c:if  test="${invGoodsMovement.documentNumber.documentNo == null }">
 	$(function() {
 
 		var st = $('#movementDateDatepicker').datetimepicker({

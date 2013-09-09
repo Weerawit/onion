@@ -7,25 +7,29 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.worldbestsoft.dao.DocumentNumberDao;
+import com.worldbestsoft.dao.DocumentSeqDao;
 import com.worldbestsoft.model.DocumentNumber;
+import com.worldbestsoft.model.DocumentSeq;
 import com.worldbestsoft.model.InvGoodsMovement;
 import com.worldbestsoft.model.InvGoodsReceipt;
 import com.worldbestsoft.model.JobOrder;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleReceipt;
+import com.worldbestsoft.service.DocumentNumberFormatter;
 import com.worldbestsoft.service.DocumentNumberGenerator;
-import com.worldbestsoft.service.DocumentNumberGeneratorException;
 
 @Service("documentNumberGenerator")
 public class DocumentNumberGeneratorImpl implements DocumentNumberGenerator {
 	
 	private static final Map<String, Object> lockObject = new HashMap<String, Object>();
 	
-	private DocumentNumberDao documentNoDao;
+	private DocumentSeqDao documentSeqDao;
+	private DocumentNumberDao documentNumberDao;
 	
-//	private long lockTimeout = 100;
 
 	public DocumentNumberGeneratorImpl() {
 		lockObject.put(InvGoodsReceipt.class.getName(), new ReentrantLock());
@@ -34,65 +38,50 @@ public class DocumentNumberGeneratorImpl implements DocumentNumberGenerator {
 		lockObject.put(SaleReceipt.class.getName(), new ReentrantLock());
 		lockObject.put(JobOrder.class.getName(), new ReentrantLock());
 	}
-
-//	public String nextDocumentNumber(Class klass) throws InterruptedException {
-//		Lock lock = lockObject.get(klass);
-////		while (lock.tryLock(lockTimeout, TimeUnit.MICROSECONDS)) {
-//		if (lock.tryLock()) {
-//			try {
-//				Thread.sleep(1000);
-//				return "ABC" + Thread.currentThread().getName() + " : " + index++;
-//			} finally {
-//				lock.unlock();
-//			}
-//		}
-//		return null;
-//	}
 	
-	public DocumentNumberDao getDocumentNumberDao() {
-		return documentNoDao;
+	public DocumentSeqDao getDocumentSeqDao() {
+		return documentSeqDao;
 	}
 
 	@Autowired
-	public void setDocumentNumberDao(DocumentNumberDao documentNoDao) {
-		this.documentNoDao = documentNoDao;
+	public void setDocumentSeqDao(DocumentSeqDao documentSeqDao) {
+		this.documentSeqDao = documentSeqDao;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.worldbestsoft.service.impl.DocumentNumberGenerator#nextDocumentNumber(java.lang.Class)
-	 */
+	public DocumentNumberDao getDocumentNumberDao() {
+		return documentNumberDao;
+	}
+
+	@Autowired
+	public void setDocumentNumberDao(DocumentNumberDao documentNumberDao) {
+		this.documentNumberDao = documentNumberDao;
+	}
+
 	@Override
-    @SuppressWarnings("rawtypes")
-    public Long nextDocumentNumber(Class klass) throws DocumentNumberGeneratorException {
-		Object lock = lockObject.get(klass.getName());
-		synchronized (lock) {
-			DocumentNumber documentNo = documentNoDao.findByType(klass.getSimpleName());
-			if (null != documentNo) {
-				Long nextValue = documentNo.getCurrentVal() + 1;
-				documentNo.setCurrentVal(nextValue);
-				documentNo.setUpdateDate(new Date());
-				documentNoDao.save(documentNo);
-				return nextValue;
-			}
-        }
-		throw new DocumentNumberGeneratorException("Cannot generate running no for Class := " + klass.getSimpleName());
+    public DocumentNumber newDocumentNumber() {
+		DocumentNumber documentNumber = new DocumentNumber();
+		documentNumber.setDocumentNo("TEMPORARY");
+		documentNumber.setUpdateDate(new Date());
+		return documentNumberDao.save(documentNumber);
 	}
 	
-//	public static void main(String[] args) throws InterruptedException {
-//		
-//		final DocumentNumberGeneratorImpl impl = new DocumentNumberGeneratorImpl();
-//		for (int i = 0 ; i < 50; i++) {
-//			Thread aThread = new Thread("T" + i) {
-//				public void run() {
-//					try {
-//	                    System.out.println(getName() + ":" + impl.nextDocumentNumber(InvGoodsReceipt.class));
-//                    } catch (InterruptedException e) {
-//	                    e.printStackTrace();
-//                    }
-//				}
-//			};
-//			aThread.start();
-//			Thread.sleep(1000);
-//		}
-//	}
+	@Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void nextDocumentNumber(Class klass, Long internalNo, DocumentNumberFormatter formatter) {
+		Object lock = lockObject.get(klass.getName());
+		synchronized (lock) {
+			DocumentSeq seq = documentSeqDao.findByType(klass.getSimpleName());
+			if (null != seq) {
+				Long nextValue = seq.getCurrentVal() + 1;
+				seq.setCurrentVal(nextValue);
+				seq.setUpdateDate(new Date());
+				documentSeqDao.save(seq);
+				
+				String docNumber = formatter.format(nextValue);
+				DocumentNumber documentNumber = documentNumberDao.get(internalNo);
+				documentNumber.setDocumentNo(docNumber);
+				documentNumberDao.save(documentNumber);
+			}
+        }
+	}
 }

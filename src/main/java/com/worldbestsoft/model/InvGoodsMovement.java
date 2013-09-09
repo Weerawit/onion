@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Aug 5, 2013 1:17:13 PM by Hibernate Tools 4.0.0
+// Generated Sep 9, 2013 10:54:50 AM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,7 +26,7 @@ import javax.persistence.TemporalType;
 public class InvGoodsMovement implements java.io.Serializable {
 
 	private Long id;
-	private String runningNo;
+	private DocumentNumber documentNumber;
 	private Date movementDate;
 	private String movementType;
 	private String owner;
@@ -38,8 +40,8 @@ public class InvGoodsMovement implements java.io.Serializable {
 	public InvGoodsMovement() {
 	}
 
-	public InvGoodsMovement(String runningNo, Date movementDate, String movementType, String owner, String memo, Date createDate, String createUser, Date updateDate, String updateUser, Set<InvGoodsMovementItem> invGoodsMovementItems) {
-		this.runningNo = runningNo;
+	public InvGoodsMovement(DocumentNumber documentNumber, Date movementDate, String movementType, String owner, String memo, Date createDate, String createUser, Date updateDate, String updateUser, Set<InvGoodsMovementItem> invGoodsMovementItems) {
+		this.documentNumber = documentNumber;
 		this.movementDate = movementDate;
 		this.movementType = movementType;
 		this.owner = owner;
@@ -62,13 +64,14 @@ public class InvGoodsMovement implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "running_no", length = 20)
-	public String getRunningNo() {
-		return this.runningNo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "document_number_internal_no")
+	public DocumentNumber getDocumentNumber() {
+		return this.documentNumber;
 	}
 
-	public void setRunningNo(String runningNo) {
-		this.runningNo = runningNo;
+	public void setDocumentNumber(DocumentNumber documentNumber) {
+		this.documentNumber = documentNumber;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

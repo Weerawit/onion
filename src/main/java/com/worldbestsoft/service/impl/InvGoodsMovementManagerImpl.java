@@ -16,12 +16,13 @@ import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.InvGoodsMovementDao;
 import com.worldbestsoft.dao.InvGoodsMovementItemDao;
-import com.worldbestsoft.dao.InvItemLevelDao;
 import com.worldbestsoft.model.ConstantModel;
+import com.worldbestsoft.model.DocumentNumber;
 import com.worldbestsoft.model.InvGoodsMovement;
 import com.worldbestsoft.model.InvGoodsMovementItem;
 import com.worldbestsoft.model.InvItemLevel;
 import com.worldbestsoft.model.criteria.InvGoodsMovementCriteria;
+import com.worldbestsoft.service.DocumentNumberFormatter;
 import com.worldbestsoft.service.DocumentNumberGenerator;
 import com.worldbestsoft.service.DocumentNumberGeneratorException;
 import com.worldbestsoft.service.InvGoodsMovementManager;
@@ -137,38 +138,41 @@ public class InvGoodsMovementManagerImpl implements ApplicationContextAware, Inv
 	 */
 	@Override
     public InvGoodsMovement saveToStock(InvGoodsMovement invGoodsMovement) {
-		// get running no
-		try {
-			Long documentNumber = documentNumberGenerator.nextDocumentNumber(InvGoodsMovement.class);
-			String runningNo = MessageFormat.format(documentNumberFormat, documentNumber);
-			invGoodsMovement.setRunningNo(runningNo);
-			invGoodsMovement = invGoodsMovementDao.save(invGoodsMovement);
+		
+		DocumentNumber documentNumber = documentNumberGenerator.newDocumentNumber();
+		invGoodsMovement.setDocumentNumber(documentNumber);
+		invGoodsMovement = invGoodsMovementDao.save(invGoodsMovement);
 
-			List<InvGoodsMovementItem> invGoodsMovementItemList = invGoodsMovementItemDao.findByInvGoodMovement(invGoodsMovement.getId());
+		List<InvGoodsMovementItem> invGoodsMovementItemList = invGoodsMovementItemDao.findByInvGoodMovement(invGoodsMovement.getId());
 
-			for (InvGoodsMovementItem invGoodsMovementItem : invGoodsMovementItemList) {
-				InvItemLevel invItemLevel = new InvItemLevel();
-				invItemLevel.setInvItem(invGoodsMovementItem.getInvItem());
-				invItemLevel.setQtyAdjust(invGoodsMovementItem.getQty().multiply(BigDecimal.valueOf(-1)));
-				invItemLevel.setQtyAvailableAdjust(invGoodsMovementItem.getQty().multiply(BigDecimal.valueOf(-1)));
-				invItemLevel.setTransactionDate(new Date());
-				invItemLevel.setUpdateUser(invGoodsMovement.getUpdateUser());
-				invItemLevel.setRefDocument(invGoodsMovement.getRunningNo());
-				invItemLevel.setRefType(ConstantModel.RefType.GOOD_MOVEMENT.getCode());
-				invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
-				
-				// design to do one by one itemLevel, if not work will change to
-				// per invGoodReeipt
-				// by changing constructor and move out from loop
-				// this should not effect current transaction, mean will not
-				// rollback.
-				InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
-				context.publishEvent(invItemLevelChangedEvent);
-			}
-		} catch (DocumentNumberGeneratorException e) {
-			// roll back transaction
-			throw new RuntimeException(e);
+		for (InvGoodsMovementItem invGoodsMovementItem : invGoodsMovementItemList) {
+			InvItemLevel invItemLevel = new InvItemLevel();
+			invItemLevel.setInvItem(invGoodsMovementItem.getInvItem());
+			invItemLevel.setQtyAdjust(invGoodsMovementItem.getQty().multiply(BigDecimal.valueOf(-1)));
+			invItemLevel.setQtyAvailableAdjust(invGoodsMovementItem.getQty().multiply(BigDecimal.valueOf(-1)));
+			invItemLevel.setTransactionDate(new Date());
+			invItemLevel.setUpdateUser(invGoodsMovement.getUpdateUser());
+			invItemLevel.setDocumentNumber(invGoodsMovement.getDocumentNumber());
+			invItemLevel.setRefType(ConstantModel.RefType.GOOD_MOVEMENT.getCode());
+			invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+			
+			// design to do one by one itemLevel, if not work will change to
+			// per invGoodReeipt
+			// by changing constructor and move out from loop
+			// this should not effect current transaction, mean will not
+			// rollback.
+			InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
+			context.publishEvent(invItemLevelChangedEvent);
 		}
+		
+		// get running no
+		documentNumberGenerator.nextDocumentNumber(InvGoodsMovement.class, documentNumber.getInternalNo(), new DocumentNumberFormatter() {
+			
+			@Override
+			public String format(Long nextSeq) {
+				return MessageFormat.format(documentNumberFormat, nextSeq);
+			}
+		});
 		return invGoodsMovement;
 	}
 

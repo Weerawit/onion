@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.worldbestsoft.model.Catalog;
+import com.worldbestsoft.model.DocumentNumber;
 import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.JobOrder;
 import com.worldbestsoft.model.SaleOrder;
@@ -65,7 +66,9 @@ public class JobOrderListController extends BaseFormController {
 			criteria.setEmployee(employee);
 		}
 		SaleOrder saleOrder = new SaleOrder();
-		saleOrder.setSaleOrderNo(request.getParameter("saleOrder.saleOrderNo"));
+		DocumentNumber documentNumber = new DocumentNumber();
+		documentNumber.setDocumentNo(request.getParameter("saleOrder.saleOrderNo"));
+		saleOrder.setDocumentNumber(documentNumber);
 		criteria.setSaleOrder(saleOrder);
 		
 		Catalog  catalog = new Catalog();

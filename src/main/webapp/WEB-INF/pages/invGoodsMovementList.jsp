@@ -39,9 +39,9 @@
 	<div class="row-fluid">
 		<div class="span6">
 			<div class="control-group">
-				<label class="control-label" for="runningNo"><fmt:message key="invGoodsMovement.runningNo" />:</label>
+				<label class="control-label" for="documentNumber.documentNo"><fmt:message key="invGoodsMovement.documentNumber.documentNo" />:</label>
 				<div class="controls">
-					<input type="text" class="input-xlarge" name="runningNo" id="runningNo" value="${param.runningNo}" placeholder="" />
+					<input type="text" class="input-xlarge" name="documentNumber.documentNo" id="documentNumber.documentNo" value="${param['documentNumber.documentNo']}" placeholder="" />
 				</div>
 			</div>
 		</div>		
@@ -108,7 +108,7 @@
 	</div>
 	<display:table name="invGoodsMovementList" cellspacing="0" cellpadding="0" requestURI="" id="invGoodsMovement"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
 		<display:column property="id" url="/invGoodsMovement?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="invGoodsMovement.id" sortName="id" />
-		<display:column property="runningNo" escapeXml="true" sortable="true" titleKey="invGoodsMovement.runningNo" sortName="runningNo" />
+		<display:column property="documentNumber.documentNo" escapeXml="true" sortable="true" titleKey="invGoodsMovement.documentNumber.documentNo" sortName="documentNumber.documentNo" />
 		<display:column escapeXml="true" sortable="true" titleKey="invGoodsMovement.movementDate" sortName="movementDate" defaultorder="descending">
 			<fmt:formatDate value="${invGoodsMovement.movementDate}" pattern="dd/MM/yyyy HH:mm:ss" />
 		</display:column>

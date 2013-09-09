@@ -60,7 +60,7 @@ public class InvStockManagerImpl implements InvStockManager {
 				//reverse qty
 				cancelInvItemLevel.setQtyAvailableAdjust(reservedInvItemLevel.getQtyAvailableAdjust().multiply(BigDecimal.valueOf(-1)));
 				cancelInvItemLevel.setInvItem(reservedInvItemLevel.getInvItem());
-				cancelInvItemLevel.setRefDocument(reservedInvItemLevel.getRefDocument());
+				cancelInvItemLevel.setDocumentNumber(reservedInvItemLevel.getDocumentNumber());
 				cancelInvItemLevel.setRefType(reservedInvItemLevel.getRefType());
 				cancelInvItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.CANCEL.getCode());
 				cancelInvItemLevel.setUpdateUser(user);

@@ -48,9 +48,9 @@
 		</div>
 		<div class="span6">	
 			<div class="control-group">
-				<label class="control-label" for="runningNo"><fmt:message key="invGoodsReceipt.runningNo" />:</label>
+				<label class="control-label" for="documentNumber.documentNo"><fmt:message key="invGoodsReceipt.documentNumber.documentNo" />:</label>
 				<div class="controls">
-					<input type="text" class="input-xlarge" name="runningNo" id="runningNo" value="${param.runningNo}" placeholder="" />
+					<input type="text" class="input-xlarge" name="documentNumber.documentNo" id="documentNumber.documentNo" value="${param['documentNumber.documentNo']}" placeholder="" />
 				</div>
 			</div>
 		</div>
@@ -109,7 +109,7 @@
 	</div>
 	<display:table name="invGoodsReceiptList" cellspacing="0" cellpadding="0" requestURI="" id="invGoodsReceipt"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
 		<display:column property="id" url="/invGoodsReceipt?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="invGoodsReceipt.id" sortName="id" />
-		<display:column property="runningNo" escapeXml="true" sortable="true" titleKey="invGoodsReceipt.runningNo" sortName="runningNo" />
+		<display:column property="documentNumber.documentNo" escapeXml="true" sortable="true" titleKey="invGoodsReceipt.documentNumber.documentNo" sortName="documentNumber.documentNo" />
 		<display:column escapeXml="true" sortable="true" titleKey="invGoodsReceipt.receiptType" sortName="receiptType" >
 			<tags:labelValue value="${invGoodsReceipt.receiptType}" list="${goodsReceiptTypeList}"></tags:labelValue>
 		</display:column>

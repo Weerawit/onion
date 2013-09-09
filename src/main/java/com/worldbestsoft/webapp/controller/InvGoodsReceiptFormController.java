@@ -110,7 +110,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 				
 				if (StringUtils.equalsIgnoreCase("saveToStock", request.getParameter("action"))) {
 					invGoodsReceiptSession = getInvGoodsReceiptManager().saveToStock(invGoodsReceiptSession);
-					saveMessage(request, getText("invGoodsReceipt.added", invGoodsReceiptSession.getRunningNo(), locale));
+					saveMessage(request, getText("invGoodsReceipt.added", invGoodsReceiptSession.getDocumentNumber().getDocumentNo(), locale));
 				} else {
 					saveMessage(request, getText("invGoodsReceipt.added", invGoodsReceiptSession.getId(), locale));
 				}
@@ -132,7 +132,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 				
 				if (StringUtils.equalsIgnoreCase("saveToStock", request.getParameter("action"))) {
 					invGoodsReceipt = getInvGoodsReceiptManager().saveToStock(invGoodsReceipt);
-					saveMessage(request, getText("invGoodsReceipt.saved", invGoodsReceipt.getRunningNo(), locale));
+					saveMessage(request, getText("invGoodsReceipt.saved", invGoodsReceipt.getDocumentNumber().getDocumentNo(), locale));
 				} else {
 					saveMessage(request, getText("invGoodsReceipt.saved", invGoodsReceipt.getId(), locale));
 				}
@@ -151,7 +151,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		invGoodsReceipt.setReceiptDate(invGoodsReceiptForm.getReceiptDate());
 		invGoodsReceipt.setSupplier(invGoodsReceiptForm.getSupplier());
 		invGoodsReceipt.setMemo(invGoodsReceiptForm.getMemo());
-		invGoodsReceipt.setRunningNo(invGoodsReceiptForm.getRunningNo());
+		invGoodsReceipt.setDocumentNumber(invGoodsReceiptForm.getDocumentNumber());
 		return new ModelAndView("redirect:/invGoodsReceiptItem?method=Add&from=list");
 	}
 	
@@ -163,7 +163,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		invGoodsReceipt.setReceiptDate(invGoodsReceiptForm.getReceiptDate());
 		invGoodsReceipt.setSupplier(invGoodsReceiptForm.getSupplier());
 		invGoodsReceipt.setMemo(invGoodsReceiptForm.getMemo());
-		invGoodsReceipt.setRunningNo(invGoodsReceiptForm.getRunningNo());
+		invGoodsReceipt.setDocumentNumber(invGoodsReceiptForm.getDocumentNumber());
 		return new ModelAndView("redirect:/invGoodsReceiptItem?from=list&id=" + request.getParameter("id"));
 	}
 
@@ -175,7 +175,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		invGoodsReceipt.setReceiptDate(invGoodsReceiptForm.getReceiptDate());
 		invGoodsReceipt.setSupplier(invGoodsReceiptForm.getSupplier());
 		invGoodsReceipt.setMemo(invGoodsReceiptForm.getMemo());
-		invGoodsReceipt.setRunningNo(invGoodsReceiptForm.getRunningNo());
+		invGoodsReceipt.setDocumentNumber(invGoodsReceiptForm.getDocumentNumber());
 		List<InvGoodsReceiptItem> invGoodsReceiptItemList = new ArrayList<InvGoodsReceiptItem>(invGoodsReceipt.getInvGoodsReceiptItems());
 
 		
