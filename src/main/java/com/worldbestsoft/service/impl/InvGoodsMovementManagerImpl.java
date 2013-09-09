@@ -8,10 +8,7 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.InvGoodsMovementDao;
@@ -24,17 +21,16 @@ import com.worldbestsoft.model.InvItemLevel;
 import com.worldbestsoft.model.criteria.InvGoodsMovementCriteria;
 import com.worldbestsoft.service.DocumentNumberFormatter;
 import com.worldbestsoft.service.DocumentNumberGenerator;
-import com.worldbestsoft.service.DocumentNumberGeneratorException;
 import com.worldbestsoft.service.InvGoodsMovementManager;
-import com.worldbestsoft.service.InvItemLevelChangedEvent;
+import com.worldbestsoft.service.InvStockManager;
 
 @Service("invGoodsMovementManager")
-public class InvGoodsMovementManagerImpl implements ApplicationContextAware, InvGoodsMovementManager {
+public class InvGoodsMovementManagerImpl implements InvGoodsMovementManager {
 	private InvGoodsMovementDao invGoodsMovementDao;
 	private InvGoodsMovementItemDao invGoodsMovementItemDao;
 	
 	private DocumentNumberGenerator documentNumberGenerator;
-	private ApplicationContext context;
+	private InvStockManager invStockManager;
 
 	private String documentNumberFormat = "GM{0,number,00000}";
 
@@ -74,12 +70,14 @@ public class InvGoodsMovementManagerImpl implements ApplicationContextAware, Inv
 		this.documentNumberFormat = documentNumberFormat;
 	}
 
-	@Override
-	public void setApplicationContext(ApplicationContext arg0) throws BeansException {
-		this.context = arg0;
-
+	public InvStockManager getInvStockManager() {
+		return invStockManager;
 	}
 
+	@Autowired
+	public void setInvStockManager(InvStockManager invStockManager) {
+		this.invStockManager = invStockManager;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.worldbestsoft.service.impl.InvGoodsMovementManager#save(com.worldbestsoft.model.InvGoodsMovement, java.util.Collection)
@@ -156,13 +154,7 @@ public class InvGoodsMovementManagerImpl implements ApplicationContextAware, Inv
 			invItemLevel.setRefType(ConstantModel.RefType.GOOD_MOVEMENT.getCode());
 			invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
 			
-			// design to do one by one itemLevel, if not work will change to
-			// per invGoodReeipt
-			// by changing constructor and move out from loop
-			// this should not effect current transaction, mean will not
-			// rollback.
-			InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
-			context.publishEvent(invItemLevelChangedEvent);
+			getInvStockManager().updateStock(invItemLevel);
 		}
 		
 		// get running no

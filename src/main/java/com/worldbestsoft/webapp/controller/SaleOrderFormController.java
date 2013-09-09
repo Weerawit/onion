@@ -148,7 +148,7 @@ public class SaleOrderFormController extends BaseFormController {
 			saveMessage(request, getText("saleOrder.deleted", saleOrderForm.getDocumentNumber().getDocumentNo(), locale));
 			return new ModelAndView("redirect:/saleOrderList");
 		}  else if (StringUtils.equalsIgnoreCase("delivery", request.getParameter("action"))) {
-			getSaleOrderManager().delivery(saleOrderForm.getId());
+			getSaleOrderManager().delivery(saleOrderForm.getId(), request.getRemoteUser());
 			saveMessage(request, getText("saleOrder.delivery", saleOrderForm.getDocumentNumber().getDocumentNo(), locale));
 			return new ModelAndView("redirect:/saleOrderList");
 		} else {

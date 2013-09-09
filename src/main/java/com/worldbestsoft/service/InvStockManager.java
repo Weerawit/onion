@@ -26,4 +26,6 @@ public interface InvStockManager {
 
 	public abstract void cancelReserved(String documentNumber, ConstantModel.RefType documentType, String user);
 
+	public abstract void commitReserved(String documentNumber, ConstantModel.RefType documentType, String user);
+
 }

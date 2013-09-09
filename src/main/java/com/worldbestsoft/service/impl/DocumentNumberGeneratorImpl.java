@@ -66,7 +66,6 @@ public class DocumentNumberGeneratorImpl implements DocumentNumberGenerator {
 	}
 	
 	@Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void nextDocumentNumber(Class klass, Long internalNo, DocumentNumberFormatter formatter) {
 		Object lock = lockObject.get(klass.getName());
 		synchronized (lock) {

@@ -25,6 +25,6 @@ public interface SaleOrderManager {
 
 	public abstract void remove(Long id, String user, String cancelReason);
 
-	public SaleOrder delivery(Long saleOrderId);
+	public SaleOrder delivery(Long saleOrderId, String user);
 
 }

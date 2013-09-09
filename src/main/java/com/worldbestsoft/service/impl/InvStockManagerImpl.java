@@ -68,6 +68,24 @@ public class InvStockManagerImpl implements InvStockManager {
 			}
 		}
 	}
+	
+    @Override
+    public void commitReserved(String documentNumber, ConstantModel.RefType documentType, String user) {
+		List<InvItemLevel> reservedList = invItemLevelDao.findByRefDocument(documentNumber, documentType, ItemSockTransactionType.RESERVED);
+		if (null != reservedList) {
+			for (InvItemLevel reservedInvItemLevel : reservedList) {
+				InvItemLevel cancelInvItemLevel = new InvItemLevel();
+				cancelInvItemLevel.setTransactionDate(new Date());
+				cancelInvItemLevel.setQtyAdjust(reservedInvItemLevel.getQtyAvailableAdjust());
+				cancelInvItemLevel.setInvItem(reservedInvItemLevel.getInvItem());
+				cancelInvItemLevel.setDocumentNumber(reservedInvItemLevel.getDocumentNumber());
+				cancelInvItemLevel.setRefType(reservedInvItemLevel.getRefType());
+				cancelInvItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+				cancelInvItemLevel.setUpdateUser(user);
+				updateStock(cancelInvItemLevel);
+			}
+		}
+	}
 
 
 	/* (non-Javadoc)

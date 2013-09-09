@@ -9,10 +9,7 @@ import java.util.List;
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.SaleOrderDao;
@@ -28,19 +25,16 @@ import com.worldbestsoft.model.SaleReceipt;
 import com.worldbestsoft.model.criteria.SaleOrderCriteria;
 import com.worldbestsoft.service.DocumentNumberFormatter;
 import com.worldbestsoft.service.DocumentNumberGenerator;
-import com.worldbestsoft.service.DocumentNumberGeneratorException;
-import com.worldbestsoft.service.InvItemLevelChangedEvent;
 import com.worldbestsoft.service.InvStockManager;
 import com.worldbestsoft.service.SaleOrderManager;
 
 @Service("saleOrderManager")
-public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContextAware {
+public class SaleOrderManagerImpl implements SaleOrderManager {
 	
 	private SaleOrderDao saleOrderDao;
 	private SaleOrderItemDao saleOrderItemDao;
 	private JobOrderDao jobOrderDao;
 	private DocumentNumberGenerator documentNumberGenerator;
-	private ApplicationContext context;
 	private InvStockManager invStockManager;
 
 	private String documentNumberFormat = "SA{0,number,00000}";
@@ -79,11 +73,6 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 
 	public void setDocumentNumberFormat(String documentNumberFormat) {
 		this.documentNumberFormat = documentNumberFormat;
-	}
-	
-	@Override
-	public void setApplicationContext(ApplicationContext arg0) throws BeansException {
-		this.context = arg0;
 	}
 	
 	public InvStockManager getInvStockManager() {
@@ -137,25 +126,26 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
     }
 	
 	@Override
-    public SaleOrder delivery(Long saleOrderId) {
+    public SaleOrder delivery(Long saleOrderId, String user) {
 		SaleOrder saleOrder = saleOrderDao.get(saleOrderId);
 		saleOrder.setStatus(ConstantModel.SaleOrderStatus.DELIVERY.getCode());
 		saleOrder = saleOrderDao.save(saleOrder);
-		List<SaleOrderItem> saleOrderItemList = saleOrderItemDao.findBySaleOrder(saleOrder.getId());
 		
-		for (SaleOrderItem saleOrderItem : saleOrderItemList) {
-			InvItemLevel invItemLevel = new InvItemLevel();
-			invItemLevel.setInvItem(saleOrderItem.getCatalog().getInvItem());
-			invItemLevel.setQtyAdjust(saleOrderItem.getQty().multiply(BigDecimal.valueOf(-1)));
-			invItemLevel.setTransactionDate(new Date());
-			invItemLevel.setUpdateUser(saleOrder.getCreateUser());
-			invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
-			invItemLevel.setDocumentNumber(saleOrder.getDocumentNumber());
-			invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
-			
-			InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
-			context.publishEvent(invItemLevelChangedEvent);
-		}
+		getInvStockManager().commitReserved(saleOrder.getDocumentNumber().getDocumentNo(), RefType.SALE_ORDER, user);
+//		List<SaleOrderItem> saleOrderItemList = saleOrderItemDao.findBySaleOrder(saleOrder.getId());
+//		
+//		for (SaleOrderItem saleOrderItem : saleOrderItemList) {
+//			InvItemLevel invItemLevel = new InvItemLevel();
+//			invItemLevel.setInvItem(saleOrderItem.getCatalog().getInvItem());
+//			invItemLevel.setQtyAdjust(saleOrderItem.getQty().multiply(BigDecimal.valueOf(-1)));
+//			invItemLevel.setTransactionDate(new Date());
+//			invItemLevel.setUpdateUser(saleOrder.getCreateUser());
+//			invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+//			invItemLevel.setDocumentNumber(saleOrder.getDocumentNumber());
+//			invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
+//			
+//			getInvStockManager().updateStock(invItemLevel);
+//		}
 		return saleOrder;
 	}
 
@@ -224,9 +214,7 @@ public class SaleOrderManagerImpl implements SaleOrderManager, ApplicationContex
 					invItemLevel.setDocumentNumber(saleOrderSave.getDocumentNumber());
 					invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
 					
-					InvItemLevelChangedEvent invItemLevelChangedEvent = new InvItemLevelChangedEvent(invItemLevel);
-					context.publishEvent(invItemLevelChangedEvent);
-					
+					getInvStockManager().updateStock(invItemLevel);
 				}
 			}
 			saleOrderSave.setTotalPrice(totalPrice);

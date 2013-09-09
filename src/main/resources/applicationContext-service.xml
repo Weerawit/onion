@@ -16,7 +16,7 @@
         <aop:advisor id="userManagerTx" advice-ref="userManagerTxAdvice" pointcut="execution(* *..service.UserManager.*(..))" order="0"/>
         <aop:advisor id="userManagerSecurity" advice-ref="userSecurityAdvice" pointcut="execution(* *..service.UserManager.saveUser(..))" order="1"/>
         <aop:advisor id="managerTx" advice-ref="txAdvice" pointcut="execution(* *..service.*Manager.*(..))" order="2"/>
-        <aop:advisor id="documentNumberTx" advice-ref="txDocumentNumberAdvice" pointcut="execution(* *..service.DocumentNumberGenerator*.*(..))" order="3"/>
+<!--         <aop:advisor id="documentNumberTx" advice-ref="txDocumentNumberAdvice" pointcut="execution(* *..service.DocumentNumberGenerator*.*(..))" order="3"/> -->
     </aop:config>
 
     <!-- Enable @Transactional support -->
@@ -40,11 +40,13 @@
         </tx:attributes>
     </tx:advice>
     
+    <!-- 
     <tx:advice id="txDocumentNumberAdvice">
     	<tx:attributes>
     		<tx:method name="*" propagation="REQUIRES_NEW" rollback-for="com.worldbestsoft.service.DocumentNumberGeneratorException"/>
     	</tx:attributes>
     </tx:advice>
+    -->
 
     <tx:advice id="userManagerTxAdvice">
         <tx:attributes>
