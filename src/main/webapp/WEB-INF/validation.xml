@@ -495,5 +495,36 @@
 				</var>
 			</field>
 		</form>
+		<form name="jobOrder">
+			<field property="catalog.name" depends="required">
+				<arg key="jobOrder.catalog.name" />
+			</field>
+			<field property="qty" depends="required, integer, intRange">
+				<arg key="jobOrder.qty" />
+				<arg position="1" name="intRange" key="${var:min}" resource="false" />
+				<arg position="2" name="intRange" key="${var:max}" resource="false" />
+				<var>
+					<var-name>min</var-name>
+					<var-value>1</var-value>
+				</var>
+				<var>
+					<var-name>max</var-name>
+					<var-value>99999999999999</var-value>
+				</var>
+			</field>
+			<field property="cost" depends="required, float, floatRange">
+				<arg key="jobOrder.cost" />
+				<arg position="1" name="floatRange" key="${var:min}" resource="false" />
+				<arg position="2" name="floatRange" key="${var:max}" resource="false" />
+				<var>
+					<var-name>min</var-name>
+					<var-value>0.01</var-value>
+				</var>
+				<var>
+					<var-name>max</var-name>
+					<var-value>99999999999999</var-value>
+				</var>
+			</field>
+		</form>
 	</formset>
 </form-validation>

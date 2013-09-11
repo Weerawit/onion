@@ -152,7 +152,7 @@
 		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
 			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${jobOrder.id}'/>" />
 		</display:column>
-		<display:column property="id" url="/jobOrder?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="jobOrder.id" sortName="id" />
+		<display:column property="documentNumber.documentNo" url="/jobOrder?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="jobOrder.documentNumber.documentNo" sortName="documentNumber.documentNo" />
 		<display:column property="catalog.code" escapeXml="true" sortable="true" titleKey="jobOrder.catalog.code" sortName="catalog.code" />
 		<display:column escapeXml="true" sortable="true" titleKey="jobOrder.employee.name" sortName="employee.firstName" >
 			<c:out value="${jobOrder.employee.firstName} ${jobOrder.employee.lastName }"/>

@@ -40,32 +40,50 @@
 		<input type="hidden" name="action"/>
 		<form:hidden path="id" />
 		<div class="well row">
-			<div class="row-fluid">
-				<%--
-				<div class="span6">
-					<div class="control-group">
-						<appfuse:label styleClass="control-label" key="jobOrder.runningNo" />
-						<div class="controls">
-							<span class="input-medium uneditable-input"><c:out value="${jobOrder.runningNo}" /></span>
-							<form:hidden path="runningNo" />
-						</div>
-					</div>
-				</div>
-				 --%>
-				 <div class="span6">
-					<spring:bind path="jobOrder.catalog.name">
-						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="jobOrder.catalog.name" />
-							<div class="controls">
-								<form:hidden path="catalog.code"/>
-								<form:input path="catalog.name" name="catalog.name" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
-								<form:errors path="catalog.name" cssClass="help-inline" />
+			<c:choose>
+				<c:when test="${jobOrder.id != null }">
+					<div class="row-fluid">
+						 <div class="span6">
+							<div class="control-group">
+								<appfuse:label styleClass="control-label" key="jobOrder.catalog.name" />
+								<div class="controls">
+									<form:hidden path="catalog.code"/>
+									<form:hidden path="catalog.name"/>
+									<span class="input-xlarge uneditable-input"><c:out value="${jobOrder.catalog.name}" /></span>
+								</div>
 							</div>
 						</div>
-					</spring:bind>
-				</div>
-				
-			</div>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="row-fluid">
+						<%--
+						<div class="span6">
+							<div class="control-group">
+								<appfuse:label styleClass="control-label" key="jobOrder.runningNo" />
+								<div class="controls">
+									<span class="input-medium uneditable-input"><c:out value="${jobOrder.runningNo}" /></span>
+									<form:hidden path="runningNo" />
+								</div>
+							</div>
+						</div>
+						 --%>
+						 <div class="span6">
+							<spring:bind path="jobOrder.catalog.name">
+								<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+									<appfuse:label styleClass="control-label" key="jobOrder.catalog.name" />
+									<div class="controls">
+										<form:hidden path="catalog.code"/>
+										<form:input path="catalog.name" name="catalog.name" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
+										<form:errors path="catalog.name" cssClass="help-inline" />
+									</div>
+								</div>
+							</spring:bind>
+						</div>
+					</div>
+				</c:otherwise>
+			</c:choose>
+			
 
 			<div class="row-fluid">
 				<div class="span6">
@@ -202,13 +220,7 @@
 						<fmt:message key="jobOrder.material" />
 					</h4>
 					<div id="tableDiv">
-						<display:table name="catalogItemList" cellspacing="0" cellpadding="0" requestURI="" id="catalogItem" class="table table-condensed table-striped table-hover table-bordered">
-							<display:column titleKey="catalogItem.invItem.code" sortable="true" class="span3">
-								<c:out value="${catalogItem.invItem.code}" />
-							</display:column>
-							<display:column property="invItem.name" escapeXml="true" sortable="true" titleKey="catalogItem.invItem.name" sortName="invItem.name" />
-							<display:column property="qty" sortable="true" titleKey="catalogItem.qty" sortName="qty" format="{0,number,#,##0.##}" />
-						</display:table>
+				
 					</div>
 				</div>
 			</div>
@@ -297,6 +309,11 @@
 	});
 
 	$(document).ready(function() {
+		$('#tableDiv').ajaxDisplaytag({
+			url : '${ctx}/jobOrder/displayTable',
+			params : {'catalog.code' : '<c:out value="${jobOrder.catalog.code}"/>'}
+		});
+		
 		$('input[name="employee.fullname"]').lookup({
 			type : 'employee',
 			displayProperty : function(json) {
@@ -342,6 +359,7 @@
 			}
 		});
 		
+		<c:if test="${jobOrder.id == null }">
 		$('input[name="catalog.name"]').lookup({
 			type : 'catalog',
 			displayProperty : function(json) {
@@ -376,6 +394,7 @@
 				}
 			}
 		});
+		</c:if>
 	});
 </script>
 <v:javascript formName="jobOrder" staticJavascript="false" />
