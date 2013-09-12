@@ -28,7 +28,7 @@ public class SaleOrderDaoHibernate extends GenericDaoHibernate<SaleOrder, Long> 
 		final Map<String, Object> params = new HashMap<String, Object>();
 		if (null != criteria) {
 			if (null != criteria.getDocumentNumber() && StringUtils.isNotEmpty(criteria.getDocumentNumber().getDocumentNo())) {
-				hsql += " and o.documentNumber.documentNo No like :saleOrderNo";
+				hsql += " and o.documentNumber.documentNo like :saleOrderNo";
 				params.put("saleOrderNo", criteria.getDocumentNumber().getDocumentNo() + "%");
 			}
 			if (null != criteria.getCustomer() && StringUtils.isNotEmpty(criteria.getCustomer().getName())) {
@@ -68,7 +68,7 @@ public class SaleOrderDaoHibernate extends GenericDaoHibernate<SaleOrder, Long> 
 		final Map<String, Object> params = new HashMap<String, Object>();
 		if (null != criteria) {
 			if (null != criteria.getDocumentNumber() && StringUtils.isNotEmpty(criteria.getDocumentNumber().getDocumentNo())) {
-				hsql += " and o.documentNumber.documentNo No like :saleOrderNo";
+				hsql += " and o.documentNumber.documentNo like :saleOrderNo";
 				params.put("saleOrderNo", criteria.getDocumentNumber().getDocumentNo() + "%");
 			}
 			if (null != criteria.getCustomer() && StringUtils.isNotEmpty(criteria.getCustomer().getName())) {

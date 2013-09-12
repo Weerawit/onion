@@ -62,8 +62,6 @@
             </c:if> &copy; <fmt:message key="copyright.year" /> <a href="<fmt:message key="company.url"/>"><fmt:message key="company.name" /></a> </span>
 	</div>
 	
-	<div id="ajax-modal" class="modal hide fade" tabindex="-1" data-width="760"></div>
-	
 	<%=(request.getAttribute("scripts") != null) ? request.getAttribute("scripts") : ""%>
 	<script type="text/javascript">
 		function logout(ele) {

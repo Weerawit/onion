@@ -17,10 +17,6 @@
 </c:if>
 
 <div class="span12">
-	<h2>
-		<fmt:message key="customerList.heading" />
-	</h2>
-
 	<form method="get" action="${ctx}/popup/customer" id="searchForm" class="well form-horizontal">
 		<div class="row">
 			<div class="span5">
