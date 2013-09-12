@@ -92,6 +92,7 @@
 							'q' : query
 						},
 						success : function(data) {
+							jsonStringList = [];
 							$.each(data, function(i, obj) {
 								jsonStringList.push(JSON.stringify(obj));
 							});
