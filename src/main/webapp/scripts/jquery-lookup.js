@@ -70,7 +70,7 @@
 			if (!this.options.selectProperty) {
 				this.options.selectProperty = this.options.displayProperty;
 			}
-			var self = this._self, element = this.element;
+			var self = this._self, element = this.element, $element = $(this.element);
 			//var type = this.options.type, displayProperty = this.options.displayProperty, handler = this.options.handler, element = this.element, , btnSearchCondition = this.options.btnSearchCondition;
 
 			// Place initialization logic here
@@ -118,18 +118,18 @@
 					if (typeof self.options.handler == 'function') {
 						self.options.handler.call(element, json);
 					}
-					$(element).data('lookupKeyValue', self.getSelectProperty(json));
+					$element.data('lookupKeyValue', self.getSelectProperty(json));
 					return self.getSelectProperty(json);
 				}
 			};
-			$(element).typeahead(typeaheadOption);
+			$element.typeahead(typeaheadOption);
 
-			$(element).on('focusout', function() {
+			$element.on('focusout', function() {
 				// reset code field, if text is not equal to original name store
 				// in element.
-				if ($(element).val() == '' || ($(element).data('lookupKeyValue') && $(element).data('lookupKeyValue') != $(element).val())) {
+				if ($element.val() == '' || ($element.data('lookupKeyValue') && $element.data('lookupKeyValue') != $element.val())) {
 					//remove data
-					$(element).removeData('lookupKeyValue');
+					$element.removeData('lookupKeyValue');
 					if (typeof self.options.handler == 'function') {
 						self.options.handler.call(element, undefined);
 					}
@@ -140,63 +140,106 @@
 			if (this.options.showBtnSearch) {
 				// register popup
 				if (this.options.appendBtnAndText) {
-					$(element).wrap('<div class="input-append"/>');
+					$element.wrap('<div class="input-append"/>');
 				}
 				//bind btnSearch event
-				var modalEl = this.initModal(this.element, this.options);
+				//var $modal = this.initModal(this.element, this.options);
+				var $modal = $('#ajax-modal');
 				var btnSearch = $(this.options.btnSearch).on('click', function() {
 					$('body').modalmanager('loading');
 					var url = self.options.popupUrl.call(self.options, true);
+					
+					$modal.load(url, '', function() {
+						$modal.modal();
+					});
+					/*
 					var options = {remote : url, 
 							modalOverflow: true,
 							show: false,
 							width : '80%'};
-					modalEl.modal(options);
-					modalEl.modal('show');
+					$modal.modal(options);
+					$modal.modal('show');
+					*/
 				});
-				$(element).after(btnSearch);
-				$(element).after(modalEl);
+				$element.after(btnSearch);
+				//$element.after($modal);
+				
+				$modal.on('submit', 'form', function(event) {
+					$modal.modal('loading');
+					event.preventDefault();
+					$modal.load($(this).prop('action'), $(event.target).serialize(), function() {
+//						$modal.modal();
+					});
+				});
+				
+				$modal.on('click', 'th.sortable a, div.pagination li a', function(event) {
+					$modal.modal('loading');
+					event.preventDefault();
+					$modal.load(self.options.popupUrl.call(self.options) + $(event.target).attr('href'), '', function() {
+//						$modal.modal();
+					});
+				});
+				
+				$modal.on('change', 'select[name=ps]', function(event) {
+					$modal.modal('loading');
+					event.preventDefault();
+					$modal.load(self.options.popupUrl.call(self.options) + '?ps=' + $(event.target).val(), '', function() {
+//						$modal.modal();
+					});
+				});
+				
+				$modal.on('click', '#selectBtn', function(event) {
+					//update selected item
+					if (typeof self.options.handler == 'function') {
+						var json = jQuery.parseJSON($modal.find('.modal-body input[name=radio]:checked').val());
+						$element.val(self.getSelectProperty(json));//update text field
+						self.options.handler.call(element, json);
+					}
+					$modal.modal('hide');
+				})
 				
 				//handle form submit, and remove link to ajax
+				/*
 				var handleSubmit = function(event) {
 					event.preventDefault();
-					modalEl.find('.modal-body').load($(this).prop('action'), $(event.target).serialize(), function() {
+					$modal.find('.modal-body').load($(this).prop('action'), $(event.target).serialize(), function() {
 						//rebind event after page re-load.
-						modalEl.find('.modal-body form').on('submit', handleSubmit);
-						modalEl.find('.modal-body th.sortable a').on('click', handleLink);
-						modalEl.find('.modal-body div.pagination li a').on('click', handleLink);
-						modalEl.find('.modal-body select[name=ps]').on('change', handlePageSelect);
+						$modal.find('.modal-body form').on('submit', handleSubmit);
+						$modal.find('.modal-body th.sortable a').on('click', handleLink);
+						$modal.find('.modal-body div.pagination li a').on('click', handleLink);
+						$modal.find('.modal-body select[name=ps]').on('change', handlePageSelect);
 					});
 				}
 				
 				var handleLink = function(event) {
 					event.preventDefault();
-					modalEl.find('.modal-body').load(self.options.popupUrl.call(self.options) + $(event.target).attr('href'), function() {
+					$modal.find('.modal-body').load(self.options.popupUrl.call(self.options) + $(event.target).attr('href'), function() {
 						//rebind event after page re-load.
-						modalEl.find('.modal-body form').on('submit', handleSubmit);
-						modalEl.find('.modal-body th.sortable a').on('click', handleLink);
-						modalEl.find('.modal-body div.pagination li a').on('click', handleLink);
-						modalEl.find('.modal-body select[name=ps]').on('change', handlePageSelect);
+						$modal.find('.modal-body form').on('submit', handleSubmit);
+						$modal.find('.modal-body th.sortable a').on('click', handleLink);
+						$modal.find('.modal-body div.pagination li a').on('click', handleLink);
+						$modal.find('.modal-body select[name=ps]').on('change', handlePageSelect);
 					});
 				}
 				
 				var handlePageSelect = function(event) {
 					event.preventDefault();
-					modalEl.find('.modal-body').load(self.options.popupUrl.call(self.options) + '?ps=' + $(event.target).val(), function() {
+					$modal.find('.modal-body').load(self.options.popupUrl.call(self.options) + '?ps=' + $(event.target).val(), function() {
 						//rebind event after page re-load.
-						modalEl.find('.modal-body form').on('submit', handleSubmit);
-						modalEl.find('.modal-body th.sortable a').on('click', handleLink);
-						modalEl.find('.modal-body div.pagination li a').on('click', handleLink);
-						modalEl.find('.modal-body select[name=ps]').on('change', handlePageSelect);
+						$modal.find('.modal-body form').on('submit', handleSubmit);
+						$modal.find('.modal-body th.sortable a').on('click', handleLink);
+						$modal.find('.modal-body div.pagination li a').on('click', handleLink);
+						$modal.find('.modal-body select[name=ps]').on('change', handlePageSelect);
 					});
 				}
 				//when modal is show update event form submit.
-				modalEl.on('show', function() {
-					modalEl.find('.modal-body form').on('submit', handleSubmit);
-					modalEl.find('.modal-body th.sortable a').on('click', handleLink);
-					modalEl.find('.modal-body div.pagination li a').on('click', handleLink);
-					modalEl.find('.modal-body select[name=ps]').on('change', handlePageSelect);
+				$modal.on('show', function() {
+					$modal.find('.modal-body form').on('submit', handleSubmit);
+					$modal.find('.modal-body th.sortable a').on('click', handleLink);
+					$modal.find('.modal-body div.pagination li a').on('click', handleLink);
+					$modal.find('.modal-body select[name=ps]').on('change', handlePageSelect);
 				});
+				*/
 			}
 		},
 		/**
@@ -232,29 +275,29 @@
 			'<div class="modal-body"/>' +
 			'<div class="modal-footer"/>'+
 			'</div>';
-			var modalEl = $(modal);
+			var $modal = $(modal);
 			var btnCloseEl = $('<button type="button" class="close">&times;</button>');
 			btnCloseEl.on('click', function() {
-				modalEl.modal('hide');
+				$modal.modal('hide');
 			});
 			var btnSelectEl = $('<a href="#" class="btn btn-primary">Select</a>');
 			btnSelectEl.on('click', function() {
 				//update selected item
 				if (typeof options.handler == 'function') {
-					var json = jQuery.parseJSON(modalEl.find('.modal-body input[name=radio]:checked').val());
+					var json = jQuery.parseJSON($modal.find('.modal-body input[name=radio]:checked').val());
 					$(el).val(self.getSelectProperty(json));//update text field
 					options.handler.call(el, json);
 				}
-				modalEl.modal('hide');
+				$modal.modal('hide');
 			});
 			var btnCancel = $('<a href="#" class="btn">Close</a>');
 			btnCancel.on('click', function() {
-				modalEl.modal('hide');
+				$modal.modal('hide');
 			})
 			
-			modalEl.find('.modal-header').prepend(btnCloseEl);
-			modalEl.find('.modal-footer').append(btnSelectEl, btnCancel);
-			return modalEl;
+			$modal.find('.modal-header').prepend(btnCloseEl);
+			$modal.find('.modal-footer').append(btnSelectEl, btnCancel);
+			return $modal;
 		}
 	};
 
