@@ -145,9 +145,11 @@
 				//bind btnSearch event
 				var modalEl = this.initModal(this.element, this.options);
 				var btnSearch = $(this.options.btnSearch).on('click', function() {
+					$('body').modalmanager('loading');
 					var url = self.options.popupUrl.call(self.options, true);
 					var options = {remote : url, 
 							modalOverflow: true,
+							show: false,
 							width : '80%'};
 					modalEl.modal(options);
 					modalEl.modal('show');
@@ -158,7 +160,7 @@
 				//handle form submit, and remove link to ajax
 				var handleSubmit = function(event) {
 					event.preventDefault();
-					modalEl.find('.modal-body').load($(this).prop('action'), $(event.target).serialize(), function complete() {
+					modalEl.find('.modal-body').load($(this).prop('action'), $(event.target).serialize(), function() {
 						//rebind event after page re-load.
 						modalEl.find('.modal-body form').on('submit', handleSubmit);
 						modalEl.find('.modal-body th.sortable a').on('click', handleLink);
@@ -169,7 +171,7 @@
 				
 				var handleLink = function(event) {
 					event.preventDefault();
-					modalEl.find('.modal-body').load(self.options.popupUrl.call(self.options) + $(event.target).attr('href'), function complete() {
+					modalEl.find('.modal-body').load(self.options.popupUrl.call(self.options) + $(event.target).attr('href'), function() {
 						//rebind event after page re-load.
 						modalEl.find('.modal-body form').on('submit', handleSubmit);
 						modalEl.find('.modal-body th.sortable a').on('click', handleLink);
@@ -180,7 +182,7 @@
 				
 				var handlePageSelect = function(event) {
 					event.preventDefault();
-					modalEl.find('.modal-body').load(self.options.popupUrl.call(self.options) + '?ps=' + $(event.target).val(), function complete() {
+					modalEl.find('.modal-body').load(self.options.popupUrl.call(self.options) + '?ps=' + $(event.target).val(), function() {
 						//rebind event after page re-load.
 						modalEl.find('.modal-body form').on('submit', handleSubmit);
 						modalEl.find('.modal-body th.sortable a').on('click', handleLink);
@@ -188,8 +190,8 @@
 						modalEl.find('.modal-body select[name=ps]').on('change', handlePageSelect);
 					});
 				}
-				//when modal is shown update event form submit.
-				modalEl.on('shown', function() {
+				//when modal is show update event form submit.
+				modalEl.on('show', function() {
 					modalEl.find('.modal-body form').on('submit', handleSubmit);
 					modalEl.find('.modal-body th.sortable a').on('click', handleLink);
 					modalEl.find('.modal-body div.pagination li a').on('click', handleLink);
