@@ -4,7 +4,7 @@ public class ConstantModel {
 
 	public enum RefType {
 
-		GOOD_RECEIPT("GR"), GOOD_MOVEMENT("GM"), SALE_ORDER("SA"), ADJUST("ADJ");
+		GOOD_RECEIPT("GR"), GOOD_MOVEMENT("GM"), SALE_ORDER("SA"), ADJUST("ADJ"), JOB_ORDER("JB");
 
 		private final String code;
 		private String resourceKey;

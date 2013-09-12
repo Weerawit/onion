@@ -33,9 +33,10 @@
 		</c:if>
 	</spring:bind>
 
-	<form:form commandName="jobOrder" method="post" action="jobOrder" onsubmit="return onFormSubmit(this)" id="jobOrder">
+	<form:form commandName="jobOrder" method="post" action="jobOrder" id="jobOrder">
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
 		<form:hidden path="documentNumber.documentNo" />
+		<form:hidden path="status"/>
 		<input type="hidden" name="cancelReason"/>
 		<input type="hidden" name="action"/>
 		<form:hidden path="id" />
@@ -57,17 +58,6 @@
 				</c:when>
 				<c:otherwise>
 					<div class="row-fluid">
-						<%--
-						<div class="span6">
-							<div class="control-group">
-								<appfuse:label styleClass="control-label" key="jobOrder.runningNo" />
-								<div class="controls">
-									<span class="input-medium uneditable-input"><c:out value="${jobOrder.runningNo}" /></span>
-									<form:hidden path="runningNo" />
-								</div>
-							</div>
-						</div>
-						 --%>
 						 <div class="span6">
 							<spring:bind path="jobOrder.catalog.name">
 								<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
@@ -83,120 +73,189 @@
 					</div>
 				</c:otherwise>
 			</c:choose>
+			<c:choose>
+				<c:when test="${jobOrder.status != 'C' && jobOrder.status != 'DONE' }">
+					<div class="row-fluid">
+						<div class="span6">
+							<spring:bind path="jobOrder.employee.id">
+								<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+									<appfuse:label styleClass="control-label" key="jobOrder.employee.id" />
+									<div class="controls">
+										<form:input path="employee.fullname" id="employee.fullname" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
+										<form:hidden path="employee.id" />
+										<form:errors path="employee.id" cssClass="help-inline" />
+									</div>
+								</div>
+							</spring:bind>
+						</div>
+						<div class="span6">
+							<spring:bind path="jobOrder.saleOrder.documentNumber.documentNo">
+								<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+									<appfuse:label styleClass="control-label" key="jobOrder.saleOrder.documentNumber.documentNo" />
+									<div class="controls">
+										<form:input path="saleOrder.documentNumber.documentNo" name="saleOrder.documentNumber.documentNo" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
+										<form:errors path="saleOrder.documentNumber.documentNo" cssClass="help-inline" />
+									</div>
+								</div>
+							</spring:bind>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6">
+							<spring:bind path="jobOrder.qty">
+								<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+									<appfuse:label styleClass="control-label" key="jobOrder.qty" />
+									<div class="controls">
+										<form:input path="qty" name="qty" cssClass="input-small" maxlength="255" autocomplete="off" />
+										<form:errors path="qty" cssClass="help-inline" />
+									</div>
+								</div>
+							</spring:bind>
+						</div>
+						<div class="span6">
+							<spring:bind path="jobOrder.cost">
+								<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+									<appfuse:label styleClass="control-label" key="jobOrder.cost" />
+									<div class="controls">
+										<form:input path="cost" name="cost" cssClass="input-small" maxlength="255" autocomplete="off" />
+										<form:errors path="cost" cssClass="help-inline" />
+									</div>
+								</div>
+							</spring:bind>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6">
+							<spring:bind path="jobOrder.startDate">
+								<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+									<appfuse:label styleClass="control-label" key="jobOrder.startDate" />
+									<div class="controls">
+										<div class="input-append date" id="startDateDatepicker">
+											<form:input path="startDate" id="startDate" cssClass="input-medium" maxlength="50" />
+											<span class="add-on"><i class="icon-th"></i></span>
+										</div>
+										<form:errors path="startDate" cssClass="help-inline" />
+									</div>
+								</div>
+							</spring:bind>
+						</div>
+						<div class="span6">
+							<spring:bind path="jobOrder.targetEndDate">
+								<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+									<appfuse:label styleClass="control-label" key="jobOrder.targetEndDate" />
+									<div class="controls">
+										<div class="input-append date" id="targetEndDateDatepicker">
+											<form:input path="targetEndDate" id="targetEndDate" cssClass="input-medium" maxlength="50" />
+											<span class="add-on"><i class="icon-th"></i></span>
+										</div>
+										<form:errors path="targetEndDate" cssClass="help-inline" />
+									</div>
+								</div>
+							</spring:bind>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6">
+							<spring:bind path="jobOrder.actualEndDate">
+								<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+									<appfuse:label styleClass="control-label" key="jobOrder.actualEndDate" />
+									<div class="controls">
+										<div class="input-append date" id="actualEndDateDatepicker">
+											<form:input path="actualEndDate" id="actualEndDate" cssClass="input-medium" maxlength="50" />
+											<span class="add-on"><i class="icon-th"></i></span>
+										</div>
+										<form:errors path="actualEndDate" cssClass="help-inline" />
+									</div>
+								</div>
+							</spring:bind>
+						</div>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="row-fluid">
+						<div class="span6">
+							<div class="control-group">
+								<appfuse:label styleClass="control-label" key="jobOrder.employee.id" />
+								<div class="controls">
+									<form:hidden path="employee.id"/>
+									<span class="input-xlarge uneditable-input"><c:out value="${jobOrder.employee.fullname}" /></span>
+								</div>
+							</div>
+						</div>
+						<div class="span6">
+							<div class="control-group">
+								<appfuse:label styleClass="control-label" key="jobOrder.saleOrder.documentNumber.documentNo" />
+								<div class="controls">
+									<form:hidden path="saleOrder.documentNumber.documentNo"/>
+									<span class="input-xlarge uneditable-input"><c:out value="${jobOrder.saleOrder.documentNumber.documentNo}" /></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6">
+							<div class="control-group">
+								<appfuse:label styleClass="control-label" key="jobOrder.qty" />
+								<div class="controls">
+									<form:hidden path="qty"/>
+									<span class="input-small uneditable-input"><fmt:formatNumber value="${jobOrder.qty }" pattern="#,##0.00"/></span>
+								</div>
+							</div>
+						</div>
+						<div class="span6">
+							<div class="control-group">
+								<appfuse:label styleClass="control-label" key="jobOrder.cost" />
+								<div class="controls">
+									<form:hidden path="cost"/>
+									<span class="input-small uneditable-input"><fmt:formatNumber value="${jobOrder.cost }" pattern="#,##0.00"/></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6">
+							<div class="control-group">
+								<appfuse:label styleClass="control-label" key="jobOrder.startDate" />
+								<div class="controls">
+									<div class="input-append date" id="startDateDatepicker">
+										<span class="input-medium uneditable-input"><fmt:formatDate value="${jobOrder.startDate }" pattern="dd/MM/yyyyy"/></span>
+										<span class="add-on"><i class="icon-th"></i></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="span6">
+							<div class="control-group">
+								<appfuse:label styleClass="control-label" key="jobOrder.targetEndDate" />
+								<div class="controls">
+									<div class="input-append date" id="targetEndDateDatepicker">
+										<span class="input-medium uneditable-input"><fmt:formatDate value="${jobOrder.targetEndDate }" pattern="dd/MM/yyyyy"/></span>
+										<span class="add-on"><i class="icon-th"></i></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6">
+							<div class="control-group">
+								<appfuse:label styleClass="control-label" key="jobOrder.actualEndDate" />
+								<div class="controls">
+									<div class="input-append date" id="actualEndDateDatepicker">
+										<span class="input-medium uneditable-input"><fmt:formatDate value="${jobOrder.actualEndDate }" pattern="dd/MM/yyyyy"/></span>
+										<span class="add-on"><i class="icon-th"></i></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</c:otherwise>
+			</c:choose>
+
 			
 
-			<div class="row-fluid">
-				<div class="span6">
-					<spring:bind path="jobOrder.employee.id">
-						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="jobOrder.employee.id" />
-							<div class="controls">
-								<form:input path="employee.fullname" id="employee.fullname" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
-								<form:hidden path="employee.id" />
-								<form:errors path="employee.id" cssClass="help-inline" />
-							</div>
-						</div>
-					</spring:bind>
-				</div>
-				<div class="span6">
-					<spring:bind path="jobOrder.saleOrder.documentNumber.documentNo">
-						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="jobOrder.saleOrder.documentNumber.documentNo" />
-							<div class="controls">
-								<form:input path="saleOrder.documentNumber.documentNo" name="saleOrder.documentNumber.documentNo" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
-								<form:errors path="saleOrder.documentNumber.documentNo" cssClass="help-inline" />
-							</div>
-						</div>
-					</spring:bind>
-				</div>
-			</div>
-			<div class="row-fluid">
-				<div class="span6">
-					<spring:bind path="jobOrder.qty">
-						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="jobOrder.qty" />
-							<div class="controls">
-								<form:input path="qty" name="qty" cssClass="input-small" maxlength="255" autocomplete="off" />
-								<form:errors path="qty" cssClass="help-inline" />
-							</div>
-						</div>
-					</spring:bind>
-				</div>
-				<div class="span6">
-					<spring:bind path="jobOrder.cost">
-						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="jobOrder.cost" />
-							<div class="controls">
-								<form:input path="cost" name="cost" cssClass="input-small" maxlength="255" autocomplete="off" />
-								<form:errors path="cost" cssClass="help-inline" />
-							</div>
-						</div>
-					</spring:bind>
-				</div>
-			</div>
-
-			<div class="row-fluid">
-				<div class="span6">
-					<spring:bind path="jobOrder.startDate">
-						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="jobOrder.startDate" />
-							<div class="controls">
-								<div class="input-append date" id="startDateDatepicker">
-									<form:input path="startDate" id="startDate" cssClass="input-medium" maxlength="50" />
-									<span class="add-on"><i class="icon-th"></i></span>
-								</div>
-								<form:errors path="startDate" cssClass="help-inline" />
-							</div>
-						</div>
-					</spring:bind>
-				</div>
-				<div class="span6">
-					<spring:bind path="jobOrder.targetEndDate">
-						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="jobOrder.targetEndDate" />
-							<div class="controls">
-								<div class="input-append date" id="targetEndDateDatepicker">
-									<form:input path="targetEndDate" id="targetEndDate" cssClass="input-medium" maxlength="50" />
-									<span class="add-on"><i class="icon-th"></i></span>
-								</div>
-								<form:errors path="targetEndDate" cssClass="help-inline" />
-							</div>
-						</div>
-					</spring:bind>
-				</div>
-			</div>
-			<div class="row-fluid">
-			<%--
-				<div class="span6">
-					<spring:bind path="jobOrder.status">
-						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="jobOrder.status" />
-							<div class="controls">
-								<form:select path="status">
-									<form:option value=""></form:option>
-									<form:options items="${jobOrderStatusList}" itemLabel="label" itemValue="value" />
-								</form:select>
-								<form:errors path="status" cssClass="help-inline" />
-							</div>
-						</div>
-					</spring:bind>
-				</div>
-			 --%>
-				<div class="span6">
-					<spring:bind path="jobOrder.actualEndDate">
-						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
-							<appfuse:label styleClass="control-label" key="jobOrder.actualEndDate" />
-							<div class="controls">
-								<div class="input-append date" id="actualEndDateDatepicker">
-									<form:input path="actualEndDate" id="actualEndDate" cssClass="input-medium" maxlength="50" />
-									<span class="add-on"><i class="icon-th"></i></span>
-								</div>
-								<form:errors path="actualEndDate" cssClass="help-inline" />
-							</div>
-						</div>
-					</spring:bind>
-				</div>
-			</div>
+			
+			
 			<c:if test="${jobOrder.status == 'C' }">
 				<div class="row-fluid">
 					<div class="span6">
@@ -228,16 +287,21 @@
 
 
 		<fieldset class="form-actions text-center">
-			<button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false">
+			<button type="submit" class="btn btn-primary" name="save" onclick="bCancel=false;return validateSave()">
 				<i class="icon-ok icon-white"></i>
 				<fmt:message key="button.save" />
 			</button>
 			
 			<c:choose>
-				<c:when test="${jobOrder.status != 'C' && jobOrder.status != 'DONE' }">
+				<c:when test="${jobOrder.status != 'C' && jobOrder.status != 'DONE' && jobOrder.id != null }">
 					<button type="submit" class="btn" name="delete" onclick="bCancel=true;return validateCancel()">
 						<i class="icon-trash"></i>
 						<fmt:message key="button.delete" />
+					</button>
+					
+					<button type="submit" class="btn" name="doneBtn" onclick="bCancel=false;return markAsDone()">
+						<i class="icon-tasks"></i>
+						<fmt:message key="button.delivery" />
 					</button>
 				</c:when>
 			</c:choose>
@@ -270,8 +334,10 @@
 
 <script type="text/javascript">
 <!-- This is here so we can exclude the selectAll call when roles is hidden -->
-	function onFormSubmit(theForm) {
-		return validateJobOrder(theForm);
+	function validateSave() {
+		var form = document.forms['jobOrder'];
+		$('#jobOrder').attr('action', '${ctx}/jobOrder');
+		return validateJobOrder(form);
 	}
 
 	function validateCancel() {
@@ -288,13 +354,30 @@
 		var form = document.forms['jobOrder'];
 		//since cancelReasonArea is not in form, using get(0) to convert to read object
 		if (checkRequired($('#cancelReasonArea').get(0), '<tags:validateMessage errorKey="errors.required" field="saleOrder.cancelReason"/>')) {
+			$('#jobOrder').attr('action', '${ctx}/jobOrder');
 			form["cancelReason"].value = $('#cancelReasonArea').val();
 			form['action'].value="delete";
 			form.submit();
 		}
 	}
 	
-	$(function() {
+
+	function markAsDone() {
+		var form = document.forms['jobOrder'];
+		if (validateJobOrder(form)) {
+			$('#jobOrder').attr('action', '${ctx}/jobOrder/markAsDone');
+			form.submit();
+			return false;	
+		};
+	}
+	
+	$(document).ready(function() {
+		$('#tableDiv').ajaxDisplaytag({
+			url : '${ctx}/jobOrder/displayTable',
+			params : {'catalog.code' : '<c:out value="${jobOrder.catalog.code}"/>'}
+		});
+		
+		<c:if test="${jobOrder.status != 'C' && jobOrder.status != 'DONE' }">
 		$('#startDateDatepicker').datetimepicker({
 			format : "dd/MM/yyyy hh:mm:ss"
 		});
@@ -306,13 +389,7 @@
 		$('#actualEndDateDatepicker').datetimepicker({
 			format : "dd/MM/yyyy hh:mm:ss"
 		});
-	});
-
-	$(document).ready(function() {
-		$('#tableDiv').ajaxDisplaytag({
-			url : '${ctx}/jobOrder/displayTable',
-			params : {'catalog.code' : '<c:out value="${jobOrder.catalog.code}"/>'}
-		});
+		
 		
 		$('input[name="employee.fullname"]').lookup({
 			type : 'employee',
@@ -358,6 +435,8 @@
 				}
 			}
 		});
+		
+		</c:if>
 		
 		<c:if test="${jobOrder.id == null }">
 		$('input[name="catalog.name"]').lookup({

@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 import com.worldbestsoft.dao.hibernate.JobOrderDao;
 import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.DocumentNumber;
+import com.worldbestsoft.model.InvItemLevel;
 import com.worldbestsoft.model.JobOrder;
 import com.worldbestsoft.model.criteria.JobOrderCriteria;
 import com.worldbestsoft.service.DocumentNumberFormatter;
 import com.worldbestsoft.service.DocumentNumberGenerator;
-import com.worldbestsoft.service.DocumentNumberGeneratorException;
+import com.worldbestsoft.service.InvStockManager;
 import com.worldbestsoft.service.JobOrderManager;
 
 @Service("jobOrderManager")
@@ -22,6 +23,7 @@ public class JobOrderManagerImpl implements JobOrderManager {
 	
 	private DocumentNumberGenerator documentNumberGenerator;
 	private JobOrderDao jobOrderDao;
+	private InvStockManager invStockManager;
 	
 	private String documentNumberFormat = "JB{0,number,00000}";
 	
@@ -49,6 +51,16 @@ public class JobOrderManagerImpl implements JobOrderManager {
 	@Autowired
 	public void setDocumentNumberGenerator(DocumentNumberGenerator documentNumberGenerator) {
 		this.documentNumberGenerator = documentNumberGenerator;
+	}
+	
+
+	public InvStockManager getInvStockManager() {
+		return invStockManager;
+	}
+
+	@Autowired
+	public void setInvStockManager(InvStockManager invStockManager) {
+		this.invStockManager = invStockManager;
 	}
 
 	/* (non-Javadoc)
@@ -98,6 +110,28 @@ public class JobOrderManagerImpl implements JobOrderManager {
 			return jobOrderDao.save(object);
 		}
     }
+	
+	@Override
+    public JobOrder maskAsDone(Long jobOrderId, String user) {
+		JobOrder jobOrder = jobOrderDao.get(jobOrderId);
+		jobOrder.setStatus(ConstantModel.JobOrderStatus.DONE.getCode());
+		jobOrder.setActualEndDate(new Date());
+		jobOrder.setUpdateDate(new Date());
+		jobOrder.setUpdateUser(user);
+		jobOrder = jobOrderDao.save(jobOrder);
+		
+		InvItemLevel invItemLevel = new InvItemLevel();
+		invItemLevel.setInvItem(jobOrder.getCatalog().getInvItem());
+		invItemLevel.setQtyAdjust(jobOrder.getQty());
+		invItemLevel.setQtyAvailableAdjust(jobOrder.getQty());
+		invItemLevel.setTransactionDate(new Date());
+		invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+		invItemLevel.setUpdateUser(user);
+		invItemLevel.setDocumentNumber(jobOrder.getDocumentNumber());
+		invItemLevel.setRefType(ConstantModel.RefType.JOB_ORDER.getCode());
+		getInvStockManager().updateStock(invItemLevel);
+		return jobOrder;
+	}
 
 	@Override
     public void remove(Long id, String user, String cancelReason) {

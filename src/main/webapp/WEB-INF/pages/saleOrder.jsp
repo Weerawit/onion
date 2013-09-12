@@ -14,7 +14,7 @@
 		<fmt:message key="saleOrder.heading" />
 	</h2>
 	<p>
-		<fmt:message key="saleOrder.saleOrderNo" />
+		<fmt:message key="saleOrder.documentNumber.documentNo" />
 	</p>
 	<p>
 	<c:out value="${saleOrder.documentNumber.documentNo}" />
@@ -35,6 +35,7 @@
 
 	<form:form commandName="saleOrder" method="post" action="saleOrder" onsubmit="return onFormSubmit(this)" id="saleOrder">
 		<form:hidden path="id" />
+		<form:hidden path="status" />
 		<input type="hidden" name="from" value="<c:out value="${param.from}"/>" />
 		<form:hidden path="documentNumber.documentNo" />
 		<input type="hidden" name="cancelReason"/>
@@ -47,7 +48,7 @@
 				</legend>
 				<spring:bind path="saleOrder.customer.name">
 					<c:choose>
-						<c:when test="${saleOrder.saleOrderNo == null }">
+						<c:when test="${saleOrder.documentNumber.documentNo == null }">
 							<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 								<div class="controls">
 									<form:input path="customer.name" id="customer.name" cssClass="input-large" maxlength="50" autocomplete="off" />
@@ -102,7 +103,7 @@
 		
 
 		<c:choose>
-			<c:when test="${saleOrder.saleOrderNo == null }">
+			<c:when test="${saleOrder.documentNumber.documentNo == null }">
 				<div id="actions">
 					<input type="hidden" name="addcatalog">
 					<button id="addDetailBtn" class="btn btn-primary" type="button" >
@@ -302,7 +303,7 @@
 	</c:if>
 	
 	
-	<c:if test="${saleOrder.saleOrderNo == null }">
+	<c:if test="${saleOrder.documentNumber.documentNo == null }">
 	$(document).ready(function () {
 		$('input[name="customer.name"]').lookup({
 			type: 'customer',
@@ -354,7 +355,7 @@
 				var getLink = function() {
 					return self.getLink();	
 				};
-				<c:if test="${saleOrder.saleOrderNo == null }">
+				<c:if test="${saleOrder.documentNumber.documentNo == null }">
 				//register popup
 				$('input[name="catalog.name"]').each(function(i) {
 					$(this).lookup({

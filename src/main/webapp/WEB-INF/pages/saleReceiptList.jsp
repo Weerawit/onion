@@ -117,7 +117,7 @@
 			<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
 				<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleReceipt.id}'/>" />
 			</display:column>
-			<display:column property="receiptNo" url="/saleReceipt?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleReceipt.receiptNo" sortName="receiptNo" />
+			<display:column property="documentNumber.documentNo" url="/saleReceipt?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleReceipt.documentNumber.documentNo" sortName="documentNumber.documentNo" />
 			<display:column property="saleOrder.documentNumber.documentNo" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.documentNumber.documentNo" sortName="saleOrder.documentNumber.documentNo" />
 			<display:column property="saleOrder.customer.name" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.customer.name" sortName="saleOrder.customer.name" />
 			<display:column property="receiptDate" escapeXml="false" sortable="true" titleKey="saleReceipt.receiptDate" sortName="receiptDate" format="{0, date, dd/MM/yyyy HH:mm}" />

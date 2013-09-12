@@ -13,7 +13,7 @@
 		<fmt:message key="saleReceipt.heading" />
 	</h2>
 	<p>
-		<fmt:message key="saleReceipt.receiptNo" />
+		<fmt:message key="saleReceipt.documentNumber.documentNo" />
 	</p>
 	<p>
 	<c:out value="${saleReceipt.documentNumber.documentNo}" />
@@ -56,9 +56,9 @@
 
 		<c:if test="${saleReceipt.id != null }">
 			<div class="control-group">
-				<appfuse:label styleClass="control-label" key="saleReceipt.receiptNo" />
+				<appfuse:label styleClass="control-label" key="saleReceipt.documentNumber.documentNo" />
 				<div class="controls">
-					<span class="input-medium uneditable-input"><c:out value="${saleReceipt.receiptNo}" /></span>
+					<span class="input-medium uneditable-input"><c:out value="${saleReceipt.documentNumber.documentNo}" /></span>
 					<form:hidden path="receiptNo" />
 				</div>
 			</div>

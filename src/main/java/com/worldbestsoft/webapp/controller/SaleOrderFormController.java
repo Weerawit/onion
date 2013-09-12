@@ -203,6 +203,7 @@ public class SaleOrderFormController extends BaseFormController {
 			item.setQty(BigDecimal.ZERO);
 			item.setPricePerUnit(BigDecimal.ZERO);
 			saleOrder.getSaleOrderItems().add(item);
+			saleOrder.setStatus(ConstantModel.SaleOrderStatus.ACTIVE.getCode());
 		}
 		
 		if (!isFormSubmission(request)) {

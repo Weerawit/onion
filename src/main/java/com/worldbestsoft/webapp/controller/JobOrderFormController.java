@@ -81,7 +81,58 @@ public class JobOrderFormController extends BaseFormController {
 	public void setCatalogManager(CatalogManager catalogManager) {
 		this.catalogManager = catalogManager;
 	}
-
+	
+	@RequestMapping(value ="/markAsDone", method = RequestMethod.POST)
+	public ModelAndView markAsDone(JobOrder jobOrderForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		if (validator != null) { // validator is null during testing
+			validator.validate(jobOrderForm, errors);
+			
+			if (null != jobOrderForm.getSaleOrder() && null != jobOrderForm.getSaleOrder().getDocumentNumber() && StringUtils.isNotBlank(jobOrderForm.getSaleOrder().getDocumentNumber().getDocumentNo())) {
+				SaleOrder saleOrder = getSaleOrderManager().findBySaleOrderNo(jobOrderForm.getSaleOrder().getDocumentNumber().getDocumentNo());
+				jobOrderForm.setSaleOrder(saleOrder);
+				if (null == saleOrder) {
+					errors.rejectValue("saleOrder.saleOrderNo", "errors.invalid", new Object[] { getText("jobOrder.saleOrder.saleOrderNo", request.getLocale())}, "errors.invalid");	
+				}
+			} else {
+				jobOrderForm.setSaleOrder(null);
+			}
+			
+			if (null != jobOrderForm.getCatalog() && StringUtils.isNotBlank(jobOrderForm.getCatalog().getCode())) {
+				Catalog catalog = getCatalogManager().findByCatalogCode(jobOrderForm.getCatalog().getCode());
+				jobOrderForm.setCatalog(catalog);
+				if (null == catalog) {
+					errors.rejectValue("catalog.name", "errors.invalid", new Object[] { getText("jobOrder.catalog.name", request.getLocale())}, "errors.invalid");	
+				}
+			} else {
+				jobOrderForm.setCatalog(null);
+			}
+			
+			if (null != jobOrderForm.getEmployee() && null != jobOrderForm.getEmployee().getId()) {
+				Employee employee = getEmployeeManager().get(jobOrderForm.getEmployee().getId());
+				jobOrderForm.setEmployee(employee);
+				if (null == employee) {
+					errors.rejectValue("jobOrder.employee.id", "errors.invalid", new Object[] { getText("jobOrder.employee.id", request.getLocale())}, "errors.invalid");	
+				}
+			} else {
+				jobOrderForm.setEmployee(null);
+				errors.rejectValue("jobOrder.employee.id", "errors.required", new Object[] { getText("jobOrder.employee.id", request.getLocale())}, "errors.required");
+			}
+			
+			if (null == jobOrderForm.getStartDate()) {
+				errors.rejectValue("jobOrder.startDate", "errors.required", new Object[] { getText("jobOrder.startDate", request.getLocale())}, "errors.required");
+			}
+			
+			if (errors.hasErrors()) { // don't validate when deleting
+				return new ModelAndView("jobOrder", "jobOrder", jobOrderForm).addObject("jobOrderStatusList", lookupManager.getAllJobOrderStatus(request.getLocale()));
+			}
+		}
+		log.info(request.getRemoteUser() + " is saving JobOrder := " + jobOrderForm);
+		
+		getJobOrderManager().maskAsDone(jobOrderForm.getId(), request.getRemoteUser());
+		saveMessage(request, getText("jobOrder.done", jobOrderForm.getDocumentNumber().getDocumentNo(), request.getLocale()));
+		return new ModelAndView("redirect:/jobOrderList");
+	}
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView save(JobOrder jobOrderForm, BindingResult errors, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		if (request.getParameter("cancel") != null) {

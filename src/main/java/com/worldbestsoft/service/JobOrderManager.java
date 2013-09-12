@@ -17,5 +17,7 @@ public interface JobOrderManager {
 
 	public abstract void remove(Long id, String user, String cancelReason);
 
+	public abstract JobOrder maskAsDone(Long jobOrderId, String user);
+
 
 }
