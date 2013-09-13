@@ -454,8 +454,8 @@
 			</field>
 		</form>
 		<form name="saleReceipt">
-			<field property="saleOrder.saleOrderNo" depends="required, maxlength">
-				<arg key="saleReceipt.saleOrder.saleOrderNo" />
+			<field property="saleOrder.documentNumber.documentNo" depends="required, maxlength">
+				<arg key="saleReceipt.saleOrder.documentNumber.documentNo" />
 				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
 				<var>
 					<var-name>maxlength</var-name>

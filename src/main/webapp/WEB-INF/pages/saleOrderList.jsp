@@ -124,7 +124,7 @@
 		<display:column escapeXml="false" sortable="true" titleKey="saleOrder.paymentPaid" sortName="paymentPaid">
 			<c:choose>
 				<c:when test="${saleOrder.paymentStatus != '3'}">
-					<a class="btn btn-small btn-primary" href="<c:url value='/saleReceipt?method=Add&from=list&documentNumber.documentNo=${saleOrder.documentNumber.documentNo}'/>"><fmt:formatNumber value="${saleOrder.totalPrice - saleOrder.paymentPaid }" pattern="#,##0.00"/></a>
+					<a class="btn btn-small btn-primary" href="<c:url value='/saleReceipt?method=Add&from=list&saleOrderNo=${saleOrder.documentNumber.documentNo}'/>"><fmt:formatNumber value="${saleOrder.totalPrice - saleOrder.paymentPaid }" pattern="#,##0.00"/></a>
 				</c:when>
 				<c:otherwise>
 					<fmt:formatNumber value="${saleOrder.paymentPaid }" pattern="#,##0.00"/>
