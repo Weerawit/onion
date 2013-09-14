@@ -279,6 +279,13 @@
 						<fmt:message key="button.save" />
 					</button>
 				</c:if>
+				
+				<c:if test="${saleReceipt.id != null }">
+					<button type="button" class="btn" name="print" onclick="bCancel=true;printDialog('<c:url value="/saleReceipt/download?id=${saleReceipt.id}" />', 'pdf')">
+						<i class="icon-print"></i>
+						<fmt:message key="button.saleReceipt.print" />
+					</button>
+				</c:if>
 
 				<c:if test="${param.from == 'list' and param.method != 'Add'}">
 					<button type="submit" class="btn" name="delete" onclick="bCancel=true;return validateCancel()">

@@ -33,6 +33,7 @@ import com.worldbestsoft.Constants;
 import com.worldbestsoft.model.User;
 import com.worldbestsoft.service.MailEngine;
 import com.worldbestsoft.service.UserManager;
+import com.worldbestsoft.webapp.util.ReportUtil;
 
 /**
  * Implementation of <strong>SimpleFormController</strong> that contains
@@ -58,6 +59,8 @@ public class BaseFormController implements ServletContextAware {
 
 	private MessageSourceAccessor messages;
 	private ServletContext servletContext;
+	
+	private ReportUtil reportUtil;
 
 	@Autowired(required = false)
 	Validator validator;
@@ -74,6 +77,15 @@ public class BaseFormController implements ServletContextAware {
 
 	public UserManager getUserManager() {
 		return this.userManager;
+	}
+	
+	public ReportUtil getReportUtil() {
+		return reportUtil;
+	}
+
+	@Autowired
+	public void setReportUtil(ReportUtil reportUtil) {
+		this.reportUtil = reportUtil;
 	}
 
 	@SuppressWarnings("unchecked")

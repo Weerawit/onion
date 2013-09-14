@@ -23,9 +23,9 @@
 
 	<scm>
 		<connection>scm:git:https://github.com/Weerawit/onion</connection>
-<!-- 		<connection>scm:svn:svn://svnserver/onion</connection> -->
+		<!-- <connection>scm:svn:svn://svnserver/onion</connection> -->
 		<developerConnection>scm:git:https://github.com/Weerawit/onion</developerConnection>
-<!-- 		<developerConnection>scm:svn:svn://svnserver/onion</developerConnection> -->
+		<!-- <developerConnection>scm:svn:svn://svnserver/onion</developerConnection> -->
 		<tag>HEAD</tag>
 		<url>scm:git:https://github.com/Weerawit/onion</url>
 	</scm>
@@ -241,21 +241,21 @@
 					<doCheck>false</doCheck>
 					<doUpdate>true</doUpdate>
 					<buildNumberPropertyName>buildNumber</buildNumberPropertyName>
-<!-- 					remove useLastCommittedRevision to allow git generate buildNumber -->
-<!-- 					<useLastCommittedRevision>true</useLastCommittedRevision> -->
+					<!-- remove useLastCommittedRevision to allow git generate buildNumber -->
+					<!-- <useLastCommittedRevision>true</useLastCommittedRevision> -->
 					<timestampFormat>{0,date,yyyy_MM_dd_HH_mm_ss}</timestampFormat>
 					<revisionOnScmFailure>NONE</revisionOnScmFailure>
-<!-- 					<shortRevisionLength>5</shortRevisionLength> -->
+					<!-- <shortRevisionLength>5</shortRevisionLength> -->
 				</configuration>
 			</plugin>
 			<plugin>
-	        	<groupId>org.apache.maven.plugins</groupId>
-	        	<artifactId>maven-eclipse-plugin</artifactId>
-		        <configuration>
-		          	<wtpapplicationxml>true</wtpapplicationxml>
-		          	<wtpversion>2.0</wtpversion>
-		        </configuration>
-     	 	</plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<wtpapplicationxml>true</wtpapplicationxml>
+					<wtpversion>2.0</wtpversion>
+				</configuration>
+			</plugin>
 		</plugins>
 		<resources>
 			<resource>
@@ -354,6 +354,10 @@
 				<exclusion>
 					<artifactId>jcl104-over-slf4j</artifactId>
 					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.lowagie</groupId>
+					<artifactId>itext</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -720,11 +724,43 @@
 			<version>2.2.4</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.imgscalr</groupId>
-		    <artifactId>imgscalr-lib</artifactId>
-		    <version>4.2</version>
-		    <type>jar</type>
-		    <scope>compile</scope>
+			<groupId>org.imgscalr</groupId>
+			<artifactId>imgscalr-lib</artifactId>
+			<version>4.2</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Jasper -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>${jasper.version}</version>
+			<type>jar</type>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-collections</artifactId>
+					<groupId>commons-collections</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-beanutils</artifactId>
+					<groupId>commons-beanutils</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-digester</artifactId>
+					<groupId>commons-digester</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.9</version>
 		</dependency>
             
 	</dependencies>
@@ -1069,6 +1105,7 @@
 		<struts.menu.version>2.4.3</struts.menu.version>
 		<urlrewrite.version>3.1.0</urlrewrite.version>
 		<velocity.version>1.4</velocity.version>
+		<jasper.version>5.2.0</jasper.version>
 
 	</properties>
 </project>

@@ -23,6 +23,7 @@
 <script type="text/javascript" src="<c:url value='/scripts/lib/bootstrap-modal.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/scripts/lib/bootstrap-modalmanager.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/scripts/lib/bootbox.js'/>"></script>
+<script>var ctx = "${pageContext.request.contextPath}"</script>
 <decorator:head />
 
 
@@ -41,7 +42,7 @@
                 </button>
                 <a class="brand" href="<c:url value='/'/>"><fmt:message key="webapp.name"/></a>
                 <%@ include file="/common/menu.jsp" %>
-                 <div id="switchLocale"><a href="<c:url value='/?locale=en'/>">English</a> | <a href="<c:url value='/?locale=th'/>">Thai</a>
+                 <div id="switchLocale"><a href="<c:url value='/?locale=en'/>"><fmt:message key="language.en"/> </a> | <a href="<c:url value='/?locale=th'/>"><fmt:message key="language.th"/></a>
                  </div>
                  <%--<c:if test="${pageContext.request.locale.language != 'en'}">
                 </c:if> --%>
@@ -62,6 +63,8 @@
             </c:if> &copy; <fmt:message key="copyright.year" /> <a href="<fmt:message key="company.url"/>"><fmt:message key="company.name" /></a> </span>
 	</div>
 	
+	<div id="printDialog" class="modal hide fade" tabindex="-1"></div>
+	
 	<%=(request.getAttribute("scripts") != null) ? request.getAttribute("scripts") : ""%>
 	<script type="text/javascript">
 		function logout(ele) {
@@ -78,6 +81,15 @@
 				changePageSize($('select[name=ps]')); 
 			})
 		});
+		
+		$(document).ajaxError(function( event, request, settings ) {
+			alert(settings.url);
+		});
+		/**
+		$(document).ajaxSuccess(function( event, xhr, settings ) {
+			alert(settings.url);
+		});
+		*/
 	</script>
 </body>
 </html>
