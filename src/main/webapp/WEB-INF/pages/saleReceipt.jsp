@@ -281,7 +281,7 @@
 				</c:if>
 				
 				<c:if test="${saleReceipt.id != null }">
-					<button type="button" class="btn" name="print" onclick="bCancel=true;printDialog('<c:url value="/saleReceipt/download?id=${saleReceipt.id}" />', 'pdf')">
+					<button type="button" class="btn" name="print" onclick="bCancel=true;printDialog('<c:url value="/saleReceipt/download?id=${saleReceipt.id}" />')">
 						<i class="icon-print"></i>
 						<fmt:message key="button.saleReceipt.print" />
 					</button>

@@ -179,14 +179,15 @@
 				});
 				
 				$modal.on('click', '#selectBtn', function(event) {
-					$modal.modal('loading');
 					event.preventDefault();
-					if (typeof self.options.handler == 'function') {
-						var json = jQuery.parseJSON($modal.find('.modal-body input[name=radio]:checked').val());
-						$element.val(self.getSelectProperty(json));//update text field
-						self.options.handler.call(element, json);
+					var json = jQuery.parseJSON($modal.find('.modal-body input[name=radio]:checked').val());
+					if (json) {
+						if (typeof self.options.handler == 'function') {
+							$element.val(self.getSelectProperty(json));//update text field
+							self.options.handler.call(element, json);
+						}
+						$modal.modal('hide');
 					}
-					$modal.modal('hide');
 				})
 			}
 		},
