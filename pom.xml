@@ -756,6 +756,15 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.nsn.tot.icirreport.font</groupId>
+			<artifactId>ireportfont</artifactId>
+			<version>1.0</version>
+<!-- 			<scope>system</scope> -->
+<!-- 			<systemPath>${basedir}/lib/ireportFonts.jar</systemPath> -->
+		</dependency>
+		
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
