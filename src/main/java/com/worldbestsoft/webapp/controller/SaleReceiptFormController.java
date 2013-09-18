@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -202,7 +203,8 @@ public class SaleReceiptFormController extends BaseFormController {
 			HttpServletResponse response) throws JRException, IOException {
 		SaleReceipt saleReceipt = getSaleReceiptManager().get(Long.valueOf(id));
 		ExportType exportType = ExportType.fromString(type);
-		String jrxmlFile = "/reports/SaleReceipt.jrxml";
+		//String jrxmlFile = "/reports/SaleReceipt.jrxml";
+		String jrxmlFile = "/Users/Weerawit/Documents/Projects/company_wbs/wbs/projects/inventory_wood/git/onion/src/main/resources/reports/SaleReceipt.jrxml";
 		String downloadFileName = "receipt";
 		
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -215,6 +217,7 @@ public class SaleReceiptFormController extends BaseFormController {
 		downloadModel.setToken(token);
 		downloadModel.setResponse(response);
 		downloadModel.setType(exportType);
+		downloadModel.setJrDataSource(new JRBeanCollectionDataSource(saleReceipt.getSaleOrder().getSaleOrderItems()));
 		
 		getReportUtil().download(downloadModel);
 	}
