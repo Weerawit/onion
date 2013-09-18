@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SaleReceipt" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e8b30594-9a61-4041-91c0-99fdb2e3a171">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SaleReceipt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2dbc763e-8f47-4824-882f-e8a92fbc374d">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+	<style name="table_TH" mode="Opaque" backcolor="#F5F5DC">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+	<style name="table_CH" mode="Opaque" backcolor="#FFFFBF">
 		<box>
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
@@ -23,129 +23,209 @@
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<subDataset name="New Dataset 1" uuid="e9308779-a871-49cb-9b5e-c79182d20c46"/>
+	<subDataset name="Table Dataset 1" uuid="97620631-99d6-449a-9c7d-0e4365cf5f86">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="catalog" class="com.worldbestsoft.model.Catalog">
+			<fieldDescription><![CDATA[catalog]]></fieldDescription>
+		</field>
+		<field name="price" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[price]]></fieldDescription>
+		</field>
+		<field name="pricePerUnit" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[pricePerUnit]]></fieldDescription>
+		</field>
+		<field name="qty" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[qty]]></fieldDescription>
+		</field>
+		<field name="saleOrder" class="com.worldbestsoft.model.SaleOrder">
+			<fieldDescription><![CDATA[saleOrder]]></fieldDescription>
+		</field>
+	</subDataset>
+	<parameter name="saleReceipt" class="com.worldbestsoft.model.SaleReceipt"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="cancelReason" class="java.lang.String">
-		<fieldDescription><![CDATA[cancelReason]]></fieldDescription>
+	<field name="catalog" class="com.worldbestsoft.model.Catalog">
+		<fieldDescription><![CDATA[catalog]]></fieldDescription>
 	</field>
-	<field name="chequeBank" class="java.lang.String">
-		<fieldDescription><![CDATA[chequeBank]]></fieldDescription>
+	<field name="price" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[price]]></fieldDescription>
 	</field>
-	<field name="chequeDate" class="java.util.Date">
-		<fieldDescription><![CDATA[chequeDate]]></fieldDescription>
+	<field name="qty" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[qty]]></fieldDescription>
 	</field>
-	<field name="chequeNo" class="java.lang.String">
-		<fieldDescription><![CDATA[chequeNo]]></fieldDescription>
+	<field name="pricePerUnit" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[pricePerUnit]]></fieldDescription>
 	</field>
-	<field name="class" class="java.lang.Class">
-		<fieldDescription><![CDATA[class]]></fieldDescription>
-	</field>
-	<field name="createDate" class="java.util.Date">
-		<fieldDescription><![CDATA[createDate]]></fieldDescription>
-	</field>
-	<field name="createUser" class="java.lang.String">
-		<fieldDescription><![CDATA[createUser]]></fieldDescription>
-	</field>
-	<field name="documentNumber" class="com.worldbestsoft.model.DocumentNumber">
-		<fieldDescription><![CDATA[documentNumber]]></fieldDescription>
-	</field>
-	<field name="id" class="java.lang.Long">
-		<fieldDescription><![CDATA[id]]></fieldDescription>
-	</field>
-	<field name="receiptAmount" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[receiptAmount]]></fieldDescription>
-	</field>
-	<field name="receiptDate" class="java.util.Date">
-		<fieldDescription><![CDATA[receiptDate]]></fieldDescription>
-	</field>
-	<field name="receiptType" class="java.lang.String">
-		<fieldDescription><![CDATA[receiptType]]></fieldDescription>
-	</field>
-	<field name="saleOrder" class="com.worldbestsoft.model.SaleOrder">
-		<fieldDescription><![CDATA[saleOrder]]></fieldDescription>
-	</field>
-	<field name="status" class="java.lang.String">
-		<fieldDescription><![CDATA[status]]></fieldDescription>
-	</field>
-	<field name="updateDate" class="java.util.Date">
-		<fieldDescription><![CDATA[updateDate]]></fieldDescription>
-	</field>
-	<field name="updateUser" class="java.lang.String">
-		<fieldDescription><![CDATA[updateUser]]></fieldDescription>
-	</field>
+	<variable name="customerName" class="java.lang.String">
+		<variableExpression><![CDATA["ชื่อลูกค้า " + $P{saleReceipt}.getSaleOrder().getCustomer().getName()]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
-			<textField>
-				<reportElement uuid="8ec0dd20-2844-464b-bff1-4dd8780afe5c" x="13" y="9" width="100" height="20"/>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="cdd76a98-1705-460c-a3e3-4887dad60fbd" stretchType="RelativeToTallestObject" x="247" y="0" width="308" height="30"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" size="20"/>
+				</textElement>
+				<text><![CDATA[ใบเสร็จรับเงิน]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="cd1f5e14-2998-491d-96f9-8b09ce9aa3bb" x="247" y="30" width="308" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""+$P{saleReceipt}.getDocumentNumber().getDocumentNo()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="66b8a801-83b4-43db-bb3c-36ded30e8f2e" x="0" y="0" width="247" height="50"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{documentNumber}.getDocumentNo()]]></textFieldExpression>
+				<text><![CDATA[Door Man]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm">
+				<reportElement uuid="564bdfb5-7d92-4055-a314-5aa4b6321629" x="389" y="50" width="166" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{saleReceipt}.getReceiptDate()]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="7c1edfdb-a3c7-4892-b2a2-0e90b4bb5152" x="0" y="0" width="45" height="20"/>
+				<textElement>
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[ชื่อลูกค้า]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="b2d1c135-5d5f-4783-bfc2-0fb7f694bc7e" x="50" y="0" width="505" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[""+$P{saleReceipt}.getSaleOrder().getCustomer().getName()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e141a569-05ba-4a23-81d1-3fd46f70132e" x="0" y="20" width="30" height="20"/>
+				<textElement/>
+				<text><![CDATA[ที่อยู่]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="17414e96-5454-4521-af56-6caff69c3d7c" x="30" y="20" width="525" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[""+$P{saleReceipt}.getSaleOrder().getCustomer().getBillingAddress()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5746317c-87fc-422e-a3bb-7b806e35fed3" x="0" y="40" width="30" height="20"/>
+				<textElement/>
+				<text><![CDATA[โทร]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="90e75d65-0036-4b35-8b4c-5aeb77f80c65" x="30" y="40" width="525" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[""+$P{saleReceipt}.getSaleOrder().getCustomer().getContactTel()]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch">
+		<band height="30" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="63616f99-8d54-4923-8d80-5cdb91e4f88e" x="13" y="2" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[saleOrder]]></text>
+				<reportElement uuid="e9f7ead3-d676-4ef0-aeb6-e0c6a1b88964" x="0" y="0" width="215" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[รายการ]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="a2df1fba-32fa-4f10-be04-80b127f72661" x="215" y="0" width="120" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[ราคาต่อหน่วย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7ac26ec4-7ff8-47d0-b42a-2cb6d4d5ae43" x="335" y="0" width="100" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[จำนวน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="536dd8c9-0e64-456d-83be-965e29a1f80f" x="435" y="0" width="120" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[ราคา]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="dd2c7bbe-95b6-49f9-8d22-be0c2a6c5bd1" x="0" y="29" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="32a61283-8ccd-4e11-a628-da529872ee1e" x="0" y="0" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement uuid="c1430aca-9780-4dd9-be39-177c319a3112" x="555" y="0" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement uuid="71ba2e45-5b14-46e4-ad74-e4d9e7beb6ec" x="1" y="0" width="555" height="1"/>
+			</line>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
-			<componentElement>
-				<reportElement uuid="1be50ae1-0ec3-49c5-84a7-a33ddb1c1f36" key="table" style="table" x="0" y="0" width="555" height="125"/>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="New Dataset 1" uuid="07298c22-8703-44a8-a8c8-6b96f281c25b">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource(1)]]></dataSourceExpression>
-					</datasetRun>
-					<jr:column width="90" uuid="c7f27241-f81d-473b-8759-04132812a503">
-						<jr:tableHeader style="table_TH" height="30" rowSpan="1"/>
-						<jr:tableFooter style="table_TH" height="30" rowSpan="1"/>
-						<jr:columnHeader style="table_CH" height="30" rowSpan="1"/>
-						<jr:columnFooter style="table_CH" height="30" rowSpan="1"/>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1"/>
-					</jr:column>
-					<jr:column width="90" uuid="65a7ad59-1194-4a6f-9dcb-b0072d7910e9">
-						<jr:tableHeader style="table_TH" height="30" rowSpan="1"/>
-						<jr:tableFooter style="table_TH" height="30" rowSpan="1"/>
-						<jr:columnHeader style="table_CH" height="30" rowSpan="1"/>
-						<jr:columnFooter style="table_CH" height="30" rowSpan="1"/>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1"/>
-					</jr:column>
-					<jr:column width="90" uuid="234b64b4-4aff-44c4-a392-2afbf4648c94">
-						<jr:tableHeader style="table_TH" height="30" rowSpan="1"/>
-						<jr:tableFooter style="table_TH" height="30" rowSpan="1"/>
-						<jr:columnHeader style="table_CH" height="30" rowSpan="1"/>
-						<jr:columnFooter style="table_CH" height="30" rowSpan="1"/>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1"/>
-					</jr:column>
-					<jr:column width="284" uuid="6eb08ee1-b39c-4145-ab60-4f89596228c6">
-						<jr:tableHeader style="table_TH" height="30" rowSpan="1"/>
-						<jr:tableFooter style="table_TH" height="30" rowSpan="1"/>
-						<jr:columnHeader style="table_CH" height="30" rowSpan="1"/>
-						<jr:columnFooter style="table_CH" height="30" rowSpan="1"/>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1"/>
-					</jr:column>
-				</jr:table>
-			</componentElement>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="41c36091-2f60-4f96-9563-39e9da804427" x="10" y="0" width="205" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[""+$F{catalog}.getName()]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement uuid="f91489ac-85f3-49ba-b4fa-93a8835f4808" x="215" y="0" width="110" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pricePerUnit}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement uuid="f0ffd11b-ba4e-4779-af00-70e1c878810d" x="335" y="0" width="90" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="b9029dfe-fd0d-41b8-a235-64c7d978061e" x="435" y="0" width="110" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="4f511a8e-e734-42fa-a774-28ec5fb82be2" x="0" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement uuid="5e9f9234-6b14-488b-b58f-ac1d3b0c7c70" x="555" y="0" width="1" height="20"/>
+			</line>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="b64ef952-67b2-4885-951f-fd680ece34d3" x="0" y="0" width="215" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma"/>
+				</textElement>
+				<text><![CDATA[รวม]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement uuid="63daeb72-781c-4dca-b991-7c44038d371b" x="435" y="0" width="110" height="30"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[""+$P{saleReceipt}.getSaleOrder().getTotalPrice()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="8721fc30-3891-416e-8a51-a38bb5bbc764" x="0" y="29" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="b083ac70-0402-42b1-8cf8-91f34413b68e" x="0" y="0" width="555" height="1"/>
+			</line>
+		</band>
 	</columnFooter>
 	<pageFooter>
 		<band height="54" splitType="Stretch"/>
 	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>
