@@ -1,20 +1,23 @@
 package com.worldbestsoft.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.InvItemDao;
+import com.worldbestsoft.dao.InvStockDao;
 import com.worldbestsoft.dao.SearchException;
 import com.worldbestsoft.model.InvItem;
+import com.worldbestsoft.model.InvStock;
 import com.worldbestsoft.service.InvItemManager;
 
 @Service("invItemManager")
 public class InvItemManagerImpl implements InvItemManager {
 	
 	private InvItemDao invItemDao;
-	
+	private InvStockDao invStockDao;
 	
 	public InvItemDao getInvItemDao() {
 		return invItemDao;
@@ -25,6 +28,15 @@ public class InvItemManagerImpl implements InvItemManager {
 		this.invItemDao = invItemDao;
 	}
 	
+	public InvStockDao getInvStockDao() {
+		return invStockDao;
+	}
+
+	@Autowired
+	public void setInvStockDao(InvStockDao invStockDao) {
+		this.invStockDao = invStockDao;
+	}
+
 	@Override
     public InvItem get(Long id) {
 		return invItemDao.get(id);
@@ -39,6 +51,17 @@ public class InvItemManagerImpl implements InvItemManager {
     @Override
     public InvItem save(InvItem value) {
 		InvItem obj = invItemDao.save(value);
+		if (null == value.getId()) {
+			//Auto create invStock record
+			InvStock invStock = new InvStock();
+			invStock.setInvItem(obj);
+			invStock.setInvItemId(obj.getId());
+			invStock.setQty(BigDecimal.ZERO);
+			invStock.setQtyAvailable(BigDecimal.ZERO);
+			invStock.setUpdateDate(obj.getCreateDate());
+			invStock.setUpdateUser(obj.getCreateUser());
+			invStockDao.save(invStock);
+		}
 		return obj;
 	}
 

@@ -213,20 +213,28 @@
 				
 				<c:choose>
 					<c:when test="${saleOrder.status == 'A' }">
+						<button type="button" class="btn" name="print" onclick="bCancel=true;printDialog('<c:url value="/saleOrder/download?id=${saleOrder.id}" />')">
+							<i class="icon-print"></i>
+							<fmt:message key="button.saleOrder.print" />
+						</button>
+						<security:authorize ifAnyGranted="ROLE_MANAGER">
 						<button type="submit" class="btn" name="delete" onclick="bCancel=true;return validateCancel()">
 							<i class="icon-trash"></i>
 							<fmt:message key="button.delete" />
 						</button>
+						</security:authorize>
 						<button type="button" class="btn" name="deliveryBtn" onclick="bCancel=true;return delivery()">
 							<i class="icon-tasks"></i>
 							<fmt:message key="button.delivery" />
 						</button>
 					</c:when>
 					<c:when test="${saleOrder.status == 'D' }">
+						<security:authorize ifAnyGranted="ROLE_MANAGER">
 						<button type="submit" class="btn disabled" name="delete" disabled="disabled">
 							<i class="icon-trash"></i>
 							<fmt:message key="button.delete" />
 						</button>
+						</security:authorize>
 						<button type="button" class="btn disabled" name="deliveryBtn" disabled="disabled">
 							<i class="icon-tasks"></i>
 							<fmt:message key="button.delivery" />
@@ -267,7 +275,7 @@
 	function onFormSubmit(theForm) {
 		return validateSaleOrder(theForm);
 	}
-	
+	<security:authorize ifAnyGranted="ROLE_MANAGER">
 	function validateCancel() {
 		$('#cancelReasonDialog').show(function () {
 			$(this).find('.control-group').removeClass('error');
@@ -287,7 +295,7 @@
 			form.submit();
 		}
 	}
-	
+	</security:authorize>
 	function delivery() {
 		var form = document.forms['saleOrder'];
 		form['action'].value="delivery";
@@ -343,18 +351,10 @@
 	
 	
 	$(document).ready(function () {
-		$('#tableDiv').ajaxDisplaytag({
+		
+		var $ajaxDisplaytag = $('#tableDiv').ajaxDisplaytag({
 			url : '${ctx}/saleOrder/displayTable',
 			loadedHandler : function () {
-				var self = this;
-				
-				var fnLoad = function() {
-					self.pageLoadedHandler.call(self);
-				};
-				
-				var getLink = function() {
-					return self.getLink();	
-				};
 				<c:if test="${saleOrder.documentNumber.documentNo == null }">
 				//register popup
 				$('input[name="catalog.name"]').each(function(i) {
@@ -376,10 +376,10 @@
 								$('input[name="catalog.code"]:eq(' + i + ')').val(json.code);
 								//index of whole list
 								var index = $('input[name="checkbox"]:eq(' + i + ')').val();
-								var url = '${ctx}/saleOrder/updateRow' + getLink();
+								var url = '${ctx}/saleOrder/updateRow' + $ajaxDisplaytag.getLink();
 								$.post(url, {'index' : index, 'qty' : 1, 'pricePerUnit' : json.finalPrice, 'catalog.code' : json.code}, function(data) {
 									$('#tableDiv').html(data);
-									fnLoad();
+									$ajaxDisplaytag.pageLoadedHandler();
 								});
 							} else {
 								$('#image' + i).prop('src', "<c:url value='/img/thumbnail/catalog/'/>" + 0 + "?t=100");
@@ -387,10 +387,10 @@
 								$('input[name="catalog.code"]:eq(' + i + ')').val('');
 								//index of whole list
 								var index = $('input[name="checkbox"]:eq(' + i + ')').val();
-								var url = '${ctx}/saleOrder/updateRow' + getLink();
+								var url = '${ctx}/saleOrder/updateRow' + $ajaxDisplaytag.getLink();
 								$.post(url, {'index' : index, 'qty' : 1, 'pricePerUnit' : '', 'catalog.code' : ''}, function(data) {
 									$('#tableDiv').html(data);
-									fnLoad();
+									$ajaxDisplaytag.pageLoadedHandler();
 								});
 							}
 						}
@@ -401,47 +401,42 @@
 					toggleCheckAll(this, $('#saleOrderItemForm input[name="checkbox"]'));
 				});
 				
-				//register button add & delete
-				$('#addDetailBtn').off();
-				$('#addDetailBtn').on('click', function () {
-					$.post('${ctx}/saleOrder/addRow?ajax=true', $.extend({}, getLink()), function(data) {
-						$('#tableDiv').html(data);
-						fnLoad();
-					});
-				});
-				$('#deleteDetailBtn').off();
-				$('#deleteDetailBtn').on('click', function () {
-					
-					if (!hasChecked($('#saleOrderItemForm input[name="checkbox"]'))) {
-						alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
-						return false;
-					}
-					confirmMessage('<fmt:message key="global.confirm.delete"/>', function(result) {
-						if (result) {
-							var url = '${ctx}/saleOrder/deleteRow' + getLink();
-							$.post(url, $('#saleOrderItemForm').serialize(), function(data) {
-								$('#tableDiv').html(data);
-								fnLoad();
-							});			
-						}
-					});
-				});
-				
 				//calculate qty
 				$('#saleOrderItemForm input[name="qty"], #saleOrderItemForm input[name="pricePerUnit"]').each(function(i) {
 					$(this).on('focusout', function() {
-						var url = '${ctx}/saleOrder/updateRow' + getLink();
+						var url = '${ctx}/saleOrder/updateRow' + $ajaxDisplaytag.getLink();
 						$.post(url, $('#saleOrderItemForm').serialize(), function(data) {
 							$('#tableDiv').html(data);
-							fnLoad();
+							$ajaxDisplaytag.pageLoadedHandler();
 						});
 					});
 				});
-				
 				</c:if>
 			}
 		});
 		
+		//register button add & delete
+		$('#addDetailBtn').on('click', function () {
+			$.post('${ctx}/saleOrder/addRow?ajax=true', $.extend({}, $ajaxDisplaytag.getLink()), function(data) {
+				$('#tableDiv').html(data);
+				$ajaxDisplaytag.pageLoadedHandler();
+			});
+		});
+		$('#deleteDetailBtn').on('click', function () {
+			if (!hasChecked($('#saleOrderItemForm input[name="checkbox"]'))) {
+				alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
+				return false;
+			}
+			confirmMessage('<fmt:message key="global.confirm.delete"/>', function(result) {
+				if (result) {
+					var url = '${ctx}/saleOrder/deleteRow' + $ajaxDisplaytag.getLink();
+					$.post(url, $('#saleOrderItemForm').serialize(), function(data) {
+						$('#tableDiv').html(data);
+						$ajaxDisplaytag.pageLoadedHandler();
+					});			
+				}
+			});
+		});
 	});
 </script>
 <v:javascript formName="saleOrder" staticJavascript="false" />

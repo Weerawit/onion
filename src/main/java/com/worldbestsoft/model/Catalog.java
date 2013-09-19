@@ -82,7 +82,7 @@ public class Catalog implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "inv_item_id", nullable = false)
 	public InvItem getInvItem() {
 		return this.invItem;

@@ -2,6 +2,8 @@ package com.worldbestsoft.webapp.controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -203,6 +206,7 @@ public class SaleReceiptFormController extends BaseFormController {
 		SaleReceipt saleReceipt = getSaleReceiptManager().get(Long.valueOf(id));
 		ExportType exportType = ExportType.fromString(type);
 		String jrxmlFile = "/reports/SaleReceipt.jrxml";
+//		String jrxmlFile = "/Users/Weerawit/Documents/Projects/company_wbs/wbs/projects/inventory_wood/git/onion/src/main/resources/reports/SaleReceipt.jrxml";
 		String downloadFileName = "receipt";
 		
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -215,6 +219,14 @@ public class SaleReceiptFormController extends BaseFormController {
 		downloadModel.setToken(token);
 		downloadModel.setResponse(response);
 		downloadModel.setType(exportType);
+		
+//		for testing
+//		Collection<Object> data = new ArrayList<Object>();
+//		for (int i = 0; i < 70; i++) {
+//			data.addAll(saleReceipt.getSaleOrder().getSaleOrderItems());
+//		}
+//		
+		downloadModel.setJrDataSource(new JRBeanCollectionDataSource(saleReceipt.getSaleOrder().getSaleOrderItems()));
 		
 		getReportUtil().download(downloadModel);
 	}

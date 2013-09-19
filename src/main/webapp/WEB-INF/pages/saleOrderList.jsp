@@ -93,7 +93,6 @@
 			</div>
 		</div>
 	</form>
-	<form method="post" action="${ctx}/saleOrderList" id="deleteForm" onSubmit="return validateDelete(this.checkbox)">
 	<c:if test="${not empty saleOrderList }">
 	<div class="control-group pull-right">
 		<fmt:message key="label.showPagination" />
@@ -114,9 +113,9 @@
 		
 	</div>
 	<display:table name="saleOrderList" cellspacing="0" cellpadding="0" requestURI="" id="saleOrder"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
-		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
-			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleOrder.id}'/>" />
-		</display:column>
+<%-- 		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px"> --%>
+<%-- 			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleOrder.id}'/>" /> --%>
+<%-- 		</display:column> --%>
 		<display:column property="documentNumber.documentNo" url="/saleOrder?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleOrder.documentNumber.documentNo" sortName="documentNumber.documentNo" />
 		<display:column property="customer.name" escapeXml="true" sortable="true" titleKey="saleOrder.customer.name" sortName="customer.name" />
 		<display:column property="totalPrice" escapeXml="false" sortable="true" titleKey="saleOrder.totalPrice" sortName="totalPrice" format="{0,number,#,##0.00}"/>
@@ -143,24 +142,10 @@
 		<display:setProperty name="export.pdf.filename" value="SaleOrder.pdf" />
 	</display:table>
 	
-	</form>
 </div>
 
 
 <script type="text/javascript">
-	function validateDelete(checkbox) {
-
-		if (!hasChecked(checkbox)) {
-			alert('<fmt:message key="global.errorNoCheckboxSelectForDelete"/>');
-			return false;
-		}
-		if (confirmMessage('<fmt:message key="global.confirm.delete"/>')) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	<c:if test="${not empty saleOrderList}">
 	$(document).ready(function() {
 		$("#chkSelectAll").click(function() {

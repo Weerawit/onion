@@ -239,6 +239,16 @@
 									</div>
 								</div>
 							</div>
+							<div class="row-fluid">
+								<div>
+									<div class="control-group">
+										<appfuse:label styleClass="control-label" key="saleReceipt.receiptBy" />
+										<div class="controls">
+											<span class="input-large uneditable-input"><c:out value="${saleReceipt.receiptBy }"/></span>
+										</div>
+									</div>
+								</div>
+							</div>
 						</c:when>
 						<c:otherwise>
 							<div class="row-fluid">
@@ -268,6 +278,19 @@
 									</spring:bind>
 								</div>
 							</div>
+							<div class="row-fluid">
+								<div class="span6">
+									<spring:bind path="saleReceipt.receiptBy">
+										<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+											<appfuse:label styleClass="control-label" key="saleReceipt.receiptBy" />
+											<div class="controls">
+												<form:input path="receiptBy" id="receiptBy" cssClass="input-large" maxlength="255"/>
+												<form:errors path="receiptBy" cssClass="help-inline" />
+											</div>
+										</div>
+									</spring:bind>
+								</div>
+							</div>
 						</c:otherwise>
 					</c:choose>	
 				</div>
@@ -285,13 +308,13 @@
 						<i class="icon-print"></i>
 						<fmt:message key="button.saleReceipt.print" />
 					</button>
-				</c:if>
-
-				<c:if test="${param.from == 'list' and param.method != 'Add'}">
+				
+					<security:authorize ifAnyGranted="ROLE_MANAGER">
 					<button type="submit" class="btn" name="delete" onclick="bCancel=true;return validateCancel()">
 						<i class="icon-remove"></i>
 						<fmt:message key="button.cancel" />
 					</button>
+					</security:authorize>
 				</c:if>
 
 				<button type="submit" class="btn" name="cancel" onclick="bCancel=true">
@@ -321,6 +344,7 @@
 </div>
 
 <script type="text/javascript">
+<security:authorize ifAnyGranted="ROLE_MANAGER">
 	function validateCancel() {
 		$('#cancelReasonDialog').show(function () {
 			$(this).find('.control-group').removeClass('error');
@@ -339,7 +363,7 @@
 			form.submit();
 		}
 	}
-	
+</security:authorize>	
 	function onFormSubmit(theForm) {
 		var valid = true;
 		if ($('input[name="receiptType"]').val() == "2" && !bCancel) {
@@ -382,7 +406,7 @@
 	});
 
 	$(document).ready(function() {
-		$('#tableDiv').ajaxDisplaytag({
+		var $ajaxDisplaytag = $('#tableDiv').ajaxDisplaytag({
 			url : '${ctx}/saleReceipt/displayTable',
 			params : {saleOrderNo : '${saleReceipt.saleOrder.documentNumber.documentNo}'}
 		});
@@ -419,10 +443,7 @@
 					}
 					
 					
-					$('#tableDiv').ajaxDisplaytag({
-						url : '${ctx}/saleReceipt/displayTable',
-						params : {saleOrderNo : json.saleOrderNo}
-					});
+					$ajaxDisplaytag.updateTable({saleOrderNo : json.saleOrderNo});
 				} else {
 					$('input[name="saleOrder.documentNumber.documentNo"]').val('');
 					$('#customerName').text('');
@@ -431,9 +452,7 @@
 					$('#billingAddress').text('');
 					$('#shipingAddress').text('');
 					$('input[name="receiptAmount"]').val(0);
-					$('#tableDiv').ajaxDisplaytag({
-						url : '${ctx}/saleReceipt/displayTable'
-					});
+					$ajaxDisplaytag.updateTable();
 				}
 			}
 		});

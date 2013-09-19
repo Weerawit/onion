@@ -2,6 +2,7 @@ package com.worldbestsoft.webapp.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -74,17 +76,25 @@ public class ReportUtil {
 	public final String MEDIA_TYPE_PDF = "application/pdf";
 
 	public void download(DownloadModel downloadModel) throws JRException, IOException {
-		InputStream reportStream = ReportUtil.class.getResourceAsStream(downloadModel.getJrxml()); 	
+		
+		InputStream reportStream = ReportUtil.class.getResourceAsStream(downloadModel.getJrxml());
+//		InputStream reportStream = new FileInputStream(new File(downloadModel.getJrxml()));
 		
 		JasperDesign jd = JRXmlLoader.load(reportStream);
 		
 		JasperReport jr = JasperCompileManager.compileReport(jd);
 		
 		JasperPrint jp = null;
+		Map<String, Object> params = new HashMap<String, Object>(downloadModel.getParams());
+//		params.put("net.sf.jasperreports.extension.registry.factory.fonts", "net.sf.jasperreports.engine.fonts.SimpleFontExtensionsRegistryFactory");
+//		params.put("net.sf.jasperreports.extension.simple.font.families.ireport", "irfont.xml");
+		
+		
+		
 		if (null != downloadModel.getJrDataSource()) {
-			jp = JasperFillManager.fillReport(jr, downloadModel.getParams(), downloadModel.getJrDataSource());
+			jp = JasperFillManager.fillReport(jr, params, downloadModel.getJrDataSource());
 		} else {
-			jp = JasperFillManager.fillReport(jr, downloadModel.getParams());
+			jp = JasperFillManager.fillReport(jr, params, new JREmptyDataSource());
 		}
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

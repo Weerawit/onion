@@ -47,7 +47,7 @@
 
 		init : function() {
 			
-			var self = this._self, element = this.element;
+			var self = this._self, $self = $(this._self), $element = $(this.element);
 			// validate options
 			if (!self.options.url) {
 				console.log('[ajax-displaytag] Invalid url parameter !!');
@@ -57,56 +57,47 @@
 			if (typeof params == 'function') {
 				params = self.options.params.call(self);
 			}
-			$(element).load(self.options.url + '?ajax=true', params, function() {
+			$.get(self.options.url + '?ajax=true', params, function( data ) {
+				$element.html( data );
 				self.pageLoadedHandler.call(self);
+			})
+			//$element.load(self.options.url + '?ajax=true', params);
+			//register default event
+			$element.on('click', 'table th.sortable', function() {
+				// "this" is scoped as the sortable th element
+				var link = $(this).find("a").attr("href") + '&ajax=true';
+				$self.data('link', link);
+				$element.load(self.options.url + link, function() {
+					self.pageLoadedHandler.call(self);
+				});
+				return false;
+			});
+			
+			$element.on('click', '.pagination a', function() {
+				var link = $(this).attr("href") + '&ajax=true';
+				$self.data('link', link);
+				$element.load(self.options.url + link, function() {
+					self.pageLoadedHandler.call(self);
+				});
+				return false;
 			});
 		},
 		
 		pageLoadedHandler : function() {
 			var self = this._self, element = this.element;
-			self.ajaxDisplayTagLoadHandler.call(self);
 			if (typeof self.options.loadedHandler == 'function') {
 				self.options.loadedHandler.call(self);
 			}
 		},
 		
 		getLink : function() {
-			var self = this._self, element = this.element;
-			return $(self).data('link');
+			var $self = $(this._self);
+			return $self.data('link');
 		},
-		
-		ajaxDisplayTagLoadHandler : function() {
-			var self = this._self, element = this.element;
-			$(element).find("table th.sortable").each(function() {
-				$(this).click(function() {
-					// "this" is scoped as the sortable th element
-					var link = $(this).find("a").attr("href") + "&ajax=true";
-					$(self).data('link', link);
-					var params = self.options.params;
-					if (typeof params == 'function') {
-						params = self.options.params.call(self);
-					}
-					$(element).load(self.options.url + link, params, function() {
-						self.pageLoadedHandler.call(self);
-					});
-					return false;
-				});
-				
-			});
-			
-			$(element).find(".pagination a").each(function() {
-				$(this).click(function() {
-					var link = $(this).attr("href") + "&ajax=true";
-					$(self).data('link', link);
-					var params = self.options.params;
-					if (typeof params == 'function') {
-						params = self.options.params.call(self);
-					}
-					$(element).load(self.options.url + link, params, function() {
-						self.pageLoadedHandler.call(self);
-					});
-					return false;
-				});
+		updateTable : function(params) {
+			var self = this._self, $self = $(this._self), $element = $(this.element);
+			$.get(self.options.url + '?ajax=true', params, function( data ) {
+				$element.html( data );
 			});
 		}
 	};
@@ -114,9 +105,10 @@
 	// A really lightweight plugin wrapper around the constructor,
 	// preventing against multiple instantiations
 	$.fn[pluginName] = function(options) {
-		return this.each(function() {
+		if (!$.data(this, "plugin_" + pluginName)) {
 			$.data(this, "plugin_" + pluginName, new Plugin(this, options));
-		});
+		}
+		return $.data(this, "plugin_" + pluginName); 
 	};
 
 })(jQuery, window, document);

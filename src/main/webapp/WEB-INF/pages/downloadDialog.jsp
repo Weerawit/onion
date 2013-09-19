@@ -13,14 +13,14 @@
 				<div class="control-group">
 					<label for="radio" class="control-label"><fmt:message key="downloadDialog.downloadType" /></label>
 					<div class="controls">
-						<div class="radio">
-							<input type="radio" id="radio" name="radio" value='pdf' />
+						<label class="radio">
+							<input type="radio" id="radioPdf" name="radio" value='pdf' />
 							<fmt:message key="downloadDialog.pdf" />
-						</div>
-						<div class="radio">
-							<input type="radio" id="radio" name="radio" value='xls' />
+						</label>
+						<label class="radio">
+							<input type="radio" id="radioXls" name="radio" value='xls' />
 							<fmt:message key="downloadDialog.xls" />
-						</div>
+						</label>
 					</div>
 				</div>
 			</div>

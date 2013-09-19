@@ -139,19 +139,23 @@
 	<div id="actions">
 		<a class="btn btn-primary" href="<c:url value='/jobOrder?method=Add&from=list'/>"> <i class="icon-plus icon-white"></i> <fmt:message key="button.add" />
 		</a>
-
+		
+		<security:authorize ifAnyGranted="ROLE_MANAGER">
 		<button id="button.delete" class="btn" type="submit"  onclick="return validateDelete()">
 			<i class="icon-trash"></i>
 			<fmt:message key="button.delete" />
 		</button>
+		</security:authorize>
 
 		<a class="btn" href="<c:url value='/mainMenu'/>"> <i class="icon-ok"></i> <fmt:message key="button.done" /></a>
 		
 	</div>
 	<display:table name="jobOrderList" cellspacing="0" cellpadding="0" requestURI="" id="jobOrder"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
+		<security:authorize ifAnyGranted="ROLE_MANAGER">
 		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
 			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${jobOrder.id}'/>" />
 		</display:column>
+		</security:authorize>
 		<display:column property="documentNumber.documentNo" url="/jobOrder?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="jobOrder.documentNumber.documentNo" sortName="documentNumber.documentNo" />
 		<display:column property="catalog.code" escapeXml="true" sortable="true" titleKey="jobOrder.catalog.code" sortName="catalog.code" />
 		<display:column escapeXml="true" sortable="true" titleKey="jobOrder.employee.name" sortName="employee.firstName" >
@@ -191,6 +195,7 @@
 
 
 <script type="text/javascript">
+<security:authorize ifAnyGranted="ROLE_MANAGER">
 	function validateDelete() {
 		var form = document.forms['deleteForm'];
 		if (!hasChecked(form.checkbox)) {
@@ -213,7 +218,7 @@
 			form.submit();
 		}
 	}
-	
+</security:authorize>	
 	$(document).ready(function () {
 		$('input[name="employee.name"]').lookup({
 			type: 'employee',

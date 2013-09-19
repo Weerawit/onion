@@ -494,6 +494,14 @@
 					<var-value>99999999999999</var-value>
 				</var>
 			</field>
+			<field property="receiptBy" depends="required, maxlength">
+				<arg key="saleReceipt.receiptBy" />
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>50</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="jobOrder">
 			<field property="catalog.name" depends="required">
