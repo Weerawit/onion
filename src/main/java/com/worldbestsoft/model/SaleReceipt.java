@@ -1,6 +1,6 @@
 package com.worldbestsoft.model;
 
-// Generated Sep 9, 2013 10:54:50 AM by Hibernate Tools 4.0.0
+// Generated Sep 23, 2013 11:36:00 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -26,6 +26,7 @@ public class SaleReceipt implements java.io.Serializable {
 	private Long id;
 	private SaleOrder saleOrder;
 	private DocumentNumber documentNumber;
+	private String receiptBy;
 	private Date receiptDate;
 	private String receiptType;
 	private BigDecimal receiptAmount;
@@ -46,9 +47,10 @@ public class SaleReceipt implements java.io.Serializable {
 		this.saleOrder = saleOrder;
 	}
 
-	public SaleReceipt(SaleOrder saleOrder, DocumentNumber documentNumber, Date receiptDate, String receiptType, BigDecimal receiptAmount, String chequeNo, String chequeBank, Date chequeDate, String status, String cancelReason, Date createDate, String createUser, Date updateDate, String updateUser) {
+	public SaleReceipt(SaleOrder saleOrder, DocumentNumber documentNumber, String receiptBy, Date receiptDate, String receiptType, BigDecimal receiptAmount, String chequeNo, String chequeBank, Date chequeDate, String status, String cancelReason, Date createDate, String createUser, Date updateDate, String updateUser) {
 		this.saleOrder = saleOrder;
 		this.documentNumber = documentNumber;
+		this.receiptBy = receiptBy;
 		this.receiptDate = receiptDate;
 		this.receiptType = receiptType;
 		this.receiptAmount = receiptAmount;
@@ -92,6 +94,15 @@ public class SaleReceipt implements java.io.Serializable {
 
 	public void setDocumentNumber(DocumentNumber documentNumber) {
 		this.documentNumber = documentNumber;
+	}
+
+	@Column(name = "receipt_by")
+	public String getReceiptBy() {
+		return this.receiptBy;
+	}
+
+	public void setReceiptBy(String receiptBy) {
+		this.receiptBy = receiptBy;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

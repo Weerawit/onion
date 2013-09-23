@@ -239,6 +239,16 @@
 									</div>
 								</div>
 							</div>
+							<div class="row-fluid">
+								<div>
+									<div class="control-group">
+										<appfuse:label styleClass="control-label" key="saleReceipt.receiptBy" />
+										<div class="controls">
+											<span class="input-large uneditable-input"><c:out value="${saleReceipt.receiptBy }"/></span>
+										</div>
+									</div>
+								</div>
+							</div>
 						</c:when>
 						<c:otherwise>
 							<div class="row-fluid">
@@ -263,6 +273,19 @@
 													<span class="add-on"><i class="icon-th"></i></span>
 												</div>
 												<form:errors path="receiptDate" cssClass="help-inline" />
+											</div>
+										</div>
+									</spring:bind>
+								</div>
+							</div>
+							<div class="row-fluid">
+								<div class="span6">
+									<spring:bind path="saleReceipt.receiptBy">
+										<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
+											<appfuse:label styleClass="control-label" key="saleReceipt.receiptBy" />
+											<div class="controls">
+												<form:input path="receiptBy" id="receiptBy" cssClass="input-large" maxlength="255"/>
+												<form:errors path="receiptBy" cssClass="help-inline" />
 											</div>
 										</div>
 									</spring:bind>
