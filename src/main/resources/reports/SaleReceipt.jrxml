@@ -42,156 +42,223 @@
 	<variable name="customerName" class="java.lang.String">
 		<variableExpression><![CDATA["ชื่อลูกค้า " + $P{saleReceipt}.getSaleOrder().getCustomer().getName()]]></variableExpression>
 	</variable>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
-	<title>
-		<band height="70" splitType="Stretch">
-			<staticText>
-				<reportElement uuid="cdd76a98-1705-460c-a3e3-4887dad60fbd" stretchType="RelativeToTallestObject" x="247" y="0" width="308" height="30"/>
-				<textElement textAlignment="Right">
-					<font fontName="AngsanaUPC" size="20"/>
-				</textElement>
-				<text><![CDATA[ใบเสร็จรับเงิน]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="cd1f5e14-2998-491d-96f9-8b09ce9aa3bb" x="247" y="30" width="308" height="20"/>
-				<textElement textAlignment="Right" verticalAlignment="Top">
-					<font fontName="AngsanaUPC" size="14" isStrikeThrough="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[""+$P{saleReceipt}.getDocumentNumber().getDocumentNo()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement uuid="66b8a801-83b4-43db-bb3c-36ded30e8f2e" x="0" y="0" width="247" height="50"/>
-				<textElement>
-					<font fontName="AngsanaUPC" size="14"/>
-				</textElement>
-				<text><![CDATA[Door Man]]></text>
-			</staticText>
-			<textField pattern="dd/MM/yyyy HH:mm">
-				<reportElement uuid="564bdfb5-7d92-4055-a314-5aa4b6321629" x="389" y="50" width="166" height="20"/>
-				<textElement textAlignment="Right">
-					<font fontName="AngsanaUPC" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{saleReceipt}.getReceiptDate()]]></textFieldExpression>
-			</textField>
-		</band>
-	</title>
+	<variable name="group1" class="java.lang.String">
+		<variableExpression><![CDATA["1"]]></variableExpression>
+	</variable>
+	<group name="Group1" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$V{group1}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<frame>
+					<reportElement uuid="f6874a43-d8c5-4441-a460-622f86b2c24b" x="0" y="0" width="555" height="30"/>
+					<staticText>
+						<reportElement uuid="a2df1fba-32fa-4f10-be04-80b127f72661" x="215" y="0" width="120" height="30"/>
+						<box>
+							<topPen lineWidth="1.0"/>
+							<leftPen lineWidth="1.0"/>
+							<bottomPen lineWidth="1.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font fontName="AngsanaUPC" size="14"/>
+						</textElement>
+						<text><![CDATA[ราคาต่อหน่วย]]></text>
+					</staticText>
+					<staticText>
+						<reportElement uuid="e9f7ead3-d676-4ef0-aeb6-e0c6a1b88964" x="0" y="0" width="215" height="30"/>
+						<box>
+							<topPen lineWidth="1.0"/>
+							<leftPen lineWidth="1.0"/>
+							<bottomPen lineWidth="1.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font fontName="AngsanaUPC" size="14"/>
+						</textElement>
+						<text><![CDATA[รายการที่สั่งซื้อ]]></text>
+					</staticText>
+					<staticText>
+						<reportElement uuid="7ac26ec4-7ff8-47d0-b42a-2cb6d4d5ae43" x="335" y="0" width="100" height="30"/>
+						<box>
+							<topPen lineWidth="1.0"/>
+							<leftPen lineWidth="1.0"/>
+							<bottomPen lineWidth="1.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font fontName="AngsanaUPC" size="14"/>
+						</textElement>
+						<text><![CDATA[จำนวน]]></text>
+					</staticText>
+					<staticText>
+						<reportElement uuid="536dd8c9-0e64-456d-83be-965e29a1f80f" x="435" y="0" width="120" height="30"/>
+						<box>
+							<topPen lineWidth="1.0"/>
+							<leftPen lineWidth="1.0"/>
+							<bottomPen lineWidth="1.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font fontName="AngsanaUPC" size="14"/>
+						</textElement>
+						<text><![CDATA[ราคา]]></text>
+					</staticText>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="30">
+				<frame>
+					<reportElement uuid="5c960c90-beec-495c-afd5-2e286b1b54bd" x="0" y="0" width="555" height="30"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<staticText>
+						<reportElement uuid="b64ef952-67b2-4885-951f-fd680ece34d3" x="0" y="0" width="215" height="30"/>
+						<box>
+							<rightPen lineWidth="1.0" lineStyle="Solid"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font fontName="AngsanaUPC" size="14"/>
+						</textElement>
+						<text><![CDATA[จำนวนเงินที่ได้รับ]]></text>
+					</staticText>
+					<textField pattern="#,##0.00;-#,##0.00">
+						<reportElement uuid="63daeb72-781c-4dca-b991-7c44038d371b" x="435" y="0" width="120" height="30"/>
+						<box rightPadding="10">
+							<leftPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font fontName="AngsanaUPC" size="14"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$P{saleReceipt}.getSaleOrder().getTotalPrice()]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+			<band height="100">
+				<frame>
+					<reportElement uuid="e4ce78cc-2085-46b3-b116-14f2b396ad20" x="0" y="0" width="555" height="100"/>
+					<textField pattern="dd/MM/yyyy HH:mm">
+						<reportElement uuid="564bdfb5-7d92-4055-a314-5aa4b6321629" x="485" y="50" width="70" height="20"/>
+						<textElement textAlignment="Right">
+							<font fontName="AngsanaUPC" size="14"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$P{saleReceipt}.getReceiptDate()]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement uuid="6d07a9e6-2272-41a8-b202-9e41a3df2770" x="385" y="50" width="100" height="20"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
+							<font fontName="AngsanaUPC" size="14"/>
+						</textElement>
+						<text><![CDATA[วันที่รับเงิน]]></text>
+					</staticText>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+						<reportElement uuid="5c04f0eb-062b-484b-8e20-ba851133448a" stretchType="RelativeToBandHeight" x="408" y="30" width="147" height="20" isRemoveLineWhenBlank="true"/>
+						<box>
+							<topPen lineWidth="1.0" lineStyle="Dashed"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font fontName="AngsanaUPC" size="14"/>
+						</textElement>
+						<textFieldExpression><![CDATA[""+$P{saleReceipt}.getReceiptBy()]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
 	<pageHeader>
-		<band height="60" splitType="Stretch">
-			<staticText>
-				<reportElement uuid="7c1edfdb-a3c7-4892-b2a2-0e90b4bb5152" x="0" y="0" width="45" height="20"/>
-				<textElement>
-					<font fontName="AngsanaUPC" size="14"/>
-				</textElement>
-				<text><![CDATA[ชื่อลูกค้า]]></text>
-			</staticText>
-			<textField>
-				<reportElement uuid="b2d1c135-5d5f-4783-bfc2-0fb7f694bc7e" x="50" y="0" width="505" height="20"/>
-				<textElement>
-					<font fontName="AngsanaUPC" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[""+$P{saleReceipt}.getSaleOrder().getCustomer().getName()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement uuid="e141a569-05ba-4a23-81d1-3fd46f70132e" x="0" y="20" width="30" height="20"/>
-				<textElement>
-					<font fontName="AngsanaUPC" size="14"/>
-				</textElement>
-				<text><![CDATA[ที่อยู่]]></text>
-			</staticText>
-			<textField>
-				<reportElement uuid="17414e96-5454-4521-af56-6caff69c3d7c" x="30" y="20" width="525" height="20"/>
-				<textElement>
-					<font fontName="AngsanaUPC" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[""+$P{saleReceipt}.getSaleOrder().getCustomer().getBillingAddress()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement uuid="5746317c-87fc-422e-a3bb-7b806e35fed3" x="0" y="40" width="30" height="20"/>
-				<textElement>
-					<font fontName="AngsanaUPC" size="14"/>
-				</textElement>
-				<text><![CDATA[โทร]]></text>
-			</staticText>
-			<textField>
-				<reportElement uuid="90e75d65-0036-4b35-8b4c-5aeb77f80c65" x="30" y="40" width="525" height="20"/>
-				<textElement>
-					<font fontName="AngsanaUPC" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[""+$P{saleReceipt}.getSaleOrder().getCustomer().getContactTel()]]></textFieldExpression>
-			</textField>
-		</band>
-	</pageHeader>
-	<columnHeader>
-		<band height="30" splitType="Stretch">
+		<band height="110">
 			<frame>
-				<reportElement uuid="f6874a43-d8c5-4441-a460-622f86b2c24b" x="0" y="0" width="555" height="30"/>
-				<staticText>
-					<reportElement uuid="a2df1fba-32fa-4f10-be04-80b127f72661" x="215" y="0" width="120" height="30"/>
-					<box>
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement uuid="67dd2b07-13f9-44de-b68e-ce21c876e815" x="0" y="50" width="555" height="60"/>
+				<textField>
+					<reportElement uuid="90e75d65-0036-4b35-8b4c-5aeb77f80c65" x="30" y="40" width="305" height="20"/>
+					<textElement>
 						<font fontName="AngsanaUPC" size="14"/>
 					</textElement>
-					<text><![CDATA[ราคาต่อหน่วย]]></text>
+					<textFieldExpression><![CDATA[""+$P{saleReceipt}.getSaleOrder().getCustomer().getContactTel()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="17414e96-5454-4521-af56-6caff69c3d7c" x="30" y="20" width="525" height="20"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[""+$P{saleReceipt}.getSaleOrder().getCustomer().getBillingAddress()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="7c1edfdb-a3c7-4892-b2a2-0e90b4bb5152" x="0" y="0" width="45" height="20"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<text><![CDATA[ชื่อลูกค้า]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="e9f7ead3-d676-4ef0-aeb6-e0c6a1b88964" x="0" y="0" width="215" height="30"/>
-					<box>
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+					<reportElement uuid="5746317c-87fc-422e-a3bb-7b806e35fed3" x="0" y="40" width="30" height="20"/>
+					<textElement>
 						<font fontName="AngsanaUPC" size="14"/>
 					</textElement>
-					<text><![CDATA[รายการ]]></text>
+					<text><![CDATA[โทร]]></text>
 				</staticText>
-				<staticText>
-					<reportElement uuid="7ac26ec4-7ff8-47d0-b42a-2cb6d4d5ae43" x="335" y="0" width="100" height="30"/>
-					<box>
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textField>
+					<reportElement uuid="b2d1c135-5d5f-4783-bfc2-0fb7f694bc7e" x="50" y="0" width="505" height="20"/>
+					<textElement>
 						<font fontName="AngsanaUPC" size="14"/>
 					</textElement>
-					<text><![CDATA[จำนวน]]></text>
+					<textFieldExpression><![CDATA[""+$P{saleReceipt}.getSaleOrder().getCustomer().getName()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="e141a569-05ba-4a23-81d1-3fd46f70132e" x="0" y="20" width="30" height="20"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<text><![CDATA[ที่อยู่]]></text>
 				</staticText>
-				<staticText>
-					<reportElement uuid="536dd8c9-0e64-456d-83be-965e29a1f80f" x="435" y="0" width="120" height="30"/>
-					<box>
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textField>
+					<reportElement uuid="eb769f0b-6b05-4c61-a755-1186d7c197cb" x="435" y="40" width="120" height="20"/>
+					<textElement textAlignment="Right">
 						<font fontName="AngsanaUPC" size="14"/>
 					</textElement>
-					<text><![CDATA[ราคา]]></text>
+					<textFieldExpression><![CDATA["หน้า "+$V{PAGE_NUMBER}+" จาก " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement uuid="6915049b-538b-4ab0-964e-a7c0d4604205" x="0" y="0" width="555" height="50"/>
+				<staticText>
+					<reportElement uuid="cdd76a98-1705-460c-a3e3-4887dad60fbd" stretchType="RelativeToTallestObject" x="247" y="0" width="308" height="30"/>
+					<textElement textAlignment="Right">
+						<font fontName="AngsanaUPC" size="20"/>
+					</textElement>
+					<text><![CDATA[ใบเสร็จรับเงิน]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="cd1f5e14-2998-491d-96f9-8b09ce9aa3bb" x="247" y="30" width="308" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font fontName="AngsanaUPC" size="14" isStrikeThrough="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[""+$P{saleReceipt}.getDocumentNumber().getDocumentNo()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="66b8a801-83b4-43db-bb3c-36ded30e8f2e" x="0" y="0" width="247" height="50"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<text><![CDATA[Door Man]]></text>
 				</staticText>
 			</frame>
 		</band>
-	</columnHeader>
+	</pageHeader>
 	<detail>
 		<band height="20" splitType="Prevent">
 			<frame>
 				<reportElement uuid="74038213-c664-4d06-859f-8471f2afd450" stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="20"/>
 				<box>
 					<pen lineStyle="Dashed"/>
-					<topPen lineWidth="1.0" lineStyle="Dashed"/>
-					<leftPen lineWidth="1.0" lineStyle="Dashed"/>
-					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
-					<rightPen lineWidth="1.0" lineStyle="Dashed"/>
+					<topPen lineWidth="0.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textField pattern="#,##0.00;-#,##0.00">
 					<reportElement uuid="f0ffd11b-ba4e-4779-af00-70e1c878810d" x="335" y="0" width="100" height="20"/>
@@ -248,51 +315,14 @@
 			</frame>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="30" splitType="Stretch">
+	<pageFooter>
+		<band height="20">
 			<frame>
-				<reportElement uuid="5c960c90-beec-495c-afd5-2e286b1b54bd" x="0" y="0" width="555" height="30"/>
+				<reportElement uuid="b44e9fee-7c1a-4bcf-924b-376bee3152cd" x="0" y="0" width="555" height="20"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<staticText>
-					<reportElement uuid="b64ef952-67b2-4885-951f-fd680ece34d3" x="0" y="0" width="215" height="30"/>
-					<box>
-						<rightPen lineWidth="1.0" lineStyle="Solid"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="AngsanaUPC" size="14"/>
-					</textElement>
-					<text><![CDATA[รวม]]></text>
-				</staticText>
-				<textField pattern="#,##0.00;-#,##0.00">
-					<reportElement uuid="63daeb72-781c-4dca-b991-7c44038d371b" x="435" y="0" width="120" height="30"/>
-					<box rightPadding="10">
-						<leftPen lineWidth="1.0"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="AngsanaUPC" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[""+$P{saleReceipt}.getSaleOrder().getTotalPrice()]]></textFieldExpression>
-				</textField>
 			</frame>
-		</band>
-	</columnFooter>
-	<pageFooter>
-		<band height="54" splitType="Stretch">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement uuid="5c04f0eb-062b-484b-8e20-ba851133448a" stretchType="RelativeToBandHeight" x="389" y="34" width="147" height="20" isRemoveLineWhenBlank="true"/>
-				<box>
-					<topPen lineWidth="1.0" lineStyle="Dashed"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="AngsanaUPC" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[""+$P{saleReceipt}.getReceiptBy()]]></textFieldExpression>
-			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>

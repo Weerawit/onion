@@ -82,10 +82,10 @@
 			})
 		});
 		
+		/**
 		$(document).ajaxError(function( event, request, settings ) {
 			alert(settings.url);
 		});
-		/**
 		$(document).ajaxSuccess(function( event, xhr, settings ) {
 			alert(settings.url);
 		});
