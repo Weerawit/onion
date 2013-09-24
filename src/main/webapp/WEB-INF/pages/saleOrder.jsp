@@ -213,6 +213,10 @@
 				
 				<c:choose>
 					<c:when test="${saleOrder.status == 'A' }">
+						<button type="button" class="btn" name="print" onclick="bCancel=true;printDialog('<c:url value="/saleOrder/download?id=${saleOrder.id}" />')">
+							<i class="icon-print"></i>
+							<fmt:message key="button.saleOrder.print" />
+						</button>
 						<button type="submit" class="btn" name="delete" onclick="bCancel=true;return validateCancel()">
 							<i class="icon-trash"></i>
 							<fmt:message key="button.delete" />

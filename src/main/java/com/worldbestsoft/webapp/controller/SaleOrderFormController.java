@@ -1,5 +1,6 @@
 package com.worldbestsoft.webapp.controller;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -24,6 +28,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.worldbestsoft.model.Catalog;
@@ -31,10 +36,13 @@ import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.Customer;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleOrderItem;
+import com.worldbestsoft.model.SaleReceipt;
+import com.worldbestsoft.model.criteria.DownloadModel;
 import com.worldbestsoft.service.CatalogManager;
 import com.worldbestsoft.service.CustomerManager;
 import com.worldbestsoft.service.LookupManager;
 import com.worldbestsoft.service.SaleOrderManager;
+import com.worldbestsoft.webapp.util.ReportUtil.ExportType;
 
 @Controller
 @RequestMapping("/saleOrder*")
@@ -385,6 +393,39 @@ public class SaleOrderFormController extends BaseFormController {
 		model.put("saleOrderItemList", saleOrder.getSaleOrderItems());
 		model.put("saleOrder", saleOrder);
 		return displayTable(request, response);
+	}
+	
+	@RequestMapping(value = "/download")
+	public void download(@RequestParam("type") String type,
+			@RequestParam("token") String token, 
+			@RequestParam("id") String id,
+			HttpServletResponse response) throws JRException, IOException {
+		SaleOrder saleOrder = getSaleOrderManager().get(Long.valueOf(id));
+		ExportType exportType = ExportType.fromString(type);
+		String jrxmlFile = "/reports/SaleOrder.jrxml";
+//		String jrxmlFile = "/Users/Weerawit/Documents/Projects/company_wbs/wbs/projects/inventory_wood/git/onion/src/main/resources/reports/SaleOrder.jrxml";
+		String downloadFileName = "saleOrder";
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("saleOrder", saleOrder);
+		
+		DownloadModel downloadModel = new DownloadModel();
+		downloadModel.setJrxml(jrxmlFile);
+		downloadModel.setOutputFileName(downloadFileName);
+		downloadModel.setParams(params);
+		downloadModel.setToken(token);
+		downloadModel.setResponse(response);
+		downloadModel.setType(exportType);
+		
+//		for testing
+//		Collection<Object> data = new ArrayList<Object>();
+//		for (int i = 0; i < 70; i++) {
+//			data.addAll(saleReceipt.getSaleOrder().getSaleOrderItems());
+//		}
+//		
+		downloadModel.setJrDataSource(new JRBeanCollectionDataSource(saleOrder.getSaleOrderItems()));
+		
+		getReportUtil().download(downloadModel);
 	}
 
 }
