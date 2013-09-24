@@ -292,6 +292,13 @@
 				<fmt:message key="button.save" />
 			</button>
 			
+			<c:if test="${jobOrder.id != null }">
+				<button type="button" class="btn" name="print" onclick="bCancel=true;printDialog('<c:url value="/jobOrder/download?id=${jobOrder.id}" />')">
+					<i class="icon-print"></i>
+					<fmt:message key="button.jobOrder.print" />
+				</button>
+			</c:if>
+			
 			<c:choose>
 				<c:when test="${jobOrder.status != 'C' && jobOrder.status != 'DONE' && jobOrder.id != null }">
 					<button type="submit" class="btn" name="delete" onclick="bCancel=true;return validateCancel()">
