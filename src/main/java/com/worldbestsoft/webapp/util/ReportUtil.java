@@ -77,8 +77,8 @@ public class ReportUtil {
 
 	public void download(DownloadModel downloadModel) throws JRException, IOException {
 		
-		//InputStream reportStream = ReportUtil.class.getResourceAsStream(downloadModel.getJrxml());
-		InputStream reportStream = new FileInputStream(new File(downloadModel.getJrxml()));
+		InputStream reportStream = ReportUtil.class.getResourceAsStream(downloadModel.getJrxml());
+//		InputStream reportStream = new FileInputStream(new File(downloadModel.getJrxml()));
 		
 		JasperDesign jd = JRXmlLoader.load(reportStream);
 		
