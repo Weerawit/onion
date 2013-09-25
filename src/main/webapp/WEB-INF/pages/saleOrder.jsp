@@ -217,20 +217,24 @@
 							<i class="icon-print"></i>
 							<fmt:message key="button.saleOrder.print" />
 						</button>
+						<security:authorize ifAnyGranted="ROLE_MANAGER">
 						<button type="submit" class="btn" name="delete" onclick="bCancel=true;return validateCancel()">
 							<i class="icon-trash"></i>
 							<fmt:message key="button.delete" />
 						</button>
+						</security:authorize>
 						<button type="button" class="btn" name="deliveryBtn" onclick="bCancel=true;return delivery()">
 							<i class="icon-tasks"></i>
 							<fmt:message key="button.delivery" />
 						</button>
 					</c:when>
 					<c:when test="${saleOrder.status == 'D' }">
+						<security:authorize ifAnyGranted="ROLE_MANAGER">
 						<button type="submit" class="btn disabled" name="delete" disabled="disabled">
 							<i class="icon-trash"></i>
 							<fmt:message key="button.delete" />
 						</button>
+						</security:authorize>
 						<button type="button" class="btn disabled" name="deliveryBtn" disabled="disabled">
 							<i class="icon-tasks"></i>
 							<fmt:message key="button.delivery" />
@@ -271,7 +275,7 @@
 	function onFormSubmit(theForm) {
 		return validateSaleOrder(theForm);
 	}
-	
+	<security:authorize ifAnyGranted="ROLE_MANAGER">
 	function validateCancel() {
 		$('#cancelReasonDialog').show(function () {
 			$(this).find('.control-group').removeClass('error');
@@ -291,7 +295,7 @@
 			form.submit();
 		}
 	}
-	
+	</security:authorize>
 	function delivery() {
 		var form = document.forms['saleOrder'];
 		form['action'].value="delivery";

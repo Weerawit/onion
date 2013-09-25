@@ -24,16 +24,16 @@
             <value description="id">1</value>
             <value description="username">user</value>
             <value description="password">b6b1f4781776979c0775c71ebdd8bdc084aac5fe</value>
-            <value description="first_name">Tomcat</value>
+            <value description="first_name">User</value>
             <value description="last_name">User</value>
             <value description="address"></value>
             <value description="city">Denver</value>
             <value description="country">US</value>
-            <value description="email">matt_raible@yahoo.com</value>
+            <value description="email">user@test.com</value>
             <value description="phone_number"></value>
             <value description="postal_code">80210</value>
             <value description="province">CO</value>
-            <value description="website">http://tomcat.apache.org</value>
+            <value description="website">http://test.com</value>
             <value description="password_hint"><![CDATA[The same as your username.]]></value>
             <value description="version">1</value>
             <value description="account_enabled">1</value>
@@ -45,16 +45,16 @@
             <value description="id">2</value>
             <value description="username">admin</value>
             <value description="password">a40546cc4fd6a12572828bb803380888ad1bfdab</value>
-            <value description="first_name">Matt</value>
-            <value description="last_name">Raible</value>
+            <value description="first_name">Admin</value>
+            <value description="last_name">Admin</value>
             <value description="address"></value>
             <value description="city">Denver</value>
             <value description="country">US</value>
-            <value description="email">matt@raibledesigns.com</value>
+            <value description="email">admin@test.com</value>
             <value description="phone_number"></value>
             <value description="postal_code">80210</value>
             <value description="province">CO</value>
-            <value description="website">http://raibledesigns.com</value>
+            <value description="website">http://test.com</value>
             <value description="password_hint"><![CDATA[The same as your username.]]></value>
             <value description="version">1</value>
             <value description="account_enabled">1</value>
@@ -77,6 +77,31 @@
             <value description="name">ROLE_USER</value>
             <value description="description"><![CDATA[Default role for all Users]]></value>
         </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">ROLE_MANAGER</value>
+            <value description="description"><![CDATA[Manager]]></value>
+        </row>
+        <row>
+            <value description="id">4</value>
+            <value description="name">ROLE_SALE</value>
+            <value description="description"><![CDATA[Sale team]]></value>
+        </row>
+        <row>
+            <value description="id">5</value>
+            <value description="name">ROLE_PRODUCTION</value>
+            <value description="description"><![CDATA[Production team]]></value>
+        </row>
+        <row>
+            <value description="id">6</value>
+            <value description="name">ROLE_CATALOG</value>
+            <value description="description"><![CDATA[Catalog team]]></value>
+        </row>
+        <row>
+            <value description="id">7</value>
+            <value description="name">ROLE_INVENTORY</value>
+            <value description="description"><![CDATA[Inventory team]]></value>
+        </row>
     </table>
     <table name="user_role">
         <column>user_id</column>
@@ -88,6 +113,26 @@
         <row>
             <value description="user_id">2</value>
             <value description="role_id">1</value>
+        </row>
+        <row>
+            <value description="user_id">2</value>
+            <value description="role_id">3</value>
+        </row>
+        <row>
+            <value description="user_id">2</value>
+            <value description="role_id">4</value>
+        </row>
+        <row>
+            <value description="user_id">2</value>
+            <value description="role_id">5</value>
+        </row>
+        <row>
+            <value description="user_id">2</value>
+            <value description="role_id">6</value>
+        </row>
+        <row>
+            <value description="user_id">2</value>
+            <value description="role_id">7</value>
         </row>
     </table>
 </dataset>

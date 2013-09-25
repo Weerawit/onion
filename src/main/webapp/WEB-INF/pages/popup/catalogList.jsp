@@ -94,6 +94,7 @@
 		</display:column>
 		<display:column property="code" escapeXml="true" sortable="true" titleKey="catalog.code" sortName="code" />
 		<display:column property="name" escapeXml="true" sortable="true" titleKey="catalog.name" sortName="name" />
+		<display:column property="estPrice"  sortable="true" titleKey="catalog.estPrice" sortName="estPrice" format="{0,number,#,###.00}" />
 		<display:column property="finalPrice"  sortable="true" titleKey="catalog.finalPrice" sortName="finalPrice" format="{0,number,#,###.00}" />
 		<display:column property="invItem.invStock.qtyAvailable" escapeXml="false" sortable="true" titleKey="invItem.invStock.qtyAvailable" sortName="invItem.invStock.qtyAvailable" format="{0,number, #,##0.##}"/>
 	</display:table>

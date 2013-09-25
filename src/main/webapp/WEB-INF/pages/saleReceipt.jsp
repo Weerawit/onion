@@ -308,13 +308,13 @@
 						<i class="icon-print"></i>
 						<fmt:message key="button.saleReceipt.print" />
 					</button>
-				</c:if>
-
-				<c:if test="${param.from == 'list' and param.method != 'Add'}">
+				
+					<security:authorize ifAnyGranted="ROLE_MANAGER">
 					<button type="submit" class="btn" name="delete" onclick="bCancel=true;return validateCancel()">
 						<i class="icon-remove"></i>
 						<fmt:message key="button.cancel" />
 					</button>
+					</security:authorize>
 				</c:if>
 
 				<button type="submit" class="btn" name="cancel" onclick="bCancel=true">
@@ -344,6 +344,7 @@
 </div>
 
 <script type="text/javascript">
+<security:authorize ifAnyGranted="ROLE_MANAGER">
 	function validateCancel() {
 		$('#cancelReasonDialog').show(function () {
 			$(this).find('.control-group').removeClass('error');
@@ -362,7 +363,7 @@
 			form.submit();
 		}
 	}
-	
+</security:authorize>	
 	function onFormSubmit(theForm) {
 		var valid = true;
 		if ($('input[name="receiptType"]').val() == "2" && !bCancel) {

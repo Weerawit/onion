@@ -18,6 +18,7 @@ import com.worldbestsoft.model.CatalogItem;
 import com.worldbestsoft.model.InvItem;
 import com.worldbestsoft.model.InvItemGroup;
 import com.worldbestsoft.service.CatalogManager;
+import com.worldbestsoft.service.InvItemManager;
 
 @Service("catalogManager")
 public class CatalogManagerImpl implements CatalogManager {
@@ -26,6 +27,7 @@ public class CatalogManagerImpl implements CatalogManager {
 	private InvItemDao invItemDao;
 	private InvItemGroupDao invItemGroupDao;
 	private CatalogItemDao catalogItemDao;
+	private InvItemManager invItemManager;
 	
 	public CatalogDao getCatalogDao() {
 		return catalogDao;
@@ -61,6 +63,15 @@ public class CatalogManagerImpl implements CatalogManager {
 	@Autowired
 	public void setInvItemGroupDao(InvItemGroupDao invItemGroupDao) {
 		this.invItemGroupDao = invItemGroupDao;
+	}
+	
+	public InvItemManager getInvItemManager() {
+		return invItemManager;
+	}
+
+	@Autowired
+	public void setInvItemManager(InvItemManager invItemManager) {
+		this.invItemManager = invItemManager;
 	}
 
 	/* (non-Javadoc)
@@ -149,7 +160,7 @@ public class CatalogManagerImpl implements CatalogManager {
 			invItem.setCreateUser(catalog.getCreateUser());
 			invItem.setDescription("Auto create from catalog");
 			//Save Catalog as in stock (item)
-			invItem = invItemDao.save(invItem);
+			invItem = invItemManager.save(invItem);
 			catalog.setInvItem(invItem);
 			
 			Catalog catalogSave = catalogDao.save(catalog);

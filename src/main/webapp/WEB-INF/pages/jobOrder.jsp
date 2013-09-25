@@ -301,10 +301,12 @@
 			
 			<c:choose>
 				<c:when test="${jobOrder.status != 'C' && jobOrder.status != 'DONE' && jobOrder.id != null }">
+					<security:authorize ifAnyGranted="ROLE_MANAGER">
 					<button type="submit" class="btn" name="delete" onclick="bCancel=true;return validateCancel()">
 						<i class="icon-trash"></i>
 						<fmt:message key="button.delete" />
 					</button>
+					</security:authorize>
 					
 					<button type="submit" class="btn" name="doneBtn" onclick="bCancel=false;return markAsDone()">
 						<i class="icon-tasks"></i>
@@ -346,7 +348,7 @@
 		$('#jobOrder').attr('action', '${ctx}/jobOrder');
 		return validateJobOrder(form);
 	}
-
+<security:authorize ifAnyGranted="ROLE_MANAGER">
 	function validateCancel() {
 		$('#cancelReasonDialog').show(function () {
 			$(this).find('.control-group').removeClass('error');
@@ -367,7 +369,7 @@
 			form.submit();
 		}
 	}
-	
+</security:authorize>	
 
 	function markAsDone() {
 		var form = document.forms['jobOrder'];

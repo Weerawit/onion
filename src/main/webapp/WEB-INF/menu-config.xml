@@ -4,26 +4,28 @@
         <Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
     </Displayers>
     <Menus>
-        <Menu name="MainMenu" title="mainMenu.title" page="/mainMenu" roles="ROLE_ADMIN,ROLE_USER"/>
-        <Menu name="UserMenu" title="menu.user" description="User Menu" page="/userform" roles="ROLE_ADMIN,ROLE_USER"/>
+        <Menu name="MainMenu" title="mainMenu.title" page="/mainMenu" roles="IS_AUTHENTICATED_REMEMBERED"/>
+        <Menu name="UserMenu" title="menu.user" description="User Menu" page="/userform" roles="IS_AUTHENTICATED_REMEMBERED"/>
         <Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN" page="/admin/users">
             <Item name="ViewUsers" title="menu.admin.users" page="/admin/users"/>
             <Item name="ActiveUsers" title="mainMenu.activeUsers" page="/admin/activeUsers"/>
+            <!-- 
             <Item name="ReloadContext" title="menu.admin.reload" page="/admin/reload"/>
             <Item name="FileUpload" title="menu.selectFile" page="/fileupload"/>
+             -->
         </Menu>
-        <Menu name="SaleOrderMenu" title="menu.saleOrder" description="Sale Order Menu" roles="ROLE_ADMIN,ROLE_USER">
+        <Menu name="SaleOrderMenu" title="menu.saleOrder" description="Sale Order Menu" roles="ROLE_SALE">
         		<Item name="SaleOrder" title="menu.saleOrder.saleOrder" page="/saleOrderList"/>
         		<Item name="SaleReceipt" title="menu.saleOrder.saleReceipt" page="/saleReceiptList"/>
         </Menu>
-        <Menu name="JobOrderMenu" title="menu.jobOrder" description="Job Order Menu" roles="ROLE_ADMIN,ROLE_USER">
+        <Menu name="JobOrderMenu" title="menu.jobOrder" description="Job Order Menu" roles="ROLE_PRODUCTION">
         		<Item name="JobOrder" title="menu.jobOrder.jobOrder" page="/jobOrderList"/>
         </Menu>
-        <Menu name="CatalogMenu" title="menu.catalog" description="Catalog Menu" roles="ROLE_ADMIN,ROLE_USER">
+        <Menu name="CatalogMenu" title="menu.catalog" description="Catalog Menu" roles="ROLE_CATALOG">
             <Item name="CatalogTypes" title="menu.catalog.catalogType" page="/catalogTypeList"/>
             <Item name="Catalog" title="menu.catalog.catalog" page="/catalogList"/>
         </Menu>
-        <Menu name="InvMenu" title="menu.inventory" description="Inventory Menu" roles="ROLE_ADMIN,ROLE_USER">
+        <Menu name="InvMenu" title="menu.inventory" description="Inventory Menu" roles="ROLE_INVENTORY">
             <Item name="ItemGroups" title="menu.inventory.itemGroup" page="/invItemGroupList"/>
             <Item name="Items" title="menu.inventory.item" page="/invItemList"/>
             <Item name="Supplier" title="menu.inventory.supplier" page="/supplierList"/>
@@ -35,10 +37,10 @@
             
             <Item name="Stock" title="menu.inventory.stock" page="/invStockList"/>
         </Menu>
-        <Menu name="EmployeeMenu" title="menu.employee" description="Employee Menu" roles="ROLE_ADMIN,ROLE_USER" page="/employeeList">
+        <Menu name="EmployeeMenu" title="menu.employee" description="Employee Menu" roles="ROLE_MANAGER" page="/employeeList">
         </Menu>
-        <Menu name="CustomerMenu" title="menu.customer" description="Customer Menu" roles="ROLE_ADMIN,ROLE_USER" page="/customerList">
+        <Menu name="CustomerMenu" title="menu.customer" description="Customer Menu" roles="ROLE_MANAGER" page="/customerList">
         </Menu>
-        <Menu name="Logout" title="user.logout" page="/logout" roles="ROLE_ADMIN,ROLE_USER,ROLE_READONLY" onclick="return logout(this)"/>
+        <Menu name="Logout" title="user.logout" page="/logout" roles="IS_AUTHENTICATED_REMEMBERED" onclick="return logout(this)"/>
     </Menus>
 </MenuConfig>
