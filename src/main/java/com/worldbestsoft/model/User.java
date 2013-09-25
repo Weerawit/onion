@@ -202,6 +202,7 @@ public class User extends BaseObject implements Serializable, UserDetails {
     public Set<GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new LinkedHashSet<GrantedAuthority>();
         authorities.addAll(roles);
+        authorities.add(new Role("ROLE_AUTHENTICATED"));
         return authorities;
     }
 
