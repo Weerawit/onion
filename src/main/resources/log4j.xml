@@ -15,7 +15,7 @@
     </logger>
     
     <logger name="org.springframework.orm.hibernate4">
-    		<level value="DEBUG"/>
+    		<level value="ERROR"/>
     </logger>
 
     <!-- Suppress success logging from InteractiveAuthenticationSuccessEvent -->
@@ -69,10 +69,10 @@
         <level value="DEBUG"/>
     </logger>
 
-    <logger name="com.worldbestsoft.tool">
-        <level value="INFO"/>
+	<logger name="net.sf.jasperreports.engine">
+        <level value="DEBUG"/>
     </logger>
-
+    
     <root>
         <level value="WARN"/>
         <appender-ref ref="CONSOLE"/>
