@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="JobOrder" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2dbc763e-8f47-4824-882f-e8a92fbc374d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="157"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F5F5DC">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFFFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="jobOrder" class="com.worldbestsoft.model.JobOrder"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="invItem" class="com.worldbestsoft.model.InvItem">
+		<fieldDescription><![CDATA[invItem]]></fieldDescription>
+	</field>
+	<field name="name" class="java.lang.String">
+		<fieldDescription><![CDATA[name]]></fieldDescription>
+	</field>
+	<field name="qty" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[qty]]></fieldDescription>
+	</field>
+	<variable name="group1" class="java.lang.String">
+		<variableExpression><![CDATA["1"]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$V{group1}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<frame>
+					<reportElement uuid="832a3c87-f149-4897-a634-ea0c7544355b" x="0" y="0" width="555" height="30"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<staticText>
+						<reportElement uuid="bb1afbb7-4077-4c4d-9d5e-d803a976952e" x="0" y="0" width="455" height="30"/>
+						<box>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font fontName="AngsanaUPC" size="14"/>
+						</textElement>
+						<text><![CDATA[วัตถุดิบที่ต้องใช้]]></text>
+					</staticText>
+					<staticText>
+						<reportElement uuid="74ab0409-1430-4991-bc22-2d73aed9c1e1" x="455" y="0" width="100" height="30"/>
+						<box>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font fontName="AngsanaUPC" size="14"/>
+						</textElement>
+						<text><![CDATA[จำนวน]]></text>
+					</staticText>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="300">
+				<frame>
+					<reportElement uuid="4683482e-44d9-437d-a375-6151e6c5cf8c" stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="300"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+					</box>
+					<image hAlign="Center" onErrorType="Blank">
+						<reportElement uuid="18ad8705-306b-4c40-b751-4c701170a2a8" x="0" y="0" width="555" height="300"/>
+						<box topPadding="10" leftPadding="10" bottomPadding="10" rightPadding="10"/>
+						<imageExpression><![CDATA[new java.io.ByteArrayInputStream($P{jobOrder}.getCatalog().getImg())]]></imageExpression>
+					</image>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="110">
+			<frame>
+				<reportElement uuid="67dd2b07-13f9-44de-b68e-ce21c876e815" x="0" y="50" width="555" height="60"/>
+				<textField pattern="#,##0;-#,##0" isBlankWhenNull="true">
+					<reportElement uuid="90e75d65-0036-4b35-8b4c-5aeb77f80c65" x="70" y="40" width="177" height="20"/>
+					<box leftPadding="10"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{jobOrder}.getQty()]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement uuid="17414e96-5454-4521-af56-6caff69c3d7c" x="317" y="20" width="238" height="20"/>
+					<box leftPadding="10"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{jobOrder}.getTargetEndDate()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="7c1edfdb-a3c7-4892-b2a2-0e90b4bb5152" x="0" y="0" width="40" height="20"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<text><![CDATA[พนักงาน]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5746317c-87fc-422e-a3bb-7b806e35fed3" x="0" y="40" width="70" height="20"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<text><![CDATA[จำนวนที่ต้องผลิต]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="b2d1c135-5d5f-4783-bfc2-0fb7f694bc7e" x="40" y="0" width="515" height="20"/>
+					<box leftPadding="10"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA["" + $P{jobOrder}.getEmployee().getFullname()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="e141a569-05ba-4a23-81d1-3fd46f70132e" x="247" y="20" width="70" height="20"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<text><![CDATA[วันที่กำหนดเสร็จ]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="eb769f0b-6b05-4c61-a755-1186d7c197cb" x="475" y="40" width="80" height="20"/>
+					<textElement textAlignment="Right">
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA["หน้า "+$V{PAGE_NUMBER}+" จาก " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="e7a237b5-373b-4ff8-9356-2621f36109cc" x="0" y="20" width="50" height="20"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<text><![CDATA[วันที่เริ่มผลิต]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement uuid="f7a667a0-df2d-4dd9-b9f1-840832d31427" x="50" y="20" width="197" height="20"/>
+					<box leftPadding="10"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{jobOrder}.getStartDate()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="1a70335c-020b-4807-8508-c3afc6e02bc4" x="247" y="40" width="70" height="20"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<text><![CDATA[ราคารวม]]></text>
+				</staticText>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement uuid="7be11d0f-7fdb-46c7-909a-4a1784e0e744" x="317" y="40" width="158" height="20"/>
+					<box leftPadding="10"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{jobOrder}.getCost()]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement uuid="6915049b-538b-4ab0-964e-a7c0d4604205" x="0" y="0" width="555" height="50"/>
+				<staticText>
+					<reportElement uuid="cdd76a98-1705-460c-a3e3-4887dad60fbd" stretchType="RelativeToTallestObject" x="247" y="0" width="308" height="30"/>
+					<textElement textAlignment="Right">
+						<font fontName="AngsanaUPC" size="20"/>
+					</textElement>
+					<text><![CDATA[ใบงาน]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="cd1f5e14-2998-491d-96f9-8b09ce9aa3bb" x="247" y="30" width="308" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font fontName="AngsanaUPC" size="14" isStrikeThrough="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[""+$P{jobOrder}.getDocumentNumber().getDocumentNo()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="66b8a801-83b4-43db-bb3c-36ded30e8f2e" x="0" y="0" width="247" height="50"/>
+					<textElement>
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<text><![CDATA[Door Man]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Prevent">
+			<frame>
+				<reportElement uuid="74038213-c664-4d06-859f-8471f2afd450" stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="20"/>
+				<box>
+					<pen lineStyle="Dashed"/>
+					<topPen lineWidth="0.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement uuid="f0ffd11b-ba4e-4779-af00-70e1c878810d" x="455" y="0" width="100" height="20"/>
+					<box rightPadding="10">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="41c36091-2f60-4f96-9563-39e9da804427" x="0" y="0" width="455" height="20"/>
+					<box leftPadding="10">
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="AngsanaUPC" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{invItem}.getCode() + " : " + $F{invItem}.getName()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<frame>
+				<reportElement uuid="b44e9fee-7c1a-4bcf-924b-376bee3152cd" x="0" y="0" width="555" height="20"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+			</frame>
+		</band>
+	</pageFooter>
+</jasperReport>

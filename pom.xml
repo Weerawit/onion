@@ -761,8 +761,8 @@
 			<groupId>com.nsn.tot.icirreport.font</groupId>
 			<artifactId>ireportfont</artifactId>
 			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/ireportFonts.jar</systemPath>
+<!-- 			<scope>system</scope> -->
+<!-- 			<systemPath>${basedir}/lib/ireportFonts.jar</systemPath> -->
 		</dependency>
 		
 
