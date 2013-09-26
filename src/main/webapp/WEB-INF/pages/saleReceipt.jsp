@@ -406,7 +406,7 @@
 	});
 
 	$(document).ready(function() {
-		$('#tableDiv').ajaxDisplaytag({
+		var $ajaxDisplaytag = $('#tableDiv').ajaxDisplaytag({
 			url : '${ctx}/saleReceipt/displayTable',
 			params : {saleOrderNo : '${saleReceipt.saleOrder.documentNumber.documentNo}'}
 		});
@@ -443,10 +443,7 @@
 					}
 					
 					
-					$('#tableDiv').ajaxDisplaytag({
-						url : '${ctx}/saleReceipt/displayTable',
-						params : {saleOrderNo : json.saleOrderNo}
-					});
+					$ajaxDisplaytag.updateTable({saleOrderNo : json.saleOrderNo});
 				} else {
 					$('input[name="saleOrder.documentNumber.documentNo"]').val('');
 					$('#customerName').text('');
@@ -455,9 +452,7 @@
 					$('#billingAddress').text('');
 					$('#shipingAddress').text('');
 					$('input[name="receiptAmount"]').val(0);
-					$('#tableDiv').ajaxDisplaytag({
-						url : '${ctx}/saleReceipt/displayTable'
-					});
+					$ajaxDisplaytag.updateTable();
 				}
 			}
 		});
