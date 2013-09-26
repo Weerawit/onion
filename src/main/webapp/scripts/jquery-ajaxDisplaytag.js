@@ -59,12 +59,14 @@
 			}
 			$.get(self.options.url + '?ajax=true', params, function( data ) {
 				$element.html( data );
+				self.pageLoadedHandler.call(self);
 			})
 			//$element.load(self.options.url + '?ajax=true', params);
 			//register default event
 			$element.on('click', 'table th.sortable', function() {
 				// "this" is scoped as the sortable th element
-				var link = $(this).find("a").attr("href");
+				var link = $(this).find("a").attr("href") + '&ajax=true';
+				$self.data('link', link);
 				$element.load(self.options.url + link, function() {
 					self.pageLoadedHandler.call(self);
 				});
@@ -72,13 +74,13 @@
 			});
 			
 			$element.on('click', '.pagination a', function() {
-				var link = $(this).attr("href");
+				var link = $(this).attr("href") + '&ajax=true';
+				$self.data('link', link);
 				$element.load(self.options.url + link, function() {
 					self.pageLoadedHandler.call(self);
 				});
 				return false;
 			});
-			self.pageLoadedHandler.call(self);
 		},
 		
 		pageLoadedHandler : function() {

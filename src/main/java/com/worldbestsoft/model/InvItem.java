@@ -153,7 +153,7 @@ public class InvItem implements java.io.Serializable {
 		this.updateUser = updateUser;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "invItem")
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "invItem")
 	public InvStock getInvStock() {
 		return this.invStock;
 	}
