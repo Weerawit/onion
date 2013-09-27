@@ -13,18 +13,10 @@
 		<p>
 			<fmt:message key="mainMenu.message" />
 		</p>
-		<p>
-			<security:authorize ifAnyGranted="IS_AUTHENTICATED_REMEMBERED">IS_AUTHENTICATED_REMEMBERED</security:authorize>
-		</p>
 		<menu:useMenuDisplayer name="Velocity" config="mainMenu.vm" permissions="rolesAdapter">
-			<menu:displayMenu name="UserMenu" />
 			<menu:displayMenu name="SaleOrderMenu" />
 			<menu:displayMenu name="JobOrderMenu" />
-			<menu:displayMenu name="CatalogMenu" />
 			<menu:displayMenu name="InvMenu" />
-			<menu:displayMenu name="EmployeeMenu" />
-			<menu:displayMenu name="CustomerMenu" />
-			<menu:displayMenu name="AdminMenu" />
 		</menu:useMenuDisplayer>
 	</div>
 </body>

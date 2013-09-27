@@ -1,5 +1,5 @@
 #macro( displayCssMenu $menu )
-	<ul>
+	
 	#if ($displayer.isAllowed($menu))
 		## set menu title
 		#set ($title = $displayer.getMessage($menu.title))
@@ -17,7 +17,8 @@
 			#end
        	#end
   	#end
-    </ul>
 #end
 
+<ul class='glassList'>
 #displayCssMenu($menu)
+</ul>

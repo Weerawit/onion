@@ -217,29 +217,19 @@
 			dataType : 'json',
 			maxFileSize : 5000000,
 			acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i,
-			/* add: function (e, data) {
-				$('#btnUpload').removeClass('hidden');
-				$('#btnUpload').on('click', function() {
-					data.submit();
-				});
-			}, */
 			send : function(e, data) {
 				$('#progress').show();
-//				$('#btnUpload').button('loading');
 			},
 			fail : function(e, data) {
-				alert('fail to upload : ' + data.textStatus);
-//				$('#btnUpload').button('reset')
+				alert(data.textStatus + ' ' + data.messages.uploadedBytes);
 				$( "#progress").hide( 'slow', function() {
 					$('#progress-bar').css('width', '0%');						
 				} );
 			},
 			done : function(e, data) {
-				//$('#btnUpload').addClass('hidden');
 				if (data.result) {
 					$('#image').prop('src', data.result.files[0].thumbnailUrl);
 					$('#filename').val(data.result.files[0].name);
-//					$('#btnUpload').button('reset')
 					$( "#progress").hide( 'slow', function() {
 						$('#progress-bar').css('width', '0%');						
 					} );
