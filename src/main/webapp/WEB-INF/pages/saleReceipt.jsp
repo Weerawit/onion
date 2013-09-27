@@ -318,8 +318,8 @@
 				</c:if>
 
 				<button type="submit" class="btn" name="cancel" onclick="bCancel=true">
-					<i class="icon-ok"></i>
-					<fmt:message key="button.done" />
+					<i class="icon-arrow-left"></i>
+					<fmt:message key="button.back" />
 				</button>
 			</fieldset>
 		</div>

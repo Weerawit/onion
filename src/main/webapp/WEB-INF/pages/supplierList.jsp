@@ -91,17 +91,13 @@
 		
 	</div>
 	<display:table name="supplierList" cellspacing="0" cellpadding="0" requestURI="" id="supplier"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
-		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
+		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px" media="html">
 			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${supplier.id}'/>" />
 		</display:column>
 		<display:column property="code" url="/supplier?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="supplier.code" sortName="code" />
 		<display:column property="name" escapeXml="true" sortable="true" titleKey="supplier.name" sortName="name" />
 		<display:column property="contactName" escapeXml="true" sortable="true" titleKey="supplier.contactName" sortName="contactName" />
 		<display:column property="contactTel" escapeXml="true" sortable="true" titleKey="supplier.contactTel" sortName="contactTel" />
-		<display:setProperty name="export.csv" value="true"></display:setProperty>
-		<display:setProperty name="export.excel" value="true"></display:setProperty>
-		<display:setProperty name="export.xml" value="false"></display:setProperty>
-		<display:setProperty name="export.pdf" value="true"></display:setProperty>
 		<display:setProperty name="export.excel.filename" value="Supplier.xls" />
 		<display:setProperty name="export.csv.filename" value="Supplier.csv" />
 		<display:setProperty name="export.pdf.filename" value="Supplier.pdf" />

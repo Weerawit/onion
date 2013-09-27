@@ -58,10 +58,6 @@
 		<display:column property="invItem.name" escapeXml="true" sortable="true" titleKey="invStock.invItem.name" sortName="invItem.name" />
 		<display:column property="qty" sortable="true" titleKey="invStock.qty" sortName="qty" format="{0,number,#,##0.##}"/>
 		<display:column property="qtyAvailable" sortable="true" titleKey="invStock.qtyAvailable" sortName="qtyAvailable" format="{0,number,#,##0.##}"/>
-		<display:setProperty name="export.csv" value="true"></display:setProperty>
-		<display:setProperty name="export.excel" value="true"></display:setProperty>
-		<display:setProperty name="export.xml" value="false"></display:setProperty>
-		<display:setProperty name="export.pdf" value="true"></display:setProperty>
 		<display:setProperty name="export.excel.filename" value="InvStock.xls" />
 		<display:setProperty name="export.csv.filename" value="InvStock.csv" />
 		<display:setProperty name="export.pdf.filename" value="InvStock.pdf" />

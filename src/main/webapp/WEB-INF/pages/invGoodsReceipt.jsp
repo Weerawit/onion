@@ -158,7 +158,7 @@
 		</c:if>
 		<display:table name="invGoodsReceiptItemList" cellspacing="0" cellpadding="0" requestURI="" id="invGoodsReceiptItem" class="table table-condensed table-striped table-hover table-bordered">
 			<c:if test="${invGoodsReceipt.documentNumber.documentNo == null }">
-				<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
+				<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px" media="html">
 					<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${invGoodsReceiptItem_rowNum - 1}'/>" />
 				</display:column>
 				<display:column titleKey="invGoodsReceiptItem.invItem.code" sortable="true">
@@ -175,10 +175,6 @@
 			<display:column property="invItem.name" escapeXml="true" sortable="true" titleKey="invGoodsReceiptItem.invItem.name" sortName="invItem.name" />
 			<display:column property="qty" sortable="true" titleKey="invGoodsReceiptItem.qty" sortName="qty" format="{0,number,#,##0.##}"/>
 			<display:column property="unitPrice" sortable="true" titleKey="invGoodsReceiptItem.unitPrice" sortName="unitPrice" format="{0,number,#,##0.##}"/>
-			<display:setProperty name="export.csv" value="true"></display:setProperty>
-			<display:setProperty name="export.excel" value="true"></display:setProperty>
-			<display:setProperty name="export.xml" value="false"></display:setProperty>
-			<display:setProperty name="export.pdf" value="true"></display:setProperty>
 			<display:setProperty name="export.excel.filename" value="InvGoodsReceipt.xls" />
 			<display:setProperty name="export.csv.filename" value="InvGoodsReceipt.csv" />
 			<display:setProperty name="export.pdf.filename" value="InvGoodsReceipt.pdf" />
@@ -231,8 +227,8 @@
 			
 
 			<button type="submit" class="btn" name="cancel" onclick="bCancel=true">
-				<i class="icon-remove"></i>
-				<fmt:message key="button.cancel" />
+				<i class="icon-arrow-left"></i>
+				<fmt:message key="button.back" />
 			</button>
 		</fieldset>
 	</form:form>

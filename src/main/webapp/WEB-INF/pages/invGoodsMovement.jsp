@@ -166,7 +166,7 @@
 		</c:if>
 		<display:table name="invGoodsMovementItemList" cellspacing="0" cellpadding="0" requestURI="" id="invGoodsMovementItem" class="table table-condensed table-striped table-hover table-bordered">
 			<c:if test="${invGoodsMovement.documentNumber.documentNo == null }">
-				<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
+				<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px" media="html">
 					<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${invGoodsMovementItem_rowNum - 1}'/>" />
 				</display:column>
 				<display:column titleKey="invGoodsMovementItem.invItem.code" sortable="true">
@@ -182,10 +182,6 @@
 			</c:if>
 			<display:column property="invItem.name" escapeXml="true" sortable="true" titleKey="invGoodsMovementItem.invItem.name" sortName="invItem.name" />
 			<display:column property="qty" sortable="true" titleKey="invGoodsMovementItem.qty" sortName="qty" format="{0,number,#,##0.##}"/>
-			<display:setProperty name="export.csv" value="true"></display:setProperty>
-			<display:setProperty name="export.excel" value="true"></display:setProperty>
-			<display:setProperty name="export.xml" value="false"></display:setProperty>
-			<display:setProperty name="export.pdf" value="true"></display:setProperty>
 			<display:setProperty name="export.excel.filename" value="InvGoodsMovement.xls" />
 			<display:setProperty name="export.csv.filename" value="InvGoodsMovement.csv" />
 			<display:setProperty name="export.pdf.filename" value="InvGoodsMovement.pdf" />
@@ -225,8 +221,8 @@
 			
 
 			<button type="submit" class="btn" name="cancel" onclick="bCancel=true">
-				<i class="icon-remove"></i>
-				<fmt:message key="button.cancel" />
+				<i class="icon-arrow-left"></i>
+				<fmt:message key="button.back" />
 			</button>
 		</fieldset>
 	</form:form>

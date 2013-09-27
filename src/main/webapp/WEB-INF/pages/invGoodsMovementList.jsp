@@ -113,10 +113,6 @@
 			<fmt:formatDate value="${invGoodsMovement.movementDate}" pattern="dd/MM/yyyy HH:mm:ss" />
 		</display:column>
 		<display:column property="owner" escapeXml="true" sortable="true" titleKey="invGoodsMovement.owner" sortName="owner" />
-		<display:setProperty name="export.csv" value="true"></display:setProperty>
-		<display:setProperty name="export.excel" value="true"></display:setProperty>
-		<display:setProperty name="export.xml" value="false"></display:setProperty>
-		<display:setProperty name="export.pdf" value="true"></display:setProperty>
 		<display:setProperty name="export.excel.filename" value="InvGoodsMovement.xls" />
 		<display:setProperty name="export.csv.filename" value="InvGoodsMovement.csv" />
 		<display:setProperty name="export.pdf.filename" value="InvGoodsMovement.pdf" />

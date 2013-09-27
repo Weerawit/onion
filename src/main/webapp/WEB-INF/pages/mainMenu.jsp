@@ -16,7 +16,7 @@
 		<p>
 			<security:authorize ifAnyGranted="IS_AUTHENTICATED_REMEMBERED">IS_AUTHENTICATED_REMEMBERED</security:authorize>
 		</p>
-		<menu:useMenuDisplayer name="Velocity" config="navlistMenu.vm" permissions="rolesAdapter">
+		<menu:useMenuDisplayer name="Velocity" config="mainMenu.vm" permissions="rolesAdapter">
 			<menu:displayMenu name="UserMenu" />
 			<menu:displayMenu name="SaleOrderMenu" />
 			<menu:displayMenu name="JobOrderMenu" />

@@ -1,0 +1,23 @@
+#macro( displayCssMenu $menu )
+	<ul>
+	#if ($displayer.isAllowed($menu))
+		## set menu title
+		#set ($title = $displayer.getMessage($menu.title))
+		## create a single menu item
+    		#if ($menu.components.size() == 0)
+    			<li><a href="$menu.url" title="$title" #if($menu.target)target="$menu.target" #end#if($menu.width)style="width: ${menu.width}px"#end #if($menu.onclick)onclick="$menu.onclick" #end>${title}</a></li>
+     	#else ## create multiple menu items in a menu
+     		#if ($menu.components.size() > 0)
+				#foreach ($menuItem in $menu.components)
+					#if ($displayer.isAllowed($menuItem))
+          				#set ($title = $displayer.getMessage($menuItem.title))
+          				<li><a href="$menuItem.url" title="$title" #if($menuItem.target)target="$menuItem.target"#end>${title}</a></li>
+        				#end
+				#end
+			#end
+       	#end
+  	#end
+    </ul>
+#end
+
+#displayCssMenu($menu)

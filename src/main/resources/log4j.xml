@@ -73,6 +73,11 @@
         <level value="DEBUG"/>
     </logger>
     
+     <logger name="org.displaytag">
+        <level value="DEBUG"/>
+    </logger>
+    
+    
     <root>
         <level value="WARN"/>
         <appender-ref ref="CONSOLE"/>

@@ -152,7 +152,7 @@
 	</div>
 	<display:table name="jobOrderList" cellspacing="0" cellpadding="0" requestURI="" id="jobOrder"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
 		<security:authorize ifAnyGranted="ROLE_MANAGER">
-		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
+		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px" media="html">
 			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${jobOrder.id}'/>" />
 		</display:column>
 		</security:authorize>
@@ -163,11 +163,9 @@
 		</display:column>
 		<display:column property="startDate" escapeXml="false" sortable="true" titleKey="jobOrder.startDate" sortName="startDate" format="{0, date, dd/MM/yyyy}" />
 		<display:column property="targetEndDate" escapeXml="false" sortable="true" titleKey="jobOrder.targetEndDate" sortName="targetEndDate" format="{0, date, dd/MM/yyyy}" />
-		<display:column property="status" escapeXml="true" sortable="true" titleKey="jobOrder.status" sortName="status" />
-		<display:setProperty name="export.csv" value="true"></display:setProperty>
-		<display:setProperty name="export.excel" value="true"></display:setProperty>
-		<display:setProperty name="export.xml" value="false"></display:setProperty>
-		<display:setProperty name="export.pdf" value="true"></display:setProperty>
+		<display:column escapeXml="false" sortable="true" titleKey="jobOrder.status" sortName="status" >
+			<tags:labelValue value="${jobOrder.status}" list="${jobOrderStatusList}"/> 
+		</display:column>
 		<display:setProperty name="export.excel.filename" value="JobOrder.xls" />
 		<display:setProperty name="export.csv.filename" value="JobOrder.csv" />
 		<display:setProperty name="export.pdf.filename" value="JobOrder.pdf" />

@@ -115,7 +115,7 @@
 		</div>
 		<display:table name="saleReceiptList" cellspacing="0" cellpadding="0" requestURI="" id="saleReceipt" pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
 			<security:authorize ifAnyGranted="ROLE_MANAGER">
-			<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
+			<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px" media="html">
 				<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleReceipt.id}'/>" />
 			</display:column>
 			</security:authorize>
@@ -124,10 +124,9 @@
 			<display:column property="saleOrder.customer.name" escapeXml="true" sortable="true" titleKey="saleReceipt.saleOrder.customer.name" sortName="saleOrder.customer.name" />
 			<display:column property="receiptDate" escapeXml="false" sortable="true" titleKey="saleReceipt.receiptDate" sortName="receiptDate" format="{0, date, dd/MM/yyyy HH:mm}" />
 			<display:column property="receiptAmount" escapeXml="false" sortable="true" titleKey="saleReceipt.receiptAmount" sortName="receiptAmount" format="{0, number, #,##0.##}" />
-			<display:setProperty name="export.csv" value="true"></display:setProperty>
-			<display:setProperty name="export.excel" value="true"></display:setProperty>
-			<display:setProperty name="export.xml" value="false"></display:setProperty>
-			<display:setProperty name="export.pdf" value="true"></display:setProperty>
+			<display:column escapeXml="false" sortable="true" titleKey="saleReceipt.status" sortName="status" >
+				<tags:labelValue value="${saleReceipt.status}" list="${saleReceiptStatusList}"/> 
+			</display:column>
 			<display:setProperty name="export.excel.filename" value="SaleReceipt.xls" />
 			<display:setProperty name="export.csv.filename" value="SaleReceipt.csv" />
 			<display:setProperty name="export.pdf.filename" value="SaleReceipt.pdf" />

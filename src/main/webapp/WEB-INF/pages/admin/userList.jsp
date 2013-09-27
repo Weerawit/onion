@@ -52,7 +52,7 @@
 			<a class="btn" href="<c:url value='/mainMenu'/>"> <i class="icon-ok"></i> <fmt:message key="button.done" /></a>
 		</div>
 		<display:table name="userList" cellspacing="0" cellpadding="0" requestURI="" defaultsort="1" id="users" pagesize="25" class="table table-condensed table-striped table-hover table-bordered" export="false" size="resultSize" partialList="true" sort="external">
-			<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
+			<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px" media="html">
 				<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${users.id}'/>" />
 			</display:column>
 			<display:column property="username" escapeXml="true" sortable="true" titleKey="user.username" url="/userform?from=list" paramId="id" paramProperty="id" sortName="username"/>

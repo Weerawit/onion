@@ -3,7 +3,7 @@
 <c:choose>
 	<c:when test="${saleOrder.documentNumber.documentNo == null }">
 		<display:table name="saleOrderItemList" cellspacing="0" cellpadding="0" excludedParams="*" requestURI="" id="saleOrderItem" class="table table-condensed table-striped table-hover table-bordered" export="false" pagesize="10" partialList="false">
-			<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px">
+			<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px" media="html">
 				<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleOrderItem_rowNum - 1}'/>" />
 			</display:column>
 			<display:column titleKey="saleOrderItem.catalog.code" sortable="false" sortProperty="catalog.code" >

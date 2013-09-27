@@ -113,16 +113,16 @@
 		
 	</div>
 	<display:table name="saleOrderList" cellspacing="0" cellpadding="0" requestURI="" id="saleOrder"  pagesize="${ps}" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
-<%-- 		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px"> --%>
+<%-- 		<display:column title="<input type='checkbox' name='chkSelectAll' id='chkSelectAll'/>" class="span1" style="width: 10px" media="html"> --%>
 <%-- 			<input type="checkbox" id="checkbox" name="checkbox" value="<c:out value='${saleOrder.id}'/>" /> --%>
 <%-- 		</display:column> --%>
 		<display:column property="documentNumber.documentNo" url="/saleOrder?from=list" paramId="id" paramProperty="id" escapeXml="true" sortable="true" titleKey="saleOrder.documentNumber.documentNo" sortName="documentNumber.documentNo" />
 		<display:column property="customer.name" escapeXml="true" sortable="true" titleKey="saleOrder.customer.name" sortName="customer.name" />
 		<display:column property="totalPrice" escapeXml="false" sortable="true" titleKey="saleOrder.totalPrice" sortName="totalPrice" format="{0,number,#,##0.00}"/>
 		
-		<display:column escapeXml="false" sortable="true" titleKey="saleOrder.paymentPaid" sortName="paymentPaid">
+		<display:column escapeXml="false" sortable="true" titleKey="saleOrder.paymentPaid" sortName="paymentPaid" media="html">
 			<c:choose>
-				<c:when test="${saleOrder.paymentStatus != '3'}">
+				<c:when test="${saleOrder.paymentStatus != '3' && saleOrder.status != 'C'}">
 					<a class="btn btn-small btn-primary" href="<c:url value='/saleReceipt?method=Add&from=list&saleOrderNo=${saleOrder.documentNumber.documentNo}'/>"><fmt:formatNumber value="${saleOrder.totalPrice - saleOrder.paymentPaid }" pattern="#,##0.00"/></a>
 				</c:when>
 				<c:otherwise>
@@ -130,13 +130,12 @@
 				</c:otherwise>
 			</c:choose>
 		</display:column>
+		<display:column escapeXml="false" sortable="true" titleKey="saleOrder.paymentPaid" sortName="paymentPaid" media="csv excel pdf">
+			<fmt:formatNumber value="${saleOrder.paymentPaid }" pattern="#,##0.00"/>
+		</display:column>
 		<display:column escapeXml="true" sortable="true" titleKey="saleOrder.status" sortName="status" >
 			<tags:labelValue value="${saleOrder.status}" list="${saleOrderStatusList}"></tags:labelValue>
 		</display:column>
-		<display:setProperty name="export.csv" value="true"></display:setProperty>
-		<display:setProperty name="export.excel" value="true"></display:setProperty>
-		<display:setProperty name="export.xml" value="false"></display:setProperty>
-		<display:setProperty name="export.pdf" value="true"></display:setProperty>
 		<display:setProperty name="export.excel.filename" value="SaleOrder.xls" />
 		<display:setProperty name="export.csv.filename" value="SaleOrder.csv" />
 		<display:setProperty name="export.pdf.filename" value="SaleOrder.pdf" />

@@ -118,10 +118,6 @@
 		</display:column>
 		<display:column property="supplier.name" escapeXml="true" sortable="true" titleKey="invGoodsReceipt.supplier.name" sortName="supplier.name" />
 		<display:column property="totalCost" sortable="true" titleKey="invGoodsReceipt.totalCost" sortName="totalCost" format="{0,number,#,##0.##}"/>
-		<display:setProperty name="export.csv" value="true"></display:setProperty>
-		<display:setProperty name="export.excel" value="true"></display:setProperty>
-		<display:setProperty name="export.xml" value="false"></display:setProperty>
-		<display:setProperty name="export.pdf" value="true"></display:setProperty>
 		<display:setProperty name="export.excel.filename" value="InvGoodsReceipt.xls" />
 		<display:setProperty name="export.csv.filename" value="InvGoodsReceipt.csv" />
 		<display:setProperty name="export.pdf.filename" value="InvGoodsReceipt.pdf" />
