@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SaleReceipt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2dbc763e-8f47-4824-882f-e8a92fbc374d">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="28"/>
+	<property name="ireport.y" value="13"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -248,9 +248,9 @@
 		</groupFooter>
 	</group>
 	<pageHeader>
-		<band height="110">
+		<band height="130">
 			<frame>
-				<reportElement uuid="67dd2b07-13f9-44de-b68e-ce21c876e815" x="0" y="50" width="555" height="60"/>
+				<reportElement uuid="67dd2b07-13f9-44de-b68e-ce21c876e815" x="0" y="70" width="555" height="60"/>
 				<textField>
 					<reportElement uuid="90e75d65-0036-4b35-8b4c-5aeb77f80c65" x="30" y="40" width="305" height="20"/>
 					<textElement>
@@ -316,7 +316,7 @@
 				</textField>
 			</frame>
 			<frame>
-				<reportElement uuid="6915049b-538b-4ab0-964e-a7c0d4604205" x="0" y="0" width="555" height="50"/>
+				<reportElement uuid="6915049b-538b-4ab0-964e-a7c0d4604205" x="0" y="0" width="555" height="70"/>
 				<staticText>
 					<reportElement uuid="cdd76a98-1705-460c-a3e3-4887dad60fbd" stretchType="RelativeToTallestObject" x="247" y="0" width="308" height="30"/>
 					<textElement textAlignment="Right">
@@ -331,13 +331,25 @@
 					</textElement>
 					<textFieldExpression><![CDATA[""+$P{saleReceipt}.getDocumentNumber().getDocumentNo()]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement uuid="66b8a801-83b4-43db-bb3c-36ded30e8f2e" x="0" y="0" width="247" height="50"/>
-					<textElement>
-						<font fontName="AngsanaUPC" size="14"/>
-					</textElement>
-					<text><![CDATA[Door Man]]></text>
-				</staticText>
+				<frame>
+					<reportElement uuid="4abfcc4e-b538-4f33-9ada-767dda794226" x="0" y="0" width="247" height="70"/>
+					<staticText>
+						<reportElement uuid="820a185d-b22e-4985-ac87-037ecd6db523" x="0" y="0" width="247" height="20"/>
+						<textElement textAlignment="Center">
+							<font fontName="AngsanaUPC" size="16" isBold="true"/>
+						</textElement>
+						<text><![CDATA[Door Man ร้านแสงชัยรุ่งเรือง]]></text>
+					</staticText>
+					<staticText>
+						<reportElement uuid="562e5dfd-2cae-4faf-a003-e2f3044d6d01" x="0" y="20" width="247" height="50"/>
+						<textElement textAlignment="Center">
+							<font fontName="AngsanaUPC" size="12" isBold="false"/>
+						</textElement>
+						<text><![CDATA[98/15 ม.5 ต.วังเย็น อ.บางแพ จ.ราชบุรี 70160
+โทร. 032-381258, 081-9433550
+Email : yingpat-v2@hotmail.com]]></text>
+					</staticText>
+				</frame>
 			</frame>
 		</band>
 	</pageHeader>
