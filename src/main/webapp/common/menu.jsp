@@ -17,6 +17,7 @@
     <menu:displayMenu name="EmployeeMenu"/>
     <menu:displayMenu name="CustomerMenu"/>
     <menu:displayMenu name="AdminMenu"/>
+    <menu:displayMenu name="ReportMenu"/>
     <menu:displayMenu name="Logout"/>
 </ul>
 </div>
