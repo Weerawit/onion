@@ -102,6 +102,8 @@
 		<display:column  sortable="true" titleKey="invItemLevel.refType" sortName="refType">
 			<tags:labelValue value="${invItemLevel.refType}" list="${refTypeList}"/>
 		</display:column>
+		<display:column property="documentNumber.documentNo" sortable="true" titleKey="invItemLevel.documentNumber.documentNo" sortName="documentNumber.documentNo" media="csv excel">
+		</display:column>
 		<display:column sortable="true" titleKey="invItemLevel.documentNumber.documentNo" sortName="documentNumber.documentNo" media="html">
 			<c:choose>
 				<c:when test="${invItemLevel.refType == 'SA' }">
