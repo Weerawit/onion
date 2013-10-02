@@ -23,4 +23,6 @@ public interface InvGoodsReceiptManager {
 
 	public abstract InvGoodsReceipt saveToStock(InvGoodsReceipt invGoodsReceipt);
 
+	public abstract InvGoodsReceipt findByGoodsReceiptNo(String goodsReceiptNo);
+
 }

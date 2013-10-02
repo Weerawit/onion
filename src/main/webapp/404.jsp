@@ -6,7 +6,7 @@
     <title><fmt:message key="404.title"/></title>
     <meta name="heading" content="<fmt:message key='404.title'/>"/>
 </head>
-<div class="container" style="height: 400px">
+<div style="height: 400px">
 <p>
     <fmt:message key="404.message">
         <fmt:param><c:url value="/mainMenu"/></fmt:param>

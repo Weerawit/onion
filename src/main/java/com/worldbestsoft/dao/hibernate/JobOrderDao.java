@@ -12,4 +12,6 @@ public interface JobOrderDao extends GenericDao<JobOrder, Long> {
 
 	public abstract Integer querySize(JobOrderCriteria criteria);
 
+	public abstract JobOrder findByJobOrderNo(String jobOrderNo);
+
 }

@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
+import com.worldbestsoft.model.InvGoodsMovement;
 import com.worldbestsoft.model.JobOrder;
 import com.worldbestsoft.model.criteria.JobOrderCriteria;
 
@@ -120,6 +121,22 @@ public class JobOrderDaoHibernate extends GenericDaoHibernate<JobOrder, Long> im
 		Query queryObj = getSession().createQuery(hsql);
 		queryObj.setProperties(params);
 		return ((Number) queryObj.uniqueResult()).intValue();
+	}
+	
+	@Override
+    public JobOrder findByJobOrderNo(String jobOrderNo) {
+		String hsql = "select o from JobOrder o where 1=1 ";
+		final Map<String, Object> params = new HashMap<String, Object>();
+		hsql += " and o.documentNumber.documentNo = :jobOrderNo";
+		params.put("jobOrderNo", jobOrderNo);
+		hsql += " order by o.documentNumber.documentNo";
+		Query queryObj = getSession().createQuery(hsql);
+		queryObj.setProperties(params);
+		List<JobOrder> result = queryObj.list();
+		if (null != result && result.size() > 0) {
+			return result.get(0);
+		}
+		return null;
 	}
 
 }

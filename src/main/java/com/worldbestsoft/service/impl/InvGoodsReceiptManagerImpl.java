@@ -211,7 +211,7 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 			invItemLevel.setUpdateUser(invGoodsReceipt.getUpdateUser());
 			invItemLevel.setDocumentNumber(documentNumber);
 			invItemLevel.setRefType(ConstantModel.RefType.GOOD_RECEIPT.getCode());
-			invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+			invItemLevel.setTransactionType(ConstantModel.ItemStockTransactionType.COMMIT.getCode());
 
 			getInvStockManager().updateStock(invItemLevel);
 		}
@@ -243,5 +243,10 @@ public class InvGoodsReceiptManagerImpl implements InvGoodsReceiptManager {
 		}
 		invGoodsReceiptDao.remove(id);
 	}
+
+	@Override
+    public InvGoodsReceipt findByGoodsReceiptNo(String goodsReceiptNo) {
+	    return invGoodsReceiptDao.findByGoodsReceiptNo(goodsReceiptNo);
+    }
 
 }

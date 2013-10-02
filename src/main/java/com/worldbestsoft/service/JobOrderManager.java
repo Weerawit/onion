@@ -19,5 +19,7 @@ public interface JobOrderManager {
 
 	public abstract JobOrder maskAsDone(Long jobOrderId, String user);
 
+	public abstract JobOrder findByJobOrderNo(String jobOrderNo);
+
 
 }

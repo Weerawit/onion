@@ -11,4 +11,6 @@ public interface InvGoodsReceiptDao extends GenericDao<InvGoodsReceipt, Long>{
 
 	public abstract Integer querySize(InvGoodsReceiptCriteria criteria);
 
+	public abstract InvGoodsReceipt findByGoodsReceiptNo(String goodsReceiptNo);
+
 }

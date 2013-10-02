@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.worldbestsoft.dao.InvGoodsReceiptDao;
 import com.worldbestsoft.model.InvGoodsReceipt;
+import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.criteria.InvGoodsReceiptCriteria;
 
 @Repository("invGoodsReceiptDao")
@@ -95,4 +96,20 @@ public class InvGoodsReceiptDaoHibernate extends GenericDaoHibernate<InvGoodsRec
 		return ((Number) queryObj.uniqueResult()).intValue();
 	}
 
+	
+	@Override
+    public InvGoodsReceipt findByGoodsReceiptNo(String goodsReceiptNo) {
+		String hsql = "select o from InvGoodsReceipt o where 1=1 ";
+		final Map<String, Object> params = new HashMap<String, Object>();
+		hsql += " and o.documentNumber.documentNo = :goodsReceiptNo";
+		params.put("goodsReceiptNo", goodsReceiptNo);
+		hsql += " order by o.documentNumber.documentNo";
+		Query queryObj = getSession().createQuery(hsql);
+		queryObj.setProperties(params);
+		List<InvGoodsReceipt> result = queryObj.list();
+		if (null != result && result.size() > 0) {
+			return result.get(0);
+		}
+		return null;
+	}
 }

@@ -7,7 +7,7 @@
     <meta name="heading" content="<fmt:message key='403.title'/>"/>
 </head>
 
-<div class="container" style="height: 400px">
+<div style="height: 400px">
     <fmt:message key="403.message">
         <fmt:param><c:url value="/"/></fmt:param>
     </fmt:message>

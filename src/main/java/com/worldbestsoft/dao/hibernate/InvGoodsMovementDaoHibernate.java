@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.worldbestsoft.dao.InvGoodsMovementDao;
 import com.worldbestsoft.model.InvGoodsMovement;
+import com.worldbestsoft.model.InvGoodsReceipt;
 import com.worldbestsoft.model.criteria.InvGoodsMovementCriteria;
 
 @Repository("invGoodsMovementDao")
@@ -97,6 +98,22 @@ public class InvGoodsMovementDaoHibernate extends GenericDaoHibernate<InvGoodsMo
 		Query queryObj = getSession().createQuery(hsql);
 		queryObj.setProperties(params);
 		return ((Number) queryObj.uniqueResult()).intValue();
+	}
+    
+    @Override
+    public InvGoodsMovement findByGoodsMovementNo(String goodsMovementNo) {
+		String hsql = "select o from InvGoodsMovement o where 1=1 ";
+		final Map<String, Object> params = new HashMap<String, Object>();
+		hsql += " and o.documentNumber.documentNo = :goodsMovementNo";
+		params.put("goodsMovementNo", goodsMovementNo);
+		hsql += " order by o.documentNumber.documentNo";
+		Query queryObj = getSession().createQuery(hsql);
+		queryObj.setProperties(params);
+		List<InvGoodsMovement> result = queryObj.list();
+		if (null != result && result.size() > 0) {
+			return result.get(0);
+		}
+		return null;
 	}
 
 }

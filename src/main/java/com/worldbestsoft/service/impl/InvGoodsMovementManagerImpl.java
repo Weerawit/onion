@@ -27,6 +27,7 @@ import com.worldbestsoft.service.InvStockManager;
 @Service("invGoodsMovementManager")
 public class InvGoodsMovementManagerImpl implements InvGoodsMovementManager {
 	private InvGoodsMovementDao invGoodsMovementDao;
+
 	private InvGoodsMovementItemDao invGoodsMovementItemDao;
 	
 	private DocumentNumberGenerator documentNumberGenerator;
@@ -152,7 +153,7 @@ public class InvGoodsMovementManagerImpl implements InvGoodsMovementManager {
 			invItemLevel.setUpdateUser(invGoodsMovement.getUpdateUser());
 			invItemLevel.setDocumentNumber(invGoodsMovement.getDocumentNumber());
 			invItemLevel.setRefType(ConstantModel.RefType.GOOD_MOVEMENT.getCode());
-			invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+			invItemLevel.setTransactionType(ConstantModel.ItemStockTransactionType.COMMIT.getCode());
 			
 			getInvStockManager().updateStock(invItemLevel);
 		}
@@ -198,6 +199,9 @@ public class InvGoodsMovementManagerImpl implements InvGoodsMovementManager {
 	    return invGoodsMovementDao.get(id);
     }
 
-	
+	@Override
+    public InvGoodsMovement findByGoodsMovementNo(String goodsMovementNo) {
+	    return invGoodsMovementDao.findByGoodsMovementNo(goodsMovementNo);
+    }
 	
 }

@@ -198,6 +198,7 @@ public class SaleOrderFormController extends BaseFormController {
 	@RequestMapping(method = { RequestMethod.GET })
 	protected ModelAndView display(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String id = request.getParameter("id");
+		String saleOrderNo = request.getParameter("saleOrderNo");
 		String method = request.getParameter("method");
 		HttpSession session = request.getSession();
 		
@@ -217,6 +218,8 @@ public class SaleOrderFormController extends BaseFormController {
 		if (!isFormSubmission(request)) {
 			if (id != null) {
 				saleOrder = getSaleOrderManager().get(Long.valueOf(id));
+			} else if (saleOrderNo != null) {
+				saleOrder = getSaleOrderManager().findBySaleOrderNo(saleOrderNo);
 			}
 		} else {
 			saleOrder = getSaleOrderManager().get(Long.valueOf(id));

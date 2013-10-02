@@ -226,10 +226,13 @@ public class JobOrderFormController extends BaseFormController {
 	@RequestMapping(method = { RequestMethod.GET })
 	protected ModelAndView display(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String id = request.getParameter("id");
+		String jobOrerNo = request.getParameter("jobOrderNo");
 		JobOrder jobOrder = new JobOrder();
 		if (!isFormSubmission(request)) {
 			if (id != null) {
 				jobOrder = getJobOrderManager().get(Long.valueOf(id));
+			} else if (jobOrerNo != null) {
+				jobOrder = getJobOrderManager().findByJobOrderNo(jobOrerNo);
 			}
 		} else {
 			jobOrder = getJobOrderManager().get(Long.valueOf(id));

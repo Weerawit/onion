@@ -11,7 +11,7 @@ import com.worldbestsoft.dao.InvItemDao;
 import com.worldbestsoft.dao.InvItemLevelDao;
 import com.worldbestsoft.dao.InvStockDao;
 import com.worldbestsoft.model.ConstantModel;
-import com.worldbestsoft.model.ConstantModel.ItemSockTransactionType;
+import com.worldbestsoft.model.ConstantModel.ItemStockTransactionType;
 import com.worldbestsoft.model.InvItemLevel;
 import com.worldbestsoft.model.InvStock;
 import com.worldbestsoft.service.InvStockManager;
@@ -52,7 +52,7 @@ public class InvStockManagerImpl implements InvStockManager {
 	
 	@Override
     public void cancelReserved(String documentNumber, ConstantModel.RefType documentType, String user) {
-		List<InvItemLevel> reservedList = invItemLevelDao.findByRefDocument(documentNumber, documentType, ItemSockTransactionType.RESERVED);
+		List<InvItemLevel> reservedList = invItemLevelDao.findByRefDocument(documentNumber, documentType, ItemStockTransactionType.RESERVED);
 		if (null != reservedList) {
 			for (InvItemLevel reservedInvItemLevel : reservedList) {
 				InvItemLevel cancelInvItemLevel = new InvItemLevel();
@@ -62,7 +62,7 @@ public class InvStockManagerImpl implements InvStockManager {
 				cancelInvItemLevel.setInvItem(reservedInvItemLevel.getInvItem());
 				cancelInvItemLevel.setDocumentNumber(reservedInvItemLevel.getDocumentNumber());
 				cancelInvItemLevel.setRefType(reservedInvItemLevel.getRefType());
-				cancelInvItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.CANCEL.getCode());
+				cancelInvItemLevel.setTransactionType(ConstantModel.ItemStockTransactionType.CANCEL.getCode());
 				cancelInvItemLevel.setUpdateUser(user);
 				updateStock(cancelInvItemLevel);
 			}
@@ -71,7 +71,7 @@ public class InvStockManagerImpl implements InvStockManager {
 	
     @Override
     public void commitReserved(String documentNumber, ConstantModel.RefType documentType, String user) {
-		List<InvItemLevel> reservedList = invItemLevelDao.findByRefDocument(documentNumber, documentType, ItemSockTransactionType.RESERVED);
+		List<InvItemLevel> reservedList = invItemLevelDao.findByRefDocument(documentNumber, documentType, ItemStockTransactionType.RESERVED);
 		if (null != reservedList) {
 			for (InvItemLevel reservedInvItemLevel : reservedList) {
 				InvItemLevel cancelInvItemLevel = new InvItemLevel();
@@ -80,7 +80,7 @@ public class InvStockManagerImpl implements InvStockManager {
 				cancelInvItemLevel.setInvItem(reservedInvItemLevel.getInvItem());
 				cancelInvItemLevel.setDocumentNumber(reservedInvItemLevel.getDocumentNumber());
 				cancelInvItemLevel.setRefType(reservedInvItemLevel.getRefType());
-				cancelInvItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+				cancelInvItemLevel.setTransactionType(ConstantModel.ItemStockTransactionType.COMMIT.getCode());
 				cancelInvItemLevel.setUpdateUser(user);
 				updateStock(cancelInvItemLevel);
 			}
@@ -143,7 +143,7 @@ public class InvStockManagerImpl implements InvStockManager {
 		invItemLevel.setTransactionDate(new Date());
 		invItemLevel.setUpdateUser(invStock.getUpdateUser());
 		invItemLevel.setRefType(ConstantModel.RefType.ADJUST.getCode());
-		invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+		invItemLevel.setTransactionType(ConstantModel.ItemStockTransactionType.COMMIT.getCode());
 
 		updateStock(invItemLevel);
     }

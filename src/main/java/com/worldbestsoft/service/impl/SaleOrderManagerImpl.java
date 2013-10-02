@@ -140,7 +140,7 @@ public class SaleOrderManagerImpl implements SaleOrderManager {
 //			invItemLevel.setQtyAdjust(saleOrderItem.getQty().multiply(BigDecimal.valueOf(-1)));
 //			invItemLevel.setTransactionDate(new Date());
 //			invItemLevel.setUpdateUser(saleOrder.getCreateUser());
-//			invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+//			invItemLevel.setTransactionType(ConstantModel.ItemStockTransactionType.COMMIT.getCode());
 //			invItemLevel.setDocumentNumber(saleOrder.getDocumentNumber());
 //			invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
 //			
@@ -210,7 +210,7 @@ public class SaleOrderManagerImpl implements SaleOrderManager {
 					invItemLevel.setQtyAvailableAdjust(saleOrderItem.getQty().multiply(BigDecimal.valueOf(-1)));
 					invItemLevel.setTransactionDate(new Date());
 					invItemLevel.setUpdateUser(saleOrder.getCreateUser());
-					invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.RESERVED.getCode());
+					invItemLevel.setTransactionType(ConstantModel.ItemStockTransactionType.RESERVED.getCode());
 					invItemLevel.setDocumentNumber(saleOrderSave.getDocumentNumber());
 					invItemLevel.setRefType(ConstantModel.RefType.SALE_ORDER.getCode());
 					

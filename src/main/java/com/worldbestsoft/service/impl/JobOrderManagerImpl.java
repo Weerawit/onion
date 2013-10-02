@@ -23,6 +23,11 @@ public class JobOrderManagerImpl implements JobOrderManager {
 	
 	private DocumentNumberGenerator documentNumberGenerator;
 	private JobOrderDao jobOrderDao;
+	@Override
+    public JobOrder findByJobOrderNo(String jobOrderNo) {
+	    return jobOrderDao.findByJobOrderNo(jobOrderNo);
+    }
+
 	private InvStockManager invStockManager;
 	
 	private String documentNumberFormat = "JB{0,number,00000}";
@@ -125,7 +130,7 @@ public class JobOrderManagerImpl implements JobOrderManager {
 		invItemLevel.setQtyAdjust(jobOrder.getQty());
 		invItemLevel.setQtyAvailableAdjust(jobOrder.getQty());
 		invItemLevel.setTransactionDate(new Date());
-		invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+		invItemLevel.setTransactionType(ConstantModel.ItemStockTransactionType.COMMIT.getCode());
 		invItemLevel.setUpdateUser(user);
 		invItemLevel.setDocumentNumber(jobOrder.getDocumentNumber());
 		invItemLevel.setRefType(ConstantModel.RefType.JOB_ORDER.getCode());

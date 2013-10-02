@@ -127,5 +127,27 @@ public class LookupManagerImpl implements LookupManager {
 		list.add(new LabelValue(resourceBundle.getString(ConstantModel.GoodsReceiptType.PURCHASE.getKey()), ConstantModel.GoodsReceiptType.PURCHASE.getCode()));
 		return list;
 	}
+    
+    @Override
+    public List<LabelValue> getAllItemStockTransactionType(Locale locale) {
+		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
+		List<LabelValue> list = new ArrayList<LabelValue>();
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.ItemStockTransactionType.COMMIT.getKey()), ConstantModel.ItemStockTransactionType.COMMIT.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.ItemStockTransactionType.RESERVED.getKey()), ConstantModel.ItemStockTransactionType.RESERVED.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.ItemStockTransactionType.CANCEL.getKey()), ConstantModel.ItemStockTransactionType.CANCEL.getCode()));
+		return list;
+	}
+    
+    @Override
+    public List<LabelValue> getAllRefType(Locale locale) {
+		ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale);
+		List<LabelValue> list = new ArrayList<LabelValue>();
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.RefType.GOOD_RECEIPT.getKey()), ConstantModel.RefType.GOOD_RECEIPT.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.RefType.GOOD_MOVEMENT.getKey()), ConstantModel.RefType.GOOD_MOVEMENT.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.RefType.SALE_ORDER.getKey()), ConstantModel.RefType.SALE_ORDER.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.RefType.ADJUST.getKey()), ConstantModel.RefType.ADJUST.getCode()));
+		list.add(new LabelValue(resourceBundle.getString(ConstantModel.RefType.JOB_ORDER.getKey()), ConstantModel.RefType.JOB_ORDER.getCode()));
+		return list;
+	}
 
 }

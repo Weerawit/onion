@@ -197,6 +197,7 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 	@RequestMapping(method = { RequestMethod.GET })
 	protected ModelAndView display(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String id = request.getParameter("id");
+		String goodsReceiptNo = request.getParameter("goodsReceiptNo");
 		String method = request.getParameter("method");
 		HttpSession session = request.getSession();
 		
@@ -210,6 +211,8 @@ public class InvGoodsReceiptFormController extends BaseFormController {
 		if (!isFormSubmission(request)) {
 			if (id != null) {
 				invGoodsReceipt = getInvGoodsReceiptManager().get(Long.valueOf(id));
+			} else if (goodsReceiptNo != null) {
+				invGoodsReceipt = getInvGoodsReceiptManager().findByGoodsReceiptNo(goodsReceiptNo);
 			}
 		} else {
 			invGoodsReceipt = getInvGoodsReceiptManager().get(Long.valueOf(id));

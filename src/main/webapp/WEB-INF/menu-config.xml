@@ -36,6 +36,7 @@
             <Item name="NewGoodsMovement" title="menu.inventory.newgoodsmovement" page="/invGoodsMovement?method=Add"/>
             
             <Item name="Stock" title="menu.inventory.stock" page="/invStockList"/>
+            <Item name="ItemLevel" title="menu.inventory.itemLevel" page="/invItemLevelList"/>
         </Menu>
         <Menu name="EmployeeMenu" title="menu.employee" description="Employee Menu" roles="ROLE_MANAGER" page="/employeeList">
         </Menu>

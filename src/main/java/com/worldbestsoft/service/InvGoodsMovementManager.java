@@ -21,4 +21,6 @@ public interface InvGoodsMovementManager {
 
 	public abstract InvGoodsMovement get(Long id);
 
+	public abstract InvGoodsMovement findByGoodsMovementNo(String goodsMovementNo);
+
 }

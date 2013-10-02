@@ -4,26 +4,26 @@ public class ConstantModel {
 
 	public enum RefType {
 
-		GOOD_RECEIPT("GR"), GOOD_MOVEMENT("GM"), SALE_ORDER("SA"), ADJUST("ADJ"), JOB_ORDER("JB");
+		GOOD_RECEIPT("GR", "refType.GOOD_RECEIPT"), GOOD_MOVEMENT("GM", "refType.GOOD_MOVEMENT"), SALE_ORDER("SA", "refType.SALE_ORDER"), ADJUST("ADJ", "refType.ADJUST"), JOB_ORDER("JB", "refType.JOB_ORDER");
 
 		private final String code;
-		private String resourceKey;
+		private String key;
 
 		private RefType(String code) {
 			this.code = code;
 		}
 		
-		private RefType(String code, String resouceKey) {
+		private RefType(String code, String key) {
 			this.code = code;
-			this.resourceKey = resouceKey;
+			this.key = key;
 		}
 
 		public String getCode() {
 			return code;
 		}
 
-		public String getResourceKey() {
-			return resourceKey;
+		public String getKey() {
+			return key;
 		}
 	}
 
@@ -195,17 +195,17 @@ public class ConstantModel {
 		}
 	}
 	
-	public enum ItemSockTransactionType {
-		COMMIT("COM"), RESERVED("REV"), CANCEL("CAN");
+	public enum ItemStockTransactionType {
+		COMMIT("COM", "itemStockTransactionType.COMMIT"), RESERVED("REV", "itemStockTransactionType.RESERVED"), CANCEL("CAN", "itemStockTransactionType.CANCEL");
 
 		private final String code;
 		private String key;
 		
-		private ItemSockTransactionType(String code) {
+		private ItemStockTransactionType(String code) {
 			this.code = code;
 		}
 
-		private ItemSockTransactionType(String code, String key) {
+		private ItemStockTransactionType(String code, String key) {
 			this.code = code;
 			this.key = key;
 		}

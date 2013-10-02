@@ -82,7 +82,7 @@ public class InvStockFormController extends BaseFormController {
 		invItemLevel.setTransactionDate(new Date());
 		invItemLevel.setUpdateUser(request.getRemoteUser());
 		invItemLevel.setRefType(ConstantModel.RefType.ADJUST.getCode());
-		invItemLevel.setTransactionType(ConstantModel.ItemSockTransactionType.COMMIT.getCode());
+		invItemLevel.setTransactionType(ConstantModel.ItemStockTransactionType.COMMIT.getCode());
 
 		InvStock invStock = getInvStockManager().updateStock(invItemLevel);
 

@@ -11,4 +11,6 @@ public interface InvGoodsMovementDao extends GenericDao<InvGoodsMovement, Long> 
 
 	public abstract Integer querySize(InvGoodsMovementCriteria criteria);
 
+	public abstract InvGoodsMovement findByGoodsMovementNo(String goodsMovementNo);
+
 }
