@@ -102,6 +102,11 @@
             <value description="name">ROLE_INVENTORY</value>
             <value description="description"><![CDATA[Inventory team]]></value>
         </row>
+        <row>
+            <value description="id">8</value>
+            <value description="name">ROLE_REPORT</value>
+            <value description="description"><![CDATA[Report viewer]]></value>
+        </row>
     </table>
     <table name="user_role">
         <column>user_id</column>
@@ -133,6 +138,10 @@
         <row>
             <value description="user_id">2</value>
             <value description="role_id">7</value>
+        </row>
+        <row>
+            <value description="user_id">2</value>
+            <value description="role_id">8</value>
         </row>
     </table>
 </dataset>

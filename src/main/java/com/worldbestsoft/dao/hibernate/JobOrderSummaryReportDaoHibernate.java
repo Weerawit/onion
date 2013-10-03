@@ -48,7 +48,7 @@ public class JobOrderSummaryReportDaoHibernate extends GenericDaoHibernate<JobOr
     				sql += " and o.target_end_date >= :targetEndDateFrom";
     				params.put("targetEndDateFrom", criteria.getTargetEndDateFrom());
     			}
-    			if (null != criteria.getStartDateTo()) {
+    			if (null != criteria.getTargetEndDateTo()) {
     				sql += " and o.target_end_date <= :targetEndDateTo";
     				params.put("targetEndDateTo", criteria.getTargetEndDateTo());
     			}
@@ -98,7 +98,7 @@ public class JobOrderSummaryReportDaoHibernate extends GenericDaoHibernate<JobOr
 				sql += " and o.target_end_date >= :targetEndDateFrom";
 				params.put("targetEndDateFrom", criteria.getTargetEndDateFrom());
 			}
-			if (null != criteria.getStartDateTo()) {
+			if (null != criteria.getTargetEndDateTo()) {
 				sql += " and o.target_end_date <= :targetEndDateTo";
 				params.put("targetEndDateTo", criteria.getTargetEndDateTo());
 			}
