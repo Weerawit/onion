@@ -43,7 +43,8 @@
         <Menu name="CustomerMenu" title="menu.customer" description="Customer Menu" roles="ROLE_MANAGER" page="/customerList">
         </Menu>
         <Menu name="ReportMenu" title="menu.report" description="Report Menu" roles="ROLE_MANAGER">
-        	<Item name="SaleOrderSummary" title="menu.report.saleOrderSummary" page="/report/saleOrderSummaryReport"/>
+        		<Item name="SaleOrderSummary" title="menu.report.saleOrderSummary" page="/report/saleOrderSummaryReport"/>
+        		<Item name="JobOrderSummary" title="menu.report.jobOrderSummary" page="/report/jobOrderSummaryReport"/>
         </Menu>
         <Menu name="Logout" title="user.logout" page="/logout" roles="ROLE_AUTHENTICATED" onclick="return logout(this)"/>
     </Menus>
