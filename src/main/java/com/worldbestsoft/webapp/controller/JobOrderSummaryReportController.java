@@ -80,7 +80,7 @@ public class JobOrderSummaryReportController extends BaseFormController {
 			}
 		} catch (ParseException e) {
 			saveError(request, getText("errors.date", new Object[] { startTime }, request.getLocale()));
-			return new ModelAndView("report/jobOrderSummaryReportList", model.asMap());
+			return new ModelAndView("report/jobOrderSummaryReport", model.asMap());
 		}
 		try {
 			if (StringUtils.isNotBlank(endTime)) {
@@ -89,7 +89,7 @@ public class JobOrderSummaryReportController extends BaseFormController {
 			}
 		} catch (ParseException e) {
 			saveError(request, getText("errors.date", new Object[] { endTime }, request.getLocale()));
-			return new ModelAndView("report/jobOrderSummaryReportList", model.asMap());
+			return new ModelAndView("report/jobOrderSummaryReport", model.asMap());
 		}
 		
 		startTime = request.getParameter("targetEndDateFrom");
@@ -101,7 +101,7 @@ public class JobOrderSummaryReportController extends BaseFormController {
 			}
 		} catch (ParseException e) {
 			saveError(request, getText("errors.date", new Object[] { startTime }, request.getLocale()));
-			return new ModelAndView("report/jobOrderSummaryReportList", model.asMap());
+			return new ModelAndView("report/jobOrderSummaryReport", model.asMap());
 		}
 		try {
 			if (StringUtils.isNotBlank(endTime)) {
@@ -110,7 +110,7 @@ public class JobOrderSummaryReportController extends BaseFormController {
 			}
 		} catch (ParseException e) {
 			saveError(request, getText("errors.date", new Object[] { endTime }, request.getLocale()));
-			return new ModelAndView("report/jobOrderSummaryReportList", model.asMap());
+			return new ModelAndView("report/jobOrderSummaryReport", model.asMap());
 		}
 		
 		criteria.setStatus(request.getParameter("status"));
@@ -125,6 +125,6 @@ public class JobOrderSummaryReportController extends BaseFormController {
 
 		model.addAttribute("resultSize", jobOrderSummaryReportManager.querySize(criteria));
 		model.addAttribute("jobOrderSummaryReportList", jobOrderSummaryReportManager.query(criteria, page, size, sortColumn, order));
-		return new ModelAndView("report/jobOrderSummaryReportList", model.asMap());
+		return new ModelAndView("report/jobOrderSummaryReport", model.asMap());
 	}
 }
