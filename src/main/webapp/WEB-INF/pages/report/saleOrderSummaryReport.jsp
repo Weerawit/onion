@@ -1,7 +1,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-<title><fmt:message key="saleOrderList.title" /></title>
+<title><fmt:message key="saleOrderSummaryReport.title" /></title>
 <meta name="menu" content="ReportMenu" />
 <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/scripts/datepicker/css/bootstrap-datetimepicker.min.css'/>" />
 <script type="text/javascript" src="<c:url value='/scripts/datepicker/js/bootstrap-datetimepicker.min.js'/>"></script>
@@ -17,38 +17,28 @@
 
 <div class="span12">
 	<h2>
-		<fmt:message key="saleOrderList.heading" />
+		<fmt:message key="saleOrderSummaryReport.heading" />
 	</h2>
 
-	<form method="get" action="${ctx}/reports/saleOrderSummaryReport" id="searchForm" class="well form-horizontal">
+	<form method="get" action="${ctx}/report/saleOrderSummaryReport" id="searchForm" class="well form-horizontal">
 	<div class="row-fluid">
-		<div class="span2">
-			<label class="checkbox" for="optType">
-				<input type="radio" id="optType">
-				<fmt:message key="saleOrder.deliveryDateFrom" />
-			</label>
-		</div>
-		<div class="span5">
+		<div class="span6">
 			<div class="control-group">
-				<label class="control-label" for="deliveryDateFrom"><fmt:message key="saleOrder.deliveryDateFrom" />:</label>
+				<label class="control-label" for="documentNumber.documentNo"><fmt:message key="saleOrder.documentNumber.documentNo" />:</label>
 				<div class="controls">
-					<div class="input-append date" id="deliveryDateFromDatepicker">
-						<input type="text" class="input-medium" name="deliveryDateFrom" value="<c:out value='${param.deliveryDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
-					</div>
+					<input type="text" class="input-medium" name="documentNumber.documentNo" id="documentNumber.documentNo" value="${param['documentNumber.documentNo']}" placeholder="" />
 				</div>
 			</div>
 		</div>
-		<div class="span5">
+		<div class="span6">
 			<div class="control-group">
-				<label class="control-label" for="deliveryDateFrom"><fmt:message key="saleOrder.deliveryDateFrom" />:</label>
+				<label class="control-label" for="customer.name"><fmt:message key="saleOrder.customer.name" />:</label>
 				<div class="controls">
-					<div class="input-append date" id="deliveryDateFromDatepicker">
-						<input type="text" class="input-medium" name="deliveryDateFrom" value="<c:out value='${param.deliveryDateFrom}'/>"><span class="add-on"><i class="icon-th"></i></span>
-					</div>
+					<input type="text" class="input-xlarge" name="customer.name" id="customer.name" value="${param['customer.name']}" placeholder="" />
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>	
 	<div class="row-fluid">
 		<div class="span6">	
 			<div class="control-group">
@@ -72,7 +62,6 @@
 		</div>
 	</div>
 	
-		
 		<div class="control-group">
 			<div class="controls">
 
@@ -88,7 +77,7 @@
 			</div>
 		</div>
 	</form>
-	<c:if test="${not empty saleOrderList }">
+	<c:if test="${not empty saleOrderSummaryReportList }">
 	<div class="control-group pull-right">
 		<fmt:message key="label.showPagination" />
 		&nbsp;
@@ -96,28 +85,28 @@
 	</div>
 	</c:if>	
 	<div id="actions">
-		<a class="btn btn-primary" href="<c:url value='/saleOrder?method=Add&from=list'/>"> <i class="icon-plus icon-white"></i> <fmt:message key="button.add" />
-		</a>
-	<%--
-		<button id="button.delete" class="btn" type="submit">
-			<i class="icon-trash"></i>
-			<fmt:message key="button.delete" />
-		</button>
- 	--%>
 		<a class="btn" href="<c:url value='/mainMenu'/>"> <i class="icon-ok"></i> <fmt:message key="button.done" /></a>
-		
 	</div>
+	<jsp:useBean id="decorator" class="org.displaytag.decorator.TotalTableDecorator"/>
+	<fmt:message key="saleOrderSummaryReport.subtotalLabel" var="subtotalLabel"/>
+	<jsp:setProperty  property="subtotalLabel" name="decorator" value="${subtotalLabel}"/>
+	<fmt:message key="saleOrderSummaryReport.totalLabel" var="totalLabel"/>
+	<jsp:setProperty property="totalLabel" name="decorator" value="${totalLabel }"/>
+	<display:table name="saleOrderSummaryReportList" cellspacing="0" cellpadding="0" requestURI="" id="saleOrder"  pagesize="${ps}" varTotals="totals" class="table table-condensed table-striped table-hover table-bordered" export="true" size="resultSize" partialList="true" sort="external">
+		<display:column property="customerName" escapeXml="true" sortable="true" titleKey="saleOrder.customer.name" sortName="c.name" group="1"/>
+		<display:column property="saleOrderNo" escapeXml="true" sortable="true" titleKey="saleOrder.documentNumber.documentNo" sortName="d.document_no" />
+		<display:column property="totalPrice" escapeXml="false" sortable="true" titleKey="saleOrder.totalPrice" sortName="totalPrice" format="{0,number,#,##0.00}" total="true"/>
+		<display:setProperty name="export.excel.filename" value="SaleOrderSummaryReport.xls" />
+		<display:setProperty name="export.csv.filename" value="SaleOrderSummaryReport.csv" />
+		<display:setProperty name="export.pdf.filename" value="SaleOrderSummaryReport.pdf" />
+		<display:setProperty name="decorator.media.html"  value="decorator" />
+		
+	</display:table>
+	
 </div>
 
 
 <script type="text/javascript">
-	<c:if test="${not empty saleOrderList}">
-	$(document).ready(function() {
-		$("#chkSelectAll").click(function() {
-			toggleCheckAll(this, document.forms['deleteForm'].checkbox);
-		});
-	});
-	</c:if>
 	
 	$(document).ready(function () {
 		$('input[name="customer.name"]').lookup({
