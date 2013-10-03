@@ -89,7 +89,7 @@
 						dataType : "json",
 						url : url,
 						data : {
-							'q' : query
+							'q' : query.trim()
 						},
 						success : function(data) {
 							jsonStringList = [];
