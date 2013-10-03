@@ -13,6 +13,7 @@ import com.worldbestsoft.dao.CatalogDao;
 import com.worldbestsoft.dao.CatalogItemDao;
 import com.worldbestsoft.dao.InvItemDao;
 import com.worldbestsoft.dao.InvItemGroupDao;
+import com.worldbestsoft.dao.SearchException;
 import com.worldbestsoft.model.Catalog;
 import com.worldbestsoft.model.CatalogItem;
 import com.worldbestsoft.model.InvItem;
@@ -189,6 +190,11 @@ public class CatalogManagerImpl implements CatalogManager {
 		}
 	    catalogDao.remove(id);
 	    invItemDao.remove(catalog.getInvItem().getId());
+    }
+
+	@Override
+    public List<Catalog> search(String searchTerm) throws SearchException {
+	    return catalogDao.search(searchTerm);
     }
 
 	

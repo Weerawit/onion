@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.CustomerDao;
+import com.worldbestsoft.dao.SearchException;
 import com.worldbestsoft.model.Customer;
 import com.worldbestsoft.service.CustomerManager;
 
@@ -61,6 +62,11 @@ public class CustomerManagerImpl implements CustomerManager {
 	@Override
     public void remove(Long id) {
 	    customerDao.remove(id);
+    }
+
+	@Override
+    public List<Customer> search(String searchTerm) throws SearchException {
+	    return customerDao.search(searchTerm);
     }
 
 	

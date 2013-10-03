@@ -3,6 +3,7 @@ package com.worldbestsoft.service;
 import java.util.Collection;
 import java.util.List;
 
+import com.worldbestsoft.dao.SearchException;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.SaleOrderItem;
 import com.worldbestsoft.model.criteria.SaleOrderCriteria;
@@ -26,5 +27,7 @@ public interface SaleOrderManager {
 	public abstract void remove(Long id, String user, String cancelReason);
 
 	public SaleOrder delivery(Long saleOrderId, String user);
+
+	public abstract List<SaleOrder> search(String searchTerm) throws SearchException;
 
 }

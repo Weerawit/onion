@@ -2,6 +2,7 @@ package com.worldbestsoft.service;
 
 import java.util.List;
 
+import com.worldbestsoft.dao.SearchException;
 import com.worldbestsoft.model.Employee;
 
 public interface EmployeeManager {
@@ -17,5 +18,7 @@ public interface EmployeeManager {
 	public abstract Employee save(Employee object);
 
 	public abstract void remove(Long id);
+
+	public abstract List<Employee> search(String searchTerm) throws SearchException;
 
 }

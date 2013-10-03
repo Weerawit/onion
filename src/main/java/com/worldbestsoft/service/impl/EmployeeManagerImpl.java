@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.EmployeeDao;
+import com.worldbestsoft.dao.SearchException;
 import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.service.EmployeeManager;
 
@@ -72,9 +73,10 @@ public class EmployeeManagerImpl implements EmployeeManager {
 	    employeeDao.remove(id);
     }
 
+	@Override
+    public List<Employee> search(String searchTerm) throws SearchException {
+	    return employeeDao.search(searchTerm);
+    }
 
-	
-	
-	
 
 }

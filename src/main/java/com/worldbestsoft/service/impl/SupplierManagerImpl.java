@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.worldbestsoft.dao.SearchException;
 import com.worldbestsoft.dao.SupplierDao;
 import com.worldbestsoft.model.Supplier;
 import com.worldbestsoft.service.SupplierManager;
@@ -87,8 +88,9 @@ public class SupplierManagerImpl implements SupplierManager {
 	    supplierDao.remove(id);
     }
 
-
-
-	
+	@Override
+    public List<Supplier> search(String searchTerm) throws SearchException {
+	    return supplierDao.search(searchTerm);
+    }
 
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.worldbestsoft.dao.SaleOrderDao;
 import com.worldbestsoft.dao.SaleOrderItemDao;
+import com.worldbestsoft.dao.SearchException;
 import com.worldbestsoft.dao.hibernate.JobOrderDao;
 import com.worldbestsoft.model.ConstantModel;
 import com.worldbestsoft.model.ConstantModel.RefType;
@@ -281,6 +282,11 @@ public class SaleOrderManagerImpl implements SaleOrderManager {
 		}
 		saleOrderDao.save(saleOrder);
 	}
+
+	@Override
+    public List<SaleOrder> search(String searchTerm) throws SearchException {
+	    return saleOrderDao.search(searchTerm);
+    }
 	
 	
 }

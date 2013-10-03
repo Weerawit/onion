@@ -3,6 +3,7 @@ package com.worldbestsoft.service;
 import java.util.Collection;
 import java.util.List;
 
+import com.worldbestsoft.dao.SearchException;
 import com.worldbestsoft.model.Catalog;
 import com.worldbestsoft.model.CatalogItem;
 
@@ -21,5 +22,7 @@ public interface CatalogManager {
 	public abstract void remove(Long id);
 
 	public abstract Catalog save(Catalog catalog, Collection<CatalogItem> newCatalogItemList);
+
+	public abstract List<Catalog> search(String searchTerm) throws SearchException;
 
 }

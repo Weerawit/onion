@@ -14,12 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worldbestsoft.model.Catalog;
 import com.worldbestsoft.model.Customer;
-import com.worldbestsoft.model.DocumentNumber;
 import com.worldbestsoft.model.Employee;
 import com.worldbestsoft.model.InvItem;
 import com.worldbestsoft.model.SaleOrder;
 import com.worldbestsoft.model.Supplier;
-import com.worldbestsoft.model.criteria.SaleOrderCriteria;
 import com.worldbestsoft.service.CatalogManager;
 import com.worldbestsoft.service.CustomerManager;
 import com.worldbestsoft.service.EmployeeManager;
@@ -94,10 +92,11 @@ public class JsonController {
 
 	@RequestMapping(value="/item*", method = RequestMethod.GET)
 	public @ResponseBody List<Map<String, String>> getInvItemList(@RequestParam("q") String name) {
-		InvItem criteria = new InvItem();
-		criteria.setName(name);
+//		InvItem criteria = new InvItem();
+//		criteria.setName(name);
 		List<Map<String, String>> resultList = new ArrayList<Map<String,String>>();
-		List<InvItem> invItemList = invItemManager.query(criteria, 0, 10, null, null);
+//		List<InvItem> invItemList = invItemManager.query(criteria, 0, 10, null, null);
+		List<InvItem> invItemList = invItemManager.search(name + "*");
 		for (InvItem invItem : invItemList) {
 			Map<String, String> model = new HashMap<String, String>();
 			model.put("name", invItem.getName());
@@ -109,10 +108,11 @@ public class JsonController {
 	
 	@RequestMapping(value="/employee*", method = RequestMethod.GET)
 	public @ResponseBody List<Map<String, Object>> getEmployeeList(@RequestParam("q") String name) {
-		Employee criteria = new Employee();
-		criteria.setFirstName(name);
+//		Employee criteria = new Employee();
+//		criteria.setFirstName(name);
 		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
-		List<Employee> employeeList = employeeManager.query(criteria, 0, 10, null, null);
+//		List<Employee> employeeList = employeeManager.query(criteria, 0, 10, null, null);
+		List<Employee> employeeList = employeeManager.search(name + "*");
 		for (Employee employee : employeeList) {
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("id", employee.getId().toString());
@@ -133,10 +133,11 @@ public class JsonController {
 	
 	@RequestMapping(value="/customer*", method = RequestMethod.GET)
 	public @ResponseBody List<Map<String, String>> getCustomerList(@RequestParam("q") String name) {
-		Customer criteria = new Customer();
-		criteria.setName(name);
+//		Customer criteria = new Customer();
+//		criteria.setName(name);
 		List<Map<String, String>> resultList = new ArrayList<Map<String,String>>();
-		List<Customer> customerList = customerManager.query(criteria, 0, 10, null, null);
+//		List<Customer> customerList = customerManager.query(criteria, 0, 10, null, null);
+		List<Customer> customerList = customerManager.search(name + "*");
 		for (Customer customer : customerList) {
 			Map<String, String> model = new HashMap<String, String>();
 			model.put("id", customer.getId().toString());
@@ -155,10 +156,11 @@ public class JsonController {
 	
 	@RequestMapping(value="/catalog*", method = RequestMethod.GET)
 	public @ResponseBody List<Map<String, String>> getCatalogList(@RequestParam("q") String name) {
-		Catalog criteria = new Catalog();
-		criteria.setName(name);
+//		Catalog criteria = new Catalog();
+//		criteria.setName(name);
 		List<Map<String, String>> resultList = new ArrayList<Map<String,String>>();
-		List<Catalog> catalogList = catalogManager.query(criteria, 0, 10, null, null);
+//		List<Catalog> catalogList = catalogManager.query(criteria, 0, 10, null, null);
+		List<Catalog> catalogList = catalogManager.search(name + "*");
 		for (Catalog catalog : catalogList) {
 			Map<String, String> model = new HashMap<String, String>();
 			model.put("id", catalog.getId().toString());
@@ -176,12 +178,13 @@ public class JsonController {
 	
 	@RequestMapping(value="/saleOrder*", method = RequestMethod.GET)
 	public @ResponseBody List<Map<String, Object>> getSaleOrderList(@RequestParam("q") String name) {
-		SaleOrderCriteria criteria = new SaleOrderCriteria();
-		DocumentNumber documentNumber = new DocumentNumber();
-		documentNumber.setDocumentNo(name);
-		criteria.setDocumentNumber(documentNumber);
+//		SaleOrderCriteria criteria = new SaleOrderCriteria();
+//		DocumentNumber documentNumber = new DocumentNumber();
+//		documentNumber.setDocumentNo(name);
+//		criteria.setDocumentNumber(documentNumber);
 		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
-		List<SaleOrder> saleOrderList = saleOrderManager.query(criteria, 0, 10, null, null);
+//		List<SaleOrder> saleOrderList = saleOrderManager.query(criteria, 0, 10, null, null);
+		List<SaleOrder> saleOrderList = saleOrderManager.search(name + "*");
 		for (SaleOrder saleOrder : saleOrderList) {
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("id", saleOrder.getId().toString());
@@ -210,10 +213,11 @@ public class JsonController {
 	
 	@RequestMapping(value="/supplier*", method = RequestMethod.GET)
 	public @ResponseBody List<Map<String, Object>> getSupplierList(@RequestParam("q") String name) {
-		Supplier criteria = new Supplier();
-		criteria.setName(name);
+//		Supplier criteria = new Supplier();
+//		criteria.setName(name);
 		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
-		List<Supplier> supplierList = supplierManager.query(criteria, 0, 10, null, null);
+//		List<Supplier> supplierList = supplierManager.query(criteria, 0, 10, null, null);
+		List<Supplier> supplierList = supplierManager.search(name + "*");
 		for (Supplier supplier : supplierList) {
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("id", supplier.getId().toString());

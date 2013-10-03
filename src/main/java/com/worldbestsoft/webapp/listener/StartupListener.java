@@ -104,7 +104,7 @@ public class StartupListener implements ServletContextListener {
     }
 
     private static void doReindexing(GenericManager manager) {
-        manager.reindexAll(false);
+        manager.reindexAll(true);
     }
 
     /**
