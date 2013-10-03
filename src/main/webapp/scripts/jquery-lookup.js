@@ -29,10 +29,10 @@
 		handler : function(json) {
 		},
 		autocompleteUrl : function () {
-			return 'json/' + this.type;
+			return ctx + '/json/' + this.type;
 		},
 		popupUrl : function (withCondition) {
-			url = 'popup/' + this.type;
+			url = ctx + '/popup/' + this.type;
 			if (withCondition && typeof this.btnSearchCondition == 'function') {
 				url += '?' + jQuery.param(this.btnSearchCondition.call(this));
 			}
