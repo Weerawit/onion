@@ -34,8 +34,8 @@
 				<div class="control-group">
 					<label class="control-label" for="code"><fmt:message key="invItemLevel.invItem.name" />:</label>
 					<div class="controls">
-						<input type="hidden" id="invItem.code" value="${param['invItem.code']}" /> 
-						<input type="text" class="input-medium" name="invItem.name" id="invItem.name" value="${param['invItem.name']}" placeholder="" />
+						<input type="hidden" id="invItem.code" name="invItem.code" value="${param['invItem.code']}" /> 
+						<input type="text" class="input-medium" name="invItem.name" id="invItem.name" value="${param['invItem.name']}" placeholder="" autocomplete="off" data-lookup-key-value="${param['invItem.name']}"/>
 					</div>
 				</div>
 			</div>

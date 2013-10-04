@@ -28,7 +28,7 @@
 				<label class="control-label" for="employee.name"><fmt:message key="jobOrder.employee.name" />:</label>
 				<div class="controls">
 					<input type="hidden" name="employee.id" id="employee.id" value="${param['employee.id']}" placeholder="" />
-					<input type="text" class="input-xlarge" name="employee.name" id="employee.name" value="${param['employee.name']}" placeholder="" autocomplete="off"/>
+					<input type="text" class="input-xlarge" name="employee.name" id="employee.name" value="${param['employee.name']}" placeholder="" autocomplete="off" data-lookup-key-value="${param['employee.name']}"/>
 				</div>
 			</div>
 		</div>
@@ -160,27 +160,6 @@
 				} else {
 					$('input[name="employee.name"]').val('');
 					$('input[name="employee.id"]').val('');
-				}
-			}
-		});
-		$('input[name="saleOrder.documentNumber.documentNo"]').lookup({
-			type : 'saleOrder',
-			displayProperty : function(json) {
-				return json.saleOrderNo;
-			},
-			selectProperty : function(json) {
-				return json.saleOrderNo;
-			},
-			btnSearchCondition : function() {
-				return {
-					'documentNumber.documentNo' : $('input[name="saleOrder.documentNumber.documentNo"]').val()
-				};
-			},
-			handler : function(json) {
-				if (json) {
-					
-				} else {
-					$('input[name="saleOrder.documentNumber.documentNo"]').val('');
 				}
 			}
 		});

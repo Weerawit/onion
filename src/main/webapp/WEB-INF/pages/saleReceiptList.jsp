@@ -26,7 +26,7 @@
 			<div class="control-group">
 				<label class="control-label" for="saleOrder.documentNumber.documentNo"><fmt:message key="saleOrder.documentNumber.documentNo" />:</label>
 				<div class="controls">
-					<input type="text" class="input-medium" name="saleOrder.documentNumber.documentNo" id="saleOrder.documentNumber.documentNo" value="${param['saleOrder.documentNumber.documentNo']}" placeholder="" />
+					<input type="text" class="input-medium" name="saleOrder.documentNumber.documentNo" id="saleOrder.documentNumber.documentNo" value="${param['saleOrder.documentNumber.documentNo']}" placeholder="" autocomplete="off" data-lookup-key-value="${param['saleOrder.documentNumber.documentNo']}"/>
 				</div>
 			</div>
 		</div>
@@ -34,7 +34,7 @@
 			<div class="control-group">
 				<label class="control-label" for="saleOrder.customer.name"><fmt:message key="saleReceipt.saleOrder.customer.name" />:</label>
 				<div class="controls">
-					<input type="text" class="input-xlarge" name="saleOrder.customer.name" id="saleOrder.customer.name" value="${param['saleOrder.customer.name']}" placeholder="" />
+					<input type="text" class="input-xlarge" name="saleOrder.customer.name" id="saleOrder.customer.name" value="${param['saleOrder.customer.name']}" placeholder=""  autocomplete="off" data-lookup-key-value="${param['saleOrder.customer.name']}"/>
 				</div>
 			</div>
 		</div>

@@ -51,7 +51,7 @@
 						<c:when test="${saleOrder.documentNumber.documentNo == null }">
 							<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 								<div class="controls">
-									<form:input path="customer.name" id="customer.name" cssClass="input-large" maxlength="50" autocomplete="off" />
+									<form:input path="customer.name" id="customer.name" cssClass="input-large" maxlength="50" autocomplete="off" data-lookup-key-value="${saleOrder.customer.name}"/>
 									<form:errors path="customer.name" cssClass="help-inline" />
 									<form:hidden path="customer.id"/>
 								</div>

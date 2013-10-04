@@ -11,7 +11,7 @@
 					<img id="image<c:out value='${saleOrderItem_rowNum - 1}'/>" src="<c:url value='/img/thumbnail/catalog/${saleOrderItem.catalog.id}?t=100'/>"  class="img-polaroid pull-left"/>
 					<div class="media-body">
 						<h4 class="media-heading">
-							<input type="hidden" name="catalog.code" value="<c:out value='${saleOrderItem.catalog.code }'/>" /> <input type="text" name="catalog.name" value="<c:out value='${saleOrderItem.catalog.name }'/>" class="input-medium" autocomplete="off" />
+							<input type="hidden" name="catalog.code" value="<c:out value='${saleOrderItem.catalog.code }'/>" /> <input type="text" name="catalog.name" value="<c:out value='${saleOrderItem.catalog.name }'/>" class="input-medium" autocomplete="off" data-lookup-key-value="${saleOrderItem.catalog.name}"/>
 						</h4>
 						<c:if test="${saleOrderItem.catalog.code != null }">
 							<fmt:message key="invItem.invStock.qtyAvailable"/> : <fmt:formatNumber value="${saleOrderItem.catalog.invItem.invStock.qtyAvailable }" pattern="#,##0.##" /> 

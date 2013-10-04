@@ -64,7 +64,7 @@
 									<appfuse:label styleClass="control-label" key="jobOrder.catalog.name" />
 									<div class="controls">
 										<form:hidden path="catalog.code"/>
-										<form:input path="catalog.name" name="catalog.name" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
+										<form:input path="catalog.name" name="catalog.name" cssClass="input-xlarge" maxlength="255" autocomplete="off" data-lookup-key-value="${jobOrder.catalog.name}"/>
 										<form:errors path="catalog.name" cssClass="help-inline" />
 									</div>
 								</div>
@@ -81,7 +81,7 @@
 								<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 									<appfuse:label styleClass="control-label" key="jobOrder.employee.id" />
 									<div class="controls">
-										<form:input path="employee.fullname" id="employee.fullname" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
+										<form:input path="employee.fullname" id="employee.fullname" cssClass="input-xlarge" maxlength="255" autocomplete="off" data-lookup-key-value="${jobOrder.employee.fullname}"/>
 										<form:hidden path="employee.id" />
 										<form:errors path="employee.id" cssClass="help-inline" />
 									</div>
@@ -93,7 +93,7 @@
 								<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 									<appfuse:label styleClass="control-label" key="jobOrder.saleOrder.documentNumber.documentNo" />
 									<div class="controls">
-										<form:input path="saleOrder.documentNumber.documentNo" name="saleOrder.documentNumber.documentNo" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
+										<form:input path="saleOrder.documentNumber.documentNo" name="saleOrder.documentNumber.documentNo" cssClass="input-xlarge" maxlength="255" autocomplete="off" data-lookup-key-value="${jobOrder.saleOrder.documentNumber.documentNo}"/>
 										<form:errors path="saleOrder.documentNumber.documentNo" cssClass="help-inline" />
 									</div>
 								</div>

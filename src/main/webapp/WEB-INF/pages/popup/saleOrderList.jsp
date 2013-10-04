@@ -35,7 +35,7 @@
 				<div class="control-group">
 					<label class="control-label" for="customer.name"><fmt:message key="saleOrder.customer.name" />:</label>
 					<div class="controls">
-						<input type="text" class="input-xlarge" name="customer.name" id="customer.name" value="${param['customer.name']}" placeholder="" />
+						<input type="text" class="input-xlarge" name="customer.name" id="customer.name" value="${param['customer.name']}" placeholder="" autocomplete="off" data-lookup-key-value="${param['customer.name']}"/>
 					</div>
 				</div>
 			</div>

@@ -28,7 +28,7 @@
 				<label class="control-label" for="employee.name"><fmt:message key="jobOrder.employee.name" />:</label>
 				<div class="controls">
 					<input type="hidden" name="employee.id" id="employee.id" value="${param['employee.id']}" placeholder="" />
-					<input type="text" class="input-xlarge" name="employee.name" id="employee.name" value="${param['employee.name']}" placeholder="" autocomplete="off"/>
+					<input type="text" class="input-xlarge" name="employee.name" id="employee.name" value="${param['employee.name']}" placeholder="" autocomplete="off" data-lookup-key-value="${param['employee.name']}"/>
 				</div>
 			</div>
 		</div>
@@ -36,7 +36,7 @@
 			<div class="control-group">
 				<appfuse:label styleClass="control-label" key="jobOrder.saleOrder.documentNumber.documentNo" />
 				<div class="controls">
-					<input type="text" class="input-xlarge" name="saleOrder.documentNumber.documentNo" id="saleOrder.documentNumber.documentNo" value="${param['saleOrder.documentNumber.documentNo']}" placeholder="" autocomplete="off"/>
+					<input type="text" class="input-xlarge" name="saleOrder.documentNumber.documentNo" id="saleOrder.documentNumber.documentNo" value="${param['saleOrder.documentNumber.documentNo']}" placeholder="" autocomplete="off" data-lookup-key-value="${param['saleOrder.documentNumber.documentNo']}"/>
 				</div>
 			</div>
 		</div>

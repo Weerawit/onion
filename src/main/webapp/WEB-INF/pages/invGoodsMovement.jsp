@@ -95,7 +95,7 @@
 					<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 						<appfuse:label styleClass="control-label" key="invGoodsMovement.owner" />
 						<div class="controls">
-							<form:input path="owner" id="owner" cssClass="input-xlarge" maxlength="255" autocomplete="off"/>
+							<form:input path="owner" id="owner" cssClass="input-xlarge" maxlength="255" autocomplete="off" data-lookup-key-value="${invGoodsMovement.owner}"/>
 							<form:errors path="owner" cssClass="help-inline" />
 						</div>
 					</div>

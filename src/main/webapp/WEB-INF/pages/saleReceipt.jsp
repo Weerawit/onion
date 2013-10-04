@@ -79,7 +79,7 @@
 						<div class="control-group${(not empty status.errorMessage) ? ' error' : ''}">
 							<appfuse:label styleClass="control-label" key="saleReceipt.saleOrder.documentNumber.documentNo" />
 							<div class="controls">
-								<form:input path="saleOrder.documentNumber.documentNo" name="saleOrder.documentNumber.documentNo" cssClass="input-xlarge" maxlength="255" autocomplete="off" />
+								<form:input path="saleOrder.documentNumber.documentNo" name="saleOrder.documentNumber.documentNo" cssClass="input-xlarge" maxlength="255" autocomplete="off" data-lookup-key-value="${saleReceipt.saleOrder.documentNumber.documentNo}"/>
 								<form:errors path="saleOrder.documentNumber.documentNo" cssClass="help-inline" />
 							</div>
 						</div>
