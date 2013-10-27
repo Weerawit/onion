@@ -138,14 +138,34 @@
 						<text><![CDATA[จำนวนเงินที่ได้รับ]]></text>
 					</staticText>
 					<textField pattern="#,##0.00;-#,##0.00">
-						<reportElement uuid="63daeb72-781c-4dca-b991-7c44038d371b" x="435" y="0" width="120" height="30"/>
+						<reportElement uuid="63daeb72-781c-4dca-b991-7c44038d371b" x="215" y="0" width="120" height="30"/>
 						<box rightPadding="10">
 							<leftPen lineWidth="0.0"/>
 						</box>
 						<textElement textAlignment="Right" verticalAlignment="Middle">
 							<font fontName="AngsanaUPC" size="14" isBold="true"/>
 						</textElement>
-						<textFieldExpression><![CDATA[$P{saleReceipt}.getSaleOrder().getTotalPrice()]]></textFieldExpression>
+						<textFieldExpression><![CDATA[$P{saleReceipt}.getReceiptAmount();]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement uuid="aa2c2493-5965-4bf7-babc-da07db7f3478" x="335" y="0" width="100" height="30"/>
+						<box>
+							<rightPen lineWidth="0.0" lineStyle="Solid"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font fontName="AngsanaUPC" size="14"/>
+						</textElement>
+						<text><![CDATA[ค้างชำระ]]></text>
+					</staticText>
+					<textField pattern="#,##0.00;-#,##0.00">
+						<reportElement uuid="1a81d34d-ef18-408a-a618-145fd01e3ebb" x="435" y="0" width="120" height="30"/>
+						<box rightPadding="10">
+							<leftPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font fontName="AngsanaUPC" size="14" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$P{saleReceipt}.getSaleOrder().getTotalPrice().subtract($P{saleReceipt}.getSaleOrder().getPaymentPaid())]]></textFieldExpression>
 					</textField>
 				</frame>
 				<frame>
