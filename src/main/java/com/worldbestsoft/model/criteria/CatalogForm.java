@@ -13,6 +13,16 @@ public class CatalogForm extends Catalog {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
+
+	@Override
+    public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("CatalogForm [filename=");
+	    builder.append(filename);
+	    builder.append("]");
+	    return builder.toString();
+    }
+	
 	
 	
 }

@@ -24,5 +24,15 @@ public class InvGoodsReceiptCriteria extends InvGoodsReceipt implements java.io.
 	public void setReceiptDateTo(Date receiptDateTo) {
 		this.receiptDateTo = receiptDateTo;
 	}
+	@Override
+    public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("InvGoodsReceiptCriteria [receiptDateFrom=");
+	    builder.append(receiptDateFrom);
+	    builder.append(", receiptDateTo=");
+	    builder.append(receiptDateTo);
+	    builder.append("]");
+	    return builder.toString();
+    }
 	
 }

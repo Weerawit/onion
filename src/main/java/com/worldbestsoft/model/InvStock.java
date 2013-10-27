@@ -4,6 +4,7 @@ package com.worldbestsoft.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -105,4 +107,49 @@ public class InvStock implements java.io.Serializable {
 		this.updateUser = updateUser;
 	}
 
+	@Override
+    public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("InvStock [invItemId=");
+	    builder.append(invItemId);
+	    builder.append(", invItem=");
+	    builder.append(invItem);
+	    builder.append(", qty=");
+	    builder.append(qty);
+	    builder.append(", qtyAvailable=");
+	    builder.append(qtyAvailable);
+	    builder.append(", updateDate=");
+	    builder.append(updateDate);
+	    builder.append(", updateUser=");
+	    builder.append(updateUser);
+	    builder.append("]");
+	    return builder.toString();
+    }
+
+	@Override
+    public int hashCode() {
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + ((invItemId == null) ? 0 : invItemId.hashCode());
+	    return result;
+    }
+
+	@Override
+    public boolean equals(Object obj) {
+	    if (this == obj)
+		    return true;
+	    if (obj == null)
+		    return false;
+	    if (getClass() != obj.getClass())
+		    return false;
+	    InvStock other = (InvStock) obj;
+	    if (invItemId == null) {
+		    if (other.invItemId != null)
+			    return false;
+	    } else if (!invItemId.equals(other.invItemId))
+		    return false;
+	    return true;
+    }
+
+	
 }

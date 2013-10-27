@@ -25,6 +25,18 @@ public class SaleOrderSummaryReport {
 	public void setTotalPrice(BigDecimal totalPrice) {
 		this.totalPrice = totalPrice;
 	}
+	@Override
+    public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("SaleOrderSummaryReport [customerName=");
+	    builder.append(customerName);
+	    builder.append(", saleOrderNo=");
+	    builder.append(saleOrderNo);
+	    builder.append(", totalPrice=");
+	    builder.append(totalPrice);
+	    builder.append("]");
+	    return builder.toString();
+    }
 	
 	
 	

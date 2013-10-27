@@ -1,5 +1,7 @@
 package com.worldbestsoft.model.criteria;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -67,4 +69,39 @@ public class DownloadModel {
 		}
 		return null;
 	}
+	@Override
+    public String toString() {
+	    final int maxLen = 10;
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("DownloadModel [type=");
+	    builder.append(type);
+	    builder.append(", jrxml=");
+	    builder.append(jrxml);
+	    builder.append(", outputFileName=");
+	    builder.append(outputFileName);
+	    builder.append(", params=");
+	    builder.append(params != null ? toString(params.entrySet(), maxLen) : null);
+	    builder.append(", jrDataSource=");
+	    builder.append(jrDataSource);
+	    builder.append(", response=");
+	    builder.append(response);
+	    builder.append(", token=");
+	    builder.append(token);
+	    builder.append("]");
+	    return builder.toString();
+    }
+	private String toString(Collection<?> collection, int maxLen) {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("[");
+	    int i = 0;
+	    for (Iterator<?> iterator = collection.iterator(); iterator.hasNext() && i < maxLen; i++) {
+		    if (i > 0)
+			    builder.append(", ");
+		    builder.append(iterator.next());
+	    }
+	    builder.append("]");
+	    return builder.toString();
+    }
+	
+	
 }

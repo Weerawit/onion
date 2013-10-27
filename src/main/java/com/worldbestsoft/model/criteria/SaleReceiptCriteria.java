@@ -22,6 +22,17 @@ public class SaleReceiptCriteria extends SaleReceipt {
 	public void setReceiptDateTo(Date receiptDateTo) {
 		this.receiptDateTo = receiptDateTo;
 	}
+	@Override
+    public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("SaleReceiptCriteria [receiptDateFrom=");
+	    builder.append(receiptDateFrom);
+	    builder.append(", receiptDateTo=");
+	    builder.append(receiptDateTo);
+	    builder.append("]");
+	    return builder.toString();
+    }
+	
 	
 	
 }

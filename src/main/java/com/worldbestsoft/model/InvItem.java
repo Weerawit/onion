@@ -4,8 +4,10 @@ package com.worldbestsoft.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -220,4 +222,81 @@ public class InvItem implements java.io.Serializable {
 		this.catalogItems = catalogItems;
 	}
 
+	@Override
+    public String toString() {
+	    final int maxLen = 10;
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("InvItem [id=");
+	    builder.append(id);
+	    builder.append(", invItemGroup=");
+	    builder.append(invItemGroup);
+	    builder.append(", code=");
+	    builder.append(code);
+	    builder.append(", name=");
+	    builder.append(name);
+	    builder.append(", description=");
+	    builder.append(description);
+	    builder.append(", createDate=");
+	    builder.append(createDate);
+	    builder.append(", createUser=");
+	    builder.append(createUser);
+	    builder.append(", updateDate=");
+	    builder.append(updateDate);
+	    builder.append(", updateUser=");
+	    builder.append(updateUser);
+	    builder.append(", invStock=");
+	    builder.append(invStock);
+	    builder.append(", catalogs=");
+	    builder.append(catalogs != null ? toString(catalogs, maxLen) : null);
+	    builder.append(", invGoodsMovementItems=");
+	    builder.append(invGoodsMovementItems != null ? toString(invGoodsMovementItems, maxLen) : null);
+	    builder.append(", invGoodsReceiptItems=");
+	    builder.append(invGoodsReceiptItems != null ? toString(invGoodsReceiptItems, maxLen) : null);
+	    builder.append(", invItemLevels=");
+	    builder.append(invItemLevels != null ? toString(invItemLevels, maxLen) : null);
+	    builder.append(", catalogItems=");
+	    builder.append(catalogItems != null ? toString(catalogItems, maxLen) : null);
+	    builder.append("]");
+	    return builder.toString();
+    }
+
+	private String toString(Collection<?> collection, int maxLen) {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("[");
+	    int i = 0;
+	    for (Iterator<?> iterator = collection.iterator(); iterator.hasNext() && i < maxLen; i++) {
+		    if (i > 0)
+			    builder.append(", ");
+		    builder.append(iterator.next());
+	    }
+	    builder.append("]");
+	    return builder.toString();
+    }
+
+	@Override
+    public int hashCode() {
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + ((id == null) ? 0 : id.hashCode());
+	    return result;
+    }
+
+	@Override
+    public boolean equals(Object obj) {
+	    if (this == obj)
+		    return true;
+	    if (obj == null)
+		    return false;
+	    if (getClass() != obj.getClass())
+		    return false;
+	    InvItem other = (InvItem) obj;
+	    if (id == null) {
+		    if (other.id != null)
+			    return false;
+	    } else if (!id.equals(other.id))
+		    return false;
+	    return true;
+    }
+
+	
 }

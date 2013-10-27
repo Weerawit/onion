@@ -20,6 +20,16 @@ public class SaleOrderCriteria extends SaleOrder {
 	public void setDeliveryDateTo(Date deliveryDateTo) {
 		this.deliveryDateTo = deliveryDateTo;
 	}
+	@Override
+    public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("SaleOrderCriteria [deliveryDateFrom=");
+	    builder.append(deliveryDateFrom);
+	    builder.append(", deliveryDateTo=");
+	    builder.append(deliveryDateTo);
+	    builder.append("]");
+	    return builder.toString();
+    }
 	
 	
 }

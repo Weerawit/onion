@@ -3,7 +3,9 @@ package com.worldbestsoft.model;
 // Generated Jul 23, 2013 9:54:03 PM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -166,4 +168,71 @@ public class Employee implements java.io.Serializable {
 		return builder.toString();
 	}
 
+	@Override
+    public String toString() {
+	    final int maxLen = 10;
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("Employee [id=");
+	    builder.append(id);
+	    builder.append(", firstName=");
+	    builder.append(firstName);
+	    builder.append(", lastName=");
+	    builder.append(lastName);
+	    builder.append(", nickName=");
+	    builder.append(nickName);
+	    builder.append(", age=");
+	    builder.append(age);
+	    builder.append(", idCardNo=");
+	    builder.append(idCardNo);
+	    builder.append(", address=");
+	    builder.append(address);
+	    builder.append(", wage=");
+	    builder.append(wage);
+	    builder.append(", memo=");
+	    builder.append(memo);
+	    builder.append(", jobOrders=");
+	    builder.append(jobOrders != null ? toString(jobOrders, maxLen) : null);
+	    builder.append("]");
+	    return builder.toString();
+    }
+
+	private String toString(Collection<?> collection, int maxLen) {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("[");
+	    int i = 0;
+	    for (Iterator<?> iterator = collection.iterator(); iterator.hasNext() && i < maxLen; i++) {
+		    if (i > 0)
+			    builder.append(", ");
+		    builder.append(iterator.next());
+	    }
+	    builder.append("]");
+	    return builder.toString();
+    }
+
+	@Override
+    public int hashCode() {
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + ((id == null) ? 0 : id.hashCode());
+	    return result;
+    }
+
+	@Override
+    public boolean equals(Object obj) {
+	    if (this == obj)
+		    return true;
+	    if (obj == null)
+		    return false;
+	    if (getClass() != obj.getClass())
+		    return false;
+	    Employee other = (Employee) obj;
+	    if (id == null) {
+		    if (other.id != null)
+			    return false;
+	    } else if (!id.equals(other.id))
+		    return false;
+	    return true;
+    }
+
+	
 }

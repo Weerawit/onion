@@ -30,6 +30,17 @@ public class InvGoodsMovementCriteria extends InvGoodsMovement implements java.i
 	public void setMovementDateTo(Date movementDateTo) {
 		this.movementDateTo = movementDateTo;
 	}
+
+	@Override
+    public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("InvGoodsMovementCriteria [movementDateFrom=");
+	    builder.append(movementDateFrom);
+	    builder.append(", movementDateTo=");
+	    builder.append(movementDateTo);
+	    builder.append("]");
+	    return builder.toString();
+    }
 	
 	
 	

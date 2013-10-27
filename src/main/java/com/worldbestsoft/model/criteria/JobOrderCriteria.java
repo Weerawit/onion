@@ -35,6 +35,20 @@ public class JobOrderCriteria extends JobOrder {
 	public void setTargetEndDateTo(Date targetEndDateTo) {
 		this.targetEndDateTo = targetEndDateTo;
 	}
+	@Override
+    public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("JobOrderCriteria [startDateFrom=");
+	    builder.append(startDateFrom);
+	    builder.append(", startDateTo=");
+	    builder.append(startDateTo);
+	    builder.append(", targetEndDateFrom=");
+	    builder.append(targetEndDateFrom);
+	    builder.append(", targetEndDateTo=");
+	    builder.append(targetEndDateTo);
+	    builder.append("]");
+	    return builder.toString();
+    }
 	
 	
 }

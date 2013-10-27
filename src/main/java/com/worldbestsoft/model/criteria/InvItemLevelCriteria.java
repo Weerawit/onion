@@ -22,6 +22,16 @@ public class InvItemLevelCriteria extends InvItemLevel {
 	public void setTransactionDateTo(Date transactionDateTo) {
 		this.transactionDateTo = transactionDateTo;
 	}
+	@Override
+    public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("InvItemLevelCriteria [transactionDateFrom=");
+	    builder.append(transactionDateFrom);
+	    builder.append(", transactionDateTo=");
+	    builder.append(transactionDateTo);
+	    builder.append("]");
+	    return builder.toString();
+    }
 	
 	
 }

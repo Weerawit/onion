@@ -32,6 +32,20 @@ public class JobOrderSummaryReport {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	@Override
+    public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("JobOrderSummaryReport [firstName=");
+	    builder.append(firstName);
+	    builder.append(", lastName=");
+	    builder.append(lastName);
+	    builder.append(", cost=");
+	    builder.append(cost);
+	    builder.append(", status=");
+	    builder.append(status);
+	    builder.append("]");
+	    return builder.toString();
+    }
 	
 	
 }

@@ -2,8 +2,10 @@ package com.worldbestsoft.model;
 
 // Generated Jul 24, 2013 12:06:40 PM by Hibernate Tools 4.0.0
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -171,5 +173,75 @@ public class Supplier implements java.io.Serializable {
 	public void setInvGoodsReceipts(Set<InvGoodsReceipt> invGoodsReceipts) {
 		this.invGoodsReceipts = invGoodsReceipts;
 	}
+
+	@Override
+    public String toString() {
+	    final int maxLen = 10;
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("Supplier [id=");
+	    builder.append(id);
+	    builder.append(", code=");
+	    builder.append(code);
+	    builder.append(", name=");
+	    builder.append(name);
+	    builder.append(", address=");
+	    builder.append(address);
+	    builder.append(", contactName=");
+	    builder.append(contactName);
+	    builder.append(", contactTel=");
+	    builder.append(contactTel);
+	    builder.append(", createDate=");
+	    builder.append(createDate);
+	    builder.append(", createUser=");
+	    builder.append(createUser);
+	    builder.append(", updateDate=");
+	    builder.append(updateDate);
+	    builder.append(", updateUser=");
+	    builder.append(updateUser);
+	    builder.append(", invGoodsReceipts=");
+	    builder.append(invGoodsReceipts != null ? toString(invGoodsReceipts, maxLen) : null);
+	    builder.append("]");
+	    return builder.toString();
+    }
+
+	private String toString(Collection<?> collection, int maxLen) {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("[");
+	    int i = 0;
+	    for (Iterator<?> iterator = collection.iterator(); iterator.hasNext() && i < maxLen; i++) {
+		    if (i > 0)
+			    builder.append(", ");
+		    builder.append(iterator.next());
+	    }
+	    builder.append("]");
+	    return builder.toString();
+    }
+
+	@Override
+    public int hashCode() {
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + ((id == null) ? 0 : id.hashCode());
+	    return result;
+    }
+
+	@Override
+    public boolean equals(Object obj) {
+	    if (this == obj)
+		    return true;
+	    if (obj == null)
+		    return false;
+	    if (getClass() != obj.getClass())
+		    return false;
+	    Supplier other = (Supplier) obj;
+	    if (id == null) {
+		    if (other.id != null)
+			    return false;
+	    } else if (!id.equals(other.id))
+		    return false;
+	    return true;
+    }
+	
+	
 
 }

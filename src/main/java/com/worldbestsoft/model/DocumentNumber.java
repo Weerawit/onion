@@ -74,4 +74,44 @@ public class DocumentNumber implements java.io.Serializable {
 		this.updateDate = updateDate;
 	}
 
+	@Override
+    public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("DocumentNumber [internalNo=");
+	    builder.append(internalNo);
+	    builder.append(", documentNo=");
+	    builder.append(documentNo);
+	    builder.append(", updateDate=");
+	    builder.append(updateDate);
+	    builder.append("]");
+	    return builder.toString();
+    }
+
+	@Override
+    public int hashCode() {
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + ((internalNo == null) ? 0 : internalNo.hashCode());
+	    return result;
+    }
+
+	@Override
+    public boolean equals(Object obj) {
+	    if (this == obj)
+		    return true;
+	    if (obj == null)
+		    return false;
+	    if (getClass() != obj.getClass())
+		    return false;
+	    DocumentNumber other = (DocumentNumber) obj;
+	    if (internalNo == null) {
+		    if (other.internalNo != null)
+			    return false;
+	    } else if (!internalNo.equals(other.internalNo))
+		    return false;
+	    return true;
+    }
+	
+	
+
 }

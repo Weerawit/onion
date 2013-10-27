@@ -4,11 +4,14 @@ package com.worldbestsoft.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -220,4 +223,70 @@ public class JobOrder implements java.io.Serializable {
 		this.updateUser = updateUser;
 	}
 
+	@Override
+    public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("JobOrder [id=");
+	    builder.append(id);
+	    builder.append(", employee=");
+	    builder.append(employee);
+	    builder.append(", saleOrder=");
+	    builder.append(saleOrder);
+	    builder.append(", catalog=");
+	    builder.append(catalog);
+	    builder.append(", documentNumber=");
+	    builder.append(documentNumber);
+	    builder.append(", qty=");
+	    builder.append(qty);
+	    builder.append(", cost=");
+	    builder.append(cost);
+	    builder.append(", status=");
+	    builder.append(status);
+	    builder.append(", cancelReason=");
+	    builder.append(cancelReason);
+	    builder.append(", startDate=");
+	    builder.append(startDate);
+	    builder.append(", targetEndDate=");
+	    builder.append(targetEndDate);
+	    builder.append(", actualEndDate=");
+	    builder.append(actualEndDate);
+	    builder.append(", createDate=");
+	    builder.append(createDate);
+	    builder.append(", createUser=");
+	    builder.append(createUser);
+	    builder.append(", updateDate=");
+	    builder.append(updateDate);
+	    builder.append(", updateUser=");
+	    builder.append(updateUser);
+	    builder.append("]");
+	    return builder.toString();
+    }
+
+	@Override
+    public int hashCode() {
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + ((id == null) ? 0 : id.hashCode());
+	    return result;
+    }
+
+	@Override
+    public boolean equals(Object obj) {
+	    if (this == obj)
+		    return true;
+	    if (obj == null)
+		    return false;
+	    if (getClass() != obj.getClass())
+		    return false;
+	    JobOrder other = (JobOrder) obj;
+	    if (id == null) {
+		    if (other.id != null)
+			    return false;
+	    } else if (!id.equals(other.id))
+		    return false;
+	    return true;
+    }
+
+	
+	
 }

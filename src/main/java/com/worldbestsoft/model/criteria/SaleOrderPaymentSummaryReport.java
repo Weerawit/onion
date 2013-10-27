@@ -25,6 +25,18 @@ public class SaleOrderPaymentSummaryReport {
 	public void setNonPaidAmount(BigDecimal nonPaidAmount) {
 		this.nonPaidAmount = nonPaidAmount;
 	}
+	@Override
+    public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("SaleOrderPaymentSummaryReport [customerName=");
+	    builder.append(customerName);
+	    builder.append(", saleOrderNo=");
+	    builder.append(saleOrderNo);
+	    builder.append(", nonPaidAmount=");
+	    builder.append(nonPaidAmount);
+	    builder.append("]");
+	    return builder.toString();
+    }
 	
 	
 	

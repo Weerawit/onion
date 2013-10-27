@@ -3,8 +3,10 @@ package com.worldbestsoft.model;
 // Generated Sep 9, 2013 10:54:50 AM by Hibernate Tools 4.0.0
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -242,4 +244,85 @@ public class SaleOrder implements java.io.Serializable {
 		this.jobOrders = jobOrders;
 	}
 
+	@Override
+    public String toString() {
+	    final int maxLen = 10;
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("SaleOrder [id=");
+	    builder.append(id);
+	    builder.append(", customer=");
+	    builder.append(customer);
+	    builder.append(", documentNumber=");
+	    builder.append(documentNumber);
+	    builder.append(", paymentType=");
+	    builder.append(paymentType);
+	    builder.append(", deliveryDate=");
+	    builder.append(deliveryDate);
+	    builder.append(", totalPrice=");
+	    builder.append(totalPrice);
+	    builder.append(", paymentPaid=");
+	    builder.append(paymentPaid);
+	    builder.append(", paymentStatus=");
+	    builder.append(paymentStatus);
+	    builder.append(", status=");
+	    builder.append(status);
+	    builder.append(", cancelReason=");
+	    builder.append(cancelReason);
+	    builder.append(", createDate=");
+	    builder.append(createDate);
+	    builder.append(", createUser=");
+	    builder.append(createUser);
+	    builder.append(", updateDate=");
+	    builder.append(updateDate);
+	    builder.append(", updateUser=");
+	    builder.append(updateUser);
+	    builder.append(", saleReceipts=");
+	    builder.append(saleReceipts != null ? toString(saleReceipts, maxLen) : null);
+	    builder.append(", saleOrderItems=");
+	    builder.append(saleOrderItems != null ? toString(saleOrderItems, maxLen) : null);
+	    builder.append(", jobOrders=");
+	    builder.append(jobOrders != null ? toString(jobOrders, maxLen) : null);
+	    builder.append("]");
+	    return builder.toString();
+    }
+
+	private String toString(Collection<?> collection, int maxLen) {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("[");
+	    int i = 0;
+	    for (Iterator<?> iterator = collection.iterator(); iterator.hasNext() && i < maxLen; i++) {
+		    if (i > 0)
+			    builder.append(", ");
+		    builder.append(iterator.next());
+	    }
+	    builder.append("]");
+	    return builder.toString();
+    }
+
+	@Override
+    public int hashCode() {
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + ((id == null) ? 0 : id.hashCode());
+	    return result;
+    }
+
+	@Override
+    public boolean equals(Object obj) {
+	    if (this == obj)
+		    return true;
+	    if (obj == null)
+		    return false;
+	    if (getClass() != obj.getClass())
+		    return false;
+	    SaleOrder other = (SaleOrder) obj;
+	    if (id == null) {
+		    if (other.id != null)
+			    return false;
+	    } else if (!id.equals(other.id))
+		    return false;
+	    return true;
+    }
+
+	
 }
