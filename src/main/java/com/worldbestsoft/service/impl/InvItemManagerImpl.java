@@ -50,20 +50,20 @@ public class InvItemManagerImpl implements InvItemManager {
 	
     @Override
     public InvItem save(InvItem value) {
-    		if (null == value.getId()) {
+		if (null == value.getId()) {
 			//Auto create invStock record
 			InvStock invStock = new InvStock();
 			invStock.setInvItem(value);
 			value.setInvStock(invStock);
-			//invStock.setInvItemId(obj.getId());
 			invStock.setQty(BigDecimal.ZERO);
 			invStock.setQtyAvailable(BigDecimal.ZERO);
 			invStock.setUpdateDate(value.getCreateDate());
 			invStock.setUpdateUser(value.getCreateUser());
-			//invStockDao.save(invStock);
+//			invStockDao.save(invStock);
+//			invItemDao.save(obj);
 		}
-		InvItem obj = invItemDao.save(value);
 		
+		InvItem obj = invItemDao.save(value);
 		return obj;
 	}
 

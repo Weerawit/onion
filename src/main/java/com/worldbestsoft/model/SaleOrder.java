@@ -276,25 +276,6 @@ public class SaleOrder implements java.io.Serializable {
 	    builder.append(updateDate);
 	    builder.append(", updateUser=");
 	    builder.append(updateUser);
-	    builder.append(", saleReceipts=");
-	    builder.append(saleReceipts != null ? toString(saleReceipts, maxLen) : null);
-	    builder.append(", saleOrderItems=");
-	    builder.append(saleOrderItems != null ? toString(saleOrderItems, maxLen) : null);
-	    builder.append(", jobOrders=");
-	    builder.append(jobOrders != null ? toString(jobOrders, maxLen) : null);
-	    builder.append("]");
-	    return builder.toString();
-    }
-
-	private String toString(Collection<?> collection, int maxLen) {
-	    StringBuilder builder = new StringBuilder();
-	    builder.append("[");
-	    int i = 0;
-	    for (Iterator<?> iterator = collection.iterator(); iterator.hasNext() && i < maxLen; i++) {
-		    if (i > 0)
-			    builder.append(", ");
-		    builder.append(iterator.next());
-	    }
 	    builder.append("]");
 	    return builder.toString();
     }

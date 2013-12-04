@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -168,7 +170,7 @@ public class InvItem implements java.io.Serializable {
 		this.updateUser = updateUser;
 	}
 
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "invItem")
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "invItem", optional=true, cascade=CascadeType.ALL)
 	public InvStock getInvStock() {
 		return this.invStock;
 	}
@@ -246,29 +248,6 @@ public class InvItem implements java.io.Serializable {
 	    builder.append(updateUser);
 	    builder.append(", invStock=");
 	    builder.append(invStock);
-	    builder.append(", catalogs=");
-	    builder.append(catalogs != null ? toString(catalogs, maxLen) : null);
-	    builder.append(", invGoodsMovementItems=");
-	    builder.append(invGoodsMovementItems != null ? toString(invGoodsMovementItems, maxLen) : null);
-	    builder.append(", invGoodsReceiptItems=");
-	    builder.append(invGoodsReceiptItems != null ? toString(invGoodsReceiptItems, maxLen) : null);
-	    builder.append(", invItemLevels=");
-	    builder.append(invItemLevels != null ? toString(invItemLevels, maxLen) : null);
-	    builder.append(", catalogItems=");
-	    builder.append(catalogItems != null ? toString(catalogItems, maxLen) : null);
-	    builder.append("]");
-	    return builder.toString();
-    }
-
-	private String toString(Collection<?> collection, int maxLen) {
-	    StringBuilder builder = new StringBuilder();
-	    builder.append("[");
-	    int i = 0;
-	    for (Iterator<?> iterator = collection.iterator(); iterator.hasNext() && i < maxLen; i++) {
-		    if (i > 0)
-			    builder.append(", ");
-		    builder.append(iterator.next());
-	    }
 	    builder.append("]");
 	    return builder.toString();
     }
