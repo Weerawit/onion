@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import com.worldbestsoft.dao.InvItemDao;
@@ -103,5 +104,12 @@ public class InvItemDaoHibernate extends GenericDaoHibernate<InvItem, Long> impl
 		return null;
 	}
 
+	@Override
+    public InvItem save(InvItem object) {
+		Session session = getSession();
+		Long id = (Long) session.save(object);
+		return get(id);
+	}
 
+	
 }
