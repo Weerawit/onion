@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.worldbestsoft</groupId>
@@ -11,7 +10,7 @@
 	<url>http://www.worldbestsoft.com</url>
 
 	<prerequisites>
-		<maven>2.2.1</maven>
+		<maven>3.1.0</maven>
 	</prerequisites>
 
 	<licenses>
@@ -79,10 +78,10 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
+				<version>3.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -165,15 +164,14 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>8.1.3.v20120416</version>
+				<version>8.1.14.v20131031</version>
 				<configuration>
 					<webApp>
 						<contextPath>/</contextPath>
 					</webApp>
 				</configuration>
 			</plugin>
-			<!-- clean-up previous hibernate-search indexed from integration tests, 
-				as there could be a lock -->
+			<!-- clean-up previous hibernate-search indexed from integration tests, as there could be a lock -->
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.5</version>
@@ -185,8 +183,7 @@
 					</filesets>
 				</configuration>
 			</plugin>
-			<!-- will package a ready-to-run app regarding hibernate-search index 
-				location -->
+			<!-- will package a ready-to-run app regarding hibernate-search index location -->
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.3</version>
@@ -202,6 +199,14 @@
 							</includes>
 						</resource>
 					</webResources>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Version>${project.version}</Implementation-Version>
+						</manifestEntries>
+					</archive>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -217,8 +222,10 @@
 						<configuration>
 							<encoding>UTF8</encoding>
 							<includes>
+								<include>ApplicationResources_el*.properties</include>
 								<include>ApplicationResources_zh*.properties</include>
 								<include>ApplicationResources_ko*.properties</include>
+								<include>displaytag_el*.properties</include>
 								<include>displaytag_zh*.properties</include>
 							</includes>
 						</configuration>
@@ -311,6 +318,29 @@
 		</pluginRepository>
 	</pluginRepositories>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${mockito.version}</version>
+				<optional>true</optional>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-framework-bom</artifactId>
+				<version>${spring.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.webjars</groupId>
+				<artifactId>bootstrap</artifactId>
+				<version>${bootstrap.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<!-- Dependencies calculated by AppFuse when running full-source plugin -->
 	<dependencies>
 		<dependency>
@@ -349,6 +379,11 @@
 			<version>${commons.fileupload.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons.io.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>${commons.lang.version}</version>
@@ -380,7 +415,7 @@
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
+			<artifactId>javax.servlet-api</artifactId>
 			<version>${servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
@@ -398,19 +433,13 @@
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-			<version>2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit-dep</artifactId>
-			<version>4.5</version>
-			<scope>test</scope>
+			<version>2.2.11</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
-			<optional>true</optional>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
@@ -449,11 +478,7 @@
 			<groupId>opensymphony</groupId>
 			<artifactId>sitemesh</artifactId>
 			<version>${sitemesh.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>${commons.io.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -461,11 +486,7 @@
 			<version>${cxf.version}</version>
 			<exclusions>
 				<exclusion>
-					<artifactId>spring-core</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>spring-web</artifactId>
+					<artifactId>*</artifactId>
 					<groupId>org.springframework</groupId>
 				</exclusion>
 				<exclusion>
@@ -497,6 +518,17 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>${velocity.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity-tools</artifactId>
+			<version>2.0</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectj.version}</version>
@@ -509,7 +541,7 @@
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-jaxrs</artifactId>
-			<version>1.7.1</version>
+			<version>1.9.11</version>
 		</dependency>
 		<dependency>
 			<groupId>org.directwebremoting</groupId>
@@ -548,16 +580,10 @@
 			<version>${jpa.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.jmock</groupId>
-			<artifactId>jmock</artifactId>
-			<version>${jmock.version}</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.jmock</groupId>
-			<artifactId>jmock-junit4</artifactId>
-			<version>${jmock.version}</version>
-			<optional>true</optional>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -577,88 +603,50 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
-			<optional>true</optional>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 			<version>${spring.security.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-aop</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>spring-beans</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>spring-context</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>spring-core</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>spring-expression</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 			<version>${spring.security.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-aop</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>spring-beans</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>spring-context</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>spring-core</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-ldap</artifactId>
+			<version>${spring.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -685,11 +673,7 @@
 			<version>${springmodules.validation.version}</version>
 			<exclusions>
 				<exclusion>
-					<artifactId>spring</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>spring-support</artifactId>
+					<artifactId>*</artifactId>
 					<groupId>org.springframework</groupId>
 				</exclusion>
 				<exclusion>
@@ -703,6 +687,12 @@
 			<artifactId>subethasmtp-wiser</artifactId>
 			<version>${wiser.version}</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>servlet-api</artifactId>
+					<groupId>javax.servlet</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.tuckey</groupId>
@@ -710,9 +700,39 @@
 			<version>${urlrewrite.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap-datepicker</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+			<version>1.8.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery-cookie</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootswatch</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>ro.isdc.wro4j</groupId>
+			<artifactId>wro4j-core</artifactId>
+			<version>${wro4j.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>struts-menu</groupId>
 			<artifactId>struts-menu</artifactId>
 			<version>${struts.menu.version}</version>
+			<scope>runtime</scope>
 			<exclusions>
 				<exclusion>
 					<artifactId>xml-apis</artifactId>
@@ -720,11 +740,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>velocity</groupId>
-			<artifactId>velocity</artifactId>
-			<version>${velocity.version}</version>
-		</dependency>
+
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
@@ -763,29 +779,29 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.nsn.tot.icirreport.font</groupId>
 			<artifactId>ireportfont</artifactId>
 			<version>1.0</version>
-<!-- 			<scope>system</scope> -->
-<!-- 			<systemPath>${basedir}/lib/ireportFonts.jar</systemPath> -->
+			<!-- <scope>system</scope> -->
+			<!-- <systemPath>${basedir}/lib/ireportFonts.jar</systemPath> -->
 		</dependency>
-		
+
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>3.9</version>
 		</dependency>
-            
+
 	</dependencies>
 
 	<reporting>
 		<plugins>
 			<plugin>
 				<artifactId>maven-changes-plugin</artifactId>
-				<version>2.8</version>
+				<version>2.9</version>
 			</plugin>
 			<plugin>
 				<artifactId>maven-checkstyle-plugin</artifactId>
@@ -795,7 +811,7 @@
 					<failsOnError>false</failsOnError>
 					<maxAllowedViolations>3</maxAllowedViolations>
 				</configuration>
-				<version>2.9.1</version>
+				<version>2.10</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -807,11 +823,11 @@
 						</excludes>
 					</instrumentation>
 				</configuration>
-				<version>2.5.2</version>
+				<version>2.6</version>
 			</plugin>
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9</version>
+				<version>2.9.1</version>
 			</plugin>
 			<plugin>
 				<artifactId>maven-jxr-plugin</artifactId>
@@ -823,11 +839,11 @@
 					<linkXRef>true</linkXRef>
 					<targetJdk>1.6</targetJdk>
 				</configuration>
-				<version>2.7.1</version>
+				<version>3.0.1</version>
 			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-report-plugin</artifactId>
-				<version>2.12.4</version>
+				<version>2.16</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -839,12 +855,7 @@
 
 	<profiles>
 		<profile>
-			<id>integration-test</id>
-			<activation>
-				<property>
-					<name>!skipTests</name>
-				</property>
-			</activation>
+			<id>itest</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -945,8 +956,7 @@
 			</properties>
 			<build>
 				<plugins>
-					<!-- Override location of data file for DbUnit to load (doesn't have 
-						negative keys) -->
+					<!-- Override location of data file for DbUnit to load (doesn't have negative keys) -->
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>dbunit-maven-plugin</artifactId>
@@ -962,14 +972,15 @@
 		<profile>
 			<id>derby</id>
 			<properties>
-				<hibernate.dialect>org.hibernate.dialect.DerbyDialect</hibernate.dialect>
+				<hibernate.dialect>org.hibernate.dialect.DerbyTenSevenDialect</hibernate.dialect>
 				<jdbc.groupId>org.apache.derby</jdbc.groupId>
 				<jdbc.artifactId>derbyclient</jdbc.artifactId>
-				<jdbc.version>10.2.2.0</jdbc.version>
+				<jdbc.version>10.9.1.0</jdbc.version>
 				<jdbc.driverClassName>org.apache.derby.jdbc.ClientDriver</jdbc.driverClassName>
 				<jdbc.url>jdbc:derby://localhost/${db.name};create=true</jdbc.url>
 				<jdbc.username>any</jdbc.username>
 				<jdbc.password>value</jdbc.password>
+				<jdbc.validationQuery>SELECT 1 + 1</jdbc.validationQuery>
 			</properties>
 		</profile>
 		<profile>
@@ -983,6 +994,7 @@
 				<jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
 				<jdbc.url>jdbc:h2:/tmp/${db.name};MVCC=TRUE</jdbc.url>
 				<jdbc.username>sa</jdbc.username>
+				<jdbc.validationQuery>SELECT 1 + 1</jdbc.validationQuery>
 			</properties>
 		</profile>
 		<profile>
@@ -996,6 +1008,7 @@
 				<jdbc.driverClassName>org.hsqldb.jdbcDriver</jdbc.driverClassName>
 				<jdbc.url>jdbc:hsqldb:/tmp/${db.name};shutdown=true</jdbc.url>
 				<jdbc.username>sa</jdbc.username>
+				<jdbc.validationQuery>SELECT 1 + 1</jdbc.validationQuery>
 			</properties>
 		</profile>
 		<profile>
@@ -1011,6 +1024,7 @@
 				<jdbc.url>jdbc:oracle:thin:@localhost:1521:XE</jdbc.url>
 				<jdbc.username>system</jdbc.username>
 				<jdbc.password>system</jdbc.password>
+				<jdbc.validationQuery>SELECT 1 + 1 from DUAL</jdbc.validationQuery>
 			</properties>
 		</profile>
 		<profile>
@@ -1019,11 +1033,12 @@
 				<hibernate.dialect>org.hibernate.dialect.PostgreSQLDialect</hibernate.dialect>
 				<jdbc.groupId>postgresql</jdbc.groupId>
 				<jdbc.artifactId>postgresql</jdbc.artifactId>
-				<jdbc.version>8.1-407.jdbc3</jdbc.version>
+				<jdbc.version>9.1-901-1.jdbc4</jdbc.version>
 				<jdbc.driverClassName>org.postgresql.Driver</jdbc.driverClassName>
 				<jdbc.url>jdbc:postgresql://localhost/${db.name}</jdbc.url>
 				<jdbc.username>postgres</jdbc.username>
 				<jdbc.password>postgres</jdbc.password>
+				<jdbc.validationQuery>SELECT 1 + 1</jdbc.validationQuery>
 			</properties>
 		</profile>
 		<profile>
@@ -1036,11 +1051,12 @@
 				<hibernate.dialect>org.hibernate.dialect.SQLServerDialect</hibernate.dialect>
 				<jdbc.groupId>net.sourceforge.jtds</jdbc.groupId>
 				<jdbc.artifactId>jtds</jdbc.artifactId>
-				<jdbc.version>1.2</jdbc.version>
+				<jdbc.version>1.3.0</jdbc.version>
 				<jdbc.driverClassName>net.sourceforge.jtds.jdbc.Driver</jdbc.driverClassName>
 				<jdbc.url>jdbc:jtds:sqlserver://localhost:3683/${db.name}</jdbc.url>
 				<jdbc.username>sa</jdbc.username>
 				<jdbc.password>appfuse</jdbc.password>
+				<jdbc.validationQuery>SELECT 1 + 1</jdbc.validationQuery>
 			</properties>
 		</profile>
 
@@ -1058,7 +1074,7 @@
 	<properties>
 		<!-- Application settings -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<copyright.year>2012</copyright.year>
+		<copyright.year>2014</copyright.year>
 		<dao.framework>hibernate</dao.framework>
 		<web.framework>spring</web.framework>
 		<amp.genericCore>true</amp.genericCore>
@@ -1066,19 +1082,20 @@
 		<db.name>onion</db.name>
 
 		<!-- Framework dependency versions -->
-		<appfuse.version>2.2.1</appfuse.version>
-		<commons.fileupload.version>1.2.1</commons.fileupload.version>
+		<appfuse.version>3.0.0</appfuse.version>
+		<bootstrap.version>3.0.2</bootstrap.version>
+		<commons.fileupload.version>1.3</commons.fileupload.version>
 		<commons.io.version>2.4</commons.io.version>
 		<displaytag.version>1.2</displaytag.version>
-		<spring.version>3.1.3.RELEASE</spring.version>
+		<spring.version>4.0.0.RELEASE</spring.version>
 		<springmodules.validation.version>0.8</springmodules.validation.version>
 
 		<!-- Testing dependency versions -->
-		<cargo.version>1.2.4</cargo.version>
-		<jmock.version>2.5.1</jmock.version>
+		<cargo.version>1.4.4</cargo.version>
+		<mockito.version>1.9.5</mockito.version>
 		<jsp.version>2.1</jsp.version>
-		<junit.version>4.10</junit.version>
-		<servlet.version>2.5</servlet.version>
+		<junit.version>4.11</junit.version>
+		<servlet.version>3.1.0</servlet.version>
 		<wiser.version>1.2</wiser.version>
 
 		<!-- WebTest default target -->
@@ -1086,7 +1103,7 @@
 
 		<cargo.container>tomcat7x</cargo.container>
 		<cargo.container.home>${env.CATALINA_HOME}</cargo.container.home>
-		<cargo.container.url>http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.33/bin/apache-tomcat-7.0.33.zip</cargo.container.url>
+		<cargo.container.url>http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.47/bin/apache-tomcat-7.0.47.zip</cargo.container.url>
 		<cargo.host>localhost</cargo.host>
 		<cargo.port>8081</cargo.port>
 		<cargo.wait>false</cargo.wait>
@@ -1099,35 +1116,37 @@
 		<hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</hibernate.dialect>
 		<jdbc.groupId>mysql</jdbc.groupId>
 		<jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
-		<jdbc.version>5.1.22</jdbc.version>
+		<jdbc.version>5.1.27</jdbc.version>
 		<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
 		<jdbc.url>jdbc:mysql://localhost/${db.name}?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true</jdbc.url>
 		<jdbc.username>root</jdbc.username>
 		<jdbc.password>root</jdbc.password>
 
 		<!-- Properties calculated by AppFuse when running full-source plugin -->
-		<aspectj.version>1.6.10</aspectj.version>
+		<aspectj.version>1.7.4</aspectj.version>
 		<commons.beanutils.version>1.8.3</commons.beanutils.version>
 		<commons.collections.version>3.2.1</commons.collections.version>
 		<commons.dbcp.version>1.4</commons.dbcp.version>
 		<commons.lang.version>2.6</commons.lang.version>
-		<cxf.version>2.7.0</cxf.version>
-		<dwr.version>2.0.3</dwr.version>
-		<ehcache.version>2.6.2</ehcache.version>
+		<cxf.version>2.7.7</cxf.version>
+		<dwr.version>2.0.10</dwr.version>
+		<ehcache.version>2.6.6</ehcache.version>
 		<ehcache.web.version>2.0.4</ehcache.web.version>
 		<hibernate.search.version>4.1.1.Final</hibernate.search.version>
-		<hibernate.version>4.1.8.Final</hibernate.version>
+		<hibernate.version>4.2.7.Final</hibernate.version>
 		<javamail.version>1.4.1</javamail.version>
 		<jpa.version>2.0-cr-1</jpa.version>
 		<jstl.version>1.2</jstl.version>
 		<log4j.version>1.2.17</log4j.version>
 		<sitemesh.version>2.4.2</sitemesh.version>
-		<slf4j.version>1.6.1</slf4j.version>
-		<spring.security.version>3.1.3.RELEASE</spring.security.version>
+		<slf4j.version>1.7.5</slf4j.version>
+		<spring.security.version>3.2.0.RELEASE</spring.security.version>
 		<struts.menu.version>2.4.3</struts.menu.version>
 		<urlrewrite.version>3.1.0</urlrewrite.version>
-		<velocity.version>1.4</velocity.version>
+		<velocity.version>1.7</velocity.version>
+		<wro4j.version>1.7.2</wro4j.version>
 		<jasper.version>5.2.0</jasper.version>
 
+		<jdbc.validationQuery>SELECT 1 + 1</jdbc.validationQuery>
 	</properties>
 </project>
