@@ -1,21 +1,20 @@
 package com.worldbestsoft.service.impl;
 
-import com.worldbestsoft.dao.UserDao;
-import com.worldbestsoft.model.User;
-import com.worldbestsoft.service.UserExistsException;
-import com.worldbestsoft.service.UserManager;
-import com.worldbestsoft.service.UserService;
-import org.hibernate.exception.ConstraintViolationException;
+import java.util.List;
+
+import javax.jws.WebService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.jws.WebService;
-import java.util.List;
+import com.worldbestsoft.dao.UserDao;
+import com.worldbestsoft.model.User;
+import com.worldbestsoft.service.UserExistsException;
+import com.worldbestsoft.service.UserManager;
+import com.worldbestsoft.service.UserService;
 
 
 /**

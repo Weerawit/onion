@@ -1,0 +1,28 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:websocket="http://www.springframework.org/schema/websocket" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/websocket
+        http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd">
+
+
+	<websocket:message-broker application-destination-prefix="/app">
+		<websocket:stomp-endpoint path="/stream" />
+			<websocket:sockjs/>
+		</websocket:stomp-endpoint>
+		<websocket:simple-broker prefix="/log" />
+	</websocket:message-broker>
+
+
+<!-- 	<websocket:handlers> -->
+<!-- 		<websocket:mapping path="/admin/logView" handler="logView" /> -->
+<!-- 		<websocket:handshake-interceptors> -->
+<!-- 			<bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" /> -->
+<!-- 		</websocket:handshake-interceptors> -->
+<!-- 		<websocket:sockjs /> -->
+<!-- 	</websocket:handlers> -->
+
+<!-- 	<bean id="logView" class="com.worldbestsoft.webapp.controller.LogViewController" /> -->
+
+	<bean id="log4jStreamAppender" class="com.worldbestsoft.webapp.util.Log4jStreamAppender" />
+
+</beans>

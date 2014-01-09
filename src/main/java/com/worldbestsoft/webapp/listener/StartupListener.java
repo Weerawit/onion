@@ -1,22 +1,5 @@
 package com.worldbestsoft.webapp.listener;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import com.worldbestsoft.Constants;
-import com.worldbestsoft.service.GenericManager;
-import com.worldbestsoft.service.LookupManager;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.RememberMeAuthenticationProvider;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -24,6 +7,26 @@ import java.util.Map;
 import java.util.Random;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.RememberMeAuthenticationProvider;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.worldbestsoft.Constants;
+import com.worldbestsoft.service.GenericManager;
+import com.worldbestsoft.service.LookupManager;
+import com.worldbestsoft.webapp.util.Log4jStreamAppender;
 
 /**
  * <p>StartupListener class used to initialize and database settings
@@ -73,6 +76,11 @@ public class StartupListener implements ServletContextListener {
         } catch (NoSuchBeanDefinitionException n) {
             log.debug("authenticationManager bean not found, assuming test and ignoring...");
             // ignore, should only happen when testing
+        }
+       
+        Log4jStreamAppender appender = ctx.getBean(Log4jStreamAppender.class);
+        if (null != appender) {
+        		Logger.getRootLogger().addAppender(appender);
         }
 
         context.setAttribute(Constants.CONFIG, config);
