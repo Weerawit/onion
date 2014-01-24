@@ -6,10 +6,10 @@
 
 
 	<websocket:message-broker application-destination-prefix="/app">
-		<websocket:stomp-endpoint path="/stream">
+		<websocket:stomp-endpoint path="/logStream">
 			<websocket:sockjs/>
 		</websocket:stomp-endpoint>
-		<websocket:simple-broker prefix="/log" />
+		<websocket:simple-broker prefix="/topic" />
 	</websocket:message-broker>
 
 

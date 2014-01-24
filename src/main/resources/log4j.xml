@@ -28,7 +28,7 @@
     </logger>
 
     <logger name="org.apache.velocity">
-        <level value="FATAL"/>
+        <level value="DEBUG"/>
     </logger>
 
     <!-- Suppress invalid warning messages from JSF -->

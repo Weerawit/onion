@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <MenuConfig>
 	<Displayers>
-		<Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer" />
+		<Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
 	</Displayers>
 	<Menus>
 		<Menu name="MainMenu" title="mainMenu.title" page="/mainMenu" roles="ROLE_AUTHENTICATED" />

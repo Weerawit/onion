@@ -1,5 +1,7 @@
 package com.worldbestsoft.webapp.util;
 
+import java.util.Random;
+
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Layout;
 import org.apache.log4j.spi.LoggingEvent;
@@ -34,8 +36,9 @@ public class Log4jStreamAppender extends AppenderSkeleton {
 		if (null != getLayout()) {
 			Layout layout = getLayout();
 			String msg = layout.format(event);
-			messagingTemplate.convertAndSend("/log", msg);
+			messagingTemplate.convertAndSend("/stream", msg);
 		}
+		messagingTemplate.convertAndSend("/topic/logStream", "abc log : " + new Random().nextFloat());
     }
 
 }

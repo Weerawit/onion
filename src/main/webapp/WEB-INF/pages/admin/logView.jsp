@@ -4,9 +4,6 @@
 <title><fmt:message key="logView.title" /></title>
 <meta name="menu" content="AdminMenu" />
 <meta name="decorator" content="popup" />
-<%-- <script type="text/javascript" src="<c:url value='/portal/portal.js'/>"></script> --%>
-<%-- <script type="text/javascript" src="<c:url value='/portal/atmosphere.js'/>"></script> --%>
-<script type="text/javascript" src="<c:url value='/scripts/lib/jquery.atmosphere.js'/>"></script>
 </head>
 
 <c:if test="${not empty searchError}">
@@ -44,7 +41,7 @@
 		}
 	});
 });
- */
+
 $(document).ready(function() { 
     var detectedTransport = null;
     var socket = $.atmosphere;
@@ -98,4 +95,36 @@ $(document).ready(function() {
     
     subscribe();
 }); 
+
+ */
+</script>
+<script type="text/javascript" src="<c:url value='/scripts/lib/sockjs-0.3.4.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/scripts/lib/stomp.js'/>"></script>
+<script>
+	var url = '<c:url value="/logStream"/>';
+    var ws = new SockJS(url);
+    var client = Stomp.over(ws);
+    var connectCallback = function() {
+        // called back after the client is connected and authenticated to the STOMP server
+	    	var callback = function(message) {
+	            // called when the client receives a STOMP message from the server
+	    		if (message.body) {
+	            	var divObj = $('#logView');
+	    			divObj.html(divObj.html() + '<br/>' + message.body);
+	    			divObj.animate({scrollTop : divObj.prop('scrollHeight') - divObj.height()}, 10);
+			} else {
+	        		alert("got empty message");
+			}
+		};
+	    	
+	    	var subscription = client.subscribe('/topic/logStream', callback);
+	};
+	var errorCallback = function(error) {
+	    // display the error's message header:
+	    alert(error.headers.message);
+	};
+	
+	client.connect('test', 'test', connectCallback, errorCallback);
+    
+    
 </script>
