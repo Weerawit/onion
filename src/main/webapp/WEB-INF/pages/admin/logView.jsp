@@ -3,7 +3,9 @@
 <head>
 <title><fmt:message key="logView.title" /></title>
 <meta name="menu" content="AdminMenu" />
-<meta name="decorator" content="popup" />
+<meta name="decorator" content="popup_window" />
+<script type="text/javascript" src="<c:url value='/scripts/lib/sockjs-0.3.4.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/scripts/lib/stomp.js'/>"></script>
 </head>
 
 <c:if test="${not empty searchError}">
@@ -21,85 +23,6 @@
 
 </div>
 
-<script type="text/javascript">
-/* $(document).ready(function() { 
-	portal.open("${ctx}/event", {transports: ["stream"]}).on({
-		open: function() {
-			$('#logView').html($('<p>',
-	  	         	{ text: 'Connected using ' + response.transport }));
-			alert(this.data("transport"));
-		},
-		newLog: function(msg) {
-			try {
-				$('#logView').text($('#logView').text() + msg);
-	
-			} catch (e) {
-				alert(e);
-				console.log('Error: ', message);
-				return;
-			}
-		}
-	});
-});
-
-$(document).ready(function() { 
-    var detectedTransport = null;
-    var socket = $.atmosphere;
-    var subSocket;
-
-    function subscribe() {
-        var request = {
-            url : '<c:url value="/admin/logView/stream"/>',
-            enableXDR: true,
-            rewriteURL: true,
-//            trackMessageLength : true,
-//            logLevel: 'debug',
-//            withCredentials: true,
-//            shared: false,
-            transport: 'sse'
-            };
-        
-        request.onOpen = function(response) {
-			$('#logView').html($('<p>',
-  	         	{ text: 'Connected using ' + response.transport }));
-		};
-
-		request.onReconnect = function (request, response) {
-			//content.html("reconnecting");
-		};
-
-		request.onMessage = function (response) {
-			var msg = response.responseBody;
-			try {
-				var divObj = $('#logView');
-				divObj.html(divObj.html() + '<br/>' + msg);
-				divObj.animate({scrollTop : divObj.prop('scrollHeight') - divObj.height()}, 10);
-			} catch (e) {
-				console.log('Error: ', message);
-				return;
-			}
-	  	};
-
-  	  	request.onError = function(response) {
-  	  		$('#logView').html($('<p>', { text: 'Sorry, but '
-  	        	  + 'there some problem with your '
-  	        	  + 'socket or the server is down' }));
-  	  	};
-
-        subSocket = socket.subscribe(request);
-    }
-
-    function unsubscribe(){
-        socket.unsubscribe();
-    }
-    
-    subscribe();
-}); 
-
- */
-</script>
-<script type="text/javascript" src="<c:url value='/scripts/lib/sockjs-0.3.4.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/scripts/lib/stomp.js'/>"></script>
 <script>
 	var url = '<c:url value="/logStream"/>';
     var ws = new SockJS(url);

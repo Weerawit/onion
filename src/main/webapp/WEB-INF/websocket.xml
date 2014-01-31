@@ -25,6 +25,12 @@
 
 	<bean class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">
 	</bean>
-	<bean id="log4jStreamAppender" class="com.worldbestsoft.webapp.util.Log4jStreamAppender" />
+	<bean id="log4jStreamAppender" class="com.worldbestsoft.webapp.util.Log4jStreamAppender">
+		<property name="layout">
+			<bean class="org.apache.log4j.PatternLayout">
+				<property name="conversionPattern" value="%d %p [%t] %c{1}.%M(%L) | %m%n"></property>
+			</bean>
+		</property>
+	</bean>
 
 </beans>
