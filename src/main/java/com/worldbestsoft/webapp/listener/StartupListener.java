@@ -1,9 +1,20 @@
 package com.worldbestsoft.webapp.listener;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import com.worldbestsoft.Constants;
-import com.worldbestsoft.service.LookupManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -12,12 +23,10 @@ import org.springframework.security.authentication.RememberMeAuthenticationProvi
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import java.util.HashMap;
-import java.util.Map;
+import com.worldbestsoft.Constants;
 import com.worldbestsoft.service.GenericManager;
+import com.worldbestsoft.service.LookupManager;
+import com.worldbestsoft.webapp.util.Log4jStreamAppender;
 
 /**
  * <p>StartupListener class used to initialize and database settings
@@ -38,7 +47,7 @@ public class StartupListener implements ServletContextListener {
      */
     @SuppressWarnings("unchecked")
     public void contextInitialized(ServletContextEvent event) {
-		log.info("Initializing context... " + event.getServletContext().getContextPath());
+        log.debug("Initializing context...");
 
         ServletContext context = event.getServletContext();
 
@@ -68,6 +77,11 @@ public class StartupListener implements ServletContextListener {
             log.debug("authenticationManager bean not found, assuming test and ignoring...");
             // ignore, should only happen when testing
         }
+       
+        Log4jStreamAppender appender = ctx.getBean(Log4jStreamAppender.class);
+        if (null != appender) {
+        		Logger.getRootLogger().addAppender(appender);
+        }
 
         context.setAttribute(Constants.CONFIG, config);
 
@@ -81,7 +95,33 @@ public class StartupListener implements ServletContextListener {
         }
 
         setupContext(context);
-		log.info(event.getServletContext().getContextPath() + " has been loaded successfully");
+        
+        // Determine version number for CSS and JS Assets
+        String appVersion = null;
+        try {
+            InputStream is = context.getResourceAsStream("/META-INF/MANIFEST.MF");
+            if (is == null) {
+                log.warn("META-INF/MANIFEST.MF not found.");
+            } else {
+                Manifest mf = new Manifest();
+                mf.read(is);
+                Attributes atts = mf.getMainAttributes();
+                appVersion = atts.getValue("Implementation-Version");
+            }
+        } catch (IOException e) {
+            log.error("I/O Exception reading manifest: " + e.getMessage());
+        }
+
+        // If there was a build number defined in the war, then use it for
+        // the cache buster. Otherwise, assume we are in development mode
+        // and use a random cache buster so developers don't have to clear
+        // their browser cache.
+        if (appVersion == null || appVersion.contains("SNAPSHOT")) {
+            appVersion = "" + new Random().nextInt(100000);
+        }
+
+        log.info("Application version set to: " + appVersion);
+        context.setAttribute(Constants.ASSETS_VERSION, appVersion);
     }
 
     /**

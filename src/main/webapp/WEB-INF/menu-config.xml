@@ -1,52 +1,49 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <MenuConfig>
-    <Displayers>
-        <Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
-    </Displayers>
-    <Menus>
-        <Menu name="MainMenu" title="mainMenu.title" page="/mainMenu" roles="ROLE_AUTHENTICATED"/>
-        <Menu name="UserMenu" title="menu.user" description="User Menu" page="/userform" roles="ROLE_SALE,ROLE_PRODUCTION,ROLE_CATALOG,ROLE_INVENTORY,ROLE_MANAGER,ROLE_ADMIN"/>
-        <Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN" page="/admin/users">
-            <Item name="ViewUsers" title="menu.admin.users" page="/admin/users"/>
-            <Item name="ActiveUsers" title="mainMenu.activeUsers" page="/admin/activeUsers"/>
-            <!-- 
-            <Item name="ReloadContext" title="menu.admin.reload" page="/admin/reload"/>
-            <Item name="FileUpload" title="menu.selectFile" page="/fileupload"/>
-             -->
-        </Menu>
-        <Menu name="SaleOrderMenu" title="menu.saleOrder" description="Sale Order Menu" roles="ROLE_SALE,ROLE_MANAGER">
-        		<Item name="SaleOrder" title="menu.saleOrder.saleOrder" page="/saleOrderList"/>
-        		<Item name="SaleReceipt" title="menu.saleOrder.saleReceipt" page="/saleReceiptList"/>
-        </Menu>
-        <Menu name="JobOrderMenu" title="menu.jobOrder" description="Job Order Menu" roles="ROLE_PRODUCTION,ROLE_MANAGER">
-        		<Item name="JobOrder" title="menu.jobOrder.jobOrder" page="/jobOrderList"/>
-        </Menu>
-        <Menu name="CatalogMenu" title="menu.catalog" description="Catalog Menu" roles="ROLE_CATALOG,ROLE_MANAGER">
-            <Item name="CatalogTypes" title="menu.catalog.catalogType" page="/catalogTypeList"/>
-            <Item name="Catalog" title="menu.catalog.catalog" page="/catalogList"/>
-        </Menu>
-        <Menu name="InvMenu" title="menu.inventory" description="Inventory Menu" roles="ROLE_INVENTORY,ROLE_MANAGER">
-            <Item name="ItemGroups" title="menu.inventory.itemGroup" page="/invItemGroupList"/>
-            <Item name="Items" title="menu.inventory.item" page="/invItemList"/>
-            <Item name="Supplier" title="menu.inventory.supplier" page="/supplierList"/>
-            <Item name="GoodsReceipt" title="menu.inventory.goodsreceipt" page="/invGoodsReceiptList"/>
-            <Item name="NewGoodsReceipt" title="menu.inventory.newgoodsreceipt" page="/invGoodsReceipt?method=Add"/>
-            
-            <Item name="GoodsMovement" title="menu.inventory.goodsmovement" page="/invGoodsMovementList"/>
-            <Item name="NewGoodsMovement" title="menu.inventory.newgoodsmovement" page="/invGoodsMovement?method=Add"/>
-            
-            <Item name="Stock" title="menu.inventory.stock" page="/invStockList"/>
-            <Item name="ItemLevel" title="menu.inventory.itemLevel" page="/invItemLevelList"/>
-        </Menu>
-        <Menu name="EmployeeMenu" title="menu.employee" description="Employee Menu" roles="ROLE_MANAGER" page="/employeeList">
-        </Menu>
-        <Menu name="CustomerMenu" title="menu.customer" description="Customer Menu" roles="ROLE_MANAGER" page="/customerList">
-        </Menu>
-        <Menu name="ReportMenu" title="menu.report" description="Report Menu" roles="ROLE_REPORT,ROLE_MANAGER">
-        		<Item name="SaleOrderSummary" title="menu.report.saleOrderSummary" page="/report/saleOrderSummaryReport"/>
-        		<Item name="SaleOrderSummary" title="menu.report.saleOrderPaymentSummaryReport" page="/report/saleOrderPaymentSummaryReport"/>
-        		<Item name="JobOrderSummary" title="menu.report.jobOrderSummary" page="/report/jobOrderSummaryReport"/>
-        </Menu>
-        <Menu name="Logout" title="user.logout" page="/logout" roles="ROLE_AUTHENTICATED" onclick="return logout(this)"/>
-    </Menus>
+	<Displayers>
+		<Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
+	</Displayers>
+	<Menus>
+		<Menu name="MainMenu" title="mainMenu.title" page="/mainMenu" roles="ROLE_AUTHENTICATED" />
+		<Menu name="UserMenu" title="menu.user" description="User Menu" page="/userform" roles="ROLE_SALE,ROLE_PRODUCTION,ROLE_CATALOG,ROLE_INVENTORY,ROLE_MANAGER,ROLE_ADMIN" />
+		<Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN" page="/admin/users">
+			<Item name="ViewUsers" title="menu.admin.users" page="/admin/users" />
+			<Item name="ActiveUsers" title="mainMenu.activeUsers" page="/admin/activeUsers" />
+			<!-- <Item name="ReloadContext" title="menu.admin.reload" page="/admin/reload"/> <Item name="FileUpload" title="menu.selectFile" page="/fileupload"/> -->
+		</Menu>
+		<Menu name="SaleOrderMenu" title="menu.saleOrder" description="Sale Order Menu" roles="ROLE_SALE,ROLE_MANAGER">
+			<Item name="SaleOrder" title="menu.saleOrder.saleOrder" page="/saleOrderList" />
+			<Item name="SaleReceipt" title="menu.saleOrder.saleReceipt" page="/saleReceiptList" />
+		</Menu>
+		<Menu name="JobOrderMenu" title="menu.jobOrder" description="Job Order Menu" roles="ROLE_PRODUCTION,ROLE_MANAGER">
+			<Item name="JobOrder" title="menu.jobOrder.jobOrder" page="/jobOrderList" />
+		</Menu>
+		<Menu name="CatalogMenu" title="menu.catalog" description="Catalog Menu" roles="ROLE_CATALOG,ROLE_MANAGER">
+			<Item name="CatalogTypes" title="menu.catalog.catalogType" page="/catalogTypeList" />
+			<Item name="Catalog" title="menu.catalog.catalog" page="/catalogList" />
+		</Menu>
+		<Menu name="InvMenu" title="menu.inventory" description="Inventory Menu" roles="ROLE_INVENTORY,ROLE_MANAGER">
+			<Item name="ItemGroups" title="menu.inventory.itemGroup" page="/invItemGroupList" />
+			<Item name="Items" title="menu.inventory.item" page="/invItemList" />
+			<Item name="Supplier" title="menu.inventory.supplier" page="/supplierList" />
+			<Item name="GoodsReceipt" title="menu.inventory.goodsreceipt" page="/invGoodsReceiptList" />
+			<Item name="NewGoodsReceipt" title="menu.inventory.newgoodsreceipt" page="/invGoodsReceipt?method=Add" />
+
+			<Item name="GoodsMovement" title="menu.inventory.goodsmovement" page="/invGoodsMovementList" />
+			<Item name="NewGoodsMovement" title="menu.inventory.newgoodsmovement" page="/invGoodsMovement?method=Add" />
+
+			<Item name="Stock" title="menu.inventory.stock" page="/invStockList" />
+			<Item name="ItemLevel" title="menu.inventory.itemLevel" page="/invItemLevelList" />
+		</Menu>
+		<Menu name="EmployeeMenu" title="menu.employee" description="Employee Menu" roles="ROLE_MANAGER" page="/employeeList">
+		</Menu>
+		<Menu name="CustomerMenu" title="menu.customer" description="Customer Menu" roles="ROLE_MANAGER" page="/customerList">
+		</Menu>
+		<Menu name="ReportMenu" title="menu.report" description="Report Menu" roles="ROLE_REPORT,ROLE_MANAGER">
+			<Item name="SaleOrderSummary" title="menu.report.saleOrderSummary" page="/report/saleOrderSummaryReport" />
+			<Item name="SaleOrderSummary" title="menu.report.saleOrderPaymentSummaryReport" page="/report/saleOrderPaymentSummaryReport" />
+			<Item name="JobOrderSummary" title="menu.report.jobOrderSummary" page="/report/jobOrderSummaryReport" />
+		</Menu>
+		<Menu name="Logout" title="user.logout" page="/logout" roles="ROLE_AUTHENTICATED" onclick="return logout(this)" />
+	</Menus>
 </MenuConfig>

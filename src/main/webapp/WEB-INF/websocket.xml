@@ -1,0 +1,36 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:websocket="http://www.springframework.org/schema/websocket" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/websocket
+        http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd">
+
+
+	<websocket:message-broker application-destination-prefix="/app">
+		<websocket:stomp-endpoint path="/logStream">
+			<websocket:sockjs/>
+		</websocket:stomp-endpoint>
+		<websocket:simple-broker prefix="/topic" />
+	</websocket:message-broker>
+
+
+<!-- 	<websocket:handlers> -->
+<!-- 		<websocket:mapping path="/admin/logView" handler="logView" /> -->
+<!-- 		<websocket:handshake-interceptors> -->
+<!-- 			<bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" /> -->
+<!-- 		</websocket:handshake-interceptors> -->
+<!-- 		<websocket:sockjs /> -->
+<!-- 	</websocket:handlers> -->
+
+<!-- 	<bean id="logView" class="com.worldbestsoft.webapp.controller.LogViewController" /> -->
+
+	<bean class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">
+	</bean>
+	<bean id="log4jStreamAppender" class="com.worldbestsoft.webapp.util.Log4jStreamAppender">
+		<property name="layout">
+			<bean class="org.apache.log4j.PatternLayout">
+				<property name="conversionPattern" value="%d %p [%t] %c{1}.%M(%L) | %m%n"></property>
+			</bean>
+		</property>
+	</bean>
+
+</beans>

@@ -48,10 +48,10 @@
 				<fmt:message key="button.save" />
 			</button>
 			<a class="btn" href="<c:url value='/mainMenu'/>"> <i class="icon-ok"></i> <fmt:message key="button.done" /></a>
-<%--	<button id="button.viewLog" class="btn" type="button" onclick="viewLog()">
+			<button id="button.viewLog" class="btn" type="button" onclick="viewLog()">
  				<i class="con-tasks"></i>
-				<fmt:message key="button.viewlog" />
- 			</button> --%>
+				<fmt:message key="button.viewLog" />
+ 			</button>
 		</div>
 		<display:table name="logList" cellspacing="0" cellpadding="0" requestURI="" defaultsort="1" id="log" pagesize="25" class="table table-condensed table-striped table-hover table-bordered" export="false" sort="list">
 			<display:column property="name" escapeXml="true" sortable="true" titleKey="logSetting.logName" />
@@ -72,8 +72,7 @@
 
 <script>
 	function viewLog() {
-		window
-				.open('${ctx}/admin/logView', 'logView',
+		window.open('${ctx}/admin/logView?window=true', 'logView',
 						'width=700,height=500,menubar=no,scrollbars=yes,status=no,toolbar=no');
 	}
 </script>

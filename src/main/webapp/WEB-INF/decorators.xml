@@ -9,6 +9,9 @@
     <decorator name="popup" page="popup.jsp">
     		<pattern>/popup*</pattern>
     </decorator>
+    <decorator name="popup_window" page="popup_window.jsp">
+    		<pattern>/*window=true*</pattern>
+    </decorator>
     <decorator name="default" page="default.jsp">
         <pattern>/*</pattern>
     </decorator>
