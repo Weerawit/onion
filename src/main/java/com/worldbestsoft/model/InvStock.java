@@ -112,8 +112,8 @@ public class InvStock implements java.io.Serializable {
 	    StringBuilder builder = new StringBuilder();
 	    builder.append("InvStock [invItemId=");
 	    builder.append(invItemId);
-	    builder.append(", invItem=");
-	    builder.append(invItem);
+//	    builder.append(", invItem=");
+//	    builder.append(invItem);
 	    builder.append(", qty=");
 	    builder.append(qty);
 	    builder.append(", qtyAvailable=");

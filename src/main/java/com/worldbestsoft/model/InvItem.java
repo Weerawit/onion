@@ -246,8 +246,8 @@ public class InvItem implements java.io.Serializable {
 	    builder.append(updateDate);
 	    builder.append(", updateUser=");
 	    builder.append(updateUser);
-	    builder.append(", invStock=");
-	    builder.append(invStock);
+	    //builder.append(", invStock=");
+	    //builder.append(invStock);
 	    builder.append("]");
 	    return builder.toString();
     }
